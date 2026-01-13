@@ -59,6 +59,7 @@
 - [![Typescript][typescript-shield]][typescript-url]
 - [![Vite][vite-shield]][vite-url]
 - [![Rust][rust-shield]][rust-url]
+- [![React Router][react-router-shield]][react-router-url]
 ### Download
 You can find the latest stable version of the ClamAV GUI right here
 
@@ -138,6 +139,8 @@ Contributions are Always Welcome! Please read both [Code of Conduct][code-of-con
 [vite-url]: https://vite.dev/
 [rust-shield]: https://img.shields.io/badge/Rust-000000?style=for-the-badge&logo=rust&logoColor=white
 [rust-url]: https://rust-lang.org/
+[react-router-shield]: https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white
+[react-router-url]: https://reactrouter.com
 
 <!-- External Links -->
 [yt-shield]: https://img.shields.io/badge/ArsenTech%20-222222.svg?&style=for-the-badge&logo=YouTube&logoColor=%23FF0000
