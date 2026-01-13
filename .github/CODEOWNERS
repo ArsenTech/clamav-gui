@@ -1,0 +1,33 @@
+# Configs
+tsconfig.json       @ArsenTech
+tsconfig.node.json  @ArsenTech
+*.config.*          @ArsenTech
+components.json     @ArsenTech
+tauri.conf.json     @ArsenTech
+
+# Package Managing
+package.json        @ArsenTech
+package-lock.json   @ArsenTech
+Cargo.toml          @ArsenTech
+Cargo.lock          @ArsenTech
+build.rs            @ArsenTech
+src/main.rs         @ArsenTech
+
+# Common Repo Files
+README.md           @ArsenTech
+LICENSE.md          @ArsenTech
+docs/**             @ArsenTech
+CHANGELOG.md        @ArsenTech
+.gitignore          @ArsenTech
+
+# All GitHub workflow files
+.github/**          @ArsenTech
+
+# All VSCode files (If you're working on VSCode)
+.vscode/**          @ArsenTech
+
+# All Rust Configs
+.cargo/**           @ArsenTech
+
+# Env Files
+src/vite-env.d.ts   @ArsenTech
