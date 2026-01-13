@@ -71,19 +71,19 @@ jobs:
         run: echo "APP_VERSION=$(jq -r .version src-tauri/tauri.conf.json)" >> $GITHUB_ENV
 
       - name: Upload deb bundle
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: Debian Bundle
           path: ${{ github.workspace }}/src-tauri/target/release/bundle/deb/clamav_gui_${{ env.APP_VERSION }}_${{ matrix.deb }}.deb
 
       - name: Upload rpm bundle
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: RPM Bundle
           path: ${{ github.workspace }}/src-tauri/target/release/bundle/rpm/clamav_gui-${{ env.APP_VERSION }}-1.${{ matrix.rpm }}.rpm
 
       - name: Upload appimage bundle
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: AppImage Bundle
           path: ${{ github.workspace }}/src-tauri/target/release/bundle/appimage/clamav_gui_${{ env.APP_VERSION }}_${{ matrix.appimage }}.AppImage
