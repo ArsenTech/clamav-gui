@@ -1,8 +1,8 @@
 <p align="center">
      <img src=".github/readme-logo.png" alt="ClamAV GUI" width="150" height="150">
 </p>
-<h1 align="center">ArsenTech's ClamAV GUI</h3>
-<p align="center">A GUI for ClamAV Antivirus that makes the Antivirus itself look professional and work exactly like ClamAV (A FOSS CLI Antivirus)</p>
+<h1 align="center">ArsenTech's <a href="https://www.clamav.net/">ClamAV</a> GUI</h3>
+<p align="center">A GUI for <a href="https://www.clamav.net/">ClamAV Antivirus</a> that makes the Antivirus itself look professional and work exactly like ClamAV (A FOSS CLI Antivirus)</p>
 <p align="center">
      <a href="https://github.com/ArsenTech/clamav-gui/issues/new?assignees=&labels=&template=bug_report.md&title=">Report bug</a>
      &nbsp;&middot;&nbsp;
