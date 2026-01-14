@@ -11,8 +11,8 @@ export function AppLayout({children, className}: Props){
      return (
           <SidebarProvider>
                <MainSidebar/>
-               <main className="px-4 py-2 w-full">
-                    <SidebarTrigger />
+               <main className="py-2 w-full">
+                    <SidebarTrigger className="mx-2"/>
                     <div className={cn("w-full",className)}>
                          {children}
                     </div>

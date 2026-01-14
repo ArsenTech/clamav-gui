@@ -2,7 +2,7 @@
      <img src=".github/readme-logo.png" alt="ClamAV GUI" width="150" height="150">
 </p>
 <h1 align="center">ArsenTech's <a href="https://www.clamav.net/">ClamAV</a> GUI</h3>
-<p align="center">A GUI for <a href="https://www.clamav.net/">ClamAV Antivirus</a> that makes the Antivirus itself look professional and work exactly like ClamAV (A FOSS CLI Antivirus)</p>
+<p align="center">A minimal, open-source GUI for <a href="https://www.clamav.net/">ClamAV Antivirus</a> that makes the Antivirus itself look professional and work exactly like ClamAV (A FOSS CLI Antivirus)</p>
 <p align="center">
      <a href="https://github.com/ArsenTech/clamav-gui/issues/new?assignees=&labels=&template=bug_report.md&title=">Report bug</a>
      &nbsp;&middot;&nbsp;
@@ -47,7 +47,7 @@
 </details>
 
 ## About
-<!-- TODO: Write the About section-->
+**ArsenTech's ClamAV GUI** is a minimal, open-source interface for file scanning and threat detection that makes the Antivirus itself look professional and work exactly like ClamAV (A FOSS CLI Antivirus). Built with ClamAV, Tauri, React, and modern desktop and web tools. This software is provided as-is. No data is collected or transmitted.
 ### Features
 <!-- TODO: Write the Features list -->
 
