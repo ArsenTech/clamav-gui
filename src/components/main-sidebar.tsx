@@ -9,7 +9,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { BrickWallShield, ChartNoAxesCombined, ClipboardClock, Cog, Info, ScrollText, SearchCheck, ShieldBan, History, ShieldCheck } from "lucide-react"
+import { BrickWallShield, ChartNoAxesCombined, ClipboardClock, Cog, Info, ScrollText, SearchCheck, History, ShieldCheck, BugOff } from "lucide-react"
 import { Link, useLocation } from "react-router"
 
 const sidebarLinks = [
@@ -26,7 +26,7 @@ const sidebarLinks = [
      {
           name: "Quarantine",
           href: "/quarantine",
-          Icon: ShieldBan
+          Icon: BugOff
      },
      {
           name: "Logs",

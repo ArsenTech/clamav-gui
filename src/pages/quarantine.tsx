@@ -14,20 +14,20 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 
-interface IQuarantineData{
+export interface IQuarantineData{
      id: string,
      displayName: string,
      filePath: string,
-     status: "quarantined" | "deleted" | "restored" | "ignored" | "blocked",
+     status: "quarantined" | "deleted" | "restored" | "ignored" | "blocked" | "detected",
      detectedAt: "2020-05-05"
 }
 
-const quarantineData: IQuarantineData[] = [
+export const quarantineData: IQuarantineData[] = [
      {
           id: "1",
           displayName: "Some.Trojan.Malware",
           filePath: "C:\\Users\\User\\Downloads\\a-shady-contract.pdf.exe",
-          status: "quarantined",
+          status: "detected",
           detectedAt: "2020-05-05"
      },
      {
@@ -113,7 +113,7 @@ const columns: ColumnDef<IQuarantineData>[] = [
 export default function QuarantinePage(){
      return (
           <AppLayout className="flex justify-center items-center gap-4 flex-col p-4">
-               <h1 className="text-3xl md:text-4xl font-medium border-b pb-2 w-fit">Quarantine</h1>
+               <h1 className="text-2xl md:text-3xl lg:text-4xl font-medium border-b pb-2 w-fit">Quarantine</h1>
                {(quarantineData && quarantineData.length>0) ? (
                     <DataTable
                          columns={columns}

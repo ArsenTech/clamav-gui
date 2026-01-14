@@ -2,6 +2,8 @@ import React from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import MainSidebar from "@/components/main-sidebar";
 import { cn } from "@/lib/utils";
+// TODO: Add that page once `where clamscan` returns ""
+// import NoClamAVPage from "@/pages/no-clamav";
 
 interface Props{
      children: React.ReactNode,

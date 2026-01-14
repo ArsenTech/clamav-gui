@@ -101,7 +101,7 @@ export function DataTable<TData, TValue>({
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
-                    {cell.column.id === "status" ? <Badge variant={(cell.getValue()==="deleted" || cell.getValue()==="blocked") ? "default" : (cell.getValue()==="restored" || cell.getValue()==="ignored") ? "secondary" : "outline"}>{`${(cell.getValue() as string).toUpperCase()[0]}${(cell.getValue() as string).slice(1)}`}</Badge> : flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    {cell.column.id === "status" ? <Badge variant={(cell.getValue()==="deleted" || cell.getValue()==="blocked") ? "default" : (cell.getValue()==="restored" || cell.getValue()==="ignored") ? "secondary" : cell.getValue() === "detected" ? "destructive" : "outline"}>{`${(cell.getValue() as string).toUpperCase()[0]}${(cell.getValue() as string).slice(1)}`}</Badge> : flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
               </TableRow>
