@@ -9,7 +9,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { BrickWallShield, ChartNoAxesCombined, ClipboardClock, Cog, Info, ScrollText, SearchCheck, History, ShieldCheck, BugOff } from "lucide-react"
+import { ChartNoAxesCombined, ClipboardClock, Cog, Info, SearchCheck, History, ShieldCheck, BugOff } from "lucide-react"
 import { Link, useLocation } from "react-router"
 
 const sidebarLinks = [
@@ -29,9 +29,9 @@ const sidebarLinks = [
           Icon: BugOff
      },
      {
-          name: "Logs",
-          href: "/logs",
-          Icon: ScrollText
+          name: "History",
+          href: "/history",
+          Icon: History
      },
      {
           name: "Statistics",
@@ -39,19 +39,9 @@ const sidebarLinks = [
           Icon: ChartNoAxesCombined
      },
      {
-          name: "Firewall",
-          href: "/firewall",
-          Icon: BrickWallShield
-     },
-     {
           name: "Scheduler",
           href: "/scheduller",
           Icon: ClipboardClock
-     },
-     {
-          name: "History",
-          href: "/history",
-          Icon: History
      },
 ]
 const sidebarFooterLinks = [
@@ -69,7 +59,6 @@ const sidebarFooterLinks = [
 
 export default function MainSidebar(){
      const location = useLocation();
-     console.log(location.pathname)
      return (
           <Sidebar>
                <SidebarHeader>

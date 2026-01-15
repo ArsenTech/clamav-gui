@@ -1,7 +1,12 @@
 import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
 import { ExternalLink, RotateCcw } from "lucide-react";
 
-export default function NoClamAVPage(){
+interface Props{
+     isPending: boolean,
+     handleCheck: () => void
+}
+export default function NoClamAVPage({isPending, handleCheck}: Props){
      return (
           <div className="p-8 grid grid-cols-1 md:grid-cols-2 gap-4 place-content-center">
                <img src="/shrug.webp" alt="Uncertain" width={450} height={450}/>
@@ -12,9 +17,10 @@ export default function NoClamAVPage(){
                          <a href="https://docs.clamav.net/manual/Installing.html" target="_blank"><ExternalLink/> docs.clamav.net/manual/Installing.html</a>
                     </Button>
                     <p>Once you installed ClamAV, click on the <span className="font-semibold">Check Availability</span> button to activate the ClamAV GUI for free</p>
-                    <Button onClick={()=>{
-                         window.location.reload();
-                    }}><RotateCcw/> Check Availability</Button>
+                    <Button onClick={handleCheck} disabled={isPending}>
+                         {isPending ? <Spinner/> : <RotateCcw/>}
+                         {isPending ? "Checking..." : "Check Availability"}
+                    </Button>
                </div>
           </div>
      )

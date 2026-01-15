@@ -2,22 +2,29 @@ import { AppLayout } from "@/components/layout";
 import {getTauriVersion, getVersion} from "@tauri-apps/api/app"
 import { useEffect, useState } from "react";
 
+interface IVersion{
+     app: string,
+     tauri: string,
+     versionType: string
+}
 export default function AboutPage(){
-     const [versions, setVersions] = useState({
+     const versionCache = JSON.parse(localStorage.getItem("versions") as string) as IVersion | null;
+     const [versions, setVersions] = useState<IVersion>(versionCache || {
           app: "0.0.0",
           tauri: "0.0.0",
           versionType: "Early Build"
      });
      useEffect(()=>{
-          const loadVersions = async()=>{
+          (async()=>{
                const app = await getVersion();
                const tauri = await getTauriVersion();
-               setVersions(prev=>({
-                    ...prev,
+               const newVersions = {
+                    ...versions,
                     app, tauri
-               }))
-          }
-          loadVersions();
+               }
+               setVersions(newVersions);
+               localStorage.setItem("versions",JSON.stringify(newVersions))
+          })();
      },[])
      const year = new Date().getFullYear();
      return (

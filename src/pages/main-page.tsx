@@ -1,6 +1,6 @@
 import { AppLayout } from "@/components/layout";
 import SafetyIndicator from "@/components/antivirus/indicator";
-import { BugOff, FolderSearch, MailSearch, RotateCcw, History, ScrollText, Search, SearchCheck, ShieldCheck, ClipboardClock } from "lucide-react";
+import { BugOff, FolderSearch, RotateCcw, History, Search, SearchCheck, ShieldCheck, ClipboardClock } from "lucide-react";
 
 export default function App() {
   return (
@@ -26,13 +26,6 @@ export default function App() {
           <div className="w-[calc(100%-48px)]">
             <h2 className="text-lg md:text-xl font-medium">Custom Scan</h2>
             <p>Choose a folder to scan</p>
-          </div>
-        </div>
-        <div className="w-full px-2 py-4 shadow-sm rounded-md bg-background text-foreground border grow shrink-0 h-36 flex justify-center items-center gap-4">
-          <MailSearch className="size-12 text-primary"/>
-          <div className="w-[calc(100%-48px)]">
-            <h2 className="text-lg md:text-xl font-medium">Mail Scan</h2>
-            <p>Scan through emails</p>
           </div>
         </div>
         <div className="w-full px-2 py-4 shadow-sm rounded-md bg-background text-foreground border grow shrink-0 h-36 flex justify-center items-center gap-4">
@@ -68,13 +61,6 @@ export default function App() {
           <div className="w-[calc(100%-48px)]">
             <h2 className="text-lg md:text-xl font-medium">Scheduler</h2>
             <p>Schedule a scan</p>
-          </div>
-        </div>
-        <div className="w-full px-2 py-4 shadow-sm rounded-md bg-background text-foreground border grow shrink-0 h-36 flex justify-center items-center gap-4">
-          <ScrollText className="size-12 text-primary"/>
-          <div className="w-[calc(100%-48px)]">
-            <h2 className="text-lg md:text-xl font-medium">Logs</h2>
-            <p>View the detailed logs from ClamAV</p>
           </div>
         </div>
       </div>

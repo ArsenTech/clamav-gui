@@ -1,9 +1,17 @@
 import ScanFinishResult from "@/components/antivirus/scan/finish-scan";
 import ScanMenu from "@/components/antivirus/scan/scan-menu";
+import ScanProcess from "@/components/antivirus/scan/scan-process";
 import { AppLayout } from "@/components/layout";
+import { useState } from "react";
+
+export type ScanType = "" | "main" | "full" | "custom" | "file" | "mail"
 
 export default function ScanPage(){
+     const [scanType, setScanType] = useState<ScanType>("");
      const isFinished = false;
+     const handleStartScan = (type: ScanType) => {
+          setScanType(type)
+     }
      return (
           <AppLayout className={isFinished ? "flex justify-center items-center gap-4 flex-col p-4" : "grid gris-cols-1 md:grid-cols-2 gap-10 p-4"}>
                {isFinished ? (
@@ -15,7 +23,11 @@ export default function ScanPage(){
                     <>
                          <div className="space-y-4">
                               <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">Scan</h1>
-                              <ScanMenu/>
+                              {scanType==="" ? (
+                                   <ScanMenu handleStartScan={handleStartScan}/>
+                              ) : (
+                                   <ScanProcess/>
+                              )}
                          </div>
                          <div className="space-y-3 px-3 text-lg overflow-y-auto max-h-[700px]">
                               <h2 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">Log</h2>
