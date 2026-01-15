@@ -1,10 +1,10 @@
 use std::process::Command;
-use sysinfo::System;
+use sysinfo::{System, ProcessesToUpdate};
 use tauri::command;
 use serde::Serialize;
 
 #[derive(Serialize)]
-struct SysInfo{
+struct SysStats{
     cpu_usage: Vec<f32>,
     cpu_frequency: Vec<u64>,
 
@@ -13,7 +13,10 @@ struct SysInfo{
 
     disk_read_bytes: u64,
     disk_written_bytes: u64,
+}
 
+#[derive(Serialize)]
+struct SysInfo{
     sys_name: Option<String>,
     sys_os: Option<String>,
     sys_host: Option<String>,
@@ -31,12 +34,12 @@ fn check_availability() -> bool {
 }
 
 #[command]
-fn get_sys_info() -> SysInfo {
-    let mut system = System::new();
+fn get_sys_stats() -> SysStats {
+    let mut system = System::new_all();
 
-    system.refresh_cpu();
+    system.refresh_cpu_all();
     system.refresh_memory();
-    system.refresh_processes();
+    system.refresh_processes(ProcessesToUpdate::All, true);
 
     let cpu_usage = system
         .cpus()
@@ -63,7 +66,7 @@ fn get_sys_info() -> SysInfo {
         disk_written_bytes += io.written_bytes;
     }
 
-    SysInfo {
+    SysStats {
         cpu_usage,
         cpu_frequency,
 
@@ -72,7 +75,12 @@ fn get_sys_info() -> SysInfo {
 
         disk_read_bytes,
         disk_written_bytes,
+    }
+}
 
+#[command]
+fn get_sys_info() -> SysInfo{
+    SysInfo {
         sys_name: System::name(),
         sys_os: System::os_version(),
         sys_host: System::host_name(),
@@ -83,7 +91,7 @@ fn get_sys_info() -> SysInfo {
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![check_availability, get_sys_info])
+        .invoke_handler(tauri::generate_handler![check_availability, get_sys_stats, get_sys_info])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

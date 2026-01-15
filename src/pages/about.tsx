@@ -28,7 +28,7 @@ export default function AboutPage(){
      },[])
      const year = new Date().getFullYear();
      return (
-          <AppLayout className="grid grid-cols-1 md:grid-cols-2 gap-10 p-4">
+          <AppLayout className="grid grid-cols-1 lg:grid-cols-2 gap-10 p-4">
                <div className="space-y-4">
                     <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">About ClamAV GUI</h1>
                     <img src="/logo-blue.webp" alt="ClamAV GUI" width={500} height={130}/>

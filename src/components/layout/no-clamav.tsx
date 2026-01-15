@@ -9,7 +9,9 @@ interface Props{
 export default function NoClamAVPage({isPending, handleCheck}: Props){
      return (
           <div className="p-8 grid grid-cols-1 md:grid-cols-2 gap-4 place-content-center">
-               <img src="/shrug.webp" alt="Uncertain" width={450} height={450}/>
+               <div className="flex items-center justify-center text-center">
+                    <img src="/shrug.webp" alt="Uncertain" width={450} height={450}/>
+               </div>
                <div className="flex flex-col items-center justify-center text-center gap-4">
                     <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl leading-tight font-medium">Oops, No <span className="text-primary">ClamAV</span> Found...</h1>
                     <p>Make sure to Install ClamAV by following the installation guide here:</p>
