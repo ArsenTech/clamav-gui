@@ -20,37 +20,39 @@ import {
 import { useEffect, useState } from "react";
 import { useSystemStats } from "@/hooks/use-sys-stats";
 
-export const description = "The Current RAM usage";
-
 function formatBytes(bytes: number) {
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-    if (bytes === 0) return '0 Bytes';
-    const i = Math.floor(Math.log(bytes) / Math.log(1024));
-    return parseFloat((bytes / Math.pow(1024, i)).toFixed(2)) + ' ' + sizes[i];
+  const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
+  if (bytes === 0) return "0 Bytes";
+  const i = Math.floor(Math.log(bytes) / Math.log(1024));
+  return parseFloat((bytes / Math.pow(1024, i)).toFixed(2)) + " " + sizes[i];
 }
 
 const chartConfig = {
   usage: {
     label: "Usage (%): ",
-    color: "oklch(0.723 0.219 149.579)"
+    color: "oklch(0.723 0.219 149.579)",
   },
 } satisfies ChartConfig;
 
 export function RAMStats() {
-  const [data, setData] = useState<{usage: number}[]>([]);
+  const [data, setData] = useState<{ usage: number }[]>([]);
   const [total, setTotal] = useState("");
-  const ram = useSystemStats("ram_total","ram_used");
-  useEffect(()=>{
-    setData(prev=>[...prev,{usage: (ram.ram_used / ram.ram_total) * 100}].slice(-30));
-    setTotal(`${formatBytes(ram.ram_total)} (${formatBytes(ram.ram_used)} Used)`)
-  },[ram])
+  const ram = useSystemStats("ram_total", "ram_used");
+  useEffect(() => {
+    setData((prev) =>
+      [...prev, { usage: (ram.ram_used / ram.ram_total) * 100 }].slice(-30)
+    );
+    setTotal(
+      `${formatBytes(ram.ram_total)} (${formatBytes(ram.ram_used)} Used)`
+    );
+  }, [ram]);
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2"><Microchip className="size-5"/> Memory</CardTitle>
-        <CardDescription>
-          {description}
-        </CardDescription>
+        <CardTitle className="flex items-center gap-2">
+          <Microchip className="size-5" /> Memory
+        </CardTitle>
+        <CardDescription>The Current RAM usage</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -63,9 +65,12 @@ export function RAMStats() {
             }}
           >
             <CartesianGrid vertical={false} />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" hideLabel/>}/>
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent indicator="line" hideLabel />}
+            />
             <defs>
-              <linearGradient id="fillUsage" x1="0" y1="0" x2="0" y2="1" >
+              <linearGradient id="fillUsage" x1="0" y1="0" x2="0" y2="1">
                 <stop
                   offset="5%"
                   stopColor="var(--color-usage)"
@@ -94,9 +99,9 @@ export function RAMStats() {
       <CardFooter>
         <div className="flex w-full items-start gap-2 text-sm">
           <div className="grid gap-2">
-          <div className="text-base md:text-lg font-semibold flex items-center gap-2 leading-none">
-               <Microchip/> {total}
-          </div>
+            <div className="text-base md:text-lg font-semibold flex items-center gap-2 leading-none">
+              <Microchip /> {total}
+            </div>
             <div className="text-muted-foreground flex items-center gap-2 leading-none">
               Last 30 Seconds
             </div>

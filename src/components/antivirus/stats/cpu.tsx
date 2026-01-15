@@ -1,7 +1,7 @@
 "use client";
 
 import { Cpu, Dot, Gauge } from "lucide-react";
-import { Area, AreaChart, CartesianGrid, YAxis } from "recharts";
+import { Area, AreaChart, CartesianGrid } from "recharts";
 
 import {
   Card,
@@ -20,37 +20,35 @@ import {
 import { useEffect, useState } from "react";
 import { useSystemStats } from "@/hooks/use-sys-stats";
 
-export const description = "The Current CPU Activiry Based on the Base Frequency";
-
 const chartConfig = {
   util: {
     label: "Utilization (%): ",
-    color: "var(--chart-2)"
+    color: "var(--chart-2)",
   },
 } satisfies ChartConfig;
 
 export function CPUStats() {
-  const [data, setData] = useState<{util: number}[]>([]);
-  const [currStats, setCurrStats] = useState<{util: number, freq: number}>({
+  const [data, setData] = useState<{ util: number }[]>([]);
+  const [currStats, setCurrStats] = useState<{ util: number; freq: number }>({
     util: 0,
-    freq: 0
-  })
-  const cpu = useSystemStats("cpu_frequency","cpu_usage");
-  useEffect(()=>{
-    setData(prev=>[...prev,{util: cpu.cpu_usage}].slice(-30));
-    setCurrStats(prev=>({
+    freq: 0,
+  });
+  const cpu = useSystemStats("cpu_frequency", "cpu_usage");
+  useEffect(() => {
+    setData((prev) => [...prev, { util: cpu.cpu_usage }].slice(-30));
+    setCurrStats((prev) => ({
       ...prev,
       util: cpu.cpu_usage,
-      freq: cpu.cpu_frequency
-    }))
-  },[cpu])
+      freq: cpu.cpu_frequency/1000,
+    }));
+  }, [cpu]);
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2"><Cpu className="size-5"/> CPU Activity</CardTitle>
-        <CardDescription>
-          {description}
-        </CardDescription>
+        <CardTitle className="flex items-center gap-2">
+          <Cpu className="size-5" /> CPU Activity
+        </CardTitle>
+        <CardDescription>The Current CPU Activiry Based on the Base Frequency</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -63,15 +61,12 @@ export function CPUStats() {
             }}
           >
             <CartesianGrid vertical={false} />
-            <YAxis
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              tickCount={4}
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent indicator="line" hideLabel />}
             />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" hideLabel/>}/>
             <defs>
-              <linearGradient id="fillUtil" x1="0" y1="0" x2="0" y2="1" >
+              <linearGradient id="fillUtil" x1="0" y1="0" x2="0" y2="1">
                 <stop
                   offset="5%"
                   stopColor="var(--color-util)"
@@ -101,7 +96,14 @@ export function CPUStats() {
         <div className="flex w-full items-start gap-2 text-sm">
           <div className="grid gap-2">
             <div className="text-base md:text-lg font-semibold flex items-center gap-0.5 leading-none">
-              <span className="flex items-center gap-2"><Gauge className="size-5 md:size-6"/> Speed: {isNaN(currStats.freq) ? 0 : currStats.freq} GHz </span><Dot/><span className="flex items-center gap-2"><Cpu/> Utilization: {currStats.util}%</span>
+              <span className="flex items-center gap-2">
+                <Gauge className="size-5 md:size-6" /> Speed:{" "}
+                {isNaN(currStats.freq) ? 0 : currStats.freq} GHz{" "}
+              </span>
+              <Dot />
+              <span className="flex items-center gap-2">
+                <Cpu /> Utilization: {currStats.util}%
+              </span>
             </div>
             <div className="text-muted-foreground flex items-center gap-2 leading-none">
               Last 30 Seconds

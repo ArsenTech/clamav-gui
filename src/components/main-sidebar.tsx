@@ -40,7 +40,7 @@ const sidebarLinks = [
      },
      {
           name: "Scheduler",
-          href: "/scheduller",
+          href: "/scheduler",
           Icon: ClipboardClock
      },
 ]

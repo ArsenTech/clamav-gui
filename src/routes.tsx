@@ -4,15 +4,14 @@ import AboutPage from "@/pages/about";
 import QuarantinePage from "@/pages/quarantine";
 import ScanPage from "@/pages/scan";
 import StatsPage from "@/pages/stats";
+import HistoryPage from "./pages/history";
+import SchedulerPage from "./pages/scheduler";
+import SettingsPage from "./pages/settings";
 
 export const router = createBrowserRouter([
      {
           path: "/",
           element: <App/>
-     },
-     {
-          path: "/about",
-          element: <AboutPage/>
      },
      {
           path: "/quarantine",
@@ -25,5 +24,21 @@ export const router = createBrowserRouter([
      {
           path: "/stats",
           element: <StatsPage/>
+     },
+     {
+          path: "/history",
+          element: <HistoryPage/>
+     },
+     {
+          path: "/scheduler",
+          element: <SchedulerPage/>
+     },
+     {
+          path: "/about",
+          element: <AboutPage/>
+     },
+     {
+          path: "/settings",
+          element: <SettingsPage/>
      }
 ])
