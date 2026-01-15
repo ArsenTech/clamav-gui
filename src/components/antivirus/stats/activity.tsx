@@ -4,6 +4,7 @@ import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
@@ -17,17 +18,17 @@ import {
 } from "@/components/ui/chart"
 
 const chartData = [
-  { month: "January", detected: 186, resolved: 80 },
-  { month: "February", detected: 305, resolved: 200 },
-  { month: "March", detected: 237, resolved: 120 },
-  { month: "April", detected: 73, resolved: 190 },
-  { month: "May", detected: 209, resolved: 130 },
-  { month: "June", detected: 214, resolved: 140 },
+  { month: "January", unresolved: 186, resolved: 80 },
+  { month: "February", unresolved: 305, resolved: 200 },
+  { month: "March", unresolved: 237, resolved: 120 },
+  { month: "April", unresolved: 73, resolved: 190 },
+  { month: "May", unresolved: 209, resolved: 130 },
+  { month: "June", unresolved: 214, resolved: 140 },
 ]
 
 const chartConfig = {
-  detected: {
-    label: "Detected",
+  unresolved: {
+    label: "Unresolved",
     color: "var(--destructive)",
     icon: Bug,
   },
@@ -43,6 +44,7 @@ export function ScanActivity() {
     <Card className="w-full">
       <CardHeader>
         <CardTitle className="flex items-center gap-2"><LineChart className="size-5"/> Scan Activity</CardTitle>
+        <CardDescription>Last 6 months</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -75,11 +77,11 @@ export function ScanActivity() {
               stackId="a"
             />
             <Area
-              dataKey="detected"
+              dataKey="unresolved"
               type="natural"
-              fill="var(--color-detected)"
+              fill="var(--color-unresolved)"
               fillOpacity={0.4}
-              stroke="var(--color-detected)"
+              stroke="var(--color-unresolved)"
               stackId="a"
             />
             <ChartLegend content={<ChartLegendContent />} />
