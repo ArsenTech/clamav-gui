@@ -1,6 +1,6 @@
 "use client"
 
-import { Bug, BugOff, LineChart, TrendingDown, TrendingUp } from "lucide-react"
+import { Bug, BugOff, LineChart } from "lucide-react"
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
 
 import {
