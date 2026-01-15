@@ -1,5 +1,3 @@
-"use client";
-
 import { Microchip } from "lucide-react";
 import { Area, AreaChart, CartesianGrid } from "recharts";
 

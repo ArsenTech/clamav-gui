@@ -1,5 +1,3 @@
-"use client"
-
 import { Bug, BugOff, LineChart } from "lucide-react"
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
 
@@ -69,19 +67,19 @@ export function ScanActivity() {
               content={<ChartTooltipContent indicator="line" />}
             />
             <Area
-              dataKey="detected"
-              type="natural"
-              fill="var(--color-detected)"
-              fillOpacity={0.4}
-              stroke="var(--color-detected)"
-              stackId="a"
-            />
-            <Area
               dataKey="resolved"
               type="natural"
               fill="var(--color-resolved)"
               fillOpacity={0.4}
               stroke="var(--color-resolved)"
+              stackId="a"
+            />
+            <Area
+              dataKey="detected"
+              type="natural"
+              fill="var(--color-detected)"
+              fillOpacity={0.4}
+              stroke="var(--color-detected)"
               stackId="a"
             />
             <ChartLegend content={<ChartLegendContent />} />

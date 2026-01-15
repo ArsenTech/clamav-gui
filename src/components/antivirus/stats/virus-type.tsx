@@ -1,5 +1,3 @@
-"use client"
-
 import { Bug } from "lucide-react"
 import { Pie, PieChart } from "recharts"
 
@@ -16,34 +14,32 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart"
 
-export const description = "A donut chart"
-
 const chartData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "other", visitors: 90, fill: "var(--color-other)" },
+  { type: "trojan", threats: 275, fill: "var(--color-trojan)" },
+  { type: "ransomware", threats: 200, fill: "var(--color-ransomware)" },
+  { type: "spyware", threats: 187, fill: "var(--color-spyware)" },
+  { type: "rootkit", threats: 173, fill: "var(--color-rootkit)" },
+  { type: "other", threats: 90, fill: "var(--color-other)" },
 ]
 
 const chartConfig = {
-  visitors: {
-    label: "Visitors",
+  threats: {
+    label: "Threats",
   },
-  chrome: {
-    label: "Chrome",
+  trojan: {
+    label: "Trojan",
     color: "var(--chart-1)",
   },
-  safari: {
-    label: "Safari",
+  ransomware: {
+    label: "Ransomware",
     color: "var(--chart-2)",
   },
-  firefox: {
-    label: "Firefox",
+  spyware: {
+    label: "Spyware",
     color: "var(--chart-3)",
   },
-  edge: {
-    label: "Edge",
+  rootkit: {
+    label: "Rootkit",
     color: "var(--chart-4)",
   },
   other: {
@@ -56,12 +52,12 @@ export function VirusTypes() {
   return (
     <Card className="flex flex-col w-full">
       <CardHeader className="items-center pb-0">
-        <CardTitle className="flex items-center gap-2"><Bug className="size-5"/> Virus Types</CardTitle>
+        <CardTitle className="flex items-center gap-2"><Bug className="size-5"/> Computer Virus Types</CardTitle>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px]"
+          className="mx-auto aspect-square max-h-[300px]"
         >
           <PieChart>
             <ChartTooltip
@@ -70,9 +66,9 @@ export function VirusTypes() {
             />
             <Pie
               data={chartData}
-              dataKey="visitors"
-              nameKey="browser"
-              innerRadius={60}
+              dataKey="threats"
+              nameKey="type"
+              innerRadius={75}
             />
           </PieChart>
         </ChartContainer>

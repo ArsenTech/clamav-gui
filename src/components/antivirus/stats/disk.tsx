@@ -1,5 +1,3 @@
-"use client";
-
 import { HardDrive, GaugeCircle, Dot } from "lucide-react";
 import { Area, AreaChart, CartesianGrid } from "recharts";
 

@@ -1,5 +1,3 @@
-"use client"
-
 import { Search } from "lucide-react"
 import { Bar, BarChart, XAxis, YAxis } from "recharts"
 
@@ -15,8 +13,6 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart"
-
-export const description = "A mixed bar chart"
 
 const chartData = [
   { scanType: "main", threats: 275, fill: "var(--color-main)" },

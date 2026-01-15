@@ -1,5 +1,3 @@
-"use client";
-
 import { Cpu, Dot, Gauge } from "lucide-react";
 import { Area, AreaChart, CartesianGrid } from "recharts";
 

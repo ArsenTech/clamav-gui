@@ -1,13 +1,14 @@
-import { ScanActivity } from "@/components/antivirus/stats/activity";
-import { CPUStats } from "@/components/antivirus/stats/cpu";
-import DeviceInfo from "@/components/antivirus/stats/device-info";
-import { DiskStats } from "@/components/antivirus/stats/disk";
-import { FileTypes } from "@/components/antivirus/stats/file-type";
-import { RAMStats } from "@/components/antivirus/stats/ram";
-import { ScanTypes } from "@/components/antivirus/stats/scan";
-import { ThreatsStats } from "@/components/antivirus/stats/threats";
-import { VirusTypes } from "@/components/antivirus/stats/virus-type";
 import { AppLayout } from "@/components/layout";
+import {
+     ScanActivity,
+     CPUStats,
+     DeviceInfo,
+     DiskStats,
+     RAMStats,
+     ScanTypes,
+     ThreatsStats,
+     VirusTypes
+} from "@/components/antivirus/stats"
 
 export default function StatsPage(){
      return (
@@ -17,10 +18,7 @@ export default function StatsPage(){
                     <div className="flex flex-col items-center gap-2 w-full">
                          <DeviceInfo/>
                          <ScanActivity/>
-                         <div className="grid gris-cols-1 xl:grid-cols-2 w-full gap-2">
-                              <FileTypes/>
-                              <ScanTypes/>
-                         </div>
+                         <ScanTypes/>
                          <div className="grid gris-cols-1 xl:grid-cols-2 w-full gap-2">
                               <VirusTypes/>
                               <ThreatsStats/>

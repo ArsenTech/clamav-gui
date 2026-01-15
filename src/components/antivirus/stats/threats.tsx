@@ -1,5 +1,3 @@
-"use client"
-
 import * as React from "react"
 import { Bug } from "lucide-react"
 import { Label, Pie, PieChart } from "recharts"
@@ -17,45 +15,38 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart"
 
-export const description = "A donut chart with text"
-
 const chartData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 287, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "other", visitors: 190, fill: "var(--color-other)" },
+  { status: "quarantined", threats: 275, fill: "var(--color-quarantined)" },
+  { status: "ignored", threats: 200, fill: "var(--color-ignored)" },
+  { status: "deleted", threats: 287, fill: "var(--color-deleted)" },
+  { status: "unresolved", threats: 173, fill: "var(--color-unresolved)" },
 ]
 
 const chartConfig = {
-  visitors: {
-    label: "Visitors",
+  threats: {
+    label: "threats",
   },
-  chrome: {
-    label: "Chrome",
+  quarantined: {
+    label: "Quarantined",
     color: "var(--chart-1)",
   },
-  safari: {
-    label: "Safari",
+  ignored: {
+    label: "Skipped",
     color: "var(--chart-2)",
   },
-  firefox: {
-    label: "Firefox",
+  deleted: {
+    label: "Cleaned",
     color: "var(--chart-3)",
   },
-  edge: {
-    label: "Edge",
-    color: "var(--chart-4)",
-  },
-  other: {
-    label: "Other",
-    color: "var(--chart-5)",
+  unresolved: {
+    label: "Unresolved",
+    color: "var(--destructive)",
   },
 } satisfies ChartConfig
 
 export function ThreatsStats() {
   const totalVisitors = React.useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.visitors, 0)
+    return chartData.reduce((acc, curr) => acc + curr.threats, 0)
   }, [])
 
   return (
@@ -66,7 +57,7 @@ export function ThreatsStats() {
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px]"
+          className="mx-auto aspect-square max-h-[300px]"
         >
           <PieChart>
             <ChartTooltip
@@ -75,9 +66,9 @@ export function ThreatsStats() {
             />
             <Pie
               data={chartData}
-              dataKey="visitors"
-              nameKey="browser"
-              innerRadius={60}
+              dataKey="threats"
+              nameKey="status"
+              innerRadius={75}
               strokeWidth={5}
             >
               <Label
