@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "ArsenTech's ClamAV GUI",
+  "productName": "ClamAV GUI",
   "version": "0.1.0",
   "identifier": "com.arsentech.clamav-gui",
   "build": {
