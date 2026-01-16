@@ -46,6 +46,10 @@
      </ol>
 </details>
 
+<!-- TODO: Remove the warning once the ClamAV is Implemented -->
+> [!IMPORTANT]
+> The first pre-release is mostly focused on UI design meaning that it won't work. The ClamAV implementation will be implemented in future versions making the GUI work as a wrapper of ClamAV. The ClamAV GUI is still in the development
+
 ## About
 **ArsenTech's ClamAV GUI** is a minimal, open-source interface for file scanning and threat detection that makes the Antivirus itself look professional and work exactly like ClamAV (A FOSS CLI Antivirus). Built with ClamAV, Tauri, React, and modern desktop and web tools. This software is provided as-is. No data is collected or transmitted.
 ### Features
