@@ -62,4 +62,4 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: Linux ARM64 AppImage
-          path: ${{ github.workspace }}/src-tauri/target/release/bundle/appimage/clamav_gui_${{ env.APP_VERSION }}_${{ matrix.appimage }}.AppImage
+          path: src-tauri/target/release/bundle/appimage/*aarch64*.AppImage
