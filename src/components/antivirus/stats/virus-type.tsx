@@ -1,6 +1,5 @@
 import { Bug } from "lucide-react"
 import { Pie, PieChart } from "recharts"
-
 import {
   Card,
   CardContent,
@@ -13,14 +12,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 import { VIRUS_TYPE_CONFIG } from "@/lib/constants/chart"
-
-const chartData = [
-  { type: "trojan", threats: 275, fill: "var(--color-trojan)" },
-  { type: "ransomware", threats: 200, fill: "var(--color-ransomware)" },
-  { type: "spyware", threats: 187, fill: "var(--color-spyware)" },
-  { type: "rootkit", threats: 173, fill: "var(--color-rootkit)" },
-  { type: "other", threats: 90, fill: "var(--color-other)" },
-]
+import { VIRUS_TYPE_DATA } from "@/lib/constants/chart-data"
 
 export function VirusTypes() {
   return (
@@ -39,10 +31,9 @@ export function VirusTypes() {
               content={<ChartTooltipContent hideLabel />}
             />
             <Pie
-              data={chartData}
+              data={VIRUS_TYPE_DATA}
               dataKey="threats"
               nameKey="type"
-              innerRadius={75}
             />
           </PieChart>
         </ChartContainer>

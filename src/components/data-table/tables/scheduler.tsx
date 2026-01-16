@@ -1,5 +1,4 @@
 import {
-  ColumnDef,
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
@@ -17,15 +16,9 @@ import {
 import { useState } from "react"
 import { DataTablePagination } from "../pagination"
 import { Badge } from "../../ui/badge"
+import { DataTableProps } from "@/lib/types"
 
-interface SchedulerTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
-}
-export function SchedulerTable<TData, TValue>({
-  columns,
-  data,
-}: SchedulerTableProps<TData, TValue>) {
+export function SchedulerTable<TData, TValue>({columns,data}: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable({
     data,

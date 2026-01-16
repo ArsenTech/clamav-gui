@@ -1,6 +1,5 @@
 import { Cpu, Dot, Gauge } from "lucide-react";
 import { Area, AreaChart, CartesianGrid } from "recharts";
-
 import {
   Card,
   CardContent,
@@ -20,10 +19,7 @@ import { CPU_STATS_CONFIG } from "@/lib/constants/chart";
 
 export function CPUStats() {
   const [data, setData] = useState<{ util: number }[]>([]);
-  const [currStats, setCurrStats] = useState<{ util: number; freq: number }>({
-    util: 0,
-    freq: 0,
-  });
+  const [currStats, setCurrStats] = useState<{ util: number; freq: number }>({ util: 0, freq: 0 });
   const cpu = useSystemStats("cpu_frequency", "cpu_usage");
   useEffect(() => {
     setData((prev) => [...prev, { util: cpu.cpu_usage }].slice(-30));

@@ -1,5 +1,4 @@
 import {
-  ColumnDef,
   ColumnFiltersState,
   flexRender,
   getCoreRowModel,
@@ -24,15 +23,9 @@ import { SearchIcon } from "lucide-react"
 import { DataTablePagination } from "../pagination"
 import { Badge } from "../../ui/badge"
 import { DataTableViewOptions } from "../col-toggle"
+import { DataTableProps } from "@/lib/types"
 
-interface ThreatsTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
-}
-export function ThreatsTable<TData, TValue>({
-  columns,
-  data,
-}: ThreatsTableProps<TData, TValue>) {
+export function ThreatsTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})

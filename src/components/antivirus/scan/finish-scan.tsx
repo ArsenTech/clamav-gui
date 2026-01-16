@@ -2,10 +2,10 @@ import { ThreatsTable } from "@/components/data-table/tables/threats";
 import { Button } from "@/components/ui/button";
 import { BugOff, EyeOff, ShieldAlert, ShieldBan, ShieldCheck, Trash } from "lucide-react";
 import { Link } from "react-router";
-import { quarantineData } from "@/pages/quarantine";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { THREATS_COLS } from "@/lib/constants/columns";
+import { QUARANTINE_DATA } from "@/lib/constants";
 
 interface Props{
      threatCount: number
@@ -25,7 +25,7 @@ export default function ScanFinishResult({threatCount}: Props){
                <h2 className="text-lg md:text-2xl font-medium">{threatCount} {threatCount<=1 ? "threat" : "threats"} require attention</h2>
                <ThreatsTable
                     columns={THREATS_COLS}
-                    data={quarantineData}
+                    data={QUARANTINE_DATA}
                />
                <ButtonGroup>
                     <DropdownMenu>

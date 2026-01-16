@@ -1,6 +1,5 @@
 import { Microchip } from "lucide-react";
 import { Area, AreaChart, CartesianGrid } from "recharts";
-
 import {
   Card,
   CardContent,
@@ -24,12 +23,8 @@ export function RAMStats() {
   const [total, setTotal] = useState("");
   const ram = useSystemStats("ram_total", "ram_used");
   useEffect(() => {
-    setData((prev) =>
-      [...prev, { usage: (ram.ram_used / ram.ram_total) * 100 }].slice(-30)
-    );
-    setTotal(
-      `${formatBytes(ram.ram_total)} (${formatBytes(ram.ram_used)} Used)`
-    );
+    setData((prev) =>[...prev, { usage: (ram.ram_used / ram.ram_total) * 100 }].slice(-30));
+    setTotal(`${formatBytes(ram.ram_total)} (${formatBytes(ram.ram_used)} Used)`);
   }, [ram]);
   return (
     <Card className="w-full">

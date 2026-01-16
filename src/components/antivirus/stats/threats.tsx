@@ -1,7 +1,6 @@
 import * as React from "react"
 import { Bug } from "lucide-react"
 import { Label, Pie, PieChart } from "recharts"
-
 import {
   Card,
   CardContent,
@@ -14,19 +13,10 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 import { THREAT_STATUS_CONFIG } from "@/lib/constants/chart"
-
-const chartData = [
-  { status: "quarantined", threats: 275, fill: "var(--color-quarantined)" },
-  { status: "ignored", threats: 200, fill: "var(--color-ignored)" },
-  { status: "deleted", threats: 287, fill: "var(--color-deleted)" },
-  { status: "unresolved", threats: 173, fill: "var(--color-unresolved)" },
-]
+import { THREAT_STATUS_DATA } from "@/lib/constants/chart-data"
 
 export function ThreatsStats() {
-  const totalVisitors = React.useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.threats, 0)
-  }, [])
-
+  const totalVisitors = React.useMemo(() => THREAT_STATUS_DATA.reduce((acc, curr) => acc + curr.threats, 0), [])
   return (
     <Card className="flex flex-col w-full">
       <CardHeader className="items-center pb-0">
@@ -43,10 +33,10 @@ export function ThreatsStats() {
               content={<ChartTooltipContent hideLabel />}
             />
             <Pie
-              data={chartData}
+              data={THREAT_STATUS_DATA}
               dataKey="threats"
               nameKey="status"
-              innerRadius={75}
+              innerRadius={60}
               strokeWidth={5}
             >
               <Label

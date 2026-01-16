@@ -1,3 +1,4 @@
+import { ColumnDef } from "@tanstack/react-table";
 import { LucideProps } from "lucide-react";
 
 export type ScanType = "" | "main" | "full" | "custom" | "file"
@@ -10,9 +11,9 @@ export interface IScanMenuItem{
      Icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>
 }
 export interface IDeviceInfo {
-  sys_name: string;
-  sys_os: string;
-  sys_host: string;
+     sys_name: string;
+     sys_os: string;
+     sys_host: string;
 }
 interface SystemStatBase{
      ram_used: number,
@@ -40,10 +41,10 @@ export interface IHistoryData{
      details: string
 }
 export interface IQuickAccessItem{
-  name: string,
-  desc: string,
-  href: string,
-  Icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>
+     name: string,
+     desc: string,
+     href: string,
+     Icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>
 }
 export interface IQuarantineData{
      id: string,
@@ -58,4 +59,21 @@ export interface ISchedulerData{
      scanType: ScanType,
      lastScan: string,
      nextScan: string
+}
+
+interface IStatBase{
+     threats: number,
+     fill: string,
+}
+export interface IActivityStat{
+     month: string,
+     unresolved: number,
+     resolved: number
+}
+export interface IScanTypeStat extends IStatBase{ scanType: Exclude<ScanType,""> | "real-time" }
+export interface IThreatStatusStat extends IStatBase{ status: "quarantined" | "ignored" | "deleted" | "unresolved" }
+export interface IVirusTypeStat extends IStatBase{ type: "trojan" | "ransomware" | "spyware" | "rootkit" | "other" }
+export interface DataTableProps<TData, TValue> {
+  columns: ColumnDef<TData, TValue>[]
+  data: TData[]
 }

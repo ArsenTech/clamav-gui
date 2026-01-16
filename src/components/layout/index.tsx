@@ -11,7 +11,6 @@ interface Props{
      children: React.ReactNode,
      className?: string
 }
-
 export function AppLayout({children, className}: Props){
      const cached = localStorage.getItem("clamav") as ClamAVState | null;
      const [status, setStatus] = useState<ClamAVState>(cached || "checking");

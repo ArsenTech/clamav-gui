@@ -1,5 +1,5 @@
 import { Search, SearchCheck, FolderSearch, FileSearch, Bug, ClipboardClock, Cog, RotateCcw, ShieldCheck } from "lucide-react";
-import { IScanMenuItem } from "../types";
+import { IHistoryData, IQuarantineData, IScanMenuItem } from "../types";
 
 export const DAYS_OF_THE_WEEK = ["sun","mon","tue","wed","thu","fri","sat"] as const;
 
@@ -42,4 +42,47 @@ export const LOG_ITEMS = [
      {name: "Updates", Icon: RotateCcw},
      {name: "Real-Time Protection", Icon: ShieldCheck},
      {name: "Settings", Icon: Cog}
+]
+export const HISTORY_DATA: IHistoryData[] = [
+     {
+          id: "1",
+          timestamp: "2026-01-01",
+          action: "Scan",
+          details: "Scan finished. No infected files"
+     },
+     {
+          id: "2",
+          timestamp: "2026-01-02",
+          action: "Config",
+          details: "Config initialized successfully"
+     },
+     {
+          id: "3",
+          timestamp: "2026-01-03",
+          action: "Update",
+          details: "Database already up to date"
+     }
+]
+export const QUARANTINE_DATA: IQuarantineData[] = [
+     {
+          id: "1",
+          displayName: "Some.Trojan.Malware",
+          filePath: "C:\\Users\\User\\Downloads\\a-shady-contract.pdf.exe",
+          status: "detected",
+          detectedAt: "2020-05-05"
+     },
+     {
+          id: "1",
+          displayName: "Ransom.Malware",
+          filePath: "C:\\Users\\User\\Downloads\\a-shady-contract.pdf.exe",
+          status: "quarantined",
+          detectedAt: "2020-05-05"
+     },
+     {
+          id: "1",
+          displayName: "RAT.Malware",
+          filePath: "C:\\Users\\User\\Downloads\\a-shady-contract.pdf.exe",
+          status: "blocked",
+          detectedAt: "2020-05-05"
+     }
 ]

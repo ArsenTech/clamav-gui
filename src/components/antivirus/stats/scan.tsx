@@ -1,6 +1,5 @@
 import { Search } from "lucide-react"
 import { Bar, BarChart, XAxis, YAxis } from "recharts"
-
 import {
   Card,
   CardContent,
@@ -13,14 +12,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 import { SCAN_TYPE_CONFIG } from "@/lib/constants/chart"
-
-const chartData = [
-  { scanType: "main", threats: 275, fill: "var(--color-main)" },
-  { scanType: "full", threats: 200, fill: "var(--color-full)" },
-  { scanType: "custom", threats: 187, fill: "var(--color-custom)" },
-  { scanType: "file", threats: 173, fill: "var(--color-file)" },
-  { scanType: "real-time", threats: 90, fill: "var(--color-real-time)" },
-]
+import { SCAN_TYPE_DATA } from "@/lib/constants/chart-data"
 
 export function ScanTypes() {
   return (
@@ -32,7 +24,7 @@ export function ScanTypes() {
         <ChartContainer config={SCAN_TYPE_CONFIG}>
           <BarChart
             accessibilityLayer
-            data={chartData}
+            data={SCAN_TYPE_DATA}
             layout="vertical"
           >
             <YAxis

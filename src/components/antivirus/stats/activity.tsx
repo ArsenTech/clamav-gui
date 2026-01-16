@@ -1,6 +1,5 @@
 import { LineChart } from "lucide-react"
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
-
 import {
   Card,
   CardContent,
@@ -16,15 +15,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 import { ACTIVITY_STATS_CONFIG } from "@/lib/constants/chart"
-
-const chartData = [
-  { month: "January", unresolved: 186, resolved: 80 },
-  { month: "February", unresolved: 305, resolved: 200 },
-  { month: "March", unresolved: 237, resolved: 120 },
-  { month: "April", unresolved: 73, resolved: 190 },
-  { month: "May", unresolved: 209, resolved: 130 },
-  { month: "June", unresolved: 214, resolved: 140 },
-]
+import { ACTIVITY_DATA } from "@/lib/constants/chart-data"
 
 export function ScanActivity() {
   return (
@@ -37,7 +28,7 @@ export function ScanActivity() {
         <ChartContainer config={ACTIVITY_STATS_CONFIG}>
           <AreaChart
             accessibilityLayer
-            data={chartData}
+            data={ACTIVITY_DATA}
             margin={{
               left: 12,
               right: 12,

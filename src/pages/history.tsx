@@ -2,30 +2,8 @@ import { HistoryTable } from "@/components/data-table/tables/history";
 import { AppLayout } from "@/components/layout";
 import { ScrollText } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { IHistoryData } from "@/lib/types";
 import { HISTORY_COLS } from "@/lib/constants/columns";
-import { LOG_ITEMS } from "@/lib/constants";
-
-export const historyData: IHistoryData[] = [
-     {
-          id: "1",
-          timestamp: "2026-01-01",
-          action: "Scan",
-          details: "Scan finished. No infected files"
-     },
-     {
-          id: "2",
-          timestamp: "2026-01-02",
-          action: "Config",
-          details: "Config initialized successfully"
-     },
-     {
-          id: "3",
-          timestamp: "2026-01-03",
-          action: "Update",
-          details: "Database already up to date"
-     }
-]
+import { HISTORY_DATA, LOG_ITEMS } from "@/lib/constants";
 
 export default function HistoryPage(){
      return (
@@ -34,7 +12,7 @@ export default function HistoryPage(){
                     <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">History</h1>
                     <HistoryTable
                          columns={HISTORY_COLS}
-                         data={historyData}
+                         data={HISTORY_DATA}
                     />
                </div>
                <div className="space-y-3 px-3 text-lg overflow-y-auto max-h-[700px]">

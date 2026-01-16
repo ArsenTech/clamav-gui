@@ -1,6 +1,5 @@
 import { HardDrive, GaugeCircle, Dot } from "lucide-react";
 import { Area, AreaChart, CartesianGrid } from "recharts";
-
 import {
   Card,
   CardContent,
@@ -43,7 +42,6 @@ export function DiskStats() {
 
     const readDelta = disk.disk_read_bytes - prevRef.current.read;
     const writeDelta = disk.disk_written_bytes - prevRef.current.write;
-
     prevRef.current = {
       read: disk.disk_read_bytes,
       write: disk.disk_written_bytes,
