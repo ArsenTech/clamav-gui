@@ -2,9 +2,8 @@ import ScanFinishResult from "@/components/antivirus/scan/finish-scan";
 import ScanMenu from "@/components/antivirus/scan/scan-menu";
 import ScanProcess from "@/components/antivirus/scan/scan-process";
 import { AppLayout } from "@/components/layout";
+import { ScanType } from "@/lib/types";
 import { useState } from "react";
-
-export type ScanType = "" | "main" | "full" | "custom" | "file" | "mail"
 
 export default function ScanPage(){
      const [scanType, setScanType] = useState<ScanType>("");
@@ -17,7 +16,7 @@ export default function ScanPage(){
                {isFinished ? (
                     <>
                          <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">Scan Completed!</h1>
-                         <ScanFinishResult threatCount={2}/>
+                         <ScanFinishResult threatCount={3}/>
                     </>
                ) : (
                     <>

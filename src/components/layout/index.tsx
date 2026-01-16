@@ -5,12 +5,12 @@ import { cn } from "@/lib/utils";
 import {invoke} from "@tauri-apps/api/core"
 import NoClamAVPage from "./no-clamav";
 import SplashScreen from "./splash-screen";
+import { ClamAVState } from "@/lib/types";
 
 interface Props{
      children: React.ReactNode,
      className?: string
 }
-type ClamAVState = "checking" | "available" | "missing";
 
 export function AppLayout({children, className}: Props){
      const cached = localStorage.getItem("clamav") as ClamAVState | null;

@@ -9,53 +9,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { ChartNoAxesCombined, ClipboardClock, Cog, Info, SearchCheck, History, ShieldCheck, BugOff } from "lucide-react"
+import { SIDEBAR_FOOTER_LINKS, SIDEBAR_LINKS } from "@/lib/constants/links";
 import { Link, useLocation } from "react-router"
-
-const sidebarLinks = [
-     {
-          name: "Overview",
-          href: "/",
-          Icon: ShieldCheck
-     },
-     {
-          name: "Scan",
-          href: "/scan",
-          Icon: SearchCheck
-     },
-     {
-          name: "Quarantine",
-          href: "/quarantine",
-          Icon: BugOff
-     },
-     {
-          name: "History",
-          href: "/history",
-          Icon: History
-     },
-     {
-          name: "Statistics",
-          href: "/stats",
-          Icon: ChartNoAxesCombined
-     },
-     {
-          name: "Scheduler",
-          href: "/scheduler",
-          Icon: ClipboardClock
-     },
-]
-const sidebarFooterLinks = [
-     {
-          name: "Settings",
-          href: "/settings",
-          Icon: Cog
-     },
-     {
-          name: "About ClamAV GUI",
-          href: "/about",
-          Icon: Info
-     }
-]
 
 export default function MainSidebar(){
      const location = useLocation();
@@ -67,7 +22,7 @@ export default function MainSidebar(){
                <SidebarContent>
                     <SidebarGroup>
                          <SidebarMenu>
-                              {sidebarLinks.map(({Icon,name,href},i)=>(
+                              {SIDEBAR_LINKS.map(({Icon,name,href},i)=>(
                                    <SidebarMenuItem key={`${name}-${i}`}>
                                         <SidebarMenuButton isActive={location.pathname===href} asChild>
                                              <Link to={href} className="text-muted-foreground"><Icon className="text-primary"/> {name}</Link>
@@ -83,7 +38,7 @@ export default function MainSidebar(){
                <SidebarFooter>
                     <SidebarGroup>
                          <SidebarMenu>
-                              {sidebarFooterLinks.map(({Icon,name,href},i)=>(
+                              {SIDEBAR_FOOTER_LINKS.map(({Icon,name,href},i)=>(
                                    <SidebarMenuButton isActive={location.pathname===href} asChild key={`${name}-${i}`}>
                                         <Link to={href} className="text-muted-foreground"><Icon className="text-primary"/> {name}</Link>
                                    </SidebarMenuButton>

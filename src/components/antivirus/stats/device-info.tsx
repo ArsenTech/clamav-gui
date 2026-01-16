@@ -3,12 +3,8 @@ import { AppWindow, Monitor, PcCase } from "lucide-react";
 import { useEffect, useState, useTransition } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { Skeleton } from "@/components/ui/skeleton";
+import { IDeviceInfo } from "@/lib/types";
 
-interface IDeviceInfo {
-  sys_name: string;
-  sys_os: string;
-  sys_host: string;
-}
 export default function DeviceInfo() {
   const [info, setInfo] = useState<IDeviceInfo>({
     sys_os: "",

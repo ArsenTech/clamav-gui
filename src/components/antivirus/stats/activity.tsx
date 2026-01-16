@@ -1,4 +1,4 @@
-import { Bug, BugOff, LineChart } from "lucide-react"
+import { LineChart } from "lucide-react"
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
 
 import {
@@ -14,8 +14,8 @@ import {
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-  type ChartConfig,
 } from "@/components/ui/chart"
+import { ACTIVITY_STATS_CONFIG } from "@/lib/constants/chart"
 
 const chartData = [
   { month: "January", unresolved: 186, resolved: 80 },
@@ -26,19 +26,6 @@ const chartData = [
   { month: "June", unresolved: 214, resolved: 140 },
 ]
 
-const chartConfig = {
-  unresolved: {
-    label: "Unresolved",
-    color: "var(--destructive)",
-    icon: Bug,
-  },
-  resolved: {
-    label: "Resolved",
-    color: "oklch(0.723 0.219 149.579)",
-    icon: BugOff,
-  },
-} satisfies ChartConfig
-
 export function ScanActivity() {
   return (
     <Card className="w-full">
@@ -47,7 +34,7 @@ export function ScanActivity() {
         <CardDescription>Last 6 months</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig}>
+        <ChartContainer config={ACTIVITY_STATS_CONFIG}>
           <AreaChart
             accessibilityLayer
             data={chartData}

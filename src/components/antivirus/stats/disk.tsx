@@ -13,28 +13,11 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-  type ChartConfig,
 } from "@/components/ui/chart";
 import { useEffect, useRef, useState } from "react";
 import { useSystemStats } from "@/hooks/use-sys-stats";
-
-function formatBytes(bytes: number) {
-  const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
-  if (bytes === 0) return "0 Bytes";
-  const i = Math.floor(Math.log(bytes) / Math.log(1024));
-  return parseFloat((bytes / Math.pow(1024, i)).toFixed(2)) + " " + sizes[i];
-}
-
-const chartConfig = {
-  read: {
-    label: "Read Speed",
-    color: "oklch(0.81 0.117 11.638)",
-  },
-  write: {
-    label: "Write Speed",
-    color: "oklch(0.645 0.246 16.439)",
-  },
-} satisfies ChartConfig;
+import { formatBytes } from "@/lib/helpers";
+import { DISK_USAGE_CONFIG } from "@/lib/constants/chart";
 
 export function DiskStats() {
   const prevRef = useRef<{
@@ -87,10 +70,10 @@ export function DiskStats() {
         <CardTitle className="flex items-center gap-2">
           <HardDrive /> Hard Drive
         </CardTitle>
-        <CardDescription>"The Hard Drive I/O"</CardDescription>
+        <CardDescription>The Hard Drive I/O</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig}>
+        <ChartContainer config={DISK_USAGE_CONFIG}>
           <AreaChart
             accessibilityLayer
             data={data}

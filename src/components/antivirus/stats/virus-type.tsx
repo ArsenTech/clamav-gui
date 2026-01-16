@@ -11,8 +11,8 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-  type ChartConfig,
 } from "@/components/ui/chart"
+import { VIRUS_TYPE_CONFIG } from "@/lib/constants/chart"
 
 const chartData = [
   { type: "trojan", threats: 275, fill: "var(--color-trojan)" },
@@ -22,32 +22,6 @@ const chartData = [
   { type: "other", threats: 90, fill: "var(--color-other)" },
 ]
 
-const chartConfig = {
-  threats: {
-    label: "Threats",
-  },
-  trojan: {
-    label: "Trojan",
-    color: "var(--chart-1)",
-  },
-  ransomware: {
-    label: "Ransomware",
-    color: "var(--chart-2)",
-  },
-  spyware: {
-    label: "Spyware",
-    color: "var(--chart-3)",
-  },
-  rootkit: {
-    label: "Rootkit",
-    color: "var(--chart-4)",
-  },
-  other: {
-    label: "Other",
-    color: "var(--chart-5)",
-  },
-} satisfies ChartConfig
-
 export function VirusTypes() {
   return (
     <Card className="flex flex-col w-full">
@@ -56,7 +30,7 @@ export function VirusTypes() {
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
-          config={chartConfig}
+          config={VIRUS_TYPE_CONFIG}
           className="mx-auto aspect-square max-h-[300px]"
         >
           <PieChart>

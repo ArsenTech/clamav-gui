@@ -7,6 +7,7 @@ import StatsPage from "@/pages/stats";
 import HistoryPage from "./pages/history";
 import SchedulerPage from "./pages/scheduler";
 import SettingsPage from "./pages/settings";
+import UpdateDefinitions from "./pages/update";
 
 export const router = createBrowserRouter([
      {
@@ -40,5 +41,9 @@ export const router = createBrowserRouter([
      {
           path: "/settings",
           element: <SettingsPage/>
+     },
+     {
+          path: "/update",
+          element: <UpdateDefinitions/>
      }
 ])

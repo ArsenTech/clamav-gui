@@ -12,8 +12,8 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-  type ChartConfig,
 } from "@/components/ui/chart"
+import { THREAT_STATUS_CONFIG } from "@/lib/constants/chart"
 
 const chartData = [
   { status: "quarantined", threats: 275, fill: "var(--color-quarantined)" },
@@ -21,28 +21,6 @@ const chartData = [
   { status: "deleted", threats: 287, fill: "var(--color-deleted)" },
   { status: "unresolved", threats: 173, fill: "var(--color-unresolved)" },
 ]
-
-const chartConfig = {
-  threats: {
-    label: "threats",
-  },
-  quarantined: {
-    label: "Quarantined",
-    color: "var(--chart-1)",
-  },
-  ignored: {
-    label: "Skipped",
-    color: "var(--chart-2)",
-  },
-  deleted: {
-    label: "Cleaned",
-    color: "var(--chart-3)",
-  },
-  unresolved: {
-    label: "Unresolved",
-    color: "var(--destructive)",
-  },
-} satisfies ChartConfig
 
 export function ThreatsStats() {
   const totalVisitors = React.useMemo(() => {
@@ -56,7 +34,7 @@ export function ThreatsStats() {
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
-          config={chartConfig}
+          config={THREAT_STATUS_CONFIG}
           className="mx-auto aspect-square max-h-[300px]"
         >
           <PieChart>

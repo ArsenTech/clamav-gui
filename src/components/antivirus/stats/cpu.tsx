@@ -13,17 +13,10 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-  type ChartConfig,
 } from "@/components/ui/chart";
 import { useEffect, useState } from "react";
 import { useSystemStats } from "@/hooks/use-sys-stats";
-
-const chartConfig = {
-  util: {
-    label: "Utilization (%): ",
-    color: "var(--chart-2)",
-  },
-} satisfies ChartConfig;
+import { CPU_STATS_CONFIG } from "@/lib/constants/chart";
 
 export function CPUStats() {
   const [data, setData] = useState<{ util: number }[]>([]);
@@ -49,7 +42,7 @@ export function CPUStats() {
         <CardDescription>The Current CPU Activiry Based on the Base Frequency</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig}>
+        <ChartContainer config={CPU_STATS_CONFIG}>
           <AreaChart
             accessibilityLayer
             data={data}

@@ -11,8 +11,8 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-  type ChartConfig,
 } from "@/components/ui/chart"
+import { SCAN_TYPE_CONFIG } from "@/lib/constants/chart"
 
 const chartData = [
   { scanType: "main", threats: 275, fill: "var(--color-main)" },
@@ -22,32 +22,6 @@ const chartData = [
   { scanType: "real-time", threats: 90, fill: "var(--color-real-time)" },
 ]
 
-const chartConfig = {
-  threats: {
-    label: "Threats",
-  },
-  main: {
-    label: "Main Scan",
-    color: "var(--chart-1)",
-  },
-  full: {
-    label: "Full Scan",
-    color: "var(--chart-2)",
-  },
-  custom: {
-    label: "Custom Scan",
-    color: "var(--chart-3)",
-  },
-  file: {
-    label: "File Scan",
-    color: "var(--chart-4)",
-  },
-  "real-time": {
-    label: "Real-Time",
-    color: "var(--chart-5)",
-  },
-} satisfies ChartConfig
-
 export function ScanTypes() {
   return (
     <Card className="w-full">
@@ -55,7 +29,7 @@ export function ScanTypes() {
         <CardTitle className="flex items-center gap-2"><Search className="size-5"/> Scan Types</CardTitle>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig}>
+        <ChartContainer config={SCAN_TYPE_CONFIG}>
           <BarChart
             accessibilityLayer
             data={chartData}
@@ -68,7 +42,7 @@ export function ScanTypes() {
               tickMargin={2}
               axisLine={false}
               tickFormatter={(value) =>
-                chartConfig[value as keyof typeof chartConfig]?.label
+                SCAN_TYPE_CONFIG[value as keyof typeof SCAN_TYPE_CONFIG]?.label
               }
             />
             <XAxis dataKey="threats" type="number" hide />

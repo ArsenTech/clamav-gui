@@ -1,12 +1,8 @@
 import { AppLayout } from "@/components/layout";
+import { IVersion } from "@/lib/types";
 import {getTauriVersion, getVersion} from "@tauri-apps/api/app"
 import { useEffect, useState } from "react";
 
-interface IVersion{
-     app: string,
-     tauri: string,
-     versionType: string
-}
 export default function AboutPage(){
      const versionCache = JSON.parse(localStorage.getItem("versions") as string) as IVersion | null;
      const [versions, setVersions] = useState<IVersion>(versionCache || {

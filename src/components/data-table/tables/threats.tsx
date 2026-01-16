@@ -19,25 +19,23 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { useState } from "react"
-import { InputGroup, InputGroupAddon, InputGroupInput } from "../ui/input-group"
+import { InputGroup, InputGroupAddon, InputGroupInput } from "../../ui/input-group"
 import { SearchIcon } from "lucide-react"
-import { DataTablePagination } from "./pagination"
-import { Badge } from "../ui/badge"
-import { DataTableViewOptions } from "./col-toggle"
+import { DataTablePagination } from "../pagination"
+import { Badge } from "../../ui/badge"
+import { DataTableViewOptions } from "../col-toggle"
 
-interface DataTableProps<TData, TValue> {
+interface ThreatsTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
 }
-
-export function DataTable<TData, TValue>({
+export function ThreatsTable<TData, TValue>({
   columns,
   data,
-}: DataTableProps<TData, TValue>) {
+}: ThreatsTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [columnVisibility, setColumnVisibility] =
-    useState<VisibilityState>({})
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const table = useReactTable({
     data,
     columns,
@@ -109,7 +107,7 @@ export function DataTable<TData, TValue>({
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
+                No threats found.
               </TableCell>
             </TableRow>
           )}

@@ -13,24 +13,11 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-  type ChartConfig,
 } from "@/components/ui/chart";
 import { useEffect, useState } from "react";
 import { useSystemStats } from "@/hooks/use-sys-stats";
-
-function formatBytes(bytes: number) {
-  const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
-  if (bytes === 0) return "0 Bytes";
-  const i = Math.floor(Math.log(bytes) / Math.log(1024));
-  return parseFloat((bytes / Math.pow(1024, i)).toFixed(2)) + " " + sizes[i];
-}
-
-const chartConfig = {
-  usage: {
-    label: "Usage (%): ",
-    color: "oklch(0.723 0.219 149.579)",
-  },
-} satisfies ChartConfig;
+import { formatBytes } from "@/lib/helpers";
+import { RAM_USAGE_CONFIG } from "@/lib/constants/chart";
 
 export function RAMStats() {
   const [data, setData] = useState<{ usage: number }[]>([]);
@@ -53,7 +40,7 @@ export function RAMStats() {
         <CardDescription>The Current RAM usage</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig}>
+        <ChartContainer config={RAM_USAGE_CONFIG}>
           <AreaChart
             accessibilityLayer
             data={data}
