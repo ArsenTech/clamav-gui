@@ -4,7 +4,6 @@ on:
   push:
     tags:
       - 'v*'
-    branches: '*'
   workflow_dispatch:
 
 jobs:
@@ -13,16 +12,12 @@ jobs:
     timeout-minutes: 120
     strategy:
       matrix:
-        arch: [aarch64]
         include:
-          - arch: aarch64
-            cpu: cortex-a72
+          - cpu: cortex-a72
             base_image: https://dietpi.com/downloads/images/DietPi_RPi5-ARMv8-Bookworm.img.xz
-            deb: arm64
-            rpm: aarch64
             appimage: aarch64
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Cache rust build artifacts
         uses: Swatinem/rust-cache@v2
@@ -47,8 +42,7 @@ jobs:
             export CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse
 
             # Install setup prerequisites
-            apt-get update -y --allow-releaseinfo-change
-            apt-get autoremove -y
+            apt-get update -y
             apt-get install -y --no-install-recommends --no-install-suggests xz-utils curl libwebkit2gtk-4.1-dev build-essential libssl-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev patchelf libfuse2 file
             curl https://sh.rustup.rs -sSf | sh -s -- -y
             . "$HOME/.cargo/env"
@@ -59,25 +53,13 @@ jobs:
             npm install
 
             # Build the application
-            npm run tauri build -- --verbose
+            npm run tauri build -- --bundles appimage --verbose
 
       - name: Get app version
         run: echo "APP_VERSION=$(jq -r .version src-tauri/tauri.conf.json)" >> $GITHUB_ENV
 
-      - name: Upload deb bundle
-        uses: actions/upload-artifact@v6
-        with:
-          name: Debian Bundle
-          path: ${{ github.workspace }}/src-tauri/target/release/bundle/deb/clamav_gui_${{ env.APP_VERSION }}_${{ matrix.deb }}.deb
-
-      - name: Upload rpm bundle
-        uses: actions/upload-artifact@v6
-        with:
-          name: RPM Bundle
-          path: ${{ github.workspace }}/src-tauri/target/release/bundle/rpm/clamav_gui-${{ env.APP_VERSION }}-1.${{ matrix.rpm }}.rpm
-
       - name: Upload appimage bundle
         uses: actions/upload-artifact@v6
         with:
-          name: AppImage Bundle
+          name: Linux ARM64 AppImage
           path: ${{ github.workspace }}/src-tauri/target/release/bundle/appimage/clamav_gui_${{ env.APP_VERSION }}_${{ matrix.appimage }}.AppImage
