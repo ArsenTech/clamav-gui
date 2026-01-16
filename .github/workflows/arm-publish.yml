@@ -21,13 +21,6 @@ jobs:
             deb: arm64
             rpm: aarch64
             appimage: aarch64
-          - arch: armv7l
-            cpu: cortex-a53
-            deb: armhfp
-            rpm: arm
-            appimage: armhf
-            base_image: https://dietpi.com/downloads/images/DietPi_RPi-ARMv7-Bookworm.img.xz
-
     steps:
       - uses: actions/checkout@v3
 
@@ -45,7 +38,7 @@ jobs:
           bind_mount_repository: true
           image_additional_mb: 10240
           optimize_image: no
-          
+
           pre_run: |
             sudo apt-get update
             sudo apt-get install -y xz-utils
