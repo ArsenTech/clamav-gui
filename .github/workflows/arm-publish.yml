@@ -10,10 +10,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-22.04
-
+    timeout-minutes: 120
     strategy:
       matrix:
-        arch: [aarch64, armv7l]
+        arch: [aarch64]
         include:
           - arch: aarch64
             cpu: cortex-a72
@@ -45,27 +45,36 @@ jobs:
           bind_mount_repository: true
           image_additional_mb: 10240
           optimize_image: no
-          commands: |
-            # Prevent Rust from complaining about $HOME not matching eid home
-            export HOME=/root
+          
+          pre_run: |
+            sudo apt-get update
+            sudo apt-get install -y xz-utils
 
-            # Workaround to CI worker being stuck on Updating crates.io index
+          commands: |
+            export HOME=/root
             export CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse
 
-            # Install setup prerequisites
-            apt-get update -y --allow-releaseinfo-change
-            apt-get autoremove -y
-            apt-get install -y --no-install-recommends --no-install-suggests curl libwebkit2gtk-4.1-dev build-essential libssl-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev patchelf libfuse2 file xz-utils
+            apt-get update
+            apt-get install -y --no-install-recommends \
+              curl \
+              libwebkit2gtk-4.1-dev \
+              libgtk-3-dev \
+              build-essential \
+              libssl-dev \
+              libayatana-appindicator3-dev \
+              librsvg2-dev \
+              patchelf \
+              libfuse2 \
+              file
+
             curl https://sh.rustup.rs -sSf | sh -s -- -y
             . "$HOME/.cargo/env"
+
             curl -fsSL https://deb.nodesource.com/setup_lts.x | bash
             apt-get install -y nodejs
 
-            # Install frontend dependencies
             npm install
-
-            # Build the application
-            npm run tauri build -- --verbose
+            npm run tauri build
 
       - name: Get app version
         run: echo "APP_VERSION=$(jq -r .version src-tauri/tauri.conf.json)" >> $GITHUB_ENV
