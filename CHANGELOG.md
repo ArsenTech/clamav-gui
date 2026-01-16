@@ -19,3 +19,4 @@ This is the first pre-release of the ClamAV GUI. The backend functionality will 
 - Sidebar with Logo, Links, and Footer
 - System Statistics (Device Info, CPU, RAM usage, Disk Usage)
 - The About Page
+- State-gated Layout (It'll show "Oops, No ClamAV found" if ClamAV isn't installed)
