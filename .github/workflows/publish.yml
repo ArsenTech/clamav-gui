@@ -1,18 +1,11 @@
 name: 'Publish Release'
 
 on:
-  workflow_dispatch:
   push:
-    branches:
-      - release
     tags:
       - 'v*'
-  # TODO: Use this event once the repo is published
-  # push:
-  #   tags:
-  #     - 'v*'
-  #   branches: '*'
-  # workflow_dispatch:
+    branches: '*'
+  workflow_dispatch:
 
 jobs:
   publish-tauri:
