@@ -1,8 +1,8 @@
 <p align="center">
      <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="./.github/logo-mark-dark.png" />
-          <source media="(prefers-color-scheme: light)" srcset="./.github/logo-mark.png" />
-          <img alt="ClamAV GUI" width="500" height="130" src="./.github/logo-mark.png" />
+          <source media="(prefers-color-scheme: dark)" srcset="../.github/logo-mark-dark.png" />
+          <source media="(prefers-color-scheme: light)" srcset="../.github/logo-mark.png" />
+          <img alt="ClamAV GUI" width="500" height="130" src="../.github/logo-mark.png" />
      </picture>
 </p>
 
