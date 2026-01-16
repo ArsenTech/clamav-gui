@@ -39,10 +39,6 @@ jobs:
           image_additional_mb: 10240
           optimize_image: no
 
-          pre_run: |
-            sudo apt-get update
-            sudo apt-get install -y xz-utils
-            
           commands: |
             # Prevent Rust from complaining about $HOME not matching eid home
             export HOME=/root
