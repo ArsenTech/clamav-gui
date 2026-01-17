@@ -7,7 +7,8 @@ import { SCAN_TYPES } from "@/lib/constants";
 import { ScanType } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { Bug, Clock, Folder, Pause, Search, Square, Timer } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { invoke } from "@tauri-apps/api/core";
 
 interface Props{
      scanType: ScanType,
@@ -22,6 +23,15 @@ export default function ScanProcess({scanType, onStop}: Props){
           onStop();
           setIsOpen(false);
      }
+     useEffect(()=>{
+          (async()=>{
+               try{
+                    await invoke(`start_${scanType}_scan`)
+               } catch {
+                    console.error("Command not found")
+               }
+          })()
+     },[])
      return (
           <>
                <p className="text-muted-foreground font-medium">Scan Type: {scanTypeName}</p>

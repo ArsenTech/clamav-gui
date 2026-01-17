@@ -3,6 +3,7 @@ import ScanMenu from "@/components/antivirus/scan/scan-menu";
 import ScanProcess from "@/components/antivirus/scan/scan-process";
 import { AppLayout } from "@/components/layout";
 import { ScanType } from "@/lib/types";
+import { cn } from "@/lib/utils";
 import { listen } from "@tauri-apps/api/event";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
@@ -13,20 +14,21 @@ export default function ScanPage(){
      const [scanType, setScanType] = useState<ScanType>(type ?? "");
      const [logs, setLogs] = useState<string[]>([]);
      const isFinished = false;
-     const handleStartScan = (type: ScanType) => {
-          setScanType(type)
+     const handleStartScan = async (type: ScanType) => {
+          setScanType(type);
      }
      useEffect(()=>{
-          const unlisten = listen<string>("clamav:output", event => {
-               setLogs(prev => [...prev, event.payload]);
-          });
+          const unlisten = listen<string>("clamav-scan-log",e=>{
+               setLogs(prev=>[...prev,e.payload]);
+          })
           return () => {
-               unlisten.then(f => f());
-          };
+               unlisten.then(f=>f());
+          }
      },[]);
-     useEffect(()=>{
-          console.log(logs)
-     },[logs])
+     const handleStop = () => {
+          setScanType("");
+          setLogs([]);
+     }
      return (
           <AppLayout className={isFinished ? "flex justify-center items-center gap-4 flex-col p-4" : "grid gris-cols-1 md:grid-cols-2 gap-10 p-4"}>
                {isFinished ? (
@@ -43,14 +45,19 @@ export default function ScanPage(){
                               ) : (
                                    <ScanProcess
                                         scanType={scanType}
-                                        onStop={()=>setScanType("")}
+                                        onStop={handleStop}
                                    />
                               )}
                          </div>
                          <div className="space-y-3 px-3 text-lg overflow-y-auto max-h-[700px]">
                               <h2 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">Log</h2>
-                              <pre className="whitespace-pre-wrap text-sm">{logs.map(val=>(
-                                   <code>{val}</code>
+                              <pre className="whitespace-pre-wrap text-sm">{logs.map((val,i)=>(
+                                   <code key={`log-${i+1}`} className={cn(
+                                        "inline-block w-full",
+                                        val.includes("WARNING") && "text-amber-700",
+                                        val.includes("OK") && "text-emerald-700",
+                                        val.includes("FOUND") && "text-destructive"
+                                   )}>{val}</code>
                               ))}</pre>
                          </div>
                     </>

@@ -1,11 +1,12 @@
-use tauri::{Emitter, command};
+use tauri::{command, Emitter};
 use specta::specta;
-use std::process::Command;
 use std::path::PathBuf;
+use std::process::{Stdio, Command};
+use std::io::{BufRead as _, BufReader};
 
 #[command]
 #[specta(result)]
-pub fn start_main_scan(window: tauri::Window) -> Result<(), String> {
+pub async fn start_main_scan(app: tauri::AppHandle) -> Result<(), String> {
      let mut paths: Vec<PathBuf> = Vec::new();
 
      if cfg!(windows) {
@@ -25,52 +26,73 @@ pub fn start_main_scan(window: tauri::Window) -> Result<(), String> {
      }
 
      let mut cmd = Command::new("clamscan");
-     cmd.arg("--log=scan.log")
-          .arg("--recursive")
-          .arg("--heuristic-alerts=yes")
-          .arg("--alert-encrypted=yes")
+     cmd.arg("--recursive")
+          .arg("--heuristic-alerts")
+          .arg("--alert-encrypted")
           .arg("--max-filesize=100M")
-          .arg("--max-scansize=400M");
+          .arg("--max-scansize=400M")
+          .arg("--verbose")
+          .arg("--stdout")
+          .arg("--no-summary");
 
      for path in paths {
           cmd.arg(path);
      }
 
-     std::thread::spawn(move || {
-          use std::fs::File;
-          use std::io::{BufRead, BufReader};
-          use std::thread::sleep;
-          use std::time::Duration;
+     let mut child = cmd.stdout(Stdio::piped())
+          .stderr(Stdio::piped())
+          .spawn()
+          .map_err(|e| e.to_string())?;
 
-          let file = File::open("scan.log").unwrap();
-          let mut reader = BufReader::new(file);
+     let stdout = child.stdout.take().ok_or("Failed to capture stdout")?;
+     let reader = BufReader::new(stdout);
 
-          loop {
-               let mut line = String::new();
-               if reader.read_line(&mut line).unwrap() > 0 {
-                    window.emit("clamav:log", line).ok();
-               } else {
-                    sleep(Duration::from_millis(500));
+     for line in reader.lines() {
+          match line{
+               Ok(text) => {
+                    app.emit("clamav-scan-log",text).map_err(|e| e.to_string())?;
+               }
+               Err(e)=>{
+                    app.emit("clamav-scan-error",e.to_string()).map_err(|e| e.to_string())?;
                }
           }
-     });
+     }
+
      Ok(())
 }
 
 #[command]
 #[specta(result)]
-pub fn start_full_scan() -> Result<(), String> {
+pub async fn start_full_scan(app: tauri::AppHandle) -> Result<(), String> {
      let root = if cfg!(windows) { "C:\\" } else { "/" };
 
-     Command::new("clamscan")
-          .arg("--log=scan.log")
+     let mut cmd = Command::new("clamscan");
+     cmd.arg("--log=scan.log")
           .arg("--recursive")
           .arg("--cross-fs=yes")
           .arg("--heuristic-alerts=yes")
           .arg("--alert-encrypted=yes")
-          .arg(root)
+          .arg("--no-summary")
+          .arg(root);
+
+     let mut child = cmd.stdout(Stdio::piped())
+          .stderr(Stdio::piped())
           .spawn()
           .map_err(|e| e.to_string())?;
+
+     let stdout = child.stdout.take().ok_or("Failed to capture stdout")?;
+     let reader = BufReader::new(stdout);
+
+     for line in reader.lines() {
+          match line{
+               Ok(text) => {
+                    app.emit("clamav-scan-log",text).map_err(|e| e.to_string())?;
+               }
+               Err(e)=>{
+                    app.emit("clamav-scan-error",e.to_string()).map_err(|e| e.to_string())?;
+               }
+          }
+     }
 
      Ok(())
 }
