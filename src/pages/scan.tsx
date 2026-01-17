@@ -3,17 +3,30 @@ import ScanMenu from "@/components/antivirus/scan/scan-menu";
 import ScanProcess from "@/components/antivirus/scan/scan-process";
 import { AppLayout } from "@/components/layout";
 import { ScanType } from "@/lib/types";
-import { useState } from "react";
+import { listen } from "@tauri-apps/api/event";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 
 export default function ScanPage(){
      const [params] = useSearchParams();
      const type = params.get("type") as ScanType | null;
      const [scanType, setScanType] = useState<ScanType>(type ?? "");
+     const [logs, setLogs] = useState<string[]>([]);
      const isFinished = false;
      const handleStartScan = (type: ScanType) => {
           setScanType(type)
      }
+     useEffect(()=>{
+          const unlisten = listen<string>("clamav:output", event => {
+               setLogs(prev => [...prev, event.payload]);
+          });
+          return () => {
+               unlisten.then(f => f());
+          };
+     },[]);
+     useEffect(()=>{
+          console.log(logs)
+     },[logs])
      return (
           <AppLayout className={isFinished ? "flex justify-center items-center gap-4 flex-col p-4" : "grid gris-cols-1 md:grid-cols-2 gap-10 p-4"}>
                {isFinished ? (
@@ -36,16 +49,9 @@ export default function ScanPage(){
                          </div>
                          <div className="space-y-3 px-3 text-lg overflow-y-auto max-h-[700px]">
                               <h2 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">Log</h2>
-                              <pre className="whitespace-pre-wrap">
-                                   asdasdadasdadsasd
-
-                                   asdfasfasfasfasfasfasf
-                                   asdasdadasdadsasd
-
-
-                                   asdfasfasfasfasfasfasf
-                                   asdasdadasdadsasd
-                              </pre>
+                              <pre className="whitespace-pre-wrap text-sm">{logs.map(val=>(
+                                   <code>{val}</code>
+                              ))}</pre>
                          </div>
                     </>
                )}

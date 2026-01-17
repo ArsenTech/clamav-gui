@@ -57,7 +57,6 @@ export default function ScanProcess({scanType, onStop}: Props){
                               <code>00:00:30</code>
                          </div>
                     </div>
-                    
                </div>
                <Popup
                     open={isOpen}
