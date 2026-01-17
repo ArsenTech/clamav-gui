@@ -4,6 +4,12 @@ All notable changes of ArsenTech's ClamAV GUI will be documented here.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## 0.2.0 - Unreleased
+### Changed
+- Added Scan Types + Spinner in the Scan Process Page
+### Improved
+- Scan Process UI
+
 ## 0.1.0 - 2026-01-16 (Early Build)
 ### Highlights
 This is the first pre-release of the ClamAV GUI. The backend functionality will be implemented soon.

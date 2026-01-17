@@ -4,9 +4,12 @@ import ScanProcess from "@/components/antivirus/scan/scan-process";
 import { AppLayout } from "@/components/layout";
 import { ScanType } from "@/lib/types";
 import { useState } from "react";
+import { useSearchParams } from "react-router";
 
 export default function ScanPage(){
-     const [scanType, setScanType] = useState<ScanType>("");
+     const [params] = useSearchParams();
+     const type = params.get("type") as ScanType | null;
+     const [scanType, setScanType] = useState<ScanType>(type ?? "");
      const isFinished = false;
      const handleStartScan = (type: ScanType) => {
           setScanType(type)
@@ -25,7 +28,10 @@ export default function ScanPage(){
                               {scanType==="" ? (
                                    <ScanMenu handleStartScan={handleStartScan}/>
                               ) : (
-                                   <ScanProcess/>
+                                   <ScanProcess
+                                        scanType={scanType}
+                                        onStop={()=>setScanType("")}
+                                   />
                               )}
                          </div>
                          <div className="space-y-3 px-3 text-lg overflow-y-auto max-h-[700px]">
