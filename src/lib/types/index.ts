@@ -10,11 +10,6 @@ export interface IScanMenuItem{
      desc: string,
      Icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>
 }
-export interface IDeviceInfo {
-     sys_name: string;
-     sys_os: string;
-     sys_host: string;
-}
 interface SystemStatBase{
      ram_used: number,
      ram_total: number,
@@ -28,11 +23,6 @@ export interface SystemStats extends SystemStatBase{
 export interface HookReturnType extends SystemStatBase{
      cpu_usage: number,
      cpu_frequency: number,
-}
-export interface IVersion{
-     app: string,
-     tauri: string,
-     versionType: string
 }
 export interface IHistoryData{
      id: string,

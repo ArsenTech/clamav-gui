@@ -6,6 +6,7 @@ import {invoke} from "@tauri-apps/api/core"
 import NoClamAVPage from "./no-clamav";
 import SplashScreen from "./splash-screen";
 import { ClamAVState } from "@/lib/types";
+import { Toaster } from "../ui/sonner";
 
 interface Props{
      children: React.ReactNode,
@@ -46,6 +47,11 @@ export function AppLayout({children, className}: Props){
                          {children}
                     </div>
                </main>
+               <Toaster
+                    richColors
+                    position="top-right"
+                    duration={2000}
+               />
           </SidebarProvider>
      )
 }

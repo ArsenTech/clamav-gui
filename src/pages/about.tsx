@@ -1,15 +1,12 @@
 import { AppLayout } from "@/components/layout";
-import { IVersion } from "@/lib/types";
+import { INITIAL_VERSION_INFO } from "@/lib/constants/states";
+import { IVersion } from "@/lib/types/states";
 import {getTauriVersion, getVersion} from "@tauri-apps/api/app"
 import { useEffect, useState } from "react";
 
 export default function AboutPage(){
-     const versionCache = JSON.parse(localStorage.getItem("versions") as string) as IVersion | null;
-     const [versions, setVersions] = useState<IVersion>(versionCache || {
-          app: "0.0.0",
-          tauri: "0.0.0",
-          versionType: "Early Build"
-     });
+     const versionCache = JSON.parse(localStorage.getItem("versions") || "") as IVersion | null;
+     const [versions, setVersions] = useState<IVersion>(versionCache || INITIAL_VERSION_INFO);
      useEffect(()=>{
           (async()=>{
                const app = await getVersion();

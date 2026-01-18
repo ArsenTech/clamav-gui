@@ -1,16 +1,15 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { AppWindow, Monitor, PcCase } from "lucide-react";
+import { AppWindow, AppWindowMac, Monitor, PcCase } from "lucide-react";
 import { useEffect, useState, useTransition } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { Skeleton } from "@/components/ui/skeleton";
-import { IDeviceInfo } from "@/lib/types";
+import { IDeviceInfo } from "@/lib/types/states";
+import { platform } from "@tauri-apps/plugin-os";
+import { INITIAL_DEIVCE_INFO } from "@/lib/constants/states";
 
 export default function DeviceInfo() {
-  const [info, setInfo] = useState<IDeviceInfo>({
-    sys_os: "",
-    sys_host: "",
-    sys_name: "",
-  });
+  const currentPlatform = platform();
+  const [info, setInfo] = useState<IDeviceInfo>(INITIAL_DEIVCE_INFO);
   const [isPending, startTransition] = useTransition();
   useEffect(() => {
     startTransition(async () => {
@@ -35,7 +34,7 @@ export default function DeviceInfo() {
           <ul className="flex flex-col justify-center gap-2">
             <li className="flex items-center gap-2">
               <span className="font-semibold">Operating System:</span>
-              <AppWindow /> {info.sys_name} {info.sys_os}
+              {currentPlatform==="macos" ? <AppWindowMac/> : <AppWindow />} {info.sys_name} {info.sys_os}
             </li>
             <li className="flex items-center gap-2">
               <span className="font-semibold">Host Name:</span>

@@ -5,8 +5,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 ## 0.2.0 - Unreleased
-### Changed
-- Added Scan Types + Spinner in the Scan Process Page
+### Added
+- Scan Types + Spinner in the Scan Process Page
+- The Main scan and Full Scan logic
 ### Improved
 - Scan Process UI
 

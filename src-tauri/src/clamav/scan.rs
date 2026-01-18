@@ -1,62 +1,124 @@
-use tauri::{command, Emitter};
 use specta::specta;
-use std::path::PathBuf;
-use std::process::{Stdio, Command};
 use std::io::{BufRead as _, BufReader};
+use std::path::PathBuf;
+use std::process::{Command, Stdio};
+use tauri::{command, Emitter};
+use std::sync::Mutex;
+use walkdir::WalkDir;
+
+fn estimate_total_files(paths: &[PathBuf]) -> u64 {
+     paths
+          .iter()
+          .flat_map(|p| WalkDir::new(p).into_iter())
+          .filter_map(Result::ok)
+          .filter(|e| e.file_type().is_file())
+          .count() as u64
+}
+
+static SCAN_PROCESS: once_cell::sync::Lazy<Mutex<Option<u32>>> =
+    once_cell::sync::Lazy::new(|| Mutex::new(None));
+
+fn run_scan(
+     app: tauri::AppHandle,
+     mut cmd: Command,
+) -> Result<(), String> {
+     {
+          let guard = SCAN_PROCESS.lock().unwrap();
+          if guard.is_some() {
+               return Err("Scan already running".into());
+          }
+     }
+
+     let mut child = cmd
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .spawn()
+        .map_err(|e| e.to_string())?;
+
+     let stdout = child.stdout.take();
+     let stderr = child.stderr.take();
+
+     {
+          let mut guard = SCAN_PROCESS.lock().unwrap();
+          *guard = Some(child.id());
+     }
+
+     let app_out = app.clone();
+     if let Some(out) = stdout {
+          std::thread::spawn(move || {
+               for line in BufReader::new(out).lines().flatten() {
+                    app_out.emit("clamscan:log", line).ok();
+               }
+          });
+     }
+
+     let app_err = app.clone();
+     if let Some(err) = stderr {
+          std::thread::spawn(move || {
+               for line in BufReader::new(err).lines().flatten() {
+                    app_err.emit("clamscan:log", line).ok();
+               }
+          });
+     }
+
+     let success = child.wait().map(|s| s.success()).unwrap_or(false);
+
+     {
+          let mut guard = SCAN_PROCESS.lock().unwrap();
+          *guard = None;
+     }
+
+     app.emit("clamscan:finished", success).ok();
+     Ok(())
+}
 
 #[command]
 #[specta(result)]
 pub async fn start_main_scan(app: tauri::AppHandle) -> Result<(), String> {
-     let mut paths: Vec<PathBuf> = Vec::new();
+     println!("Starting Main Scan...");
+     std::thread::spawn(move || {
+          let mut paths = Vec::new();
 
-     if cfg!(windows) {
-          if let Some(home) = std::env::var_os("USERPROFILE") {
-               let home = PathBuf::from(home);
-               paths.push(home.join("Downloads"));
-               paths.push(home.join("Desktop"));
-               paths.push(home.join("Documents"));
-          }
-     } else {
-          if let Some(home) = std::env::var_os("HOME") {
-               let home = PathBuf::from(home);
-               paths.push(home.join("Downloads"));
-               paths.push(home.join("Desktop"));
-               paths.push(home.join("Documents"));
-          }
-     }
-
-     let mut cmd = Command::new("clamscan");
-     cmd.arg("--recursive")
-          .arg("--heuristic-alerts")
-          .arg("--alert-encrypted")
-          .arg("--max-filesize=100M")
-          .arg("--max-scansize=400M")
-          .arg("--verbose")
-          .arg("--stdout")
-          .arg("--no-summary");
-
-     for path in paths {
-          cmd.arg(path);
-     }
-
-     let mut child = cmd.stdout(Stdio::piped())
-          .stderr(Stdio::piped())
-          .spawn()
-          .map_err(|e| e.to_string())?;
-
-     let stdout = child.stdout.take().ok_or("Failed to capture stdout")?;
-     let reader = BufReader::new(stdout);
-
-     for line in reader.lines() {
-          match line{
-               Ok(text) => {
-                    app.emit("clamav-scan-log",text).map_err(|e| e.to_string())?;
+          if cfg!(windows) {
+               if let Some(home) = std::env::var_os("USERPROFILE") {
+                    let home = PathBuf::from(home);
+                    paths.extend([
+                         home.join("Downloads"),
+                         home.join("Desktop"),
+                         home.join("Documents"),
+                    ]);
                }
-               Err(e)=>{
-                    app.emit("clamav-scan-error",e.to_string()).map_err(|e| e.to_string())?;
-               }
+          } else if let Some(home) = std::env::var_os("HOME") {
+               let home = PathBuf::from(home);
+               paths.extend([
+                    home.join("Downloads"),
+                    home.join("Desktop"),
+                    home.join("Documents"),
+               ]);
           }
-     }
+
+          let mut cmd = Command::new("clamscan");
+
+          cmd.args([
+               "--recursive",
+               "--heuristic-alerts",
+               "--alert-encrypted",
+               "--max-filesize=100M",
+               "--max-scansize=400M",
+               "--verbose",
+               "--stdout",
+               "--no-summary"
+          ]);
+
+          let total_files = estimate_total_files(&paths);
+          app.emit("clamscan:total", total_files).ok();
+
+          for path in paths {
+               cmd.arg(path);
+          }
+
+          run_scan(app, cmd).ok();
+     });
 
      Ok(())
 }
@@ -64,33 +126,49 @@ pub async fn start_main_scan(app: tauri::AppHandle) -> Result<(), String> {
 #[command]
 #[specta(result)]
 pub async fn start_full_scan(app: tauri::AppHandle) -> Result<(), String> {
-     let root = if cfg!(windows) { "C:\\" } else { "/" };
+     println!("Starting Full Scan...");
+     std::thread::spawn(move || {
+          let root = if cfg!(windows) { "C:\\" } else { "/" };
 
-     let mut cmd = Command::new("clamscan");
-     cmd.arg("--log=scan.log")
-          .arg("--recursive")
-          .arg("--cross-fs=yes")
-          .arg("--heuristic-alerts=yes")
-          .arg("--alert-encrypted=yes")
-          .arg("--no-summary")
-          .arg(root);
+          let mut cmd = Command::new("clamscan");
+          cmd.args([
+               "--recursive",
+               "--cross-fs=yes",
+               "--heuristic-alerts",
+               "--alert-encrypted",
+               "--no-summary",
+               root,
+          ]);
 
-     let mut child = cmd.stdout(Stdio::piped())
-          .stderr(Stdio::piped())
-          .spawn()
-          .map_err(|e| e.to_string())?;
+          run_scan(app, cmd).ok();
+     });
 
-     let stdout = child.stdout.take().ok_or("Failed to capture stdout")?;
-     let reader = BufReader::new(stdout);
+     Ok(())
+}
 
-     for line in reader.lines() {
-          match line{
-               Ok(text) => {
-                    app.emit("clamav-scan-log",text).map_err(|e| e.to_string())?;
-               }
-               Err(e)=>{
-                    app.emit("clamav-scan-error",e.to_string()).map_err(|e| e.to_string())?;
-               }
+#[command]
+#[specta(result)]
+pub fn stop_scan() -> Result<(), String> {
+     let pid = {
+          let mut guard = SCAN_PROCESS.lock().unwrap();
+          guard.take()
+     };
+
+     if let Some(pid) = pid {
+          #[cfg(windows)]
+          {
+               Command::new("taskkill")
+                    .args(["/PID", &pid.to_string(), "/F"])
+                    .spawn()
+                    .map_err(|e| e.to_string())?;
+          }
+          #[cfg(unix)]
+          {
+               Command::new("kill")
+                    .arg("-9")
+                    .arg(pid.to_string())
+                    .spawn()
+                    .map_err(|e| e.to_string())?;
           }
      }
 

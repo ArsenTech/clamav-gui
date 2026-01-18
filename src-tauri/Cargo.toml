@@ -26,3 +26,6 @@ sysinfo = "0.37.2"
 tauri-specta = { version = "=2.0.0-rc.21", features = ["derive", "typescript"] }
 specta-typescript = "0.0.9"
 specta = "=2.0.0-rc.22"
+tauri-plugin-os = "2"
+once_cell = "1.19"
+walkdir = "2"

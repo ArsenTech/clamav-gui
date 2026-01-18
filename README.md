@@ -55,6 +55,7 @@
 ### Features
 - **State-gated UI** - Detects the ClamAV installation path before launching the software
 - **Real-Time Performance Stats** - CPU, RAM Usage, and Disk Usage Stats all without leaving the GUI
+- **Main Scan and Full Scan** - Scan the entire device for malicious files and malware
 <!-- TODO: Write the Features list -->
 
 ### Built With

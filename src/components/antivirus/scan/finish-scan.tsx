@@ -8,13 +8,15 @@ import { THREATS_COLS } from "@/lib/constants/columns";
 import { QUARANTINE_DATA } from "@/lib/constants";
 
 interface Props{
-     threatCount: number
+     threatCount: number,
+     durationElem: React.JSX.Element
 }
-export default function ScanFinishResult({threatCount}: Props){
+export default function ScanFinishResult({threatCount,durationElem}: Props){
      return threatCount<=0 ? (
           <>
                <ShieldCheck className="size-32 text-emerald-700"/>
                <h2 className="text-lg md:text-2xl font-medium">No items detected!</h2>
+               {durationElem}
                <Button asChild>
                     <Link to="/">Back to the overview</Link>
                </Button>
@@ -23,6 +25,7 @@ export default function ScanFinishResult({threatCount}: Props){
           <>
                <ShieldAlert className="size-32 text-red-700"/>
                <h2 className="text-lg md:text-2xl font-medium">{threatCount} {threatCount<=1 ? "threat" : "threats"} require attention</h2>
+               {durationElem}
                <ThreatsTable
                     columns={THREATS_COLS}
                     data={QUARANTINE_DATA}
