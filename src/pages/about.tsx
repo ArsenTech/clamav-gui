@@ -5,7 +5,7 @@ import {getTauriVersion, getVersion} from "@tauri-apps/api/app"
 import { useEffect, useState } from "react";
 
 export default function AboutPage(){
-     const versionCache = JSON.parse(localStorage.getItem("versions") || "") as IVersion | null;
+     const versionCache = JSON.parse(localStorage.getItem("versions") as string) as IVersion | null;
      const [versions, setVersions] = useState<IVersion>(versionCache || INITIAL_VERSION_INFO);
      useEffect(()=>{
           (async()=>{
@@ -27,7 +27,8 @@ export default function AboutPage(){
                     <img src="/logo-blue.webp" alt="ClamAV GUI" width={500} height={130}/>
                     <h2 className="text-2xl md:text-3xl text-center font-medium">Version {versions.app} {versions.versionType.trim()!=="" ? `- ${versions.versionType}` : null}</h2>
                     <p>A minimal, open-source interface for file scanning and threat detection that makes the Antivirus itself look professional and work exactly like ClamAV (A FOSS CLI Antivirus).</p>
-                    <p>Built with ClamAV, Tauri, React, and modern desktop and web tools. This software is provided as-is. No data is collected or transmitted.</p>
+                    <p>Built with Tauri, React, and modern desktop and web tools. This software is provided as-is. No data is collected or transmitted. This GUI uses ClamAV's <code className="text-muted-foreground font-medium">clamscan</code> engine.
+Scan types are presets that define which locations and which limits are used.</p>
                     <p className="text-muted-foreground text-center">&copy; {year} ArsenTech | All Rights Reserved</p>
                </div>
                <div className="space-y-3 px-3 text-lg overflow-y-auto max-h-[700px]">

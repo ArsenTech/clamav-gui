@@ -34,7 +34,8 @@ export interface IQuickAccessItem{
      name: string,
      desc: string,
      href: string,
-     Icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>
+     Icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>,
+     openDialogType: "none" | "file" | "folder"
 }
 export interface IQuarantineData{
      id: string,

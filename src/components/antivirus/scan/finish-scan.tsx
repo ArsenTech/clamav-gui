@@ -5,30 +5,31 @@ import { Link } from "react-router";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { THREATS_COLS } from "@/lib/constants/columns";
-import { QUARANTINE_DATA } from "@/lib/constants";
+import { IQuarantineData } from "@/lib/types";
 
 interface Props{
-     threatCount: number,
-     durationElem: React.JSX.Element
+     threats: IQuarantineData[],
+     durationElem: React.JSX.Element,
+     onQuit: () => void
 }
-export default function ScanFinishResult({threatCount,durationElem}: Props){
-     return threatCount<=0 ? (
+export default function ScanFinishResult({threats,durationElem,onQuit}: Props){
+     return threats.length<=0 ? (
           <>
                <ShieldCheck className="size-32 text-emerald-700"/>
                <h2 className="text-lg md:text-2xl font-medium">No items detected!</h2>
                {durationElem}
                <Button asChild>
-                    <Link to="/">Back to the overview</Link>
+                    <Link to="/" onClick={onQuit}>Back to the overview</Link>
                </Button>
           </>
      ) : (
           <>
                <ShieldAlert className="size-32 text-red-700"/>
-               <h2 className="text-lg md:text-2xl font-medium">{threatCount} {threatCount<=1 ? "threat" : "threats"} require attention</h2>
+               <h2 className="text-lg md:text-2xl font-medium">{threats.length} {threats.length<=1 ? "threat" : "threats"} require attention</h2>
                {durationElem}
                <ThreatsTable
                     columns={THREATS_COLS}
-                    data={QUARANTINE_DATA}
+                    data={threats}
                />
                <ButtonGroup>
                     <DropdownMenu>
@@ -43,7 +44,7 @@ export default function ScanFinishResult({threatCount,durationElem}: Props){
                          </DropdownMenuContent>
                     </DropdownMenu>
                     <Button asChild variant="secondary">
-                         <Link to="/">Back to the overview</Link>
+                         <Link to="/" onClick={onQuit}>Back to the overview</Link>
                     </Button>
                </ButtonGroup>
           </>

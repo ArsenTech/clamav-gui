@@ -13,10 +13,10 @@ export interface IVersion{
 export interface IScanPageState{
      scanType: ScanType,
      logs: string[],
-     threats: number,
      currLocation: string,
      isFinished: boolean,
      duration: number,
      scannedFiles: number,
-     totalFiles: number
+     totalFiles: number,
+     path: string
 }

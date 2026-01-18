@@ -1,4 +1,4 @@
-import { ChartNoAxesCombined, ClipboardClock, Cog, Info, SearchCheck, History, ShieldCheck, BugOff, RotateCcw, FolderSearch, Search } from "lucide-react"
+import { ChartNoAxesCombined, ClipboardClock, Cog, Info, SearchCheck, History, ShieldCheck, BugOff, RotateCcw, FolderSearch, Search, FileSearch } from "lucide-react"
 import { IQuickAccessItem } from "../types"
 
 export const SIDEBAR_LINKS = [
@@ -55,48 +55,70 @@ export const QUICK_ACCESS_LINKS: IQuickAccessItem[] = [
     name: "Main Scan",
     desc: "Check common locations now",
     href: "/scan?type=main",
-    Icon: Search
+    Icon: Search,
+    openDialogType: "none"
   },
   {
     name: "Full Scan",
     desc: "Scan everything (might take a while)",
     href: "/scan?type=full",
-    Icon: SearchCheck
+    Icon: SearchCheck,
+    openDialogType: "none"
   },
   {
     name: "Custom Scan",
     desc: "Choose a folder to scan",
     href: "/scan?type=custom",
-    Icon: FolderSearch
+    Icon: FolderSearch,
+    openDialogType: "folder"
+  },
+  {
+    name: "File Scan",
+    desc: "Choose a file to scan",
+    href: "/scan?type=file",
+    Icon: FileSearch,
+    openDialogType: "file"
   },
   {
     name: "Quarantine",
     desc: "View isolated malicious files",
     href: "/quarantine",
-    Icon: BugOff
+    Icon: BugOff,
+    openDialogType: "none"
   },
   {
     name: "Update",
     desc: "Update Virus Definitions from the ClamAV database",
     href: "/update",
-    Icon: RotateCcw
+    Icon: RotateCcw,
+    openDialogType: "none"
   },
   {
     name: "History",
     desc: "View the ClamAV GUI Actions history",
     href: "/history",
-    Icon: History
+    Icon: History,
+    openDialogType: "none"
   },
   {
     name: "Real-Time Protection",
     desc: "Scans newly created files in real time",
     href: "/",
-    Icon: ShieldCheck
+    Icon: ShieldCheck,
+    openDialogType: "none"
   },
   {
     name: "Scheduler",
     desc: "Schedule a scan",
     href: "/scheduler",
-    Icon: ClipboardClock
+    Icon: ClipboardClock,
+    openDialogType: "none"
+  },
+  {
+    name: "Statistics",
+    desc: "View ClamAV GUI's stats including the System stats",
+    href: "/stats",
+    Icon: ChartNoAxesCombined,
+    openDialogType: "none"
   },
 ]

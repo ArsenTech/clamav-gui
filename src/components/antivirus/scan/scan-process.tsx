@@ -13,10 +13,11 @@ interface Props{
      threatsCount: number,
      currLocation: string,
      filesCount: number,
-     totalFiles: number
+     totalFiles: number,
+     scanPath?: string,
 }
 
-export default function ScanProcess({scanType, onStop, threatsCount, currLocation, filesCount, totalFiles}: Props){
+export default function ScanProcess({scanType, onStop, threatsCount, currLocation, filesCount, totalFiles, scanPath}: Props){
      const scanTypeName = useMemo(()=>SCAN_TYPES.find(val=>val.type===scanType)?.name,[scanType])
      const [isOpen, setIsOpen] = useState(false);
      const dateRef = useRef<Date>(new Date(Date.now()))
@@ -44,16 +45,16 @@ export default function ScanProcess({scanType, onStop, threatsCount, currLocatio
                     </>
                )}
                <div className="flex justify-center items-center gap-2 flex-col">
-                    {(scanType==="custom" || scanType==="file") && (
-                         <div className="p-4 border bg-card text-card-foreground shadow-sm rounded-md w-full">
-                              <h2 className="text-lg sm:text-xl font-semibold flex items-center gap-2.5 border-b pb-0.5 mb-2 w-fit"><Folder className="text-primary"/> Scan Location</h2>
-                              <code className="break-all">C:\Users\User\...</code>
-                         </div>
-                    )}
                     {currLocation.trim() !== "" && (
                          <div className="p-4 border bg-card text-card-foreground shadow-sm rounded-md w-full">
                               <h2 className="text-lg sm:text-xl font-semibold flex items-center gap-2.5 border-b pb-0.5 mb-2 w-fit"><SearchCheck className="text-primary"/> Currently scanned</h2>
                               <code className="min-h-6 break-all">{currLocation}</code>
+                         </div>
+                    )}
+                    {scanPath && (
+                         <div className="p-4 border bg-card text-card-foreground shadow-sm rounded-md w-full">
+                              <h2 className="text-lg sm:text-xl font-semibold flex items-center gap-2.5 border-b pb-0.5 mb-2 w-fit"><Folder className="text-primary"/> Scan Location</h2>
+                              <code className="break-all">{scanPath}</code>
                          </div>
                     )}
                     <div className="p-4 border bg-card text-card-foreground shadow-sm rounded-md w-full">
