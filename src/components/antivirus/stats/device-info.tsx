@@ -13,7 +13,7 @@ export default function DeviceInfo() {
   const [isPending, startTransition] = useTransition();
   useEffect(() => {
     startTransition(async () => {
-      const info: IDeviceInfo = await invoke("get_sys_info");
+      const info = await invoke<IDeviceInfo>("get_sys_info");
       setInfo((prev) => ({ ...prev, ...info }));
     });
   }, []);

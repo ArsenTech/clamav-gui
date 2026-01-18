@@ -9,7 +9,7 @@ import { formatDuration } from "@/lib/helpers";
 import { ScanType, IQuarantineData } from "@/lib/types";
 import { IScanPageState } from "@/lib/types/states";
 import { invoke } from "@tauri-apps/api/core";
-import { listen } from "@tauri-apps/api/event";
+import { listen, UnlistenFn } from "@tauri-apps/api/event";
 import { Timer } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
@@ -33,50 +33,50 @@ export default function ScanPage(){
           })
      }
      useEffect(()=>{
-          const unLog = listen<string>("clamscan:log",e=>{
-               if (!scanActiveRef.current) return;
-               setScanState(prev=>({
-                    ...prev,
-                    logs: [...prev.logs.slice(-500), e.payload],
-               }))
-               if(e.payload.endsWith("FOUND")){
-                    const infectedFile = e.payload.split(" ");
-                    const filePath = infectedFile[0];
-                    setThreats(prev=>[
-                         ...prev,
-                         {
-                              id: String(threats.length+1),
-                              displayName: infectedFile[1],
-                              filePath: filePath.slice(0,filePath.length-1),
-                              status: "detected",
-                              detectedAt: new Date().toLocaleString()
-                         }
-                    ])
-               }
-               if (e.payload.includes(": OK") || e.payload.includes(" FOUND")) {
-                    const idx = e.payload.lastIndexOf(": ");
+          const unsubs: Promise<UnlistenFn>[] = [
+               listen<string>("clamscan:log",e=>{
+                    if (!scanActiveRef.current) return;
                     setScanState(prev=>({
                          ...prev,
-                         currLocation: idx !== -1 ? e.payload.slice(0, idx) : prev.currLocation,
-                         scannedFiles: prev.scannedFiles+1
+                         logs: [...prev.logs.slice(-500), e.payload],
                     }))
-               }
-          })
-          const unFinish = listen<boolean>("clamscan:finished",()=>{
-               if (!scanActiveRef.current) return;
-               scanStartedRef.current = false;
-               scanActiveRef.current = false; 
-               setState({
-                    isFinished: true,
-                    duration: startTimeRef.current ? Math.floor((Date.now() - startTimeRef.current)/1000) : 0
-               });
-               startTimeRef.current = null;
-          })
-          const unTotal = listen<number>("clamscan:total", e =>setState({ totalFiles: e.payload }));
+                    if(e.payload.endsWith("FOUND")){
+                         const infectedFile = e.payload.split(" ");
+                         const filePath = infectedFile[0];
+                         setThreats(prev=>[
+                              ...prev,
+                              {
+                                   id: String(threats.length+1),
+                                   displayName: infectedFile[1],
+                                   filePath: filePath.slice(0,filePath.length-1),
+                                   status: "detected",
+                                   detectedAt: new Date().toLocaleString()
+                              }
+                         ])
+                    }
+                    if (e.payload.includes(": OK") || e.payload.includes(" FOUND")) {
+                         const idx = e.payload.lastIndexOf(": ");
+                         setScanState(prev=>({
+                              ...prev,
+                              currLocation: idx !== -1 ? e.payload.slice(0, idx) : prev.currLocation,
+                              scannedFiles: prev.scannedFiles+1
+                         }))
+                    }
+               }),
+               listen<boolean>("clamscan:finished",()=>{
+                    if (!scanActiveRef.current) return;
+                    scanStartedRef.current = false;
+                    scanActiveRef.current = false; 
+                    setState({
+                         isFinished: true,
+                         duration: startTimeRef.current ? Math.floor((Date.now() - startTimeRef.current)/1000) : 0
+                    });
+                    startTimeRef.current = null;
+               }),
+               listen<number>("clamscan:total", e =>setState({ totalFiles: e.payload }))
+          ];
           return () => {
-               unLog.then(f=>f());
-               unFinish.then(f=>f());
-               unTotal.then(f=>f());
+               Promise.all(unsubs).then(fns=>fns.forEach(fn=>fn()));
           }
      },[]);
      useEffect(()=>{

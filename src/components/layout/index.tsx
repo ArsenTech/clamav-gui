@@ -19,7 +19,7 @@ export function AppLayout({children, className}: Props){
      const handleCheck = () => {
           startTransition(async() => {
                try{
-                    const isAvailable: boolean = await invoke("check_availability");
+                    const isAvailable = await invoke<boolean>("check_availability");
                     setStatus(isAvailable ? "available" : "missing");
                     localStorage.setItem("clamav",isAvailable ? "available" : "missing");
                } catch {

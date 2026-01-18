@@ -22,3 +22,20 @@ export function formatDuration(seconds: number){
   const ss = (seconds%60).toString().padStart(2,"0");
   return `${hh}:${mm}:${ss}`;
 }
+export function parseClamVersion(raw: string) {
+  console.log(raw)
+  const match = raw.match(/ClamAV\s(.+?)\/(\d+)\/(.+)/);
+  if (!match) return null;
+
+  const dbDate = new Date(match[3]);
+
+  const ageDays =
+    (Date.now() - dbDate.getTime()) / (1000 * 60 * 60 * 24);
+
+  return {
+    engine: match[1],
+    dbVersion: match[2],
+    dbDate,
+    isOutdated: ageDays > 3,
+  };
+}

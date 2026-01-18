@@ -20,3 +20,10 @@ export interface IScanPageState{
      totalFiles: number,
      path: string
 }
+export interface IUpdatePageState{
+     isUpdating: boolean,
+     isFetching: boolean
+     isRequired: boolean,
+     lastUpdated: Date | null,
+     log: string[]
+}

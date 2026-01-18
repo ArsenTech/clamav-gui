@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 export default function AboutPage(){
      const versionCache = JSON.parse(localStorage.getItem("versions") as string) as IVersion | null;
      const [versions, setVersions] = useState<IVersion>(versionCache || INITIAL_VERSION_INFO);
+     const clamavVersion = localStorage.getItem("clamav-version");
      useEffect(()=>{
           (async()=>{
                const app = await getVersion();
@@ -29,6 +30,13 @@ export default function AboutPage(){
                     <p>A minimal, open-source interface for file scanning and threat detection that makes the Antivirus itself look professional and work exactly like ClamAV (A FOSS CLI Antivirus).</p>
                     <p>Built with Tauri, React, and modern desktop and web tools. This software is provided as-is. No data is collected or transmitted. This GUI uses ClamAV's <code className="text-muted-foreground font-medium">clamscan</code> engine.
 Scan types are presets that define which locations and which limits are used.</p>
+                    <ul className="text-sm text-muted-foreground">
+                         {!!clamavVersion && (
+                              <li title="Virus definition database version">{clamavVersion}</li>
+                         )}
+                         <li>Tauri v{versions.tauri}</li>
+                    </ul>
+                    <p className="text-sm text-muted-foreground"></p>
                     <p className="text-muted-foreground text-center">&copy; {year} ArsenTech | All Rights Reserved</p>
                </div>
                <div className="space-y-3 px-3 text-lg overflow-y-auto max-h-[700px]">
@@ -39,7 +47,7 @@ Scan types are presets that define which locations and which limits are used.</p
                     </ul>
                     <p>Interface & Platform</p>
                     <ul className="list-disc px-5">
-                         <li>Tauri v{versions.tauri} (Desktop RunTime)</li>
+                         <li>Tauri (Desktop RunTime)</li>
                          <li>React (UI)</li>
                          <li>Rust (Backend)</li>
                          <li>React Router (Navigation)</li>

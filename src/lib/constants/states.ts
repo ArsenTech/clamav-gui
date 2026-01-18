@@ -1,5 +1,5 @@
 import { ScanType } from "../types";
-import { IDeviceInfo, IScanPageState, IVersion } from "../types/states";
+import { IDeviceInfo, IScanPageState, IUpdatePageState, IVersion } from "../types/states";
 
 export const INITIAL_DEIVCE_INFO: IDeviceInfo = {
      sys_os: "",
@@ -21,3 +21,10 @@ export const GET_INITIAL_SCAN_STATE = (type: ScanType | null, path: string | nul
      totalFiles: 0,
      path: path ?? ""
 })
+export const INITIAL_UPDATE_STATE: IUpdatePageState = {
+     isUpdating: false,
+     isFetching: true,
+     isRequired: false,
+     lastUpdated: null,
+     log: []
+}
