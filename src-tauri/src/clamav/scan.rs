@@ -149,10 +149,7 @@ pub fn start_custom_scan(app: tauri::AppHandle, paths: Vec<String>) -> Result<()
         return Err("No scan targets provided".into());
     }
     println!("Starting Custom Scan...");
-    let resolved_paths: Vec<PathBuf> = paths
-        .iter()
-        .map(PathBuf::from)
-        .collect();
+    let resolved_paths: Vec<PathBuf> = paths.iter().map(PathBuf::from).collect();
 
     for path in &resolved_paths {
         if !path.exists() {
@@ -166,10 +163,10 @@ pub fn start_custom_scan(app: tauri::AppHandle, paths: Vec<String>) -> Result<()
 
     let has_directory = resolved_paths.iter().any(|p| p.is_dir());
     let app = app.clone();
-    
+
     std::thread::spawn(move || {
         let mut cmd = Command::new("clamscan");
-        
+
         if has_directory {
             cmd.arg("--recursive");
         }
@@ -183,7 +180,7 @@ pub fn start_custom_scan(app: tauri::AppHandle, paths: Vec<String>) -> Result<()
             "--no-summary",
         ]);
 
-        for path in &resolved_paths{
+        for path in &resolved_paths {
             cmd.arg(path);
         }
 

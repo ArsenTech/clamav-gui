@@ -5,9 +5,9 @@
 mod clamav;
 mod sysinfo;
 
-use crate::clamav::scan::{start_full_scan, start_main_scan, stop_scan, start_custom_scan};
+use crate::clamav::scan::{start_custom_scan, start_full_scan, start_main_scan, stop_scan};
+use crate::clamav::update::{get_clamav_version, update_definitions};
 use crate::sysinfo::{get_sys_info, get_sys_stats};
-use crate::clamav::update::{update_definitions, get_clamav_version};
 
 use specta::specta;
 use std::process::Command;
@@ -33,13 +33,14 @@ pub fn run() {
         get_sys_info,
         start_main_scan,
         start_full_scan,
-        stop_scan,
         start_custom_scan,
+        stop_scan,
         update_definitions,
         get_clamav_version
     ]);
 
     tauri::Builder::default()
+        .plugin(tauri_plugin_fs::init())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_os::init())
         .plugin(tauri_plugin_opener::init())

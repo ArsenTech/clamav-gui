@@ -455,7 +455,7 @@ dependencies = [
 
 [[package]]
 name = "clamav-gui"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "once_cell",
  "serde",
@@ -466,6 +466,7 @@ dependencies = [
  "tauri",
  "tauri-build",
  "tauri-plugin-dialog",
+ "tauri-plugin-fs",
  "tauri-plugin-opener",
  "tauri-plugin-os",
  "tauri-specta",
