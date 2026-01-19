@@ -14,10 +14,10 @@ interface Props{
      currLocation: string,
      filesCount: number,
      totalFiles: number,
-     scanPath?: string,
+     scanPaths?: string[],
 }
 
-export default function ScanProcess({scanType, onStop, threatsCount, currLocation, filesCount, totalFiles, scanPath}: Props){
+export default function ScanProcess({scanType, onStop, threatsCount, currLocation, filesCount, totalFiles, scanPaths}: Props){
      const scanTypeName = useMemo(()=>SCAN_TYPES.find(val=>val.type===scanType)?.name,[scanType])
      const [isOpen, setIsOpen] = useState(false);
      const dateRef = useRef<Date>(new Date(Date.now()))
@@ -51,10 +51,14 @@ export default function ScanProcess({scanType, onStop, threatsCount, currLocatio
                               <code className="min-h-6 break-all">{currLocation}</code>
                          </div>
                     )}
-                    {scanPath && (
+                    {(scanPaths && scanPaths.length>0) && (
                          <div className="p-4 border bg-card text-card-foreground shadow-sm rounded-md w-full">
                               <h2 className="text-lg sm:text-xl font-semibold flex items-center gap-2.5 border-b pb-0.5 mb-2 w-fit"><Folder className="text-primary"/> Scan Location</h2>
-                              <code className="break-all">{scanPath}</code>
+                              <ul>
+                                   {scanPaths.map((path,i)=>(
+                                        <li key={`location-${i+1}`} className="brek-all font-mono">{path}</li>
+                                   ))}
+                              </ul>
                          </div>
                     )}
                     <div className="p-4 border bg-card text-card-foreground shadow-sm rounded-md w-full">
@@ -64,9 +68,6 @@ export default function ScanProcess({scanType, onStop, threatsCount, currLocatio
                     <div className="p-4 border bg-card text-card-foreground shadow-sm rounded-md w-full">
                          <h2 className="text-lg sm:text-xl font-semibold flex items-center gap-2.5 border-b pb-0.5 mb-2 w-fit"><Clock className="text-primary"/> Start Time</h2>
                          <code className="min-h-6">{dateRef.current.toLocaleString()}</code>
-                    </div>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 w-full">
-                         
                     </div>
                     <Button className="flex-1" onClick={()=>setIsOpen(true)}><Square/> Stop the Scan</Button>
                </div>

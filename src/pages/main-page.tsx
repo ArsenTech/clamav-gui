@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { QUICK_ACCESS_LINKS } from "@/lib/constants/links";
 import { open } from "@tauri-apps/plugin-dialog";
 import { useEffect, useState } from "react";
-import { parseClamVersion } from "@/lib/helpers";
+import { normalizePaths, parseClamVersion } from "@/lib/helpers";
 import { invoke } from "@tauri-apps/api/core";
 
 export default function App() {
@@ -12,11 +12,15 @@ export default function App() {
   const [definitionStatus, setDefinitionStatus] = useState<"updated" | "outdated" | "loading">("loading")
   const openCustomScan = async(href: string, type: "file" | "folder") => {
     const currPath = await open({
-      multiple: false,
+      multiple: type==="folder",
       directory: type==="folder",
     });
     if(!currPath) return;
-    navigate(`${href}&path=${currPath}`)
+    const paths = normalizePaths(currPath);
+    const params = new URLSearchParams();
+    for(const path of paths)
+      params.append("path",path);
+    navigate(`${href}&${params.toString()}`)
   }
   useEffect(()=>{
     (async()=>{

@@ -144,24 +144,33 @@ pub async fn start_full_scan(app: tauri::AppHandle) -> Result<(), String> {
 
 #[command]
 #[specta(result)]
-pub fn start_custom_scan(app: tauri::AppHandle, path: String) -> Result<(), String> {
+pub fn start_custom_scan(app: tauri::AppHandle, paths: Vec<String>) -> Result<(), String> {
+    if paths.is_empty() {
+        return Err("No scan targets provided".into());
+    }
     println!("Starting Custom Scan...");
-    let resolved_path = PathBuf::from(&path);
+    let resolved_paths: Vec<PathBuf> = paths
+        .iter()
+        .map(PathBuf::from)
+        .collect();
 
-    if !resolved_path.exists() {
-        return Err("Path does not exist".into());
+    for path in &resolved_paths {
+        if !path.exists() {
+            return Err("Path does not exist".into());
+        }
+
+        if !path.is_file() && !path.is_dir() {
+            return Err("Invalid scan target".into());
+        }
     }
 
-    if !resolved_path.is_file() && !resolved_path.is_dir() {
-        return Err("Invalid scan target".into());
-    }
-
+    let has_directory = resolved_paths.iter().any(|p| p.is_dir());
     let app = app.clone();
-    let path = path.clone();
+    
     std::thread::spawn(move || {
         let mut cmd = Command::new("clamscan");
         
-        if resolved_path.is_dir() {
+        if has_directory {
             cmd.arg("--recursive");
         }
 
@@ -172,10 +181,13 @@ pub fn start_custom_scan(app: tauri::AppHandle, path: String) -> Result<(), Stri
             "--max-scansize=400M",
             "--verbose",
             "--no-summary",
-            &path
         ]);
 
-        let total_files = estimate_total_files(&[resolved_path]);
+        for path in &resolved_paths{
+            cmd.arg(path);
+        }
+
+        let total_files = estimate_total_files(&resolved_paths);
         app.emit("clamscan:total", total_files).ok();
 
         run_scan(app, cmd).ok();

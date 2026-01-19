@@ -6,20 +6,21 @@ import { cn } from "@/lib/utils";
 import { CheckCircle, FilePlus, FolderPlus, Search } from "lucide-react";
 import { useState } from "react";
 import { open } from '@tauri-apps/plugin-dialog';
+import { normalizePaths } from "@/lib/helpers";
 
 interface Props{
-     handleStartScan: (type: ScanType, path?: string) => void;
+     handleStartScan: (type: ScanType, paths?: string[]) => void;
 }
 export default function ScanMenu({handleStartScan}: Props){
      const [currScanType, setCurrScanType] = useState<ScanType>("");
      const [path, setPath] = useState<{
-          path: string,
+          paths: string[],
           scanType: "file" | "custom" | ""
      }>({
-          path: "",
+          paths: [],
           scanType: ""
      });
-     const hasPath = path.path.trim() !== "" && path.scanType===currScanType;
+     const hasPath = path.paths.every(p=>p!== "") && path.scanType===currScanType;
      const isFile = currScanType === "file";
      const isCustom = currScanType === "custom";
      const PathIcon = () => {
@@ -28,13 +29,14 @@ export default function ScanMenu({handleStartScan}: Props){
      };
      const openDialog = async (type: "file" | "folder") =>{
           const currPath = await open({
-               multiple: false,
+               multiple: type==="folder",
                directory: type==='folder',
           });
           if(!currPath) return;
+          const paths = normalizePaths(currPath);
           setPath(prev=>({
                ...prev,
-               path: currPath,
+               paths,
                scanType: type==="folder" ? "custom" : type
           }))
      }
@@ -60,7 +62,7 @@ export default function ScanMenu({handleStartScan}: Props){
                               Choose a {isFile ? "file" : "folder"} path
                          </Button>
                     )}
-                    <Button disabled={currScanType==="" || ((currScanType==="custom" || currScanType==="file") && !hasPath)} onClick={()=>handleStartScan(currScanType,path.path)}><Search/> {(currScanType!=="custom" && currScanType!=="file") ? "Start Scanning" : ""}</Button>
+                    <Button disabled={currScanType==="" || ((currScanType==="custom" || currScanType==="file") && !hasPath)} onClick={()=>handleStartScan(currScanType,path.paths)}><Search/> {(currScanType!=="custom" && currScanType!=="file") ? "Start Scanning" : ""}</Button>
                </ButtonGroup>
           </div>
           </>

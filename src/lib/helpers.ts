@@ -22,6 +22,14 @@ export function formatDuration(seconds: number){
   const ss = (seconds%60).toString().padStart(2,"0");
   return `${hh}:${mm}:${ss}`;
 }
+
+export function normalizePaths(
+  value: string | string[] | null
+): string[] {
+  if (!value) return [];
+  return Array.isArray(value) ? value : [value];
+}
+
 export function parseClamVersion(raw: string) {
   console.log(raw)
   const match = raw.match(/ClamAV\s(.+?)\/(\d+)\/(.+)/);

@@ -9,10 +9,13 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Scan Types + Spinner in the Scan Process Page
 - Logic for Different Types of Scans
 - Definitions Updater Logic
-- ClamAV Version inside the Definition updater and about pages
+- ClamAV Version inside the Definition Updater and about pages
+### Integrated
+- `clamscan` - integrated the CLI command into the Scan Page
+- `freshclam` - Integrated the CLI command into the Definition Updater page
 ### Improved
 - Scan Page UI
-- Definition updater page UI
+- Definition Updater page UI
 ### Changed
 - Moved Tauri version into the **About ClamAV GUI** section
 

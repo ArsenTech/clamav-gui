@@ -18,7 +18,7 @@ export interface IScanPageState{
      duration: number,
      scannedFiles: number,
      totalFiles: number,
-     path: string
+     paths: string[]
 }
 export interface IUpdatePageState{
      isUpdating: boolean,

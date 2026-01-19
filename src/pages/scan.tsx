@@ -18,7 +18,7 @@ import { toast } from "sonner";
 export default function ScanPage(){
      const [params] = useSearchParams();
      const type = params.get("type") as ScanType | null;
-     const path = params.get("path");
+     const path = params.getAll("path");
      const [scanState, setScanState] = useState<IScanPageState>(GET_INITIAL_SCAN_STATE(type,path));
      const [threats, setThreats] = useState<IQuarantineData[]>([]);
      const setState = (overrides: Partial<IScanPageState>) =>
@@ -26,10 +26,10 @@ export default function ScanPage(){
      const startTimeRef = useRef<number | null>(null);
      const scanActiveRef = useRef(false);
      const scanStartedRef = useRef(false);
-     const handleStartScan = async (type: ScanType, path: string) => {
+     const handleStartScan = async (type: ScanType, path: string[]) => {
           setState({
                scanType: type,
-               path: type==="main" || type==="full" ? "" : path
+               paths: type==="main" || type==="full" ? [] : path
           })
      }
      useEffect(()=>{
@@ -91,12 +91,14 @@ export default function ScanPage(){
                     toast.error("Scan command not found")
                })
           } else {
-               invoke("start_custom_scan",{path: scanState.path})
+               invoke("start_custom_scan",{
+                    paths: Array.isArray(scanState.paths) ? scanState.paths : [scanState.paths]
+               })
           }
           startTimeRef.current = Date.now();
           scanActiveRef.current = true;
           setState({duration: 0})
-     },[scanState.scanType, scanState.path])
+     },[scanState.scanType, scanState.paths])
      const handleStop = async() => {
           reset();
           try {
@@ -117,7 +119,7 @@ export default function ScanPage(){
                ...overrides
           })
      }
-     const {isFinished, duration, scanType, currLocation, totalFiles, scannedFiles, logs, path: scanLocation} = scanState
+     const {isFinished, duration, scanType, currLocation, totalFiles, scannedFiles, logs, paths: scanLocations} = scanState
      return (
           <AppLayout className={isFinished ? "flex justify-center items-center gap-4 flex-col p-4" : "grid gris-cols-1 md:grid-cols-2 gap-10 p-4"}>
                {isFinished ? (
@@ -136,7 +138,7 @@ export default function ScanPage(){
                          <div className="space-y-4">
                               <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">Scan</h1>
                               {scanType==="" ? (
-                                   <ScanMenu handleStartScan={(type,path)=>handleStartScan(type,path || "")}/>
+                                   <ScanMenu handleStartScan={(type,path)=>handleStartScan(type,path || [])}/>
                               ) : (
                                    <ScanProcess
                                         scanType={scanType}
@@ -145,7 +147,7 @@ export default function ScanPage(){
                                         currLocation={currLocation}
                                         filesCount={scannedFiles}
                                         totalFiles={totalFiles}
-                                        scanPath={scanLocation}
+                                        scanPaths={scanLocations}
                                    />
                               )}
                          </div>

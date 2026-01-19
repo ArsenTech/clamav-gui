@@ -11,7 +11,7 @@ export const INITIAL_VERSION_INFO: IVersion = {
      tauri: "0.0.0",
      versionType: "Early Build"
 }
-export const GET_INITIAL_SCAN_STATE = (type: ScanType | null, path: string | null): IScanPageState => ({
+export const GET_INITIAL_SCAN_STATE = (type: ScanType | null, path: string[] | null): IScanPageState => ({
      scanType: type ?? "",
      logs: [],
      currLocation: "",
@@ -19,7 +19,7 @@ export const GET_INITIAL_SCAN_STATE = (type: ScanType | null, path: string | nul
      duration: 0,
      scannedFiles: 0,
      totalFiles: 0,
-     path: path ?? ""
+     paths: path ?? []
 })
 export const INITIAL_UPDATE_STATE: IUpdatePageState = {
      isUpdating: false,
