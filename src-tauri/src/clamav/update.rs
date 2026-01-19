@@ -42,3 +42,5 @@ pub fn get_clamav_version() -> Result<String, String> {
 
     Ok(String::from_utf8_lossy(&output.stdout).to_string())
 }
+
+// TODO: use this command to return recent database update date if freshclam didn't return date: sigtool --info "*.cvd | *.cld"

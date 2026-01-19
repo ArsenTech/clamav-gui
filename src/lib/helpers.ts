@@ -31,7 +31,6 @@ export function normalizePaths(
 }
 
 export function parseClamVersion(raw: string) {
-  console.log(raw)
   const match = raw.match(/ClamAV\s(.+?)\/(\d+)\/(.+)/);
   if (!match) return null;
 

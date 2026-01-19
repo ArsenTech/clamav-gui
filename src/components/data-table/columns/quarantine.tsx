@@ -50,7 +50,6 @@ export const QUARANTINE_COLS = (setIsOpen: React.Dispatch<React.SetStateAction<{
           id: "actions",
           cell: ( { row }) => {
                const threat = row.original
-               console.log(threat)
                return (
                     <DropdownMenu>
                          <DropdownMenuTrigger asChild>
