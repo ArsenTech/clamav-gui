@@ -25,7 +25,7 @@ import { Badge } from "../../ui/badge"
 import { DataTableViewOptions } from "../col-toggle"
 import { DataTableProps } from "@/lib/types"
 
-export function ThreatsTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
+export function ThreatsTable<TData, TValue>({ columns, data, searchColumn = "displayName" }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
@@ -52,9 +52,9 @@ export function ThreatsTable<TData, TValue>({ columns, data }: DataTableProps<TD
       <InputGroup className="max-w-lg">
         <InputGroupInput
           placeholder="Search Threats..."
-          value={(table.getColumn("displayName")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn(searchColumn)?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("displayName")?.setFilterValue(event.target.value)
+            table.getColumn(searchColumn)?.setFilterValue(event.target.value)
           }
         />
         <InputGroupAddon>
@@ -92,7 +92,11 @@ export function ThreatsTable<TData, TValue>({ columns, data }: DataTableProps<TD
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
-                    {cell.column.id === "status" ? <Badge variant={(cell.getValue()==="deleted" || cell.getValue()==="blocked") ? "default" : (cell.getValue()==="restored" || cell.getValue()==="ignored") ? "secondary" : cell.getValue() === "detected" ? "destructive" : "outline"}>{`${(cell.getValue() as string).toUpperCase()[0]}${(cell.getValue() as string).slice(1)}`}</Badge> : flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    {cell.column.id === "status" ? <Badge variant={
+                      cell.getValue()==="deleted" ? "default" :
+                      cell.getValue()==="safe" ? "secondary" :
+                      cell.getValue() === "detected" ? "destructive" : "outline"
+                    }>{`${(cell.getValue() as string).toUpperCase()[0]}${(cell.getValue() as string).slice(1)}`}</Badge> : flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
               </TableRow>

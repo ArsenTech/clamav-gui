@@ -1,5 +1,5 @@
 import { Search, SearchCheck, FolderSearch, FileSearch, Bug, ClipboardClock, Cog, RotateCcw, ShieldCheck } from "lucide-react";
-import { IHistoryData, IQuarantineData, IScanMenuItem } from "../types";
+import { IHistoryData, IScanMenuItem } from "../types";
 
 export const DAYS_OF_THE_WEEK = ["sun","mon","tue","wed","thu","fri","sat"] as const;
 
@@ -61,28 +61,5 @@ export const HISTORY_DATA: IHistoryData[] = [
           timestamp: "2026-01-03",
           action: "Update",
           details: "Database already up to date"
-     }
-]
-export const QUARANTINE_DATA: IQuarantineData[] = [
-     {
-          id: "1",
-          displayName: "Some.Trojan.Malware",
-          filePath: "C:\\Users\\User\\Downloads\\a-shady-contract.pdf.exe",
-          status: "detected",
-          detectedAt: "2020-05-05"
-     },
-     {
-          id: "1",
-          displayName: "Ransom.Malware",
-          filePath: "C:\\Users\\User\\Downloads\\a-shady-contract.pdf.exe",
-          status: "quarantined",
-          detectedAt: "2020-05-05"
-     },
-     {
-          id: "1",
-          displayName: "RAT.Malware",
-          filePath: "C:\\Users\\User\\Downloads\\a-shady-contract.pdf.exe",
-          status: "blocked",
-          detectedAt: "2020-05-05"
      }
 ]

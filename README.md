@@ -59,7 +59,9 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - **Real-Time Performance Stats** - CPU, RAM Usage, and Disk Usage Stats all without leaving the GUI
 - **Main and Full Scan** - Scan the entire device for malicious files and malware
 - **Custom and File Scan** - Scan the mentioned folder / file for malware
+- **Resolving infected files after scan** - It includes **Quarantine**, **Delete**, and **Mark as safe**
 - **Definitions Updater** - Update the definitions database directly from the GUI
+- **Quarantine** - Manage infected threats after scanning
 <!-- TODO: Write the Features list -->
 
 ### Built With

@@ -6,7 +6,7 @@ import LogText from "@/components/log";
 import { SCAN_TYPES } from "@/lib/constants";
 import { GET_INITIAL_SCAN_STATE } from "@/lib/constants/states";
 import { formatDuration } from "@/lib/helpers";
-import { ScanType, IQuarantineData } from "@/lib/types";
+import { ScanType, IThreatsData } from "@/lib/types";
 import { IScanPageState } from "@/lib/types/states";
 import { invoke } from "@tauri-apps/api/core";
 import { listen, UnlistenFn } from "@tauri-apps/api/event";
@@ -20,7 +20,7 @@ export default function ScanPage(){
      const type = params.get("type") as ScanType | null;
      const path = params.getAll("path");
      const [scanState, setScanState] = useState<IScanPageState>(GET_INITIAL_SCAN_STATE(type,path));
-     const [threats, setThreats] = useState<IQuarantineData[]>([]);
+     const [threats, setThreats] = useState<IThreatsData[]>([]);
      const setState = (overrides: Partial<IScanPageState>) =>
           setScanState(prev=>({ ...prev, ...overrides }))
      const startTimeRef = useRef<number | null>(null);
@@ -126,6 +126,7 @@ export default function ScanPage(){
                     <>
                          <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">Scan Completed!</h1>
                          <ScanFinishResult
+                              setThreats={setThreats}
                               threats={threats}
                               durationElem={(
                                    <h2 className="text-lg sm:text-xl font-semibold flex items-center justify-center gap-2.5 w-fit"><Timer className="text-primary"/>{formatDuration(duration)}</h2>

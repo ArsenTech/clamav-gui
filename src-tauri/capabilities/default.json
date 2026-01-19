@@ -7,9 +7,13 @@
   ],
   "permissions": [
     "core:default",
-    "opener:default",
     "os:default",
     "dialog:default",
-    "fs:default"
+    {
+      "identifier": "opener:allow-open-path",
+      "allow": [
+        {"path": "**"}
+      ]
+    }
   ]
 }

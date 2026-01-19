@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 ## 0.2.1 - Unreleased
+### Added
+- A Quarantine Page logic
+- Logic to Do some actions after finishing scan (if there are many threats)
+- The Resolve Logic after finishing scan
 
 ## 0.2.0 - 2026-01-19 (Early Build 2)
 ### Added

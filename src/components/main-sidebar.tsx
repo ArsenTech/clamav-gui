@@ -5,7 +5,6 @@ import {
   SidebarGroup,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
@@ -27,9 +26,6 @@ export default function MainSidebar(){
                                         <SidebarMenuButton isActive={location.pathname===href} asChild>
                                              <Link to={href} className="text-muted-foreground"><Icon className="text-primary"/> {name}</Link>
                                         </SidebarMenuButton>
-                                        {name.toLowerCase()==="quarantine" && (
-                                             <SidebarMenuBadge>0</SidebarMenuBadge>
-                                        )}
                                    </SidebarMenuItem>
                               ))}
                          </SidebarMenu>

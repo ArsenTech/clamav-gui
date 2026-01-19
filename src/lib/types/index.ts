@@ -37,12 +37,19 @@ export interface IQuickAccessItem{
      Icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>,
      openDialogType: "none" | "file" | "folder"
 }
-export interface IQuarantineData{
+export interface IThreatsData{
      id: string,
      displayName: string,
      filePath: string,
-     status: "quarantined" | "deleted" | "restored" | "ignored" | "blocked" | "detected",
+     status: "quarantined" | "deleted" | "safe" | "detected",
      detectedAt: string
+}
+export interface IQuarantineData<T extends "state" | "type">{
+     id: string,
+     threat_name: string,
+     file_path: string,
+     quarantined_at: string,
+     size: T extends "state" ? string | null : number
 }
 export interface ISchedulerData{
      id: string,
@@ -66,5 +73,6 @@ export interface IThreatStatusStat extends IStatBase{ status: "quarantined" | "i
 export interface IVirusTypeStat extends IStatBase{ type: "trojan" | "ransomware" | "spyware" | "rootkit" | "other" }
 export interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+  data: TData[],
+  searchColumn?: string
 }
