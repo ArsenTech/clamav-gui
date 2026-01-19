@@ -1,23 +1,39 @@
 import { AppLayout } from "@/components/layout";
 import { INITIAL_VERSION_INFO } from "@/lib/constants/states";
+import { parseClamVersion } from "@/lib/helpers";
 import { IVersion } from "@/lib/types/states";
 import {getTauriVersion, getVersion} from "@tauri-apps/api/app"
+import { invoke } from "@tauri-apps/api/core";
 import { useEffect, useState } from "react";
 
 export default function AboutPage(){
      const versionCache = JSON.parse(localStorage.getItem("versions") as string) as IVersion | null;
      const [versions, setVersions] = useState<IVersion>(versionCache || INITIAL_VERSION_INFO);
-     const clamavVersion = localStorage.getItem("clamav-version");
      useEffect(()=>{
           (async()=>{
                const app = await getVersion();
                const tauri = await getTauriVersion();
-               const newVersions = {
+               const stored = localStorage.getItem("clamav-version");
+               let clamavVersion = "";
+               if(stored){
+                    clamavVersion = stored
+               } else {
+                    const clamAVraw = await invoke<string>("get_clamav_version");
+                    const parsed = parseClamVersion(clamAVraw);
+                    if(parsed){
+                         const versionText = `ClamAV v${parsed.engine}, Database Version: ${parsed.dbVersion}`;
+                         localStorage.setItem("clamav-version", versionText);
+                         clamavVersion = versionText;
+                    }
+               }
+               const newVersions: IVersion = {
                     ...versions,
-                    app, tauri
+                    app, tauri,
+                    clamAV: clamavVersion
                }
                setVersions(newVersions);
-               localStorage.setItem("versions",JSON.stringify(newVersions))
+               const {clamAV, ...newV} = newVersions;  
+               localStorage.setItem("versions",JSON.stringify(newV))
           })();
      },[])
      const year = new Date().getFullYear();
@@ -31,9 +47,7 @@ export default function AboutPage(){
                     <p>Built with Tauri, React, and modern desktop and web tools. This software is provided as-is. No data is collected or transmitted. This GUI uses ClamAV's <code className="text-muted-foreground font-medium">clamscan</code> engine.
 Scan types are presets that define which locations and which limits are used.</p>
                     <ul className="text-sm text-muted-foreground">
-                         {!!clamavVersion && (
-                              <li title="Virus definition database version">{clamavVersion}</li>
-                         )}
+                         <li title="Virus definition database version">{versions.clamAV}</li>
                          <li>Tauri v{versions.tauri}</li>
                     </ul>
                     <p className="text-sm text-muted-foreground"></p>
