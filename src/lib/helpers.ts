@@ -46,3 +46,5 @@ export function parseClamVersion(raw: string) {
     isOutdated: ageDays > 3,
   };
 }
+
+export const capitalizeText = (cellValue: string) => `${cellValue.toUpperCase()[0]}${cellValue.slice(1)}`

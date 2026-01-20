@@ -23,7 +23,8 @@ import { DataTableViewOptions } from "../col-toggle"
 import { ButtonGroup } from "@/components/ui/button-group"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { DataTableProps } from "@/lib/types"
+import { DataTableProps, HistoryStatus } from "@/lib/types"
+import { capitalizeText } from "@/lib/helpers"
 
 export function HistoryTable<TData, TValue>({columns,data}: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -41,6 +42,10 @@ export function HistoryTable<TData, TValue>({columns,data}: DataTableProps<TData
       columnVisibility
     }
   })
+
+  const getBadgeValue = (cellValue: HistoryStatus) =>
+    cellValue === "warning" ? "warning" : 
+    cellValue === "error" ? "destructive" : "success";
 
   return (
     <>
@@ -99,7 +104,9 @@ export function HistoryTable<TData, TValue>({columns,data}: DataTableProps<TData
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
-                    {cell.column.id === "status" ? <Badge variant={(cell.getValue()==="deleted" || cell.getValue()==="blocked") ? "default" : (cell.getValue()==="restored" || cell.getValue()==="ignored") ? "secondary" : cell.getValue() === "detected" ? "destructive" : "outline"}>{`${(cell.getValue() as string).toUpperCase()[0]}${(cell.getValue() as string).slice(1)}`}</Badge> : flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    {cell.column.id === "status" ? <Badge variant={getBadgeValue(cell.getValue() as HistoryStatus)}>
+                      {capitalizeText(cell.getValue() as string)}
+                    </Badge> : flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
               </TableRow>

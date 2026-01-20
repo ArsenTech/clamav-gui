@@ -3,6 +3,11 @@ import { LucideProps } from "lucide-react";
 
 export type ScanType = "" | "main" | "full" | "custom" | "file"
 export type ClamAVState = "checking" | "available" | "missing";
+export type ThreatStatus = "quarantined" | "deleted" | "safe" | "detected";
+export type HistoryStatus = "success" | "warning" | "error";
+export type ThreatStatusStat = Exclude<ThreatStatus,"detected"> | "unresolved";
+export type ComputerVirusType = "trojan" | "ransomware" | "spyware" | "rootkit" | "other";
+export type ScanTypeStat = Exclude<ScanType,""> | "real-time";
 
 export interface IScanMenuItem{
      type: ScanType,
@@ -29,6 +34,8 @@ export interface IHistoryData{
      timestamp: string,
      action: string,
      details: string
+     status: HistoryStatus,
+     logID?: string
 }
 export interface IQuickAccessItem{
      name: string,
@@ -41,7 +48,7 @@ export interface IThreatsData{
      id: string,
      displayName: string,
      filePath: string,
-     status: "quarantined" | "deleted" | "safe" | "detected",
+     status: ThreatStatus,
      detectedAt: string
 }
 export interface IQuarantineData<T extends "state" | "type">{
@@ -68,9 +75,9 @@ export interface IActivityStat{
      unresolved: number,
      resolved: number
 }
-export interface IScanTypeStat extends IStatBase{ scanType: Exclude<ScanType,""> | "real-time" }
-export interface IThreatStatusStat extends IStatBase{ status: "quarantined" | "ignored" | "deleted" | "unresolved" }
-export interface IVirusTypeStat extends IStatBase{ type: "trojan" | "ransomware" | "spyware" | "rootkit" | "other" }
+export interface IScanTypeStat extends IStatBase{ scanType: ScanTypeStat }
+export interface IThreatStatusStat extends IStatBase{ status: ThreatStatusStat }
+export interface IVirusTypeStat extends IStatBase{ type: ComputerVirusType }
 export interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[],

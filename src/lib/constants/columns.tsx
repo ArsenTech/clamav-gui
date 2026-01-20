@@ -32,6 +32,10 @@ export const HISTORY_COLS: ColumnDef<IHistoryData>[] = [
           header: "Detailed Info"
      },
      {
+          accessorKey: "status",
+          header: "Status"
+     },
+     {
           id: "actions",
           cell: ({row}) => {
                const item = row.original

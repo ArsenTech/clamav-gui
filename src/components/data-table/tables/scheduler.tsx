@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/table"
 import { useState } from "react"
 import { DataTablePagination } from "../pagination"
-import { Badge } from "../../ui/badge"
 import { DataTableProps } from "@/lib/types"
 
 export function SchedulerTable<TData, TValue>({columns,data}: DataTableProps<TData, TValue>) {
@@ -62,7 +61,7 @@ export function SchedulerTable<TData, TValue>({columns,data}: DataTableProps<TDa
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
-                    {cell.column.id === "status" ? <Badge variant={(cell.getValue()==="deleted" || cell.getValue()==="blocked") ? "default" : (cell.getValue()==="restored" || cell.getValue()==="ignored") ? "secondary" : cell.getValue() === "detected" ? "destructive" : "outline"}>{`${(cell.getValue() as string).toUpperCase()[0]}${(cell.getValue() as string).slice(1)}`}</Badge> : flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
               </TableRow>

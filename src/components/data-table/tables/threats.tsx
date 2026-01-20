@@ -23,7 +23,8 @@ import { SearchIcon } from "lucide-react"
 import { DataTablePagination } from "../pagination"
 import { Badge } from "../../ui/badge"
 import { DataTableViewOptions } from "../col-toggle"
-import { DataTableProps } from "@/lib/types"
+import { DataTableProps, ThreatStatus } from "@/lib/types"
+import { capitalizeText } from "@/lib/helpers"
 
 export function ThreatsTable<TData, TValue>({ columns, data, searchColumn = "displayName" }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -45,6 +46,11 @@ export function ThreatsTable<TData, TValue>({ columns, data, searchColumn = "dis
       columnVisibility
     }
   })
+
+  const getBadgeValue = (cellValue: ThreatStatus) =>
+    cellValue ==="deleted" ? "default" :
+    cellValue ==="safe" ? "secondary" :
+    cellValue === "detected" ? "destructive" : "outline"
 
   return (
     <>
@@ -92,11 +98,9 @@ export function ThreatsTable<TData, TValue>({ columns, data, searchColumn = "dis
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
-                    {cell.column.id === "status" ? <Badge variant={
-                      cell.getValue()==="deleted" ? "default" :
-                      cell.getValue()==="safe" ? "secondary" :
-                      cell.getValue() === "detected" ? "destructive" : "outline"
-                    }>{`${(cell.getValue() as string).toUpperCase()[0]}${(cell.getValue() as string).slice(1)}`}</Badge> : flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    {cell.column.id === "status" ? <Badge variant={getBadgeValue(cell.getValue() as ThreatStatus)}>
+                      {capitalizeText(cell.getValue() as string)}
+                    </Badge> : flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
               </TableRow>

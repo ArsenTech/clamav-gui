@@ -48,18 +48,21 @@ export const HISTORY_DATA: IHistoryData[] = [
           id: "1",
           timestamp: "2026-01-01",
           action: "Scan",
-          details: "Scan finished. No infected files"
+          details: "Scan finished. No infected files",
+          status: "error"
      },
      {
           id: "2",
           timestamp: "2026-01-02",
           action: "Config",
-          details: "Config initialized successfully"
+          details: "Config initialized successfully",
+          status: "success"
      },
      {
           id: "3",
           timestamp: "2026-01-03",
           action: "Update",
-          details: "Database already up to date"
+          details: "Database already up to date",
+          status: "warning"
      }
 ]
