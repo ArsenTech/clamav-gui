@@ -5,7 +5,7 @@ export type ScanType = "" | "main" | "full" | "custom" | "file"
 export type ClamAVState = "checking" | "available" | "missing";
 export type ThreatStatus = "quarantined" | "deleted" | "safe" | "detected";
 export type HistoryStatus = "success" | "warning" | "error";
-export type ThreatStatusStat = Exclude<ThreatStatus,"detected"> | "unresolved";
+export type ThreatStatusStat = Exclude<ThreatStatus,"detected"|"safe"> | "unresolved" | "skipped";
 export type ComputerVirusType = "trojan" | "ransomware" | "spyware" | "rootkit" | "other";
 export type ScanTypeStat = Exclude<ScanType,""> | "real-time";
 

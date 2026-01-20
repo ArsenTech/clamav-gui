@@ -18,7 +18,7 @@ export const SCAN_TYPE_DATA: IScanTypeStat[] = [
 ]
 export const THREAT_STATUS_DATA: IThreatStatusStat[] = [
   { status: "quarantined", threats: 275, fill: "var(--color-quarantined)" },
-  { status: "ignored", threats: 200, fill: "var(--color-ignored)" },
+  { status: "skipped", threats: 200, fill: "var(--color-skipped)" },
   { status: "deleted", threats: 287, fill: "var(--color-deleted)" },
   { status: "unresolved", threats: 173, fill: "var(--color-unresolved)" },
 ]

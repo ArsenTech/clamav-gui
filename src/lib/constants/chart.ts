@@ -35,7 +35,7 @@ export const THREAT_STATUS_CONFIG = {
     label: "Quarantined",
     color: "var(--chart-1)",
   },
-  ignored: {
+  skipped: {
     label: "Skipped",
     color: "var(--chart-2)",
   },
