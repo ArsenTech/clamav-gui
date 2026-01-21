@@ -1,7 +1,7 @@
 import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { IHistoryData } from "../types";
 
-// TODO: Export Metadata
+// TODO: Export Metadata alongside the actual history data
 
 export const exportJSON = async (path: string, historyData: IHistoryData[]) => {
      const jsonData = JSON.stringify(historyData,null,2);
