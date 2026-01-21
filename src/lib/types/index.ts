@@ -4,7 +4,7 @@ import { LucideProps } from "lucide-react";
 export type ScanType = "" | "main" | "full" | "custom" | "file"
 export type ClamAVState = "checking" | "available" | "missing";
 export type ThreatStatus = "quarantined" | "deleted" | "safe" | "detected";
-export type HistoryStatus = "success" | "warning" | "error";
+export type HistoryStatus = "success" | "warning" | "error" | "acknowledged";
 export type ThreatStatusStat = Exclude<ThreatStatus,"detected"|"safe"> | "unresolved" | "skipped";
 export type ComputerVirusType = "trojan" | "ransomware" | "spyware" | "rootkit" | "other";
 export type ScanTypeStat = Exclude<ScanType,""> | "real-time";
@@ -35,7 +35,7 @@ export interface IHistoryData{
      action: string,
      details: string
      status: HistoryStatus,
-     logID?: string
+     logId?: string
 }
 export interface IQuickAccessItem{
      name: string,

@@ -1,10 +1,15 @@
 use specta::specta;
+use std::io::Write;
 use std::io::{BufRead as _, BufReader};
 use std::path::PathBuf;
 use std::process::{Command, Stdio};
-use std::sync::Mutex;
-use tauri::{command, Emitter};
+use std::sync::atomic::{AtomicUsize, Ordering};
+use std::sync::{Arc, Mutex};
+use tauri::{command, Emitter, Manager};
 use walkdir::WalkDir;
+
+use crate::clamav::history::{append_history, HistoryItem};
+use crate::clamav::new_id;
 
 fn estimate_total_files(paths: &[PathBuf]) -> u64 {
     paths
@@ -18,13 +23,29 @@ fn estimate_total_files(paths: &[PathBuf]) -> u64 {
 static SCAN_PROCESS: once_cell::sync::Lazy<Mutex<Option<u32>>> =
     once_cell::sync::Lazy::new(|| Mutex::new(None));
 
-fn run_scan(app: tauri::AppHandle, mut cmd: Command) -> Result<(), String> {
+fn scan_log_path(app: &tauri::AppHandle, log_id: &str) -> PathBuf {
+    let mut dir = app.path().app_data_dir().unwrap();
+    dir.push("logs");
+    std::fs::create_dir_all(&dir).ok();
+    dir.join(format!("scan-{}.log", log_id))
+}
+fn run_scan(app: tauri::AppHandle, log_id: String, mut cmd: Command) -> Result<(), String> {
     {
-        let guard = SCAN_PROCESS.lock().unwrap();
+        let mut guard = SCAN_PROCESS.lock().unwrap();
         if guard.is_some() {
             return Err("Scan already running".into());
         }
+        *guard = Some(0);
     }
+
+    let log_path = scan_log_path(&app, &log_id);
+    let log_file = Arc::new(Mutex::new(
+        std::fs::OpenOptions::new()
+            .create(true)
+            .append(true)
+            .open(&log_path)
+            .map_err(|e| e.to_string())?,
+    ));
 
     let mut child = cmd
         .stdout(Stdio::piped())
@@ -32,47 +53,102 @@ fn run_scan(app: tauri::AppHandle, mut cmd: Command) -> Result<(), String> {
         .spawn()
         .map_err(|e| e.to_string())?;
 
-    let stdout = child.stdout.take();
-    let stderr = child.stderr.take();
-
     {
         let mut guard = SCAN_PROCESS.lock().unwrap();
         *guard = Some(child.id());
     }
 
-    let app_out = app.clone();
-    if let Some(out) = stdout {
+    let threats_count = Arc::new(AtomicUsize::new(0));
+
+    if let Some(out) = child.stdout.take() {
+        let app = app.clone();
+        let log = log_file.clone();
+        let threats = threats_count.clone();
         std::thread::spawn(move || {
             for line in BufReader::new(out).lines().flatten() {
-                app_out.emit("clamscan:log", line).ok();
+                if line.ends_with("FOUND") {
+                    threats.fetch_add(1, Ordering::Relaxed);
+                }
+                app.emit("clamscan:log", &line).ok();
+                if let Ok(mut f) = log.lock() {
+                    writeln!(f, "{}", line).ok();
+                }
             }
         });
     }
 
-    let app_err = app.clone();
-    if let Some(err) = stderr {
+    if let Some(err) = child.stderr.take() {
+        let app = app.clone();
+        let log = log_file.clone();
         std::thread::spawn(move || {
             for line in BufReader::new(err).lines().flatten() {
-                app_err.emit("clamscan:log", line).ok();
+                app.emit("clamscan:log", &line).ok();
+                if let Ok(mut f) = log.lock() {
+                    writeln!(f, "[Error] {}", line).ok();
+                }
             }
         });
     }
 
-    let success = child.wait().map(|s| s.success()).unwrap_or(false);
+    let exit_code = child.wait().ok().and_then(|s| s.code()).unwrap_or(-1);
 
     {
         let mut guard = SCAN_PROCESS.lock().unwrap();
         *guard = None;
     }
+    let found = threats_count.load(Ordering::Relaxed);
 
-    app.emit("clamscan:finished", success).ok();
+    let (status, details) = match exit_code {
+        0 => (
+            "success",
+            "Scan completed successfully, no threats found".to_string(),
+        ),
+        1 => (
+            "warning",
+            format!("Scan completed successfully, {} threats found", found),
+        ),
+        2 => (
+            "success",
+            "Some files could not be scanned due to access restrictions".to_string(),
+        ),
+        _ => ("error", format!("Scan failed (exit code {})", exit_code)),
+    };
+
+    if let Err(e) = append_history(
+        &app,
+        HistoryItem {
+            id: new_id(),
+            timestamp: chrono::Utc::now().to_rfc3339(),
+            action: "Scan Finished".into(),
+            details,
+            status: status.into(),
+            log_id: Some(log_id.clone()),
+        },
+    ) {
+        eprintln!("History append failed: {}", e);
+    }
+    app.emit("clamscan:finished", exit_code).ok();
     Ok(())
 }
 
 #[command]
 #[specta(result)]
 pub async fn start_main_scan(app: tauri::AppHandle) -> Result<(), String> {
+    let log_id = new_id();
     println!("Starting Main Scan...");
+    if let Err(e) = append_history(
+        &app,
+        HistoryItem {
+            id: new_id(),
+            timestamp: chrono::Utc::now().to_rfc3339(),
+            action: "Scan Started".into(),
+            details: "The main scan has been started".into(),
+            status: "success".into(),
+            log_id: Some(log_id.clone()),
+        },
+    ) {
+        eprintln!("History append failed: {}", e);
+    }
     std::thread::spawn(move || {
         let mut paths = Vec::new();
 
@@ -113,7 +189,7 @@ pub async fn start_main_scan(app: tauri::AppHandle) -> Result<(), String> {
             cmd.arg(path);
         }
 
-        run_scan(app, cmd).ok();
+        run_scan(app, log_id, cmd).ok();
     });
 
     Ok(())
@@ -122,6 +198,20 @@ pub async fn start_main_scan(app: tauri::AppHandle) -> Result<(), String> {
 #[command]
 #[specta(result)]
 pub async fn start_full_scan(app: tauri::AppHandle) -> Result<(), String> {
+    let log_id = new_id();
+    if let Err(e) = append_history(
+        &app,
+        HistoryItem {
+            id: new_id(),
+            timestamp: chrono::Utc::now().to_rfc3339(),
+            action: "Scan Started".into(),
+            details: "The full scan has been started".into(),
+            status: "success".into(),
+            log_id: Some(log_id.clone()),
+        },
+    ) {
+        eprintln!("History append failed: {}", e);
+    }
     println!("Starting Full Scan...");
     std::thread::spawn(move || {
         let root = if cfg!(windows) { "C:\\" } else { "/" };
@@ -136,7 +226,7 @@ pub async fn start_full_scan(app: tauri::AppHandle) -> Result<(), String> {
             root,
         ]);
 
-        run_scan(app, cmd).ok();
+        run_scan(app, log_id, cmd).ok();
     });
 
     Ok(())
@@ -148,7 +238,21 @@ pub fn start_custom_scan(app: tauri::AppHandle, paths: Vec<String>) -> Result<()
     if paths.is_empty() {
         return Err("No scan targets provided".into());
     }
+    let log_id = new_id();
     println!("Starting Custom Scan...");
+    if let Err(e) = append_history(
+        &app,
+        HistoryItem {
+            id: new_id(),
+            timestamp: chrono::Utc::now().to_rfc3339(),
+            action: "Scan Started".into(),
+            details: "The custom scan has been started".into(),
+            status: "success".into(),
+            log_id: Some(log_id.clone()),
+        },
+    ) {
+        eprintln!("History append failed: {}", e);
+    }
     let resolved_paths: Vec<PathBuf> = paths.iter().map(PathBuf::from).collect();
 
     for path in &resolved_paths {
@@ -187,7 +291,7 @@ pub fn start_custom_scan(app: tauri::AppHandle, paths: Vec<String>) -> Result<()
         let total_files = estimate_total_files(&resolved_paths);
         app.emit("clamscan:total", total_files).ok();
 
-        run_scan(app, cmd).ok();
+        run_scan(app, log_id, cmd).ok();
     });
 
     Ok(())

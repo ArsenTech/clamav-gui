@@ -1,3 +1,4 @@
+use crate::clamav::history::{append_history, HistoryItem};
 use specta::specta;
 use std::process::Command;
 use tauri::{command, Emitter};
@@ -5,26 +6,74 @@ use tauri::{command, Emitter};
 #[command]
 #[specta(result)]
 pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
+    let log_id = crate::clamav::new_id();
+
+    append_history(
+        &app,
+        HistoryItem {
+            id: crate::clamav::new_id(),
+            timestamp: chrono::Utc::now().to_rfc3339(),
+            action: "Definitions Update Started".into(),
+            details: "ClamAV database update has started".into(),
+            status: "success".into(),
+            log_id: Some(log_id.clone()),
+        },
+    )
+    .ok();
+
     std::thread::spawn(move || {
-        let mut cmd = Command::new("freshclam");
-        cmd.args(["--stdout"]);
         app.emit("freshclam:start", ()).ok();
 
-        match cmd.output() {
-            Ok(output) => {
-                let stdout = String::from_utf8_lossy(&output.stdout);
-                let stderr = String::from_utf8_lossy(&output.stderr);
+        let output = Command::new("freshclam").arg("--stdout").output();
 
-                app.emit("freshclam:output", stdout.to_string()).ok();
+        match output {
+            Ok(out) => {
+                let stdout = String::from_utf8_lossy(&out.stdout);
+                let stderr = String::from_utf8_lossy(&out.stderr);
+                let exit_code = out.status.code().unwrap_or(-1);
+
+                if !stdout.is_empty() {
+                    app.emit("freshclam:output", stdout.to_string()).ok();
+                }
 
                 if !stderr.is_empty() {
                     app.emit("freshclam:error", stderr.to_string()).ok();
                 }
 
-                app.emit("freshclam:done", ()).ok();
+                let (status, details) = match exit_code {
+                    0 => ("success", "Definitions are already up to date".to_string()),
+                    1 => ("warning", "Update completed with warnings".to_string()),
+                    _ => ("error", format!("Update failed (exit code {})", exit_code)),
+                };
+                append_history(
+                    &app,
+                    HistoryItem {
+                        id: crate::clamav::new_id(),
+                        timestamp: chrono::Utc::now().to_rfc3339(),
+                        action: "Definitions Update Finished".into(),
+                        details,
+                        status: status.into(),
+                        log_id: Some(log_id),
+                    },
+                )
+                .ok();
+
+                app.emit("freshclam:done", exit_code).ok();
             }
             Err(e) => {
                 app.emit("freshclam:error", e.to_string()).ok();
+                append_history(
+                    &app,
+                    HistoryItem {
+                        id: crate::clamav::new_id(),
+                        timestamp: chrono::Utc::now().to_rfc3339(),
+                        action: "Definitions Update Failed".into(),
+                        details: e.to_string(),
+                        status: "error".into(),
+                        log_id: Some(log_id),
+                    },
+                )
+                .ok();
             }
         }
     });
@@ -42,5 +91,3 @@ pub fn get_clamav_version() -> Result<String, String> {
 
     Ok(String::from_utf8_lossy(&output.stdout).to_string())
 }
-
-// TODO: use this command to return recent database update date if freshclam didn't return date: sigtool --info "*.cvd | *.cld"

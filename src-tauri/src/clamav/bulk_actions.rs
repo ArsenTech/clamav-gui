@@ -1,7 +1,7 @@
 use specta::specta;
 use tauri::command;
 
-use crate::{quarantine_file, restore_quarantine,delete_quarantine};
+use crate::{delete_quarantine, quarantine_file, remove_file, restore_quarantine};
 
 #[command]
 #[specta(result)]
@@ -17,19 +17,16 @@ pub fn quarantine_all(
 
 #[command]
 #[specta(result)]
-pub fn delete_all(files: Vec<String>) -> Result<(), String> {
+pub fn delete_all(app: tauri::AppHandle, files: Vec<String>) -> Result<(), String> {
     for path in files {
-        std::fs::remove_file(path).ok();
+        remove_file(app.clone(), path).ok();
     }
     Ok(())
 }
 
 #[command]
 #[specta(result)]
-pub fn restore_all(
-    app: tauri::AppHandle,
-    ids: Vec<String>
-) -> Result<(), String>{
+pub fn restore_all(app: tauri::AppHandle, ids: Vec<String>) -> Result<(), String> {
     for id in ids {
         restore_quarantine(app.clone(), id).ok();
     }
@@ -38,10 +35,7 @@ pub fn restore_all(
 
 #[command]
 #[specta(result)]
-pub fn clear_quarantine(
-    app: tauri::AppHandle,
-    ids: Vec<String>
-) -> Result<(), String>{
+pub fn clear_quarantine(app: tauri::AppHandle, ids: Vec<String>) -> Result<(), String> {
     for id in ids {
         delete_quarantine(app.clone(), id).ok();
     }

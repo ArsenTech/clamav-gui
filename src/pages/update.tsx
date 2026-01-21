@@ -10,13 +10,15 @@ import { useEffect, useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { Spinner } from "@/components/ui/spinner";
 import { invoke } from "@tauri-apps/api/core";
-import { parseClamVersion } from "@/lib/helpers";
+import { getExitText, parseClamVersion } from "@/lib/helpers";
+import { toast } from "sonner";
 
 export default function UpdateDefinitions(){
      const [updateState, setUpdateState] = useState<IUpdatePageState>(INITIAL_UPDATE_STATE);
      const [clamavVersion, setClamavVersion] = useState<string | null>(
           localStorage.getItem("clamav-version")
      );
+     const [exitMsg, setExitMsg] = useState<number | null>(null)
      const setState = (overrides: Partial<IUpdatePageState>) =>
           setUpdateState(prev=>({
                ...prev,
@@ -82,7 +84,7 @@ export default function UpdateDefinitions(){
                          isRequired: true
                     }))
                ),
-               listen("freshclam:done",async()=>{
+               listen<number>("freshclam:done",async(e)=>{
                     try{
                          const now = new Date();
                          localStorage.setItem("last-updated", now.toISOString());
@@ -91,10 +93,12 @@ export default function UpdateDefinitions(){
                               isUpdating: false,
                               lastUpdated: now,
                          });
+                         setExitMsg(e.payload)
                          const raw = await invoke<string>("get_clamav_version");
                          const parsed = parseClamVersion(raw);
                          updateVersions(parsed);
                     } catch (e) {
+                         toast.error("Failed to update definitions")
                          console.error(e)
                     }
                })
@@ -106,7 +110,7 @@ export default function UpdateDefinitions(){
      const {isRequired, isFetching, isUpdating, log, lastUpdated} = updateState
      const Icon = (isUpdating || isFetching) ? Spinner : !isRequired ? CheckCircle : AlertCircle
      return (
-          <AppLayout className={"grid gris-cols-1 md:grid-cols-2 gap-10 p-4"}>
+          <AppLayout className="flex flex-col items-center justify-center gap-6 p-4">
                <div className="space-y-4">
                     <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">Definition Updater</h1>
                     <div className="flex flex-col items-center gap-4">
@@ -132,6 +136,9 @@ export default function UpdateDefinitions(){
                          </Button>
                          {!!clamavVersion && (
                               <p className="text-sm text-muted-foreground" title="Virus definition database version">{clamavVersion}</p>
+                         )}
+                         {exitMsg!==null && (
+                              <p className="text-sm text-muted-foreground">{getExitText(exitMsg,"update")}</p>
                          )}
                     </div>
                </div>

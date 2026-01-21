@@ -1,3 +1,7 @@
+import { UPDATE_EXIT_CODE_MSG } from "../constants";
+import { SCAN_EXIT_CODE_MSG } from "../constants";
+import { HistoryStatus, ThreatStatus } from "../types";
+
 export function formatBytes(bytes: number) {
   const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
   if (bytes === 0) return "0 Bytes";
@@ -47,4 +51,22 @@ export function parseClamVersion(raw: string) {
   };
 }
 
-export const capitalizeText = (cellValue: string) => `${cellValue.toUpperCase()[0]}${cellValue.slice(1)}`
+export const capitalizeText = (cellValue: string) => `${cellValue.toUpperCase()[0]}${cellValue.slice(1)}`;
+
+export function getThreatStatusBadges(cellValue: ThreatStatus) {
+  return cellValue ==="deleted" ? "default" :
+    cellValue ==="safe" ? "secondary" :
+    cellValue === "detected" ? "destructive" : "outline"
+}
+
+export function getHistoryStatusBadges(cellValue: HistoryStatus) {
+  return cellValue === "warning" ? "warning" : 
+    cellValue === "error" ? "destructive" :
+    cellValue==="success" ? "success" : "outline";
+}
+export const getExitText = (exitCode: number, type: "scan" | "update") => {
+  const exitMsgs: Record<number,string> = type==="scan" ? SCAN_EXIT_CODE_MSG : UPDATE_EXIT_CODE_MSG;
+  const fallbackMsg = type==="scan" ? "Scan failed due to an internal error" : "Update Failed"
+  const msg = exitMsgs[exitCode] ?? fallbackMsg
+  return `${msg} (Exit Code: ${exitCode})`
+}

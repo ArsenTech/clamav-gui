@@ -63,13 +63,14 @@ export default function ScanPage(){
                          }))
                     }
                }),
-               listen<boolean>("clamscan:finished",()=>{
+               listen<number>("clamscan:finished",(e)=>{
                     if (!scanActiveRef.current) return;
                     scanStartedRef.current = false;
-                    scanActiveRef.current = false; 
+                    scanActiveRef.current = false;
                     setState({
                          isFinished: true,
-                         duration: startTimeRef.current ? Math.floor((Date.now() - startTimeRef.current)/1000) : 0
+                         duration: startTimeRef.current ? Math.floor((Date.now() - startTimeRef.current)/1000) : 0,
+                         exitCode: e.payload
                     });
                     startTimeRef.current = null;
                }),
@@ -97,7 +98,7 @@ export default function ScanPage(){
           }
           startTimeRef.current = Date.now();
           scanActiveRef.current = true;
-          setState({duration: 0})
+          setState({duration: 0, exitCode: 0})
      },[scanState.scanType, scanState.paths])
      const handleStop = async() => {
           reset();
@@ -116,10 +117,11 @@ export default function ScanPage(){
           setState({
                ...GET_INITIAL_SCAN_STATE(type,path),
                scanType: "",
+               exitCode: 0,
                ...overrides
           })
      }
-     const {isFinished, duration, scanType, currLocation, totalFiles, scannedFiles, logs, paths: scanLocations} = scanState
+     const {isFinished, duration, scanType, currLocation, totalFiles, scannedFiles, logs, paths: scanLocations, exitCode} = scanState
      return (
           <AppLayout className={isFinished ? "flex justify-center items-center gap-4 flex-col p-4" : "grid gris-cols-1 md:grid-cols-2 gap-10 p-4"}>
                {isFinished ? (
@@ -132,6 +134,7 @@ export default function ScanPage(){
                                    <h2 className="text-lg sm:text-xl font-semibold flex items-center justify-center gap-2.5 w-fit"><Timer className="text-primary"/>{formatDuration(duration)}</h2>
                               )}
                               onQuit={reset}
+                              exitCode={exitCode}
                          />
                     </>
                ) : (

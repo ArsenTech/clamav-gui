@@ -1,5 +1,5 @@
 import { Search, SearchCheck, FolderSearch, FileSearch, Bug, ClipboardClock, Cog, RotateCcw, ShieldCheck } from "lucide-react";
-import { IHistoryData, IScanMenuItem } from "../types";
+import { IScanMenuItem } from "../types";
 
 export const DAYS_OF_THE_WEEK = ["sun","mon","tue","wed","thu","fri","sat"] as const;
 
@@ -43,26 +43,12 @@ export const LOG_ITEMS = [
      {name: "Real-Time Protection", Icon: ShieldCheck},
      {name: "Settings", Icon: Cog}
 ]
-export const HISTORY_DATA: IHistoryData[] = [
-     {
-          id: "1",
-          timestamp: "2026-01-01",
-          action: "Scan",
-          details: "Scan finished. No infected files",
-          status: "error"
-     },
-     {
-          id: "2",
-          timestamp: "2026-01-02",
-          action: "Config",
-          details: "Config initialized successfully",
-          status: "success"
-     },
-     {
-          id: "3",
-          timestamp: "2026-01-03",
-          action: "Update",
-          details: "Database already up to date",
-          status: "warning"
-     }
-]
+export const SCAN_EXIT_CODE_MSG: Record<number, string> = {
+     0: "Scan completed successfully",
+     1: "Threats were detected",
+     2: "Some files could not be scanned due to access restrictions",
+}
+export const UPDATE_EXIT_CODE_MSG: Record<number, string> = {
+     0: "Definitions are updated successfully",
+     1: "Some update sources may not have been reachable",
+}

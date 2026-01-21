@@ -7,6 +7,9 @@ use std::path::PathBuf;
 use tauri::command;
 use tauri::Manager;
 
+use crate::clamav::history::append_history;
+use crate::clamav::history::HistoryItem;
+
 fn quarantine_id(file_path: &str) -> String {
     let mut hasher = Sha256::new();
     hasher.update(file_path.as_bytes());
@@ -46,7 +49,7 @@ pub fn quarantine_file(
 
     let dest = quarantine.join(format!("{}.quarantine", id));
 
-    if dest.exists() {
+    if dest.try_exists().unwrap_or(false) {
         return Err("File already quarantined".into());
     }
 
@@ -58,6 +61,19 @@ pub fn quarantine_file(
             return Err(e.to_string());
         }
     }
+
+    append_history(
+        &app,
+        HistoryItem {
+            id: crate::clamav::new_id(),
+            timestamp: chrono::Utc::now().to_rfc3339(),
+            action: "Threat Quarantined".into(),
+            details: format!("{} was moved to quarantine", threat_name),
+            status: "warning".into(),
+            log_id: None,
+        },
+    )
+    .ok();
 
     let meta = QuarantinedItem {
         id,
@@ -91,7 +107,9 @@ pub fn list_quarantine(app: tauri::AppHandle) -> Result<Vec<QuarantinedItem>, St
         }
     }
 
-    Ok(map.into_values().collect())
+    let mut items: Vec<_> = map.into_values().collect();
+    items.sort_by(|a, b| b.quarantined_at.cmp(&a.quarantined_at));
+    Ok(items)
 }
 
 #[command]
@@ -111,7 +129,7 @@ pub fn restore_quarantine(app: tauri::AppHandle, id: String) -> Result<(), Strin
         std::fs::create_dir_all(parent).ok();
     }
 
-    if dest.exists() {
+    if dest.try_exists().unwrap_or(false) {
         return Err("Restore destination already exists".into());
     }
 
@@ -123,6 +141,19 @@ pub fn restore_quarantine(app: tauri::AppHandle, id: String) -> Result<(), Strin
             return Err(e.to_string());
         }
     }
+
+    append_history(
+        &app,
+        HistoryItem {
+            id: crate::clamav::new_id(),
+            timestamp: chrono::Utc::now().to_rfc3339(),
+            action: "Threat restored".into(),
+            details: format!("{} was restored from quarantine", meta.threat_name),
+            status: "success".into(),
+            log_id: None,
+        },
+    )
+    .ok();
 
     std::fs::remove_file(meta_path).ok();
 
@@ -140,19 +171,26 @@ pub fn delete_quarantine(app: tauri::AppHandle, id: String) -> Result<(), String
         serde_json::from_str(&std::fs::read_to_string(&meta_path).map_err(|e| e.to_string())?)
             .map_err(|e| e.to_string())?;
 
-    let dest = PathBuf::from(&meta.file_path);
-
-    if let Some(parent) = dest.parent() {
-        std::fs::create_dir_all(parent).ok();
+    if bin_path.exists() {
+        std::fs::remove_file(&bin_path).map_err(|e| e.to_string())?;
     }
 
-    if dest.exists() {
-        return Err("Restore destination already exists".into());
+    if meta_path.exists() {
+        std::fs::remove_file(&meta_path).map_err(|e| e.to_string())?;
     }
 
-    std::fs::remove_file(&bin_path).map_err(|e| e.to_string())?;
-
-    std::fs::remove_file(meta_path).ok();
+    append_history(
+        &app,
+        HistoryItem {
+            id: crate::clamav::new_id(),
+            timestamp: chrono::Utc::now().to_rfc3339(),
+            action: "Threat deleted".into(),
+            details: format!("{} was deleted from quarantine", meta.threat_name),
+            status: "success".into(),
+            log_id: None,
+        },
+    )
+    .ok();
 
     Ok(())
 }

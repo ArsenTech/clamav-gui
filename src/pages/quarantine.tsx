@@ -1,9 +1,9 @@
 import { ThreatsTable } from "@/components/data-table/tables/threats";
 import { AppLayout } from "@/components/layout";
-import { RotateCcw, ShieldCheck, Trash2 } from "lucide-react"
+import { RotateCcw, RotateCw, ShieldCheck, Trash2 } from "lucide-react"
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { QUARANTINE_COLS } from "@/components/data-table/columns/quarantine";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { IQuarantineData } from "@/lib/types";
 import { invoke } from "@tauri-apps/api/core";
 import { formatBytes } from "@/lib/helpers";
@@ -11,12 +11,14 @@ import Popup from "@/components/popup";
 import { toast } from "sonner";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export default function QuarantinePage(){
      const [isOpenBulk, setIsOpenBulk] = useState({
           restore: false,
           delete: false,
      })
+     const [isRefreshing, startTransition] = useTransition();
      const setBulkState = (overrides: Partial<typeof isOpenBulk>) =>
           setIsOpenBulk(prev=>({
                ...prev,
@@ -33,8 +35,8 @@ export default function QuarantinePage(){
                ...prev,
                ...overrides
           }))
-     useEffect(()=>{
-          invoke<IQuarantineData<"type">[]>("list_quarantine").then(data=>{
+     const fetchData = () => {
+          startTransition(()=>invoke<IQuarantineData<"type">[]>("list_quarantine").then(data=>{
                const newData: IQuarantineData<"state">[] = data.map(({id,threat_name,file_path,quarantined_at,size})=>({
                     id,
                     threat_name,
@@ -43,7 +45,10 @@ export default function QuarantinePage(){
                     size: isNaN(size) ? null : formatBytes(size)
                }))
                setData(newData)
-          }).catch(() => setData([]));
+          }).catch(() => setData([])));
+     }
+     useEffect(()=>{
+          fetchData()
      },[])
      const quarantineAction = async(type: "restore" | "delete") => {
           const commandName = `${type}_quarantine`
@@ -100,7 +105,11 @@ export default function QuarantinePage(){
                {data.length>0 ? (
                     <>
                     <ButtonGroup>
-                         <Button onClick={()=>setBulkState({ delete: true })}>
+                         <Button onClick={fetchData} disabled={isRefreshing}>
+                              <RotateCw className={cn(isRefreshing && "animate-spin")}/>
+                              {isRefreshing ? "Refreshing..." : "Refresh"}
+                         </Button>
+                         <Button variant="secondary" onClick={()=>setBulkState({ delete: true })}>
                               <Trash2/> Clear All
                          </Button>
                          <Button variant="secondary" onClick={()=>setBulkState({ restore: true })}>

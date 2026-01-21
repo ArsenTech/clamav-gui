@@ -11,13 +11,14 @@ use tauri::command;
 use tauri_specta::{collect_commands, Builder};
 
 // Local Crates
+use crate::clamav::bulk_actions::{clear_quarantine, delete_all, quarantine_all, restore_all};
+use crate::clamav::history::load_history;
 use crate::clamav::quarantine::{
     delete_quarantine, list_quarantine, quarantine_file, restore_quarantine,
 };
+use crate::clamav::remove_file;
 use crate::clamav::scan::{start_custom_scan, start_full_scan, start_main_scan, stop_scan};
 use crate::clamav::update::{get_clamav_version, update_definitions};
-use crate::clamav::remove_file;
-use crate::clamav::bulk_actions::{quarantine_all,delete_all,restore_all,clear_quarantine};
 use crate::sysinfo::{get_sys_info, get_sys_stats};
 
 #[command]
@@ -51,10 +52,12 @@ pub fn run() {
         quarantine_all,
         delete_all,
         restore_all,
-        clear_quarantine
+        clear_quarantine,
+        load_history,
     ]);
 
     tauri::Builder::default()
+        .plugin(tauri_plugin_fs::init())
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_os::init())

@@ -12,8 +12,11 @@
     {
       "identifier": "opener:allow-open-path",
       "allow": [
-        {"path": "**"}
+        {
+          "path": "**"
+        }
       ]
-    }
+    },
+    "fs:allow-write-text-file"
   ]
 }

@@ -2,13 +2,14 @@ import { Button } from "@/components/ui/button";
 import { ArrowDown, ArrowUp, ArrowUpDown, BugOff, EyeOff, FolderOpen, MoreHorizontal, Trash } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { IThreatsData } from "@/lib/types";
+import { IThreatsData, ThreatStatus } from "@/lib/types";
 import { invoke } from "@tauri-apps/api/core";
 import { toast } from "sonner";
 import { openPath } from "@tauri-apps/plugin-opener";
 import { dirname } from "@tauri-apps/api/path";
 import { useMemo } from "react";
-
+import { capitalizeText, getThreatStatusBadges } from "@/lib/helpers";
+import { Badge } from "@/components/ui/badge";
 
 export const THREATS_COLS = (
      setThreats: React.Dispatch<React.SetStateAction<IThreatsData[]>>,
@@ -38,7 +39,10 @@ export const THREATS_COLS = (
      },
      {
           accessorKey: "status",
-          header: "Status"
+          header: "Status",
+          cell: ({getValue}) => <Badge variant={getThreatStatusBadges(getValue() as ThreatStatus)}>
+               {capitalizeText(getValue() as string)}
+          </Badge>
      },
      {
           id: "actions",

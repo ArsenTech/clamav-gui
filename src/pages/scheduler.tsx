@@ -4,7 +4,7 @@ import SchedulerForm from "@/components/antivirus/scheduler-form";
 import { SchedulerType } from "@/lib/types/schema";
 import { useState } from "react";
 import { ISchedulerData } from "@/lib/types";
-import { SCHEDULER_COLS } from "@/lib/constants/columns";
+import { SCHEDULER_COLS } from "@/components/data-table/columns/scheduler";
 import { DAYS_OF_THE_WEEK } from "@/lib/constants";
 
 export default function SchedulerPage(){

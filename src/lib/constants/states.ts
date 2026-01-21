@@ -20,7 +20,8 @@ export const GET_INITIAL_SCAN_STATE = (type: ScanType | null, path: string[] | n
      duration: 0,
      scannedFiles: 0,
      totalFiles: 0,
-     paths: path ?? []
+     paths: path ?? [],
+     exitCode: 0
 })
 export const INITIAL_UPDATE_STATE: IUpdatePageState = {
      isUpdating: false,

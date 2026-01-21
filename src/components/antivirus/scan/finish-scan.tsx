@@ -12,14 +12,16 @@ import { invoke } from "@tauri-apps/api/core";
 import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/lib/utils";
+import { getExitText } from "@/lib/helpers";
 
 interface Props{
      setThreats: React.Dispatch<React.SetStateAction<IThreatsData[]>>,
      threats: IThreatsData[],
      durationElem: React.JSX.Element,
-     onQuit: () => void
+     onQuit: () => void,
+     exitCode: number
 }
-export default function ScanFinishResult({threats,durationElem,onQuit,setThreats}: Props){
+export default function ScanFinishResult({threats,durationElem,onQuit,setThreats, exitCode}: Props){
      const [isOpenDeletion, setIsOpenDeletion] = useState(false);
      const [isPending, startTransition] = useTransition()
      const [finishScanState, setFinishScanState] = useState<{
@@ -120,6 +122,7 @@ export default function ScanFinishResult({threats,durationElem,onQuit,setThreats
                <Button asChild>
                     <Link to="/" onClick={onQuit}>Back to the overview</Link>
                </Button>
+               <p className="text-muted-foreground">{getExitText(exitCode,"scan")}</p>
           </>
      ) : (
           <>
@@ -154,6 +157,7 @@ export default function ScanFinishResult({threats,durationElem,onQuit,setThreats
                          <Link to="/" onClick={onQuit} className={cn(!isResolved && "select-none pointer-events-none opacity-50")}>Back to the overview</Link>
                     </Button>
                </ButtonGroup>
+               <p className="text-muted-foreground">{getExitText(exitCode,"scan")}</p>
                <Popup
                     open={isOpen}
                     onOpen={isOpen=>setState({isOpen})}

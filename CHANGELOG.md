@@ -9,6 +9,16 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - A Quarantine Page logic
 - Logic to Do some actions after finishing scan (if there are many threats)
 - The Resolve Logic after finishing scan
+- The History Page Logic
+  - Append History
+  - Refresh Data
+  - Export History
+### Improved
+- History Table
+- Scan Logic
+- Quarantine Logic
+- Update logic
+- Remove File Logic
 
 ## 0.2.0 - 2026-01-19 (Early Build 2)
 ### Added
