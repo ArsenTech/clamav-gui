@@ -29,7 +29,6 @@ export default function HistoryPage(){
                }
           })
      }
-     
      const exportDataAs = async () => {
           const path = await save({
                filters: [
@@ -38,11 +37,8 @@ export default function HistoryPage(){
                ],
           })
           if(!path) return;
-          if(path.endsWith(".csv")){
-               await exportCSV(path,data)
-          } else {
-               await exportJSON(path,data)
-          }
+          const exportFile = path.endsWith(".csv") ? exportCSV : exportJSON;
+          await exportFile(path,data);
      }
      useEffect(()=>{
           fetchData()

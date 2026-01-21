@@ -8,8 +8,8 @@ use std::sync::{Arc, Mutex};
 use tauri::{command, Emitter, Manager};
 use walkdir::WalkDir;
 
-use crate::clamav::history::{append_history, HistoryItem};
-use crate::clamav::new_id;
+use crate::antivirus::history::{append_history, HistoryItem};
+use crate::system::new_id;
 
 fn estimate_total_files(paths: &[PathBuf]) -> u64 {
     paths

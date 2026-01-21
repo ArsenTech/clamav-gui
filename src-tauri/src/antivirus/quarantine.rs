@@ -7,8 +7,8 @@ use std::path::PathBuf;
 use tauri::command;
 use tauri::Manager;
 
-use crate::clamav::history::append_history;
-use crate::clamav::history::HistoryItem;
+use crate::antivirus::history::append_history;
+use crate::antivirus::history::HistoryItem;
 
 fn quarantine_id(file_path: &str) -> String {
     let mut hasher = Sha256::new();
@@ -65,7 +65,7 @@ pub fn quarantine_file(
     append_history(
         &app,
         HistoryItem {
-            id: crate::clamav::new_id(),
+            id: crate::system::new_id(),
             timestamp: chrono::Utc::now().to_rfc3339(),
             action: "Threat Quarantined".into(),
             details: format!("{} was moved to quarantine", threat_name),
@@ -145,7 +145,7 @@ pub fn restore_quarantine(app: tauri::AppHandle, id: String) -> Result<(), Strin
     append_history(
         &app,
         HistoryItem {
-            id: crate::clamav::new_id(),
+            id: crate::system::new_id(),
             timestamp: chrono::Utc::now().to_rfc3339(),
             action: "Threat restored".into(),
             details: format!("{} was restored from quarantine", meta.threat_name),
@@ -182,7 +182,7 @@ pub fn delete_quarantine(app: tauri::AppHandle, id: String) -> Result<(), String
     append_history(
         &app,
         HistoryItem {
-            id: crate::clamav::new_id(),
+            id: crate::system::new_id(),
             timestamp: chrono::Utc::now().to_rfc3339(),
             action: "Threat deleted".into(),
             details: format!("{} was deleted from quarantine", meta.threat_name),

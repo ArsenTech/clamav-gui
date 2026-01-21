@@ -1,4 +1,4 @@
-use crate::clamav::history::{append_history, HistoryItem};
+use crate::antivirus::history::{append_history, HistoryItem};
 use specta::specta;
 use std::process::Command;
 use tauri::{command, Emitter};
@@ -6,12 +6,12 @@ use tauri::{command, Emitter};
 #[command]
 #[specta(result)]
 pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
-    let log_id = crate::clamav::new_id();
+    let log_id = crate::system::new_id();
 
     append_history(
         &app,
         HistoryItem {
-            id: crate::clamav::new_id(),
+            id: crate::system::new_id(),
             timestamp: chrono::Utc::now().to_rfc3339(),
             action: "Definitions Update Started".into(),
             details: "ClamAV database update has started".into(),
@@ -48,7 +48,7 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
                 append_history(
                     &app,
                     HistoryItem {
-                        id: crate::clamav::new_id(),
+                        id: crate::system::new_id(),
                         timestamp: chrono::Utc::now().to_rfc3339(),
                         action: "Definitions Update Finished".into(),
                         details,
@@ -65,7 +65,7 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
                 append_history(
                     &app,
                     HistoryItem {
-                        id: crate::clamav::new_id(),
+                        id: crate::system::new_id(),
                         timestamp: chrono::Utc::now().to_rfc3339(),
                         action: "Definitions Update Failed".into(),
                         details: e.to_string(),

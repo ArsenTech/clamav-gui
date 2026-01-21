@@ -1,9 +1,7 @@
-// Prevents additional console window on Windows in release, DO NOT REMOVE!!
-#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 #![macro_use]
 
-mod clamav;
-mod sysinfo;
+mod antivirus;
+mod system;
 
 use specta::specta;
 use std::process::Command;
@@ -11,15 +9,15 @@ use tauri::command;
 use tauri_specta::{collect_commands, Builder};
 
 // Local Crates
-use crate::clamav::bulk_actions::{clear_quarantine, delete_all, quarantine_all, restore_all};
-use crate::clamav::history::load_history;
-use crate::clamav::quarantine::{
+use crate::antivirus::bulk_actions::{clear_quarantine, delete_all, quarantine_all, restore_all};
+use crate::antivirus::history::load_history;
+use crate::antivirus::quarantine::{
     delete_quarantine, list_quarantine, quarantine_file, restore_quarantine,
 };
-use crate::clamav::remove_file;
-use crate::clamav::scan::{start_custom_scan, start_full_scan, start_main_scan, stop_scan};
-use crate::clamav::update::{get_clamav_version, update_definitions};
-use crate::sysinfo::{get_sys_info, get_sys_stats};
+use crate::system::remove_file;
+use crate::antivirus::scan::{start_custom_scan, start_full_scan, start_main_scan, stop_scan};
+use crate::antivirus::update::{get_clamav_version, update_definitions};
+use crate::system::sysinfo::{get_sys_info, get_sys_stats};
 
 #[command]
 #[specta]

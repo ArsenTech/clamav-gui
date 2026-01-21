@@ -1,13 +1,9 @@
-pub mod bulk_actions;
-pub mod history;
-pub mod quarantine;
-pub mod scan;
-pub mod update;
+pub mod sysinfo;
 
 use specta::specta;
 use tauri::command;
 
-use crate::clamav::history::{append_history, HistoryItem};
+use crate::antivirus::history::{append_history, HistoryItem};
 
 pub fn new_id() -> String {
     uuid::Uuid::new_v4().to_string()
