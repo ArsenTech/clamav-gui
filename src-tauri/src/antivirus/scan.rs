@@ -8,7 +8,7 @@ use std::sync::{Arc, Mutex};
 use tauri::{command, Emitter, Manager};
 use walkdir::WalkDir;
 
-use crate::antivirus::history::{append_history, HistoryItem};
+use crate::antivirus::history::{HistoryItem, HistoryStatus, append_history};
 use crate::system::new_id;
 
 fn estimate_total_files(paths: &[PathBuf]) -> u64 {
@@ -100,18 +100,21 @@ fn run_scan(app: tauri::AppHandle, log_id: String, mut cmd: Command) -> Result<(
 
     let (status, details) = match exit_code {
         0 => (
-            "success",
+            HistoryStatus::Success,
             "Scan completed successfully, no threats found".to_string(),
         ),
         1 => (
-            "warning",
+            HistoryStatus::Warning,
             format!("Scan completed successfully, {} threats found", found),
         ),
         2 => (
-            "success",
+            HistoryStatus::Success,
             "Some files could not be scanned due to access restrictions".to_string(),
         ),
-        _ => ("error", format!("Scan failed (exit code {})", exit_code)),
+        _ => (
+            HistoryStatus::Error,
+            format!("Scan failed (exit code {})", exit_code)
+        ),
     };
 
     if let Err(e) = append_history(
@@ -143,7 +146,7 @@ pub async fn start_main_scan(app: tauri::AppHandle) -> Result<(), String> {
             timestamp: chrono::Utc::now().to_rfc3339(),
             action: "Scan Started".into(),
             details: "The main scan has been started".into(),
-            status: "success".into(),
+            status: HistoryStatus::Success,
             log_id: Some(log_id.clone()),
         },
     ) {
@@ -206,7 +209,7 @@ pub async fn start_full_scan(app: tauri::AppHandle) -> Result<(), String> {
             timestamp: chrono::Utc::now().to_rfc3339(),
             action: "Scan Started".into(),
             details: "The full scan has been started".into(),
-            status: "success".into(),
+            status: HistoryStatus::Success,
             log_id: Some(log_id.clone()),
         },
     ) {
@@ -247,7 +250,7 @@ pub fn start_custom_scan(app: tauri::AppHandle, paths: Vec<String>) -> Result<()
             timestamp: chrono::Utc::now().to_rfc3339(),
             action: "Scan Started".into(),
             details: "The custom scan has been started".into(),
-            status: "success".into(),
+            status: HistoryStatus::Success,
             log_id: Some(log_id.clone()),
         },
     ) {
@@ -256,7 +259,7 @@ pub fn start_custom_scan(app: tauri::AppHandle, paths: Vec<String>) -> Result<()
     let resolved_paths: Vec<PathBuf> = paths.iter().map(PathBuf::from).collect();
 
     for path in &resolved_paths {
-        if !path.exists() {
+        if !path.try_exists().unwrap_or(false) {
             return Err("Path does not exist".into());
         }
 

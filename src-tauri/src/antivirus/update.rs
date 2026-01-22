@@ -1,4 +1,4 @@
-use crate::antivirus::history::{append_history, HistoryItem};
+use crate::antivirus::history::{HistoryItem, HistoryStatus, append_history};
 use specta::specta;
 use std::process::Command;
 use tauri::{command, Emitter};
@@ -15,7 +15,7 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
             timestamp: chrono::Utc::now().to_rfc3339(),
             action: "Definitions Update Started".into(),
             details: "ClamAV database update has started".into(),
-            status: "success".into(),
+            status: HistoryStatus::Success,
             log_id: Some(log_id.clone()),
         },
     )
@@ -41,9 +41,9 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
                 }
 
                 let (status, details) = match exit_code {
-                    0 => ("success", "Definitions are already up to date".to_string()),
-                    1 => ("warning", "Update completed with warnings".to_string()),
-                    _ => ("error", format!("Update failed (exit code {})", exit_code)),
+                    0 => (HistoryStatus::Success, "Definitions are already up to date".to_string()),
+                    1 => (HistoryStatus::Warning, "Update completed with warnings".to_string()),
+                    _ => (HistoryStatus::Error, format!("Update failed (exit code {})", exit_code)),
                 };
                 append_history(
                     &app,
@@ -52,7 +52,7 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
                         timestamp: chrono::Utc::now().to_rfc3339(),
                         action: "Definitions Update Finished".into(),
                         details,
-                        status: status.into(),
+                        status,
                         log_id: Some(log_id),
                     },
                 )
@@ -69,7 +69,7 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
                         timestamp: chrono::Utc::now().to_rfc3339(),
                         action: "Definitions Update Failed".into(),
                         details: e.to_string(),
-                        status: "error".into(),
+                        status: HistoryStatus::Error,
                         log_id: Some(log_id),
                     },
                 )

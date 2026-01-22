@@ -4,13 +4,22 @@ use std::path::PathBuf;
 use tauri::command;
 use tauri::Manager;
 
+#[derive(Serialize, Deserialize, Type, Debug, PartialEq)]
+#[serde(rename_all = "lowercase")]
+pub enum HistoryStatus {
+    Success,
+    Warning,
+    Error,
+    Acknowledged,
+}
+
 #[derive(Debug, Serialize, Type, Deserialize)]
 pub struct HistoryItem {
     pub id: String,
     pub timestamp: String,
     pub action: String,
     pub details: String,
-    pub status: String,
+    pub status: HistoryStatus,
     pub log_id: Option<String>,
 }
 
@@ -26,7 +35,7 @@ pub fn append_history(app: &tauri::AppHandle, item: HistoryItem) -> Result<(), S
     let date = chrono::Utc::now().format("%Y-%m-%d").to_string();
     let file = dir.join(format!("{}.json", date));
 
-    let mut items: Vec<HistoryItem> = if file.exists() {
+    let mut items: Vec<HistoryItem> = if file.try_exists().unwrap_or(false) {
         serde_json::from_str(&std::fs::read_to_string(&file).unwrap_or("[]".into()))
             .unwrap_or_default()
     } else {
@@ -50,7 +59,7 @@ pub fn load_history(app: tauri::AppHandle, days: u32) -> Result<Vec<HistoryItem>
     for i in 0..days {
         let date = chrono::Utc::now() - chrono::Duration::days(i as i64);
         let path = dir.join(format!("{}.json", date.format("%Y-%m-%d")));
-        if path.exists() {
+        if path.try_exists().unwrap_or(false) {
             let content = std::fs::read_to_string(path).unwrap();
             let mut items: Vec<HistoryItem> = serde_json::from_str(&content).unwrap_or_default();
             all.append(&mut items);
@@ -67,7 +76,7 @@ pub fn mark_as_acknowledged(app: tauri::AppHandle, id: String, date: String) -> 
     let dir = history_dir(&app);
     let file_path = dir.join(format!("{}.json", date));
 
-    if !file_path.exists() {
+    if !file_path.try_exists().unwrap_or(false) {
         return Err("History date file not found".into());
     }
 
@@ -79,8 +88,8 @@ pub fn mark_as_acknowledged(app: tauri::AppHandle, id: String, date: String) -> 
 
     for item in &mut items {
         if item.id == id {
-            if item.status != "acknowledged" {
-                item.status = "acknowledged".into();
+            if item.status != HistoryStatus::Acknowledged {
+                item.status = HistoryStatus::Acknowledged
             }
             found = true;
             break;
@@ -101,16 +110,38 @@ pub fn mark_as_acknowledged(app: tauri::AppHandle, id: String, date: String) -> 
 
 #[command]
 #[specta(result)]
-pub fn clear_history(app: tauri::AppHandle) -> Result<(),String> {
+pub fn clear_history(app: tauri::AppHandle, mode: String) -> Result<(),String> {
     let dir = history_dir(&app);
-    if !dir.exists() {
+    if !dir.try_exists().unwrap_or(false) {
         return Ok(());
     }
-    for entry in std::fs::read_dir(&dir).map_err(|e| e.to_string())?{
+    for entry in std::fs::read_dir(&dir).map_err(|e| e.to_string())? {
         let path = entry.map_err(|e| e.to_string())?.path();
+        if path.extension().and_then(|e| e.to_str()) != Some("json") {
+            continue;
+        }
+        match mode.as_str() {
+            "all" => {
+                std::fs::remove_file(&path).map_err(|e| e.to_string())?;
+            }
+            "acknowledged" => {
+                let content = std::fs::read_to_string(&path).map_err(|e| e.to_string())?;
+                let mut items: Vec<HistoryItem> =
+                    serde_json::from_str(&content).map_err(|e| e.to_string())?;
 
-        if path.extension().and_then(|e| e.to_str()) == Some("json") {
-            std::fs::remove_file(path).map_err(|e| e.to_string())?;
+                // keep only NON-acknowledged
+                items.retain(|i| i.status != HistoryStatus::Acknowledged);
+
+                if items.is_empty() {
+                    std::fs::remove_file(&path).map_err(|e| e.to_string())?;
+                } else {
+                    std::fs::write(
+                        &path,
+                        serde_json::to_string_pretty(&items).map_err(|e| e.to_string())?
+                    ).map_err(|e| e.to_string())?;
+                }
+            }
+            _ => return Err("Invalid clear history mode".into()),
         }
     }
     Ok(())

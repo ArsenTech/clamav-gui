@@ -7,6 +7,7 @@ use std::path::PathBuf;
 use tauri::command;
 use tauri::Manager;
 
+use crate::antivirus::history::HistoryStatus;
 use crate::antivirus::history::append_history;
 use crate::antivirus::history::HistoryItem;
 
@@ -40,7 +41,7 @@ pub fn quarantine_file(
     threat_name: String,
 ) -> Result<(), String> {
     let src = PathBuf::from(&file_path);
-    if !src.exists() {
+    if !src.try_exists().unwrap_or(false) {
         return Err("File no longer exists".into());
     }
 
@@ -69,7 +70,7 @@ pub fn quarantine_file(
             timestamp: chrono::Utc::now().to_rfc3339(),
             action: "Threat Quarantined".into(),
             details: format!("{} was moved to quarantine", threat_name),
-            status: "warning".into(),
+            status: HistoryStatus::Warning,
             log_id: None,
         },
     )
@@ -149,7 +150,7 @@ pub fn restore_quarantine(app: tauri::AppHandle, id: String) -> Result<(), Strin
             timestamp: chrono::Utc::now().to_rfc3339(),
             action: "Threat restored".into(),
             details: format!("{} was restored from quarantine", meta.threat_name),
-            status: "success".into(),
+            status: HistoryStatus::Success,
             log_id: None,
         },
     )
@@ -171,11 +172,11 @@ pub fn delete_quarantine(app: tauri::AppHandle, id: String) -> Result<(), String
         serde_json::from_str(&std::fs::read_to_string(&meta_path).map_err(|e| e.to_string())?)
             .map_err(|e| e.to_string())?;
 
-    if bin_path.exists() {
+    if bin_path.try_exists().unwrap_or(false) {
         std::fs::remove_file(&bin_path).map_err(|e| e.to_string())?;
     }
 
-    if meta_path.exists() {
+    if meta_path.try_exists().unwrap_or(false) {
         std::fs::remove_file(&meta_path).map_err(|e| e.to_string())?;
     }
 
@@ -186,7 +187,7 @@ pub fn delete_quarantine(app: tauri::AppHandle, id: String) -> Result<(), String
             timestamp: chrono::Utc::now().to_rfc3339(),
             action: "Threat deleted".into(),
             details: format!("{} was deleted from quarantine", meta.threat_name),
-            status: "success".into(),
+            status: HistoryStatus::Success,
             log_id: None,
         },
     )

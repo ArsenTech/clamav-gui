@@ -3,7 +3,7 @@ pub mod sysinfo;
 use specta::specta;
 use tauri::command;
 
-use crate::antivirus::history::{append_history, HistoryItem};
+use crate::antivirus::history::{HistoryItem, HistoryStatus, append_history};
 
 pub fn new_id() -> String {
     uuid::Uuid::new_v4().to_string()
@@ -21,7 +21,7 @@ pub fn remove_file(app: tauri::AppHandle, file_path: String) -> Result<(), Strin
                     timestamp: chrono::Utc::now().to_rfc3339(),
                     action: "File Deleted".into(),
                     details: format!("The file was deleted: {}", file_path),
-                    status: "success".into(),
+                    status: HistoryStatus::Success,
                     log_id: None,
                 },
             )
@@ -37,7 +37,7 @@ pub fn remove_file(app: tauri::AppHandle, file_path: String) -> Result<(), Strin
                     timestamp: chrono::Utc::now().to_rfc3339(),
                     action: "File Deletion Failed".into(),
                     details: format!("Failed to delete file: {} ({})", file_path, e),
-                    status: "error".into(),
+                    status: HistoryStatus::Error,
                     log_id: None,
                 },
             )

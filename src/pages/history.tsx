@@ -4,7 +4,7 @@ import { RotateCw, ScrollText } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { GET_HISTORY_COLS } from "@/components/data-table/columns/history";
 import { LOG_ITEMS } from "@/lib/constants";
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { IHistoryData } from "@/lib/types";
 import { Download, Trash2 } from "lucide-react"
@@ -15,12 +15,21 @@ import { save } from '@tauri-apps/plugin-dialog';
 import { exportCSV, exportJSON } from "@/lib/helpers/fs";
 import { Spinner } from "@/components/ui/spinner";
 import Popup from "@/components/popup";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 export default function HistoryPage(){
      const [data, setData] = useState<IHistoryData[]>([])
      const [isRefreshing, startTransition] = useTransition();
      const [isClearing, startClearTransition] = useTransition();
-     const [isOpen, setIsOpen] = useState(false)
+     const [isOpen, setIsOpen] = useState({
+          clearAll: false,
+          clearAcknowledged: false
+     })
+     const setOpenState = (overrides: Partial<typeof isOpen>) =>
+          setIsOpen(prev=>({
+               ...prev,
+               ...overrides
+          }))
      const fetchData = () => {
           startTransition(async()=>{
                try {
@@ -33,13 +42,16 @@ export default function HistoryPage(){
                }
           })
      }
-     const clearHistory = () => {
-          setIsOpen(false)
+     const clearHistory = (mode: "all" | "acknowledged" = "all") => {
+          setOpenState({
+               clearAll: false,
+               clearAcknowledged: false
+          })
           startClearTransition(async()=>{
                try {
-                    await invoke("clear_history");
-                    setData([]);
-                    toast.success("History Cleared!")
+                    await invoke("clear_history",{mode});
+                    setData(mode==="all" ? [] : prev=>prev.filter(val=>val.status!=="acknowledged"));
+                    toast.success(mode==="all" ? "History Cleared!" : "Acknowledged Entries Cleared!")
                } catch (error){
                     toast.error("Failed to clear history")
                     console.error(error);
@@ -66,6 +78,7 @@ export default function HistoryPage(){
      useEffect(()=>{
           fetchData()
      },[])
+     const isEmpty = useMemo(()=>data.length<=0,[data])
      return (
           <AppLayout className="space-y-4 p-4">
                <div className="space-y-4">
@@ -79,11 +92,23 @@ export default function HistoryPage(){
                                         <RotateCw className={cn(isRefreshing && "animate-spin")}/>
                                         Refresh
                                    </Button>
-                                   <Button variant="outline" disabled={isClearing} onClick={()=>setIsOpen(true)}>
-                                        {isClearing ? <Spinner/> : <Trash2/>}
-                                        {isClearing ? "Please Wait..." : "Clear history"}
-                                   </Button>
-                                   <Button variant="outline" onClick={exportDataAs}>
+                                   <DropdownMenu>
+                                        <DropdownMenuTrigger asChild>
+                                             <Button variant="outline" disabled={isClearing}>
+                                                  {isClearing ? <Spinner/> : <Trash2/>}
+                                                  {isClearing ? "Please Wait..." : "Clear history"}
+                                             </Button>
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent>
+                                             <DropdownMenuItem onClick={()=>setOpenState({clearAll: true})} disabled={isEmpty}>
+                                                  Clear all history
+                                             </DropdownMenuItem>
+                                             <DropdownMenuItem onClick={()=>setOpenState({clearAcknowledged: true})} disabled={isEmpty}>
+                                                  Clear acknowledged only
+                                             </DropdownMenuItem>
+                                        </DropdownMenuContent>
+                                   </DropdownMenu>
+                                   <Button variant="outline" onClick={exportDataAs} disabled={isEmpty}>
                                         <Download/> Export History As
                                    </Button>
                               </ButtonGroup>
@@ -105,13 +130,22 @@ export default function HistoryPage(){
                     </div>
                </div>
                <Popup
-                    open={isOpen}
-                    onOpen={setIsOpen}
+                    open={isOpen.clearAll}
+                    onOpen={clearAll=>setOpenState({clearAll})}
                     title="Clear history?"
                     description="This will remove all scan, update, and action history. Logs and quarantine items will not be affected."
                     submitTxt="Clear history"
                     closeText="Cancel"
-                    submitEvent={clearHistory}
+                    submitEvent={()=>clearHistory("all")}
+               />
+               <Popup
+                    open={isOpen.clearAcknowledged}
+                    onOpen={clearAcknowledged=>setOpenState({clearAcknowledged})}
+                    title="Clear acknowledged entries?"
+                    description="This will remove only acknowledged history entries. Unresolved events will remain."
+                    submitTxt="Clear"
+                    closeText="Cancel"
+                    submitEvent={()=>clearHistory("acknowledged")}
                />
           </AppLayout>
      )
