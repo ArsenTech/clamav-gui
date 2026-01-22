@@ -31,14 +31,14 @@ export function AppLayout({children, className}: Props){
      useEffect(()=>{
           handleCheck();
      },[])
-     if(status==="checking") return <SplashScreen/>
-     if(status==="missing") return (
+     const mainElem = status==="checking" ? (
+          <SplashScreen/>
+     ) : status==="missing" ? (
           <NoClamAVPage
                isPending={isLoading}
                handleCheck={handleCheck}
           />
-     )
-     return (
+     ) : (
           <SidebarProvider>
                <MainSidebar/>
                <main className="py-2 w-full">
@@ -47,11 +47,16 @@ export function AppLayout({children, className}: Props){
                          {children}
                     </div>
                </main>
-               <Toaster
-                    richColors
-                    position="top-right"
-                    duration={2000}
-               />
           </SidebarProvider>
+     )
+     return (
+          <>
+          {mainElem}
+          <Toaster
+               richColors
+               position="top-right"
+               duration={2000}
+          />
+          </>
      )
 }

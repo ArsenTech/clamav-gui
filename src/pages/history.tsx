@@ -30,15 +30,21 @@ export default function HistoryPage(){
           })
      }
      const exportDataAs = async () => {
-          const path = await save({
-               filters: [
-                    { name: "CSV", extensions: ["csv"] },
-                    { name: "JSON", extensions: ["json","jsonc"] }
-               ],
-          })
-          if(!path) return;
-          const exportFile = path.endsWith(".csv") ? exportCSV : exportJSON;
-          await exportFile(path,data);
+          try{
+               const path = await save({
+                    filters: [
+                         { name: "CSV", extensions: ["csv"] },
+                         { name: "JSON", extensions: ["json","jsonc"] }
+                    ],
+               })
+               if(!path) return;
+               const exportFile = path.endsWith(".csv") ? exportCSV : exportJSON;
+               await exportFile(path,data);
+               toast.success(`History data exported as ${path.endsWith(".csv") ? "CSV File" : "JSON File"}`)
+          } catch (error) {
+               toast.error("Failed to export the history data");
+               console.error(error)
+          }
      }
      useEffect(()=>{
           fetchData()
