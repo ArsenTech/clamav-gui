@@ -47,7 +47,7 @@
 </details>
 
 > [!IMPORTANT]
-> Some parts of this pre-release won't work. The ClamAV GUI is still in the development...
+> Some parts of this pre-release won't work, and the UI will be laggy and unresponsive sometimes. The ClamAV GUI is still in the development and improvement...
 
 ## About
 **ArsenTech's ClamAV GUI** is a minimal, open-source interface for file scanning and threat detection that makes the Antivirus itself look professional and work exactly like ClamAV (A FOSS CLI Antivirus).
