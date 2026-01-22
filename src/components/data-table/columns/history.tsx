@@ -1,12 +1,15 @@
-import { ArrowDown, ArrowUp, ArrowUpDown, EyeOff, MoreHorizontal } from "lucide-react";
+import { ArrowDown, ArrowUp, ArrowUpDown, CheckCircle } from "lucide-react";
 import { HistoryStatus, IHistoryData } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { capitalizeText, getHistoryStatusBadges } from "@/lib/helpers";
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { invoke } from "@tauri-apps/api/core";
+import { toast } from "sonner";
 
-export const HISTORY_COLS: ColumnDef<IHistoryData>[] = [
+export const GET_HISTORY_COLS = (
+     setData: React.Dispatch<React.SetStateAction<IHistoryData[]>>
+): ColumnDef<IHistoryData>[] => [
      {
           accessorKey: "timestamp",
           header: ({column}) => (
@@ -50,24 +53,26 @@ export const HISTORY_COLS: ColumnDef<IHistoryData>[] = [
           id: "actions",
           cell: ({row}) => {
                const item = row.original
-               console.log(item)
+               const markAsAcknowledged = async () => {
+                    try{
+                         await invoke("mark_as_acknowledged", {
+                              id: item.id,
+                              date: item.timestamp.split("T")[0]
+                         });
+                         setData(prev=>prev.map(val=>({
+                              ...val,
+                              status: val.id===item.id ? "acknowledged" : val.status
+                         })))
+                         toast.success("Entry acknowledged!")
+                    } catch (error){
+                         toast.error("Failed to mark the entry as acknowledged");
+                         console.error(error)
+                    }
+               }
                return (
-                    <DropdownMenu>
-                         <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" className="h-8 w-8 p-0">
-                                   <span className="sr-only">Open menu</span>
-                                   <MoreHorizontal className="h-4 w-4" />
-                              </Button>
-                         </DropdownMenuTrigger>
-                         <DropdownMenuContent align="end">
-                              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                              <DropdownMenuSeparator/>
-                              {/* TODO: Add a functionality to mark the entry as acknowledged */}
-                              <DropdownMenuItem disabled>
-                                   <EyeOff/> Mark as acknowledged
-                              </DropdownMenuItem>
-                         </DropdownMenuContent>
-                    </DropdownMenu>
+                    <Button variant="ghost" size="icon" title="Mark As Acknowledged" onClick={markAsAcknowledged} disabled={item.status==="acknowledged"}>
+                         <CheckCircle/>
+                    </Button>
                )
           },
      }

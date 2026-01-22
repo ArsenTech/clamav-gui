@@ -1,6 +1,8 @@
 import {
+  ColumnFiltersState,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   SortingState,
@@ -17,27 +19,59 @@ import {
 } from "@/components/ui/table"
 import { useState } from "react"
 import { DataTablePagination } from "../pagination"
-import { DataTableProps } from "@/lib/types"
+import { DataTableProps, HistoryStatus } from "@/lib/types"
+import { DataTableViewOptions } from "../col-toggle"
+import { ButtonGroup } from "@/components/ui/button-group"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { CheckCircle, CircleAlert, Shield, ShieldCheck, TriangleAlert } from "lucide-react"
 
-export function HistoryTable<TData, TValue>({columns,data}: DataTableProps<TData, TValue>) {
+export function HistoryTable<TData, TValue>({columns,data,headerElement}: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const table = useReactTable({
     data,
     columns,
     onSortingChange: setSorting,
     onColumnVisibilityChange: setColumnVisibility,
+    onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     state: {
       sorting,
-      columnVisibility
+      columnVisibility,
+      columnFilters
     }
   })
 
+  const handleChangeFilters = (value: Exclude<HistoryStatus,"acknowledged"> | "all") => {
+    const statusCol = table.getColumn("status");
+    if(!statusCol) return;
+    statusCol.setFilterValue(value==="all" ? "" : value)
+  }
+
   return (
     <>
+    <div className="flex items-center justify-between gap-4 w-full">
+      {headerElement}
+      <ButtonGroup>
+        <Select defaultValue="all" onValueChange={val=>handleChangeFilters(val as Exclude<HistoryStatus,"acknowledged"> | "all")}>
+          <SelectTrigger>
+            <SelectValue placeholder="Filter Status By"/>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all"><Shield/> All</SelectItem>
+            <SelectItem value="success"><CheckCircle/> Success</SelectItem>
+            <SelectItem value="warning"><TriangleAlert/> Warning</SelectItem>
+            <SelectItem value="error"><CircleAlert/> Error</SelectItem>
+            <SelectItem value="acknowledged"><ShieldCheck/> Acknowledged</SelectItem>
+          </SelectContent>
+        </Select>
+        <DataTableViewOptions table={table}/>
+      </ButtonGroup>
+    </div>
     <div className="overflow-hidden rounded-md w-full">
       <Table>
         <TableHeader>

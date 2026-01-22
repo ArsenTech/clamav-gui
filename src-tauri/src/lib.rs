@@ -10,7 +10,7 @@ use tauri_specta::{collect_commands, Builder};
 
 // Local Crates
 use crate::antivirus::bulk_actions::{clear_quarantine, delete_all, quarantine_all, restore_all};
-use crate::antivirus::history::load_history;
+use crate::antivirus::history::{load_history, mark_as_acknowledged, clear_history};
 use crate::antivirus::quarantine::{
     delete_quarantine, list_quarantine, quarantine_file, restore_quarantine,
 };
@@ -52,6 +52,8 @@ pub fn run() {
         restore_all,
         clear_quarantine,
         load_history,
+        mark_as_acknowledged,
+        clear_history
     ]);
 
     tauri::Builder::default()

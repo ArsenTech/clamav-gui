@@ -81,5 +81,6 @@ export interface IVirusTypeStat extends IStatBase{ type: ComputerVirusType }
 export interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[],
-  searchColumn?: string
+  searchColumn?: string,
+  headerElement?: React.JSX.Element
 }

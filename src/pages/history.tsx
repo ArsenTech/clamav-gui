@@ -2,7 +2,7 @@ import { HistoryTable } from "@/components/data-table/tables/history";
 import { AppLayout } from "@/components/layout";
 import { RotateCw, ScrollText } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { HISTORY_COLS } from "@/components/data-table/columns/history";
+import { GET_HISTORY_COLS } from "@/components/data-table/columns/history";
 import { LOG_ITEMS } from "@/lib/constants";
 import { useEffect, useState, useTransition } from "react";
 import { invoke } from "@tauri-apps/api/core";
@@ -13,10 +13,14 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { save } from '@tauri-apps/plugin-dialog';
 import { exportCSV, exportJSON } from "@/lib/helpers/fs";
+import { Spinner } from "@/components/ui/spinner";
+import Popup from "@/components/popup";
 
 export default function HistoryPage(){
      const [data, setData] = useState<IHistoryData[]>([])
      const [isRefreshing, startTransition] = useTransition();
+     const [isClearing, startClearTransition] = useTransition();
+     const [isOpen, setIsOpen] = useState(false)
      const fetchData = () => {
           startTransition(async()=>{
                try {
@@ -26,6 +30,19 @@ export default function HistoryPage(){
                     toast.error("Failed to fetch the recent history data")
                     console.error(error);
                     setData([])
+               }
+          })
+     }
+     const clearHistory = () => {
+          setIsOpen(false)
+          startClearTransition(async()=>{
+               try {
+                    await invoke("clear_history");
+                    setData([]);
+                    toast.success("History Cleared!")
+               } catch (error){
+                    toast.error("Failed to clear history")
+                    console.error(error);
                }
           })
      }
@@ -53,21 +70,24 @@ export default function HistoryPage(){
           <AppLayout className="space-y-4 p-4">
                <div className="space-y-4">
                     <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">History</h1>
-                    <ButtonGroup>
-                         <Button onClick={fetchData} disabled={isRefreshing}>
-                              <RotateCw className={cn(isRefreshing && "animate-spin")}/>
-                              Refresh
-                         </Button>
-                         <Button variant="outline">
-                              <Trash2/> Clear history
-                         </Button>
-                         <Button variant="outline" onClick={exportDataAs}>
-                              <Download/> Export History As
-                         </Button>
-                    </ButtonGroup>
                     <HistoryTable
-                         columns={HISTORY_COLS}
+                         columns={GET_HISTORY_COLS(setData)}
                          data={data}
+                         headerElement={(
+                              <ButtonGroup>
+                                   <Button onClick={fetchData} disabled={isRefreshing || isClearing}>
+                                        <RotateCw className={cn(isRefreshing && "animate-spin")}/>
+                                        Refresh
+                                   </Button>
+                                   <Button variant="outline" disabled={isClearing} onClick={()=>setIsOpen(true)}>
+                                        {isClearing ? <Spinner/> : <Trash2/>}
+                                        {isClearing ? "Please Wait..." : "Clear history"}
+                                   </Button>
+                                   <Button variant="outline" onClick={exportDataAs}>
+                                        <Download/> Export History As
+                                   </Button>
+                              </ButtonGroup>
+                         )}
                     />
                </div>
                <div className="space-y-3 px-3 text-lg overflow-y-auto max-h-[700px]">
@@ -84,6 +104,15 @@ export default function HistoryPage(){
                          ))}
                     </div>
                </div>
+               <Popup
+                    open={isOpen}
+                    onOpen={setIsOpen}
+                    title="Clear history?"
+                    description="This will remove all scan, update, and action history. Logs and quarantine items will not be affected."
+                    submitTxt="Clear history"
+                    closeText="Cancel"
+                    submitEvent={clearHistory}
+               />
           </AppLayout>
      )
 }

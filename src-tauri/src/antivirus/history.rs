@@ -60,3 +60,58 @@ pub fn load_history(app: tauri::AppHandle, days: u32) -> Result<Vec<HistoryItem>
     all.sort_by(|a, b| b.timestamp.cmp(&a.timestamp));
     Ok(all)
 }
+
+#[command]
+#[specta(result)]
+pub fn mark_as_acknowledged(app: tauri::AppHandle, id: String, date: String) -> Result<(),String> {
+    let dir = history_dir(&app);
+    let file_path = dir.join(format!("{}.json", date));
+
+    if !file_path.exists() {
+        return Err("History date file not found".into());
+    }
+
+    let mut items: Vec<HistoryItem> = serde_json::from_str(
+        &std::fs::read_to_string(&file_path).map_err(|e| e.to_string())?
+    ).map_err(|e| e.to_string())?;
+
+    let mut found = false;
+
+    for item in &mut items {
+        if item.id == id {
+            if item.status != "acknowledged" {
+                item.status = "acknowledged".into();
+            }
+            found = true;
+            break;
+        }
+    }
+
+    if !found {
+        return Err("History item not found".into());
+    }
+
+    std::fs::write(
+        &file_path,
+        serde_json::to_string_pretty(&items).map_err(|e| e.to_string())?
+    ).map_err(|e| e.to_string())?;
+
+    Ok(())
+}
+
+#[command]
+#[specta(result)]
+pub fn clear_history(app: tauri::AppHandle) -> Result<(),String> {
+    let dir = history_dir(&app);
+    if !dir.exists() {
+        return Ok(());
+    }
+    for entry in std::fs::read_dir(&dir).map_err(|e| e.to_string())?{
+        let path = entry.map_err(|e| e.to_string())?.path();
+
+        if path.extension().and_then(|e| e.to_str()) == Some("json") {
+            std::fs::remove_file(path).map_err(|e| e.to_string())?;
+        }
+    }
+    Ok(())
+}
