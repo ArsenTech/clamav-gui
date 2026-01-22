@@ -1,4 +1,4 @@
-use crate::antivirus::history::{HistoryItem, HistoryStatus, append_history};
+use crate::{antivirus::history::{HistoryItem, HistoryStatus, append_history}, system::logs::{LogCategory, initialize_log, log_err, log_info}};
 use specta::specta;
 use std::process::Command;
 use tauri::{command, Emitter};
@@ -6,7 +6,9 @@ use tauri::{command, Emitter};
 #[command]
 #[specta(result)]
 pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
-    let log_id = crate::system::new_id();
+    let init = initialize_log(&app, LogCategory::Update)?;
+    let log_id = init.id.clone();
+    let log_file = init.file.clone();
 
     append_history(
         &app,
@@ -16,6 +18,7 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
             action: "Definitions Update Started".into(),
             details: "ClamAV database update has started".into(),
             status: HistoryStatus::Success,
+            category: Some(LogCategory::Update),
             log_id: Some(log_id.clone()),
         },
     )
@@ -31,13 +34,16 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
                 let stdout = String::from_utf8_lossy(&out.stdout);
                 let stderr = String::from_utf8_lossy(&out.stderr);
                 let exit_code = out.status.code().unwrap_or(-1);
+                let log = log_file.clone();
 
                 if !stdout.is_empty() {
-                    app.emit("freshclam:output", stdout.to_string()).ok();
+                    app.emit("freshclam:output", &stdout.to_string()).ok();
+                    log_info(&log, &stdout.to_string());
                 }
 
                 if !stderr.is_empty() {
-                    app.emit("freshclam:error", stderr.to_string()).ok();
+                    app.emit("freshclam:error", &stderr.to_string()).ok();
+                    log_err(&log, &stderr.to_string());
                 }
 
                 let (status, details) = match exit_code {
@@ -53,6 +59,7 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
                         action: "Definitions Update Finished".into(),
                         details,
                         status,
+                        category: Some(LogCategory::Update),
                         log_id: Some(log_id),
                     },
                 )
@@ -61,7 +68,9 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
                 app.emit("freshclam:done", exit_code).ok();
             }
             Err(e) => {
+                let log = log_file.clone();
                 app.emit("freshclam:error", e.to_string()).ok();
+                log_err(&log, &e.to_string());
                 append_history(
                     &app,
                     HistoryItem {
@@ -70,6 +79,7 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
                         action: "Definitions Update Failed".into(),
                         details: e.to_string(),
                         status: HistoryStatus::Error,
+                        category: Some(LogCategory::Update),
                         log_id: Some(log_id),
                     },
                 )

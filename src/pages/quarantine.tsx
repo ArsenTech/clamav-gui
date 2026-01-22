@@ -56,7 +56,8 @@ export default function QuarantinePage(){
           const errorMessage = type==="restore" ? "Failed to restore file from quarantine" : "Failed to delete file from quarantine"
           try{
                await invoke(commandName,{
-                    id: quarantineState.id
+                    id: quarantineState.id,
+                    logId: null,
                })
                const dataCopy = [...data].filter(val=>val.id!==quarantineState.id)
                setData(dataCopy)

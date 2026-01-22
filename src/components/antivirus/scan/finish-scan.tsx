@@ -43,6 +43,7 @@ export default function ScanFinishResult({threats,durationElem,onQuit,setThreats
                const {filePath, displayName} = finishScanState.currThreat
                await invoke("remove_file",{
                     filePath,
+                    logId: null,
                })
                setThreats(prev=>prev.map(val =>
                     val.filePath === filePath &&

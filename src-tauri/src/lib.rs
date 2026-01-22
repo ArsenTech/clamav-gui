@@ -18,6 +18,7 @@ use crate::system::remove_file;
 use crate::antivirus::scan::{start_custom_scan, start_full_scan, start_main_scan, stop_scan};
 use crate::antivirus::update::{get_clamav_version, update_definitions};
 use crate::system::sysinfo::{get_sys_info, get_sys_stats};
+use crate::system::logs::{read_log, reveal_log};
 
 #[command]
 #[specta]
@@ -53,7 +54,9 @@ pub fn run() {
         clear_quarantine,
         load_history,
         mark_as_acknowledged,
-        clear_history
+        clear_history,
+        read_log,
+        reveal_log
     ]);
 
     tauri::Builder::default()

@@ -1,14 +1,14 @@
 use specta::specta;
-use std::io::Write;
 use std::io::{BufRead as _, BufReader};
 use std::path::PathBuf;
 use std::process::{Command, Stdio};
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::{Arc, Mutex};
-use tauri::{command, Emitter, Manager};
+use tauri::{command, Emitter};
 use walkdir::WalkDir;
 
 use crate::antivirus::history::{HistoryItem, HistoryStatus, append_history};
+use crate::system::logs::{LogCategory, log_path, log_err, log_info};
 use crate::system::new_id;
 
 fn estimate_total_files(paths: &[PathBuf]) -> u64 {
@@ -23,12 +23,6 @@ fn estimate_total_files(paths: &[PathBuf]) -> u64 {
 static SCAN_PROCESS: once_cell::sync::Lazy<Mutex<Option<u32>>> =
     once_cell::sync::Lazy::new(|| Mutex::new(None));
 
-fn scan_log_path(app: &tauri::AppHandle, log_id: &str) -> PathBuf {
-    let mut dir = app.path().app_data_dir().unwrap();
-    dir.push("logs");
-    std::fs::create_dir_all(&dir).ok();
-    dir.join(format!("scan-{}.log", log_id))
-}
 fn run_scan(app: tauri::AppHandle, log_id: String, mut cmd: Command) -> Result<(), String> {
     {
         let mut guard = SCAN_PROCESS.lock().unwrap();
@@ -38,7 +32,7 @@ fn run_scan(app: tauri::AppHandle, log_id: String, mut cmd: Command) -> Result<(
         *guard = Some(0);
     }
 
-    let log_path = scan_log_path(&app, &log_id);
+    let log_path = log_path(&app, LogCategory::Scan, &log_id);
     let log_file = Arc::new(Mutex::new(
         std::fs::OpenOptions::new()
             .create(true)
@@ -70,9 +64,7 @@ fn run_scan(app: tauri::AppHandle, log_id: String, mut cmd: Command) -> Result<(
                     threats.fetch_add(1, Ordering::Relaxed);
                 }
                 app.emit("clamscan:log", &line).ok();
-                if let Ok(mut f) = log.lock() {
-                    writeln!(f, "{}", line).ok();
-                }
+                log_info(&log, &line);
             }
         });
     }
@@ -83,9 +75,7 @@ fn run_scan(app: tauri::AppHandle, log_id: String, mut cmd: Command) -> Result<(
         std::thread::spawn(move || {
             for line in BufReader::new(err).lines().flatten() {
                 app.emit("clamscan:log", &line).ok();
-                if let Ok(mut f) = log.lock() {
-                    writeln!(f, "[Error] {}", line).ok();
-                }
+                log_err(&log, &line);
             }
         });
     }
@@ -124,7 +114,8 @@ fn run_scan(app: tauri::AppHandle, log_id: String, mut cmd: Command) -> Result<(
             timestamp: chrono::Utc::now().to_rfc3339(),
             action: "Scan Finished".into(),
             details,
-            status: status.into(),
+            status,
+            category: Some(LogCategory::Scan),
             log_id: Some(log_id.clone()),
         },
     ) {
@@ -147,6 +138,7 @@ pub async fn start_main_scan(app: tauri::AppHandle) -> Result<(), String> {
             action: "Scan Started".into(),
             details: "The main scan has been started".into(),
             status: HistoryStatus::Success,
+            category: Some(LogCategory::Scan),
             log_id: Some(log_id.clone()),
         },
     ) {
@@ -210,6 +202,7 @@ pub async fn start_full_scan(app: tauri::AppHandle) -> Result<(), String> {
             action: "Scan Started".into(),
             details: "The full scan has been started".into(),
             status: HistoryStatus::Success,
+            category: Some(LogCategory::Scan),
             log_id: Some(log_id.clone()),
         },
     ) {
@@ -251,6 +244,7 @@ pub fn start_custom_scan(app: tauri::AppHandle, paths: Vec<String>) -> Result<()
             action: "Scan Started".into(),
             details: "The custom scan has been started".into(),
             status: HistoryStatus::Success,
+            category: Some(LogCategory::Scan),
             log_id: Some(log_id.clone()),
         },
     ) {

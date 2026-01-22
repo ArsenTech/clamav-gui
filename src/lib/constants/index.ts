@@ -1,4 +1,4 @@
-import { Search, SearchCheck, FolderSearch, FileSearch, Bug, ClipboardClock, Cog, RotateCcw, ShieldCheck } from "lucide-react";
+import { Search, SearchCheck, FolderSearch, FileSearch } from "lucide-react";
 import { IScanMenuItem } from "../types";
 
 export const DAYS_OF_THE_WEEK = ["sun","mon","tue","wed","thu","fri","sat"] as const;
@@ -35,14 +35,6 @@ export const SCAN_OPTIONS = SCAN_TYPES.filter(val=>val.type!=="" && val.type!=="
      content: val.name,
      icon: val.Icon
 }))
-export const LOG_ITEMS = [
-     {name: "Scan", Icon: Search},
-     {name: "Quarantine", Icon: Bug},
-     {name: "Scheduler", Icon: ClipboardClock},
-     {name: "Updates", Icon: RotateCcw},
-     {name: "Real-Time Protection", Icon: ShieldCheck},
-     {name: "Settings", Icon: Cog}
-]
 export const SCAN_EXIT_CODE_MSG: Record<number, string> = {
      0: "Scan completed successfully",
      1: "Threats were detected",

@@ -7,9 +7,13 @@ use std::path::PathBuf;
 use tauri::command;
 use tauri::Manager;
 
-use crate::antivirus::history::HistoryStatus;
-use crate::antivirus::history::append_history;
-use crate::antivirus::history::HistoryItem;
+use crate::antivirus::history::{
+    HistoryStatus, append_history, HistoryItem
+};
+use crate::system::logs::{
+    LogCategory, initialize_log_with_id, log_err, log_info
+};
+use crate::system::new_id;
 
 fn quarantine_id(file_path: &str) -> String {
     let mut hasher = Sha256::new();
@@ -39,9 +43,19 @@ pub fn quarantine_file(
     app: tauri::AppHandle,
     file_path: String,
     threat_name: String,
+    log_id: Option<String>
 ) -> Result<(), String> {
+    let log_id = match log_id {
+        Some(id) => id,
+        None => new_id()
+    };
+    let init = initialize_log_with_id(&app, LogCategory::Quarantine, &log_id)?;
+    let log_file = init.file.clone();
+
     let src = PathBuf::from(&file_path);
     if !src.try_exists().unwrap_or(false) {
+        let log = log_file.clone();
+        log_err(&log, "File no longer exists");
         return Err("File no longer exists".into());
     }
 
@@ -51,14 +65,19 @@ pub fn quarantine_file(
     let dest = quarantine.join(format!("{}.quarantine", id));
 
     if dest.try_exists().unwrap_or(false) {
+        let log = log_file.clone();
+        log_err(&log,"File already quarantined");
         return Err("File already quarantined".into());
     }
 
     if let Err(e) = std::fs::rename(&src, &dest) {
+        let log = log_file.clone();
         if e.kind() == io::ErrorKind::CrossesDevices {
             std::fs::copy(&src, &dest).map_err(|e| e.to_string())?;
             std::fs::remove_file(&src).map_err(|e| e.to_string())?;
+            log_info(&log, &format!("{} ({}) was moved to quarantine",threat_name,file_path));
         } else {
+            log_err(&log, &e.to_string());
             return Err(e.to_string());
         }
     }
@@ -71,7 +90,8 @@ pub fn quarantine_file(
             action: "Threat Quarantined".into(),
             details: format!("{} was moved to quarantine", threat_name),
             status: HistoryStatus::Warning,
-            log_id: None,
+            category: Some(LogCategory::Quarantine),
+            log_id: Some(log_id.clone()),
         },
     )
     .ok();
@@ -115,7 +135,14 @@ pub fn list_quarantine(app: tauri::AppHandle) -> Result<Vec<QuarantinedItem>, St
 
 #[command]
 #[specta(result)]
-pub fn restore_quarantine(app: tauri::AppHandle, id: String) -> Result<(), String> {
+pub fn restore_quarantine(app: tauri::AppHandle, id: String, log_id: Option<String>) -> Result<(), String> {
+    let log_id = match log_id {
+        Some(id) => id,
+        None => new_id()
+    };
+    let init = initialize_log_with_id(&app, LogCategory::Quarantine, &log_id)?;
+    let log_file = init.file.clone();
+
     let dir = quarantine_dir(&app);
     let meta_path = dir.join(format!("{}.json", id));
     let bin_path = dir.join(format!("{}.quarantine", id));
@@ -131,14 +158,19 @@ pub fn restore_quarantine(app: tauri::AppHandle, id: String) -> Result<(), Strin
     }
 
     if dest.try_exists().unwrap_or(false) {
+        let log = log_file.clone();
+        log_err(&log, "Restore destination already exists");
         return Err("Restore destination already exists".into());
     }
 
     if let Err(e) = std::fs::rename(&bin_path, &dest) {
+        let log = log_file.clone();
         if e.kind() == io::ErrorKind::CrossesDevices {
             std::fs::copy(&bin_path, &dest).map_err(|e| e.to_string())?;
             std::fs::remove_file(&bin_path).map_err(|e| e.to_string())?;
+            log_info(&log, &format!("{} ({}) was restored quarantine",meta.threat_name,meta.file_path));
         } else {
+            log_err(&log, &e.to_string());
             return Err(e.to_string());
         }
     }
@@ -151,7 +183,8 @@ pub fn restore_quarantine(app: tauri::AppHandle, id: String) -> Result<(), Strin
             action: "Threat restored".into(),
             details: format!("{} was restored from quarantine", meta.threat_name),
             status: HistoryStatus::Success,
-            log_id: None,
+            category: Some(LogCategory::Quarantine),
+            log_id: Some(log_id.clone()),
         },
     )
     .ok();
@@ -163,10 +196,21 @@ pub fn restore_quarantine(app: tauri::AppHandle, id: String) -> Result<(), Strin
 
 #[command]
 #[specta(result)]
-pub fn delete_quarantine(app: tauri::AppHandle, id: String) -> Result<(), String> {
+pub fn delete_quarantine(app: tauri::AppHandle, id: String, log_id: Option<String>) -> Result<(), String> {
+    let log_id = match log_id {
+        Some(id) => id,
+        None => new_id()
+    };
+    let init = initialize_log_with_id(&app, LogCategory::Quarantine, &log_id)?;
+    let log_file = init.file.clone();
+
     let dir = quarantine_dir(&app);
-    let meta_path = dir.join(format!("{}.json", id));
-    let bin_path = dir.join(format!("{}.quarantine", id));
+
+    let meta_path_name = format!("{}.json", id);
+    let bin_path_name = format!("{}.quarantine", id);
+
+    let meta_path = dir.join(&meta_path_name);
+    let bin_path = dir.join(&bin_path_name);
 
     let meta: QuarantinedItem =
         serde_json::from_str(&std::fs::read_to_string(&meta_path).map_err(|e| e.to_string())?)
@@ -174,11 +218,13 @@ pub fn delete_quarantine(app: tauri::AppHandle, id: String) -> Result<(), String
 
     if bin_path.try_exists().unwrap_or(false) {
         std::fs::remove_file(&bin_path).map_err(|e| e.to_string())?;
+        log_info(&log_file, &format!("Deleted the binary path: {}",bin_path_name));
     }
-
     if meta_path.try_exists().unwrap_or(false) {
+        log_info(&log_file, &format!("Deleted the metadata path: {}",meta_path_name));
         std::fs::remove_file(&meta_path).map_err(|e| e.to_string())?;
     }
+    log_info(&log_file, &format!("{} was deleted from quarantine",meta.threat_name));
 
     append_history(
         &app,
@@ -188,7 +234,8 @@ pub fn delete_quarantine(app: tauri::AppHandle, id: String) -> Result<(), String
             action: "Threat deleted".into(),
             details: format!("{} was deleted from quarantine", meta.threat_name),
             status: HistoryStatus::Success,
-            log_id: None,
+            category: Some(LogCategory::Quarantine),
+            log_id: Some(log_id.clone()),
         },
     )
     .ok();

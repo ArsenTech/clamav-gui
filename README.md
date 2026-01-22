@@ -61,7 +61,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - **Resolving infected files after scan** - It includes **Quarantine**, **Delete**, and **Mark as safe**
 - **Definitions Updater** - Update the definitions database directly from the GUI
 - **Quarantine** - Manage infected threats after scanning
-- **History** - View the entire GUI actions history and manage it + view logs
+- **History** - View the entire GUI actions history and manage it + view or reveal logs
 <!-- TODO: Write the Features list -->
 
 ### Built With

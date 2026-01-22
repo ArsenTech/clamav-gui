@@ -4,6 +4,8 @@ use std::path::PathBuf;
 use tauri::command;
 use tauri::Manager;
 
+use crate::system::logs::LogCategory;
+
 #[derive(Serialize, Deserialize, Type, Debug, PartialEq)]
 #[serde(rename_all = "lowercase")]
 pub enum HistoryStatus {
@@ -20,6 +22,7 @@ pub struct HistoryItem {
     pub action: String,
     pub details: String,
     pub status: HistoryStatus,
+    pub category: Option<LogCategory>,
     pub log_id: Option<String>,
 }
 
@@ -60,8 +63,8 @@ pub fn load_history(app: tauri::AppHandle, days: u32) -> Result<Vec<HistoryItem>
         let date = chrono::Utc::now() - chrono::Duration::days(i as i64);
         let path = dir.join(format!("{}.json", date.format("%Y-%m-%d")));
         if path.try_exists().unwrap_or(false) {
-            let content = std::fs::read_to_string(path).unwrap();
-            let mut items: Vec<HistoryItem> = serde_json::from_str(&content).unwrap_or_default();
+            let content = std::fs::read_to_string(&path).unwrap();
+            let mut items: Vec<HistoryItem> = serde_json::from_str(&content).map_err(|e| format!("Failed to parse history file {:?}: {}", path, e))?;
             all.append(&mut items);
         }
     }

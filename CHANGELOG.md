@@ -9,16 +9,18 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - A Quarantine Page logic
 - Logic to Do some actions after finishing scan (if there are many threats)
 - The Resolve Logic after finishing scan
-- The History Page Logic
-  - Append History
-  - Refresh Data
-  - Export History
+- The History Page Logic Containing every single action
+- Feature to log actions inside a separate file
 ### Improved
 - History Table
 - Scan Logic
 - Quarantine Logic
 - Update logic
 - Remove File Logic
+- Bulk Actions
+- The **No ClamAV Found** Page
+### Changed
+- Converted Logs list UI into a Dropdown menu consisting of Log actions inside the History Table
 
 ## 0.2.0 - 2026-01-19 (Early Build 2)
 ### Added

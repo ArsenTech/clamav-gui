@@ -22,8 +22,8 @@ import { DataTablePagination } from "../pagination"
 import { DataTableProps, HistoryStatus } from "@/lib/types"
 import { DataTableViewOptions } from "../col-toggle"
 import { ButtonGroup } from "@/components/ui/button-group"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { CheckCircle, CircleAlert, Shield, ShieldCheck, TriangleAlert } from "lucide-react"
+import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { CheckCircle, CircleAlert, Eye, Shield, TriangleAlert } from "lucide-react"
 
 export function HistoryTable<TData, TValue>({columns,data,headerElement}: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -63,10 +63,11 @@ export function HistoryTable<TData, TValue>({columns,data,headerElement}: DataTa
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all"><Shield/> All</SelectItem>
+            <SelectSeparator/>
             <SelectItem value="success"><CheckCircle/> Success</SelectItem>
             <SelectItem value="warning"><TriangleAlert/> Warning</SelectItem>
             <SelectItem value="error"><CircleAlert/> Error</SelectItem>
-            <SelectItem value="acknowledged"><ShieldCheck/> Acknowledged</SelectItem>
+            <SelectItem value="acknowledged"><Eye/> Acknowledged</SelectItem>
           </SelectContent>
         </Select>
         <DataTableViewOptions table={table}/>

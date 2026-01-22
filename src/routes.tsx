@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Outlet } from "react-router";
 import App from "@/pages/main-page";
 import AboutPage from "@/pages/about";
 import QuarantinePage from "@/pages/quarantine";
@@ -8,6 +8,8 @@ import HistoryPage from "./pages/history";
 import SchedulerPage from "./pages/scheduler";
 import SettingsPage from "./pages/settings";
 import UpdateDefinitions from "./pages/update";
+import LogPage from "./pages/log-page";
+const RouteLayout = () => <Outlet/>
 
 export const router = createBrowserRouter([
      {
@@ -28,7 +30,17 @@ export const router = createBrowserRouter([
      },
      {
           path: "/history",
-          element: <HistoryPage/>
+          element: <RouteLayout/>,
+          children: [
+               {
+                    index: true,
+                    element: <HistoryPage/>,
+               },
+               {
+                    path: ":logId",
+                    element: <LogPage/>
+               }
+          ]
      },
      {
           path: "/scheduler",

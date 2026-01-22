@@ -8,6 +8,7 @@ export type HistoryStatus = "success" | "warning" | "error" | "acknowledged";
 export type ThreatStatusStat = Exclude<ThreatStatus,"detected"|"safe"> | "unresolved" | "skipped";
 export type ComputerVirusType = "trojan" | "ransomware" | "spyware" | "rootkit" | "other";
 export type ScanTypeStat = Exclude<ScanType,""> | "real-time";
+export type LogCategory = "scan" | "update" | "quarantine" | "realtime" | "scheduler";
 
 export interface IScanMenuItem{
      type: ScanType,
@@ -29,14 +30,21 @@ export interface HookReturnType extends SystemStatBase{
      cpu_usage: number,
      cpu_frequency: number,
 }
-export interface IHistoryData{
+interface HistoryDataBase{
      id: string,
      timestamp: string,
      action: string,
      details: string
      status: HistoryStatus,
-     logId?: string
+     category: LogCategory | null
 }
+export type IHistoryData<T extends "state" | "type"> =
+     T extends "type" ? HistoryDataBase & {
+          log_id?: string
+     }
+     : HistoryDataBase & {
+          logId?: string
+     }
 export interface IQuickAccessItem{
      name: string,
      desc: string,

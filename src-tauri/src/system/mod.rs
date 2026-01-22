@@ -1,9 +1,10 @@
 pub mod sysinfo;
+pub mod logs;
 
 use specta::specta;
 use tauri::command;
 
-use crate::antivirus::history::{HistoryItem, HistoryStatus, append_history};
+use crate::{antivirus::history::{HistoryItem, HistoryStatus, append_history}, system::logs::{LogCategory, initialize_log_with_id, log_err, log_info}};
 
 pub fn new_id() -> String {
     uuid::Uuid::new_v4().to_string()
@@ -11,7 +12,14 @@ pub fn new_id() -> String {
 
 #[command]
 #[specta(result)]
-pub fn remove_file(app: tauri::AppHandle, file_path: String) -> Result<(), String> {
+pub fn remove_file(app: tauri::AppHandle, file_path: String, log_id: Option<String>) -> Result<(), String> {
+    let log_id = match log_id {
+        Some(id) => id,
+        None => new_id()
+    };
+    let init = initialize_log_with_id(&app, LogCategory::Quarantine, &log_id)?;
+    let log_file = init.file.clone();
+
     match std::fs::remove_file(&file_path) {
         Ok(_) => {
             append_history(
@@ -23,10 +31,11 @@ pub fn remove_file(app: tauri::AppHandle, file_path: String) -> Result<(), Strin
                     details: format!("The file was deleted: {}", file_path),
                     status: HistoryStatus::Success,
                     log_id: None,
+                    category: Some(LogCategory::Quarantine)
                 },
             )
             .ok();
-
+            log_info(&log_file, &format!("The file was deleted: {}", file_path));
             return Ok(());
         }
         Err(e) => {
@@ -39,10 +48,12 @@ pub fn remove_file(app: tauri::AppHandle, file_path: String) -> Result<(), Strin
                     details: format!("Failed to delete file: {} ({})", file_path, e),
                     status: HistoryStatus::Error,
                     log_id: None,
+                    category: Some(LogCategory::Quarantine)
                 },
             )
             .ok();
-
+            log_err(&log_file, &format!("Failed to delete file: {}", file_path));
+            log_err(&log_file, &e.to_string());
             return Err(e.to_string());
         }
     }

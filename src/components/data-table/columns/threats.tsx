@@ -54,6 +54,7 @@ export const THREATS_COLS = (
                          await invoke("quarantine_file",{
                               filePath,
                               threatName: displayName,
+                              logId: null,
                          })
                          setThreats(prev=>prev.map(val =>
                               val.filePath === filePath &&
