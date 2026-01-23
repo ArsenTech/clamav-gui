@@ -4,7 +4,9 @@ pub mod logs;
 use specta::specta;
 use tauri::command;
 
-use crate::{antivirus::history::{HistoryItem, HistoryStatus, append_history}, system::logs::{LogCategory, initialize_log_with_id, log_err, log_info}};
+use crate::types::enums::{HistoryStatus, LogCategory};
+use crate::types::structs::HistoryItem;
+use crate::{antivirus::history::append_history, system::logs::{initialize_log_with_id, log_err, log_info}};
 
 pub fn new_id() -> String {
     uuid::Uuid::new_v4().to_string()

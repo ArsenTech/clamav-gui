@@ -1,26 +1,8 @@
-use serde::Serialize;
-use specta::{specta, Type};
+use specta::{specta};
 use sysinfo::{ProcessesToUpdate, System};
 use tauri::command;
 
-#[derive(Debug, Serialize, Type)]
-pub struct SysStats {
-    pub cpu_usage: Vec<f32>,
-    pub cpu_frequency: Vec<u64>,
-
-    pub ram_used: u64,
-    pub ram_total: u64,
-
-    pub disk_read_bytes: u64,
-    pub disk_written_bytes: u64,
-}
-
-#[derive(Debug, Serialize, Type)]
-pub struct SysInfo {
-    pub sys_name: Option<String>,
-    pub sys_os: Option<String>,
-    pub sys_host: Option<String>,
-}
+use crate::types::structs::{SysStats, SysInfo};
 
 #[command]
 #[specta(result)]

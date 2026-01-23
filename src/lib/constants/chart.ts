@@ -69,8 +69,8 @@ export const SCAN_TYPE_CONFIG = {
     label: "File Scan",
     color: "var(--chart-4)",
   },
-  "real-time": {
-    label: "Real-Time",
+  realtime: {
+    label: "Real-Time Scan",
     color: "var(--chart-5)",
   },
 } satisfies ChartConfig

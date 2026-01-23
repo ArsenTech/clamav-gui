@@ -14,7 +14,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { useEffect, useState } from "react";
-import { useSystemStats } from "@/hooks/use-sys-stats";
+import { useSystemStats } from "@/hooks/use-stats";
 import { CPU_STATS_CONFIG } from "@/lib/constants/chart";
 
 export function CPUStats() {

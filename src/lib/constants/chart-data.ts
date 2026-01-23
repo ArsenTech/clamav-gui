@@ -10,11 +10,11 @@ export const ACTIVITY_DATA: IActivityStat[] = [
   { month: "June", unresolved: 214, resolved: 140 },
 ]
 export const SCAN_TYPE_DATA: IScanTypeStat[] = [
-  { scanType: "main", threats: 275, fill: "var(--color-main)" },
-  { scanType: "full", threats: 200, fill: "var(--color-full)" },
-  { scanType: "custom", threats: 187, fill: "var(--color-custom)" },
-  { scanType: "file", threats: 173, fill: "var(--color-file)" },
-  { scanType: "real-time", threats: 90, fill: "var(--color-real-time)" },
+  { scan_type: "main", threats: 275, fill: "var(--color-main)" },
+  { scan_type: "full", threats: 200, fill: "var(--color-full)" },
+  { scan_type: "custom", threats: 187, fill: "var(--color-custom)" },
+  { scan_type: "file", threats: 173, fill: "var(--color-file)" },
+  { scan_type: "realtime", threats: 90, fill: "var(--color-realtime)" },
 ]
 export const THREAT_STATUS_DATA: IThreatStatusStat[] = [
   { status: "quarantined", threats: 275, fill: "var(--color-quarantined)" },
@@ -23,9 +23,9 @@ export const THREAT_STATUS_DATA: IThreatStatusStat[] = [
   { status: "unresolved", threats: 173, fill: "var(--color-unresolved)" },
 ]
 export const VIRUS_TYPE_DATA: IVirusTypeStat[] = [
-  { type: "trojan", threats: 275, fill: "var(--color-trojan)" },
-  { type: "ransomware", threats: 200, fill: "var(--color-ransomware)" },
-  { type: "spyware", threats: 187, fill: "var(--color-spyware)" },
-  { type: "rootkit", threats: 173, fill: "var(--color-rootkit)" },
-  { type: "other", threats: 90, fill: "var(--color-other)" },
+  { virus_type: "trojan", threats: 275, fill: "var(--color-trojan)" },
+  { virus_type: "ransomware", threats: 200, fill: "var(--color-ransomware)" },
+  { virus_type: "spyware", threats: 187, fill: "var(--color-spyware)" },
+  { virus_type: "rootkit", threats: 173, fill: "var(--color-rootkit)" },
+  { virus_type: "other", threats: 90, fill: "var(--color-other)" },
 ]

@@ -7,8 +7,10 @@ use std::sync::{Arc, Mutex};
 use tauri::{command, Emitter};
 use walkdir::WalkDir;
 
-use crate::antivirus::history::{HistoryItem, HistoryStatus, append_history};
-use crate::system::logs::{LogCategory, log_path, log_err, log_info};
+use crate::types::enums::{LogCategory,HistoryStatus};
+use crate::types::structs::HistoryItem;
+use crate::antivirus::history::append_history;
+use crate::system::logs::{log_path, log_err, log_info};
 use crate::system::new_id;
 
 fn estimate_total_files(paths: &[PathBuf]) -> u64 {

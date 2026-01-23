@@ -1,30 +1,10 @@
-use serde::{Deserialize, Serialize};
-use specta::{specta, Type};
+use specta::specta;
 use std::path::PathBuf;
 use tauri::command;
 use tauri::Manager;
 
-use crate::system::logs::LogCategory;
-
-#[derive(Serialize, Deserialize, Type, Debug, PartialEq)]
-#[serde(rename_all = "lowercase")]
-pub enum HistoryStatus {
-    Success,
-    Warning,
-    Error,
-    Acknowledged,
-}
-
-#[derive(Debug, Serialize, Type, Deserialize)]
-pub struct HistoryItem {
-    pub id: String,
-    pub timestamp: String,
-    pub action: String,
-    pub details: String,
-    pub status: HistoryStatus,
-    pub category: Option<LogCategory>,
-    pub log_id: Option<String>,
-}
+use crate::types::enums::HistoryStatus;
+use crate::types::structs::HistoryItem;
 
 fn history_dir(app: &tauri::AppHandle) -> PathBuf {
     let mut dir = app.path().app_data_dir().unwrap();

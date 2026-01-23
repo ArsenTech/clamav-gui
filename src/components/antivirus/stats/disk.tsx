@@ -14,7 +14,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { useEffect, useRef, useState } from "react";
-import { useSystemStats } from "@/hooks/use-sys-stats";
+import { useSystemStats } from "@/hooks/use-stats";
 import { formatBytes } from "@/lib/helpers";
 import { DISK_USAGE_CONFIG } from "@/lib/constants/chart";
 

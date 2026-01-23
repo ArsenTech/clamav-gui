@@ -1,5 +1,5 @@
 import { pickKeys } from "@/lib/helpers";
-import { HookReturnType, SystemStats } from "@/lib/types";
+import { HookReturnType, IStatsResponse, SystemStats } from "@/lib/types";
 import { invoke } from "@tauri-apps/api/core";
 import { useEffect, useState } from "react";
 
@@ -25,4 +25,8 @@ export function useSystemStats<
           return () => clearInterval(interval);
      },[]);
      return state;
+}
+
+export function useAntivirusStats(): IStatsResponse{
+
 }

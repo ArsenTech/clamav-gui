@@ -1,36 +1,11 @@
-use serde::{Serialize, Deserialize};
-use specta::{Type, specta};
+use specta::specta;
 use std::{fs::{File, OpenOptions}, path::PathBuf, sync::{Arc, Mutex}};
 use tauri::{command, Manager};
 use std::io::Write;
 use tauri_plugin_opener::OpenerExt;
 
-#[derive(Serialize, Deserialize, Type, Debug, Clone, Copy)]
-#[serde(rename_all = "lowercase")]
-pub enum LogCategory {
-    Scan,
-    Update,
-    Quarantine,
-    Realtime,
-    Scheduler,
-}
-
-pub struct InitLog {
-     pub id: String,
-     pub file: Arc<Mutex<File>>
-}
-
-impl LogCategory {
-     fn as_str(&self) -> &'static str {
-          match self {
-               LogCategory::Scan => "scan",
-               LogCategory::Update => "update",
-               LogCategory::Quarantine => "quarantine",
-               LogCategory::Realtime => "realtime",
-               LogCategory::Scheduler => "scheduler",
-          }
-     }
-}
+use crate::types::enums::LogCategory;
+use crate::types::structs::InitLog;
 
 pub fn log_path(app: &tauri::AppHandle, log_dir: LogCategory, log_id: &str) -> PathBuf {
      let mut dir = app.path().app_data_dir().unwrap();

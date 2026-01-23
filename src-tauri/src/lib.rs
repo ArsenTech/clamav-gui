@@ -2,6 +2,7 @@
 
 mod antivirus;
 mod system;
+mod types;
 
 use specta::specta;
 use std::process::Command;

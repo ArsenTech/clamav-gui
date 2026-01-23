@@ -1,4 +1,7 @@
-use crate::{antivirus::history::{HistoryItem, HistoryStatus, append_history}, system::logs::{LogCategory, initialize_log, log_err, log_info}};
+use crate::types::enums::{LogCategory,HistoryStatus};
+use crate::types::structs::HistoryItem;
+use crate::antivirus::history::append_history;
+use crate::system::logs::{initialize_log, log_err, log_info};
 use specta::specta;
 use std::process::Command;
 use tauri::{command, Emitter};

@@ -1,17 +1,16 @@
-use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
-use specta::{specta, Type};
+use specta::specta;
 use std::collections::HashMap;
 use std::io;
 use std::path::PathBuf;
 use tauri::command;
 use tauri::Manager;
 
-use crate::antivirus::history::{
-    HistoryStatus, append_history, HistoryItem
-};
+use crate::types::enums::{LogCategory,HistoryStatus};
+use crate::types::structs::{HistoryItem,QuarantinedItem};
+use crate::antivirus::history::append_history;
 use crate::system::logs::{
-    LogCategory, initialize_log_with_id, log_err, log_info
+    initialize_log_with_id, log_err, log_info
 };
 use crate::system::new_id;
 
@@ -19,15 +18,6 @@ fn quarantine_id(file_path: &str) -> String {
     let mut hasher = Sha256::new();
     hasher.update(file_path.as_bytes());
     format!("{:x}", hasher.finalize())
-}
-
-#[derive(Debug, Serialize, Type, Deserialize)]
-pub struct QuarantinedItem {
-    id: String,
-    threat_name: String,
-    file_path: String,
-    quarantined_at: String,
-    size: u64,
 }
 
 fn quarantine_dir(app: &tauri::AppHandle) -> PathBuf {
