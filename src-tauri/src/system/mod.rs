@@ -3,6 +3,7 @@ pub mod logs;
 
 use specta::specta;
 use tauri::command;
+use std::process::Stdio;
 
 use crate::{
     helpers::{
