@@ -55,13 +55,14 @@
 Built with Tauri, React, and modern desktop and web tools. This software is provided as-is. No data is collected or transmitted. This GUI uses ClamAV's clamscan engine. Scan types are presets that define which locations and which limits are used.
 ### Features
 - **State-gated UI** - Detects the ClamAV installation path before launching the software
-- **Real-Time Performance Stats** - CPU, RAM Usage, and Disk Usage Stats all without leaving the GUI
 - **Main and Full Scan** - Scan the entire device for malicious files and malware
 - **Custom and File Scan** - Scan the mentioned folder / file for malware
 - **Resolving infected files after scan** - It includes **Quarantine**, **Delete**, and **Mark as safe**
 - **Definitions Updater** - Update the definitions database directly from the GUI
 - **Quarantine** - Manage infected threats after scanning
 - **History** - View the entire GUI actions history and manage it + view or reveal logs
+- **Antivirus Statistics** - View the entire Antivirus Dashboard and Statistics + some real-time device stats
+- **Real-Time Performance Stats** - CPU, RAM Usage, and Disk Usage Stats all without leaving the GUI
 <!-- TODO: Write the Features list -->
 
 ### Built With

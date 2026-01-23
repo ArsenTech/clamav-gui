@@ -1,5 +1,5 @@
 import { pickKeys } from "@/lib/helpers";
-import { HookReturnType, IStatsResponse, SystemStats } from "@/lib/types";
+import { HookReturnType, StatsResponse, SystemStats } from "@/lib/types";
 import { invoke } from "@tauri-apps/api/core";
 import { useEffect, useState } from "react";
 
@@ -27,6 +27,41 @@ export function useSystemStats<
      return state;
 }
 
-export function useAntivirusStats(): IStatsResponse{
-
+export function useAntivirusStats(startTransition: React.TransitionStartFunction): {
+     stats: StatsResponse<"state">,
+     refresh: () => void
+}{
+     const [stats, setStats] = useState<StatsResponse<"state">>({
+          activity: [],
+          scanTypes: [],
+          threatStatus: [],
+          virusTypes: []
+     });
+     const refresh = () => startTransition(async()=>{
+          const stats = await invoke<StatsResponse<"type">>("get_stats");
+          console.log(stats)
+          setStats(prev=>({
+               ...prev,
+               activity: stats.activity,
+               scanTypes: stats.scan_types.map(val=>({
+                    ...val,
+                    fill: `var(--color-${val.scan_type})`
+               })),
+               threatStatus: stats.threat_status.map(val=>({
+                    ...val,
+                    fill: `var(--color-${val.status})`
+               })),
+               virusTypes: stats.virus_types.map(val=>({
+                    ...val,
+                    fill: `var(--color-${val.virus_type})`
+               }))
+          }))
+     })
+     useEffect(()=>{
+          refresh()
+     },[]);
+     return {
+          stats,
+          refresh
+     }
 }

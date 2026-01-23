@@ -5,7 +5,7 @@ export type ScanType = "" | "main" | "full" | "custom" | "file"
 export type ClamAVState = "checking" | "available" | "missing";
 export type ThreatStatus = "quarantined" | "deleted" | "safe" | "detected";
 export type HistoryStatus = "success" | "warning" | "error" | "acknowledged";
-export type ThreatStatusStat = Exclude<ThreatStatus,"detected"|"safe"> | "unresolved" | "skipped";
+export type ThreatStatusStat = Exclude<ThreatStatus,"detected"|"safe"> | "unresolved";
 export type ComputerVirusType = "trojan" | "ransomware" | "spyware" | "rootkit" | "other";
 export type ScanTypeStat = Exclude<ScanType,""> | "realtime";
 export type LogCategory = "scan" | "update" | "quarantine" | "realtime" | "scheduler";
@@ -86,15 +86,7 @@ export interface IActivityStat{
 export interface IScanTypeStat extends IStatBase{ scan_type: ScanTypeStat }
 export interface IThreatStatusStat extends IStatBase{ status: ThreatStatusStat }
 export interface IVirusTypeStat extends IStatBase{ virus_type: ComputerVirusType }
-export interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[],
-  searchColumn?: string,
-  headerElement?: React.JSX.Element
-}
-export type StatsResponse<T extends "state" | "type"> = {
-     activity: IActivityStat[]
-} & T extends "state" ? {
+export type StatsResponse<T extends "state" | "type"> = (T extends "state" ? {
      scanTypes: IScanTypeStat[],
      threatStatus: IThreatStatusStat[],
      virusTypes: IVirusTypeStat[]
@@ -102,4 +94,16 @@ export type StatsResponse<T extends "state" | "type"> = {
      scan_types: IScanTypeStat[],
      threat_status: IThreatStatusStat[],
      virus_types: IVirusTypeStat[]
+}) & {
+     activity: IActivityStat[]
+}
+
+export interface ChartProps<T>{
+     data: T
+}
+export interface DataTableProps<TData, TValue> {
+     columns: ColumnDef<TData, TValue>[]
+     data: TData[],
+     searchColumn?: string,
+     headerElement?: React.JSX.Element
 }

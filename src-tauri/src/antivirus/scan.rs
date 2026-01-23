@@ -7,7 +7,7 @@ use std::sync::{Arc, Mutex};
 use tauri::{command, Emitter};
 use walkdir::WalkDir;
 
-use crate::types::enums::{LogCategory,HistoryStatus};
+use crate::types::enums::{HistoryStatus, LogCategory, ScanResult, ScanType};
 use crate::types::structs::HistoryItem;
 use crate::antivirus::history::append_history;
 use crate::system::logs::{log_path, log_err, log_info};
@@ -25,7 +25,7 @@ fn estimate_total_files(paths: &[PathBuf]) -> u64 {
 static SCAN_PROCESS: once_cell::sync::Lazy<Mutex<Option<u32>>> =
     once_cell::sync::Lazy::new(|| Mutex::new(None));
 
-fn run_scan(app: tauri::AppHandle, log_id: String, mut cmd: Command) -> Result<(), String> {
+fn run_scan(app: tauri::AppHandle, log_id: String, mut cmd: Command, scan_type: ScanType) -> Result<(), String> {
     {
         let mut guard = SCAN_PROCESS.lock().unwrap();
         if guard.is_some() {
@@ -90,21 +90,25 @@ fn run_scan(app: tauri::AppHandle, log_id: String, mut cmd: Command) -> Result<(
     }
     let found = threats_count.load(Ordering::Relaxed);
 
-    let (status, details) = match exit_code {
+    let (status, scan_result, details) = match exit_code {
         0 => (
             HistoryStatus::Success,
+            ScanResult::Clean,
             "Scan completed successfully, no threats found".to_string(),
         ),
         1 => (
             HistoryStatus::Warning,
+            ScanResult::ThreatsFound,
             format!("Scan completed successfully, {} threats found", found),
         ),
         2 => (
             HistoryStatus::Success,
+            ScanResult::Partial,
             "Some files could not be scanned due to access restrictions".to_string(),
         ),
         _ => (
             HistoryStatus::Error,
+            ScanResult::Failed,
             format!("Scan failed (exit code {})", exit_code)
         ),
     };
@@ -119,6 +123,9 @@ fn run_scan(app: tauri::AppHandle, log_id: String, mut cmd: Command) -> Result<(
             status,
             category: Some(LogCategory::Scan),
             log_id: Some(log_id.clone()),
+            scan_type: Some(scan_type),
+            threat_count: Some(found as u32),
+            scan_result: Some(scan_result)
         },
     ) {
         eprintln!("History append failed: {}", e);
@@ -142,6 +149,9 @@ pub async fn start_main_scan(app: tauri::AppHandle) -> Result<(), String> {
             status: HistoryStatus::Success,
             category: Some(LogCategory::Scan),
             log_id: Some(log_id.clone()),
+            scan_type: Some(ScanType::Main),
+            threat_count: None,
+            scan_result: None
         },
     ) {
         eprintln!("History append failed: {}", e);
@@ -186,7 +196,7 @@ pub async fn start_main_scan(app: tauri::AppHandle) -> Result<(), String> {
             cmd.arg(path);
         }
 
-        run_scan(app, log_id, cmd).ok();
+        run_scan(app, log_id, cmd,ScanType::Main).ok();
     });
 
     Ok(())
@@ -206,6 +216,9 @@ pub async fn start_full_scan(app: tauri::AppHandle) -> Result<(), String> {
             status: HistoryStatus::Success,
             category: Some(LogCategory::Scan),
             log_id: Some(log_id.clone()),
+            scan_type: Some(ScanType::Full),
+            threat_count: None,
+            scan_result: None
         },
     ) {
         eprintln!("History append failed: {}", e);
@@ -224,7 +237,7 @@ pub async fn start_full_scan(app: tauri::AppHandle) -> Result<(), String> {
             root,
         ]);
 
-        run_scan(app, log_id, cmd).ok();
+        run_scan(app, log_id, cmd,ScanType::Full).ok();
     });
 
     Ok(())
@@ -237,6 +250,16 @@ pub fn start_custom_scan(app: tauri::AppHandle, paths: Vec<String>) -> Result<()
         return Err("No scan targets provided".into());
     }
     let log_id = new_id();
+    let resolved_paths: Vec<PathBuf> = paths.iter().map(PathBuf::from).collect();
+    for path in &resolved_paths {
+        if !path.try_exists().unwrap_or(false) {
+            return Err("Path does not exist".into());
+        }
+        if !path.is_file() && !path.is_dir() {
+            return Err("Invalid scan target".into());
+        }
+    }
+    let has_directory = resolved_paths.iter().any(|p| p.is_dir());
     println!("Starting Custom Scan...");
     if let Err(e) = append_history(
         &app,
@@ -248,25 +271,18 @@ pub fn start_custom_scan(app: tauri::AppHandle, paths: Vec<String>) -> Result<()
             status: HistoryStatus::Success,
             category: Some(LogCategory::Scan),
             log_id: Some(log_id.clone()),
+            scan_type: Some(if has_directory {
+                ScanType::Custom
+            } else {
+                ScanType::File
+            }),
+            threat_count: None,
+            scan_result: None
         },
     ) {
         eprintln!("History append failed: {}", e);
     }
-    let resolved_paths: Vec<PathBuf> = paths.iter().map(PathBuf::from).collect();
-
-    for path in &resolved_paths {
-        if !path.try_exists().unwrap_or(false) {
-            return Err("Path does not exist".into());
-        }
-
-        if !path.is_file() && !path.is_dir() {
-            return Err("Invalid scan target".into());
-        }
-    }
-
-    let has_directory = resolved_paths.iter().any(|p| p.is_dir());
     let app = app.clone();
-
     std::thread::spawn(move || {
         let mut cmd = Command::new("clamscan");
 
@@ -289,8 +305,12 @@ pub fn start_custom_scan(app: tauri::AppHandle, paths: Vec<String>) -> Result<()
 
         let total_files = estimate_total_files(&resolved_paths);
         app.emit("clamscan:total", total_files).ok();
-
-        run_scan(app, log_id, cmd).ok();
+        let scan_type = if has_directory {
+            ScanType::Custom
+        } else {
+            ScanType::File
+        };
+        run_scan(app, log_id, cmd, scan_type).ok();
     });
 
     Ok(())

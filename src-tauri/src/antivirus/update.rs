@@ -23,6 +23,9 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
             status: HistoryStatus::Success,
             category: Some(LogCategory::Update),
             log_id: Some(log_id.clone()),
+            scan_type: None,
+            threat_count: None,
+            scan_result: None
         },
     )
     .ok();
@@ -64,6 +67,9 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
                         status,
                         category: Some(LogCategory::Update),
                         log_id: Some(log_id),
+                        scan_type: None,
+                        threat_count: None,
+                        scan_result: None
                     },
                 )
                 .ok();
@@ -84,6 +90,9 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
                         status: HistoryStatus::Error,
                         category: Some(LogCategory::Update),
                         log_id: Some(log_id),
+                        scan_type: None,
+                        threat_count: None,
+                        scan_result: None
                     },
                 )
                 .ok();

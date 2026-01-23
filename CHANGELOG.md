@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - The Resolve Logic after finishing scan
 - The History Page Logic Containing every single action
 - Feature to log actions inside a separate file
+- The Statistics Counting logic
 ### Improved
 - History Table
 - Scan Logic
@@ -19,6 +20,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Remove File Logic
 - Bulk Actions
 - The **No ClamAV Found** Page
+- The Stats Page UI
 ### Changed
 - Converted Logs list UI into a Dropdown menu consisting of Log actions inside the History Table
 

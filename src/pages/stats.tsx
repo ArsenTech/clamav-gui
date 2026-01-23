@@ -13,24 +13,26 @@ import { Button } from "@/components/ui/button";
 import { RotateCw } from "lucide-react";
 import { useTransition } from "react";
 import { cn } from "@/lib/utils";
+import { useAntivirusStats } from "@/hooks/use-stats";
 
 export default function StatsPage(){
-     const [isPending] = useTransition()
+     const [isPending, startTransition] = useTransition()
+     const {stats, refresh} = useAntivirusStats(startTransition);
      return (
           <AppLayout className="flex justify-center items-center gap-4 flex-col p-4">
                <h1 className="text-2xl md:text-3xl lg:text-4xl font-medium border-b pb-2 w-fit">Statistics</h1>
-               <Button disabled={isPending}>
+               <Button disabled={isPending} onClick={refresh}>
                     <RotateCw className={cn(isPending && "animate-spin")}/>
                     {isPending ? "Refreshing..." : "Refresh Antivirus Stats"}
                </Button>
                <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-2 w-full">
                     <div className="flex flex-col items-center gap-2 w-full">
                          <DeviceInfo/>
-                         <ScanActivity/>
-                         <ScanTypes/>
+                         <ScanActivity data={stats.activity}/>
+                         <ScanTypes data={stats.scanTypes}/>
                          <div className="grid gris-cols-1 xl:grid-cols-2 w-full gap-2">
-                              <VirusTypes/>
-                              <ThreatsStats/>
+                              <VirusTypes data={stats.virusTypes}/>
+                              <ThreatsStats data={stats.threatStatus}/>
                          </div>
                     </div>
                     <div className="flex flex-col items-center gap-2 w-full">

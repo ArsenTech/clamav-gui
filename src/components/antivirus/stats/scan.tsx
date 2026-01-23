@@ -12,39 +12,44 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 import { SCAN_TYPE_CONFIG } from "@/lib/constants/chart"
-import { SCAN_TYPE_DATA } from "@/lib/constants/chart-data"
+import { ChartProps, IScanTypeStat } from "@/lib/types"
+import { NoData } from "./no-data"
 
-export function ScanTypes() {
+export function ScanTypes({data}: ChartProps<IScanTypeStat[]>) {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2"><Search className="size-5"/> Scan Types</CardTitle>
+        <CardTitle className="flex items-center gap-2"><Search className="size-5"/> Threats by Scan Type</CardTitle>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={SCAN_TYPE_CONFIG}>
-          <BarChart
-            accessibilityLayer
-            data={SCAN_TYPE_DATA}
-            layout="vertical"
-          >
-            <YAxis
-              dataKey="scanType"
-              type="category"
-              tickLine={false}
-              tickMargin={2}
-              axisLine={false}
-              tickFormatter={(value) =>
-                SCAN_TYPE_CONFIG[value as keyof typeof SCAN_TYPE_CONFIG]?.label
-              }
-            />
-            <XAxis dataKey="threats" type="number" hide />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
-            />
-            <Bar dataKey="threats" layout="vertical" radius={5} />
-          </BarChart>
-        </ChartContainer>
+        {!data.length ? (
+          <NoData/>
+        ) : (
+          <ChartContainer config={SCAN_TYPE_CONFIG}>
+            <BarChart
+              accessibilityLayer
+              data={data}
+              layout="vertical"
+            >
+              <YAxis
+                dataKey="scan_type"
+                type="category"
+                tickLine={false}
+                tickMargin={2}
+                axisLine={false}
+                tickFormatter={(value) =>
+                  SCAN_TYPE_CONFIG[value as keyof typeof SCAN_TYPE_CONFIG]?.label
+                }
+              />
+              <XAxis dataKey="threats" type="number" hide />
+              <ChartTooltip
+                cursor={false}
+                content={<ChartTooltipContent hideLabel />}
+              />
+              <Bar dataKey="threats" layout="vertical" radius={5} />
+            </BarChart>
+          </ChartContainer>
+        )}
       </CardContent>
     </Card>
   )

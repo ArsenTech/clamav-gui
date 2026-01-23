@@ -20,6 +20,7 @@ use crate::antivirus::scan::{start_custom_scan, start_full_scan, start_main_scan
 use crate::antivirus::update::{get_clamav_version, update_definitions};
 use crate::system::sysinfo::{get_sys_info, get_sys_stats};
 use crate::system::logs::{read_log, reveal_log};
+use crate::antivirus::stats::get_stats;
 
 #[command]
 #[specta]
@@ -57,7 +58,8 @@ pub fn run() {
         mark_as_acknowledged,
         clear_history,
         read_log,
-        reveal_log
+        reveal_log,
+        get_stats
     ]);
 
     tauri::Builder::default()

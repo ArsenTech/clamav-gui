@@ -20,7 +20,7 @@ fn quarantine_id(file_path: &str) -> String {
     format!("{:x}", hasher.finalize())
 }
 
-fn quarantine_dir(app: &tauri::AppHandle) -> PathBuf {
+pub fn quarantine_dir(app: &tauri::AppHandle) -> PathBuf {
     let mut dir = app.path().app_data_dir().unwrap();
     dir.push("quarantine");
     std::fs::create_dir_all(&dir).ok();
@@ -82,6 +82,9 @@ pub fn quarantine_file(
             status: HistoryStatus::Warning,
             category: Some(LogCategory::Quarantine),
             log_id: Some(log_id.clone()),
+            scan_type: None,
+            threat_count: None,
+            scan_result: None
         },
     )
     .ok();
@@ -175,6 +178,9 @@ pub fn restore_quarantine(app: tauri::AppHandle, id: String, log_id: Option<Stri
             status: HistoryStatus::Success,
             category: Some(LogCategory::Quarantine),
             log_id: Some(log_id.clone()),
+            scan_type: None,
+            threat_count: None,
+            scan_result: None
         },
     )
     .ok();
@@ -226,6 +232,9 @@ pub fn delete_quarantine(app: tauri::AppHandle, id: String, log_id: Option<Strin
             status: HistoryStatus::Success,
             category: Some(LogCategory::Quarantine),
             log_id: Some(log_id.clone()),
+            scan_type: None,
+            threat_count: None,
+            scan_result: None
         },
     )
     .ok();

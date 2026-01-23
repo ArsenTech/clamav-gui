@@ -1,7 +1,16 @@
 use serde::{Deserialize, Serialize};
 use specta::Type;
 
-#[derive(Serialize, Deserialize, Type, Debug, PartialEq)]
+#[derive(Serialize, Deserialize, Type, Debug, PartialEq, Eq, Hash, Copy, Clone)]
+#[serde(rename_all = "lowercase")]
+pub enum ScanResult {
+    Clean,
+    ThreatsFound,
+    Partial,
+    Failed,
+}
+
+#[derive(Serialize, Deserialize, Type, Debug, PartialEq, Eq, Hash, Copy, Clone)]
 #[serde(rename_all = "lowercase")]
 pub enum ScanType{
      Main,
@@ -11,16 +20,15 @@ pub enum ScanType{
      Realtime 
 }
 
-#[derive(Serialize, Deserialize, Type, Debug, PartialEq)]
+#[derive(Serialize, Deserialize, Type, Debug, PartialEq, Eq, Hash)]
 #[serde(rename_all = "lowercase")]
 pub enum ThreatStatus{
      Quarantined,
      Deleted,
-     Skipped,
      Unresolved
 }
 
-#[derive(Serialize, Deserialize, Type, Debug, PartialEq)]
+#[derive(Serialize, Deserialize, Type, Debug, PartialEq, Eq, Hash)]
 #[serde(rename_all = "lowercase")]
 pub enum ComputerVirusType{
      Trojan,
@@ -30,7 +38,7 @@ pub enum ComputerVirusType{
      Other,
 }
 
-#[derive(Serialize, Deserialize, Type, Debug, PartialEq)]
+#[derive(Serialize, Deserialize, Type, Debug, PartialEq, Eq, Hash)]
 #[serde(rename_all = "lowercase")]
 pub enum HistoryStatus {
     Success,
@@ -39,7 +47,7 @@ pub enum HistoryStatus {
     Acknowledged,
 }
 
-#[derive(Serialize, Deserialize, Type, Debug, Clone, Copy)]
+#[derive(Serialize, Deserialize, Type, Debug, Clone, Copy, PartialEq, Eq, Hash)]
 #[serde(rename_all = "lowercase")]
 pub enum LogCategory {
     Scan,

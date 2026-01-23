@@ -32,8 +32,11 @@ pub fn remove_file(app: tauri::AppHandle, file_path: String, log_id: Option<Stri
                     action: "File Deleted".into(),
                     details: format!("The file was deleted: {}", file_path),
                     status: HistoryStatus::Success,
-                    log_id: None,
-                    category: Some(LogCategory::Quarantine)
+                    log_id: Some(log_id.clone()),
+                    category: Some(LogCategory::Quarantine),
+                    scan_type: None,
+                    threat_count: None,
+                    scan_result: None
                 },
             )
             .ok();
@@ -49,8 +52,11 @@ pub fn remove_file(app: tauri::AppHandle, file_path: String, log_id: Option<Stri
                     action: "File Deletion Failed".into(),
                     details: format!("Failed to delete file: {} ({})", file_path, e),
                     status: HistoryStatus::Error,
-                    log_id: None,
-                    category: Some(LogCategory::Quarantine)
+                    log_id: Some(log_id.clone()),
+                    category: Some(LogCategory::Quarantine),
+                    scan_type: None,
+                    threat_count: None,
+                    scan_result: None
                 },
             )
             .ok();

@@ -3,11 +3,7 @@ use serde::{Deserialize, Serialize};
 use specta::Type;
 
 use crate::types::enums::{
-     ThreatStatus,
-     ComputerVirusType,
-     ScanType,
-     HistoryStatus,
-     LogCategory  
+     ComputerVirusType, HistoryStatus, LogCategory, ScanResult, ScanType, ThreatStatus  
 };
 
 #[derive(Debug, Serialize, Type, Deserialize)]
@@ -15,33 +11,28 @@ pub struct ActivityStat{
      pub month: String,
      pub unresolved: u32,
      pub resolved: u32,
-     pub threats: u32,
-     pub fill: String,
 }
 
 #[derive(Debug, Serialize, Type, Deserialize)]
 pub struct ScanTypeStat{
      pub scan_type: ScanType,
      pub threats: u32,
-     pub fill: String,
 }
 
 #[derive(Debug, Serialize, Type, Deserialize)]
 pub struct ThreatStatusStat{
      pub status: ThreatStatus,
      pub threats: u32,
-     pub fill: String,
 }
 
 #[derive(Debug, Serialize, Type, Deserialize)]
 pub struct VirusTypeStat{
      pub virus_type: ComputerVirusType,
      pub threats: u32,
-     pub fill: String,
 }
 
 #[derive(Debug, Serialize, Type, Deserialize)]
-pub struct StatItem {
+pub struct StatsResponse {
      pub activity: Vec<ActivityStat>,
      pub scan_types: Vec<ScanTypeStat>,
      pub threat_status: Vec<ThreatStatusStat>,
@@ -57,25 +48,26 @@ pub struct HistoryItem {
      pub status: HistoryStatus,
      pub category: Option<LogCategory>,
      pub log_id: Option<String>,
+     pub scan_type: Option<ScanType>,
+     pub threat_count: Option<u32>,
+     pub scan_result: Option<ScanResult>
 }
 
 #[derive(Debug, Serialize, Type)]
 pub struct SysStats {
-    pub cpu_usage: Vec<f32>,
-    pub cpu_frequency: Vec<u64>,
-
-    pub ram_used: u64,
-    pub ram_total: u64,
-
-    pub disk_read_bytes: u64,
-    pub disk_written_bytes: u64,
+     pub cpu_usage: Vec<f32>,
+     pub cpu_frequency: Vec<u64>,
+     pub ram_used: u64,
+     pub ram_total: u64,
+     pub disk_read_bytes: u64,
+     pub disk_written_bytes: u64,
 }
 
 #[derive(Debug, Serialize, Type)]
 pub struct SysInfo {
-    pub sys_name: Option<String>,
-    pub sys_os: Option<String>,
-    pub sys_host: Option<String>,
+     pub sys_name: Option<String>,
+     pub sys_os: Option<String>,
+     pub sys_host: Option<String>,
 }
 
 pub struct InitLog {
