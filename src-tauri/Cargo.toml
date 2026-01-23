@@ -1,6 +1,6 @@
 [package]
 name = "clamav-gui"
-version = "0.3.0"
+version = "0.3.0-1"
 description = "A GUI for ClamAV Antivirus that makes the Antivirus itself look professional and work exactly like ClamAV (A Freeware CLI Antivirus)"
 authors = ["ArsenTech"]
 edition = "2021"
@@ -37,6 +37,4 @@ tauri-plugin-fs = "2"
 [dependencies.uuid]
 version = "1.19.0"
 # Lets you generate random UUIDs
-features = [
-    "v4",
-]
+features = ["v4"]

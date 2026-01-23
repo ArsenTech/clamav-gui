@@ -76,6 +76,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - [ ] Notifications
 - [ ] System Tray with quick access
 - [ ] Finishing touches and optimization before v1
+- [ ] Implement Skeleton Loading
 
 ### Built With
 - [![Tauri][tauri-shield]][tauri-url]
