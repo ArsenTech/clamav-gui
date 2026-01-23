@@ -21,8 +21,6 @@ pub fn silent_command(program: &str) -> Command {
         cmd.creation_flags(CREATE_NO_WINDOW);
     }
     cmd
-        .stdin(Stdio::null())
-        .stdout(Stdio::null())
-        .stderr(Stdio::null());
+        .stdin(Stdio::null());
     cmd
 }
