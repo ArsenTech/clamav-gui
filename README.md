@@ -65,6 +65,15 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - **Real-Time Performance Stats** - CPU, RAM Usage, and Disk Usage Stats all without leaving the GUI
 <!-- TODO: Write the Features list -->
 
+### Coming Soon (To Do List):
+- [ ] Settings
+  - [ ] Themes
+  - [ ] Custom Scan Settings
+  - [ ] Real Time Protection Settings
+  - [ ] Other settings based on few GUI actions
+- [ ] Scheduler
+- [ ] YARA Rules and YARA Scan Type
+
 ### Built With
 - [![Tauri][tauri-shield]][tauri-url]
 - [![React][react-shield]][react-url]
