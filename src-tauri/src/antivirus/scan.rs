@@ -1,17 +1,15 @@
 use specta::specta;
 use std::path::PathBuf;
-use std::process::Command;
 use tauri::{command, Emitter};
 
 use crate::{
-    types::{
-        enums::{HistoryStatus, LogCategory, ScanType},
-        structs::HistoryItem
-    },
     helpers::{
         new_id,
-        scan::{append_scan_history,run_scan,estimate_total_files,SCAN_PROCESS},
+        scan::{SCAN_PROCESS, append_scan_history, estimate_total_files, run_scan}, silent_command,
 
+    }, types::{
+        enums::{HistoryStatus, LogCategory, ScanType},
+        structs::HistoryItem
     }
 };
 
@@ -49,7 +47,7 @@ pub fn start_main_scan(app: tauri::AppHandle) -> Result<(), String> {
             ]);
         }
 
-        let mut cmd = Command::new("clamscan");
+        let mut cmd = silent_command("clamscan");
         cmd.args([
             "--recursive",
             "--heuristic-alerts",
@@ -66,7 +64,7 @@ pub fn start_main_scan(app: tauri::AppHandle) -> Result<(), String> {
         for path in paths {
             cmd.arg(path);
         }
-
+        
         run_scan(app, log_id, cmd, ScanType::Main).ok();
     });
 
@@ -98,7 +96,7 @@ pub fn start_full_scan(app: tauri::AppHandle) -> Result<(), String> {
     std::thread::spawn(move || {
         let root = if cfg!(windows) { "C:\\" } else { "/" };
 
-        let mut cmd = Command::new("clamscan");
+        let mut cmd = silent_command("clamscan");
         cmd.args([
             "--recursive",
             "--cross-fs=yes",
@@ -107,7 +105,6 @@ pub fn start_full_scan(app: tauri::AppHandle) -> Result<(), String> {
             "--no-summary",
             root,
         ]);
-
         run_scan(app, log_id, cmd, ScanType::Full).ok();
     });
 
@@ -156,7 +153,7 @@ pub fn start_custom_scan(app: tauri::AppHandle, paths: Vec<String>) -> Result<()
     
     let app_clone = app.clone();
     std::thread::spawn(move || {
-        let mut cmd = Command::new("clamscan");
+        let mut cmd = silent_command("clamscan");
 
         if has_directory {
             cmd.arg("--recursive");
@@ -177,7 +174,6 @@ pub fn start_custom_scan(app: tauri::AppHandle, paths: Vec<String>) -> Result<()
 
         let total_files = estimate_total_files(&resolved_paths);
         app_clone.emit("clamscan:total", total_files).ok();
-        
         run_scan(app_clone, log_id, cmd, scan_type).ok();
     });
 
@@ -195,14 +191,14 @@ pub fn stop_scan() -> Result<(), String> {
     if let Some(pid) = pid {
         #[cfg(windows)]
         {
-            Command::new("taskkill")
+            silent_command("taskkill")
                 .args(["/PID", &pid.to_string(), "/F"])
                 .spawn()
                 .map_err(|e| e.to_string())?;
         }
         #[cfg(unix)]
         {
-            Command::new("kill")
+            silent_command("kill")
                 .arg("-9")
                 .arg(pid.to_string())
                 .spawn()

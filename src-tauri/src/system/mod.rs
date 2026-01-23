@@ -1,19 +1,17 @@
 pub mod sysinfo;
 pub mod logs;
 
-use std::process::Command;
 use specta::specta;
 use tauri::command;
 
 use crate::{
-    types::{
-        enums::{HistoryStatus, LogCategory},
-        structs::HistoryItem
-    },
     helpers::{
         history::append_history,
         log::{initialize_log_with_id, log_err, log_info},
-        new_id
+        new_id, silent_command
+    }, types::{
+        enums::{HistoryStatus, LogCategory},
+        structs::HistoryItem
     }
 };
 
@@ -83,11 +81,8 @@ pub fn remove_file(app: tauri::AppHandle, file_path: String, log_id: Option<Stri
 #[specta]
 pub fn check_availability() -> bool {
     let command = if cfg!(windows) { "where" } else { "which" };
-    Command::new(command)
+    silent_command(command)
         .arg("clamscan")
-        .stdin(std::process::Stdio::null())
-        .stdout(std::process::Stdio::null())
-        .stderr(std::process::Stdio::null())
         .status()
         .map(|s| s.success())
         .unwrap_or(false)

@@ -1,16 +1,13 @@
 use specta::specta;
-use std::process::Command;
 use tauri::{command, Emitter};
 
 use crate::{
-    types::{
-        structs::HistoryItem,
-        enums::{LogCategory, HistoryStatus}
-    },
     helpers::{
         history::append_update_history,
         log::{initialize_log, log_err, log_info},
-        new_id
+        new_id, silent_command
+    }, types::{
+        enums::{HistoryStatus, LogCategory}, structs::HistoryItem
     }
 };
 
@@ -40,8 +37,7 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
     std::thread::spawn(move || {
         app.emit("freshclam:start", ()).ok();
 
-        let output = Command::new("freshclam").arg("--stdout").output();
-
+        let output = silent_command("freshclam").arg("--stdout").output();
         match output {
             Ok(out) => {
                 let stdout = String::from_utf8_lossy(&out.stdout);
@@ -123,7 +119,7 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
 #[command]
 #[specta(result)]
 pub fn get_clamav_version() -> Result<String, String> {
-    let output = Command::new("freshclam")
+    let output = silent_command("freshclam")
         .arg("--version")
         .output()
         .map_err(|e| e.to_string())?;
