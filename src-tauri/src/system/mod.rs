@@ -85,7 +85,7 @@ pub fn check_availability() -> bool {
     silent_command(command)
         .arg("clamscan")
         .stdout(Stdio::null())
-        .stderr(Stdio::null());
+        .stderr(Stdio::null())
         .status()
         .map(|s| s.success())
         .unwrap_or(false)
