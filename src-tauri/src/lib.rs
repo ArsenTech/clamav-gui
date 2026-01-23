@@ -1,35 +1,29 @@
 mod antivirus;
 mod system;
 mod types;
+mod helpers;
 
-use specta::specta;
-use std::process::Command;
-use tauri::command;
 use tauri_specta::{collect_commands, Builder};
 
 // Local Crates
-use crate::antivirus::bulk_actions::{clear_quarantine, delete_all, quarantine_all, restore_all};
-use crate::antivirus::history::{load_history, mark_as_acknowledged, clear_history};
-use crate::antivirus::quarantine::{
-    delete_quarantine, list_quarantine, quarantine_file, restore_quarantine,
+use crate::{
+    antivirus::{
+        bulk_actions::{clear_quarantine, delete_all, quarantine_all, restore_all},
+        history::{load_history, mark_as_acknowledged, clear_history},
+        quarantine::{
+            delete_quarantine, list_quarantine, quarantine_file, restore_quarantine,
+        },
+        scan::{start_custom_scan, start_full_scan, start_main_scan, stop_scan},
+        update::{get_clamav_version, update_definitions},
+        stats::get_stats
+    },
+    system::{
+        remove_file,
+        check_availability,
+        sysinfo::{get_sys_info, get_sys_stats},
+        logs::{read_log, reveal_log}
+    }
 };
-use crate::system::remove_file;
-use crate::antivirus::scan::{start_custom_scan, start_full_scan, start_main_scan, stop_scan};
-use crate::antivirus::update::{get_clamav_version, update_definitions};
-use crate::system::sysinfo::{get_sys_info, get_sys_stats};
-use crate::system::logs::{read_log, reveal_log};
-use crate::antivirus::stats::get_stats;
-
-#[command]
-#[specta]
-fn check_availability() -> bool {
-    let command = if cfg!(windows) { "where" } else { "which" };
-    Command::new(command)
-        .arg("clamscan")
-        .status()
-        .map(|s| s.success())
-        .unwrap_or(false)
-}
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {

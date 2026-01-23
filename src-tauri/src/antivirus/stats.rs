@@ -1,5 +1,12 @@
-use crate::{antivirus::{history::load_history, quarantine::quarantine_dir}, types::{enums::{ComputerVirusType, LogCategory, ScanResult, ScanType, ThreatStatus}, structs::{ActivityStat, HistoryItem, QuarantinedItem, ScanTypeStat, StatsResponse, ThreatStatusStat, VirusTypeStat}}};
-use std::collections::{HashMap,HashSet};
+use crate::{
+     antivirus::history::load_history, 
+     types::{
+          enums::{ComputerVirusType, LogCategory, ScanResult, ScanType, ThreatStatus}, 
+          structs::{ActivityStat, HistoryItem, QuarantinedItem, ScanTypeStat, StatsResponse, ThreatStatusStat, VirusTypeStat}
+     },
+     helpers::quarantine::quarantine_dir
+};
+use std::collections::{HashMap, HashSet};
 
 fn detect_virus_type(name: &str) -> ComputerVirusType {
      let n = name.to_lowercase();
@@ -19,11 +26,12 @@ fn detect_virus_type(name: &str) -> ComputerVirusType {
 fn aggregate_activity(history: &[HistoryItem]) -> Vec<ActivityStat> {
      use std::collections::BTreeMap;
 
-     let mut map: BTreeMap<String, (u32 /* resolved */, u32 /* unresolved */)> = BTreeMap::new();
+     let mut map: BTreeMap<String, (u32 /* unresolved */, u32 /* resolved */)> = BTreeMap::new();
 
      for item in history {
-          if item.category != Some(LogCategory::Scan) { continue; }
-          if item.action != "Scan Finished" { continue; }
+          if item.category != Some(LogCategory::Scan) || item.action != "Scan Finished" {
+               continue;
+          }
 
           let Some(scan_result) = item.scan_result else { continue };
 
@@ -35,10 +43,10 @@ fn aggregate_activity(history: &[HistoryItem]) -> Vec<ActivityStat> {
                ScanResult::Clean |
                ScanResult::ThreatsFound |
                ScanResult::Partial => {
-                    entry.1 += c; // resolved
+                    entry.1 += c;
                }
                ScanResult::Failed => {
-                    entry.0 += c; // unresolved
+                    entry.0 += c;
                }
           }
      }
@@ -51,6 +59,7 @@ fn aggregate_activity(history: &[HistoryItem]) -> Vec<ActivityStat> {
           })
           .collect()
 }
+
 fn aggregate_scan_types(history: &[HistoryItem]) -> Vec<ScanTypeStat> {
      let mut map: HashMap<ScanType, u32> = HashMap::new();
      let mut seen: HashSet<String> = HashSet::new();
@@ -75,9 +84,10 @@ fn aggregate_scan_types(history: &[HistoryItem]) -> Vec<ScanTypeStat> {
           .map(|(scan_type, threats)| ScanTypeStat { scan_type, threats })
           .collect()
 }
-fn aggregate_threat_status(app: &tauri::AppHandle) -> Vec<ThreatStatusStat> {
+
+fn read_quarantine_items(app: &tauri::AppHandle) -> HashSet<String> {
      let quarantine = quarantine_dir(app);
-     let mut quarantined: HashSet<String> = HashSet::new();
+     let mut quarantined = HashSet::new();
 
      if let Ok(entries) = std::fs::read_dir(&quarantine) {
           for entry in entries.flatten() {
@@ -91,6 +101,10 @@ fn aggregate_threat_status(app: &tauri::AppHandle) -> Vec<ThreatStatusStat> {
                }
           }
      }
+     quarantined
+}
+
+fn aggregate_threat_status(app: &tauri::AppHandle, quarantined: &HashSet<String>) -> Vec<ThreatStatusStat> {
      let history = load_history(app.clone(), 365).unwrap_or_default();
 
      let mut deleted: HashSet<String> = HashSet::new();
@@ -102,6 +116,7 @@ fn aggregate_threat_status(app: &tauri::AppHandle) -> Vec<ThreatStatusStat> {
           }
 
           let Some(log_id) = item.log_id else { continue };
+          
           match item.action.as_str() {
                "Threat deleted" => {
                     deleted.insert(log_id.clone());
@@ -115,7 +130,10 @@ fn aggregate_threat_status(app: &tauri::AppHandle) -> Vec<ThreatStatusStat> {
                _ => {}
           }
      }
-     let mut stats = Vec::new();
+    
+     
+     let mut stats = Vec::with_capacity(3);
+     
      if !quarantined.is_empty() {
           stats.push(ThreatStatusStat {
                status: ThreatStatus::Quarantined,
@@ -134,23 +152,30 @@ fn aggregate_threat_status(app: &tauri::AppHandle) -> Vec<ThreatStatusStat> {
                threats: restored.len() as u32,
           });
      }
-     stats
+    
+    stats
 }
+
 fn aggregate_curr_quarantine_virus_types(app: &tauri::AppHandle) -> Vec<VirusTypeStat> {
      let mut map: HashMap<ComputerVirusType, u32> = HashMap::new();
+     
      if let Ok(entries) = std::fs::read_dir(quarantine_dir(app)) {
           for entry in entries.flatten() {
                let path = entry.path();
-               if path.extension().and_then(|e| e.to_str()) == Some("json") {
-                    if let Ok(content) = std::fs::read_to_string(path) {
-                         if let Ok(meta) = serde_json::from_str::<QuarantinedItem>(&content) {
+               
+               if path.extension().and_then(|e| e.to_str()) != Some("json") {
+                    continue;
+               }
+               
+               if let Ok(content) = std::fs::read_to_string(path) {
+                    if let Ok(meta) = serde_json::from_str::<QuarantinedItem>(&content) {
                          let vt = detect_virus_type(&meta.threat_name);
                          *map.entry(vt).or_insert(0) += 1;
-                         }
                     }
                }
           }
      }
+     
      map.into_iter()
           .map(|(virus_type, threats)| VirusTypeStat {
                virus_type,
@@ -163,10 +188,12 @@ fn aggregate_curr_quarantine_virus_types(app: &tauri::AppHandle) -> Vec<VirusTyp
 #[specta::specta(result)]
 pub fn get_stats(app: tauri::AppHandle) -> Result<StatsResponse, String> {
      let history = load_history(app.clone(), 365)?;
+     let quarantined = read_quarantine_items(&app);
+     
      Ok(StatsResponse {
           activity: aggregate_activity(&history),
           scan_types: aggregate_scan_types(&history),
-          threat_status: aggregate_threat_status(&app),
+          threat_status: aggregate_threat_status(&app, &quarantined),
           virus_types: aggregate_curr_quarantine_virus_types(&app)
      })
 }
