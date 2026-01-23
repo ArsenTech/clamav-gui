@@ -62,7 +62,7 @@ fn run_scan(app: tauri::AppHandle, log_id: String, mut cmd: Command, scan_type: 
         let threats = threats_count.clone();
         std::thread::spawn(move || {
             for line in BufReader::new(out).lines().flatten() {
-                if line.ends_with("FOUND") {
+                if line.contains("FOUND") {
                     threats.fetch_add(1, Ordering::Relaxed);
                 }
                 app.emit("clamscan:log", &line).ok();
@@ -102,7 +102,7 @@ fn run_scan(app: tauri::AppHandle, log_id: String, mut cmd: Command, scan_type: 
             format!("Scan completed successfully, {} threats found", found),
         ),
         2 => (
-            HistoryStatus::Success,
+            HistoryStatus::Warning,
             ScanResult::Partial,
             "Some files could not be scanned due to access restrictions".to_string(),
         ),
