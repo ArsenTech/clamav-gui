@@ -83,6 +83,8 @@ pub fn check_availability() -> bool {
     let command = if cfg!(windows) { "where" } else { "which" };
     silent_command(command)
         .arg("clamscan")
+        .stdout(Stdio::null())
+        .stderr(Stdio::null());
         .status()
         .map(|s| s.success())
         .unwrap_or(false)
