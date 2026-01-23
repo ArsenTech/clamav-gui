@@ -1,5 +1,3 @@
-#![macro_use]
-
 mod antivirus;
 mod system;
 mod types;
