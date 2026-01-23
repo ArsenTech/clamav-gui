@@ -9,8 +9,11 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 This Preview is focused more on optimization + code splitting.
 ### Fixed
 - Parts of the scan logic
+- The Command Prompt Spam Bug
 ### Improved
 - **Routes** - Implemented Code Splitting to make UI slightly responsive
+### Changed
+- Optimized some parts of the Rust Backend + moved helpers to `/helpers/`
 
 ## [0.2.1] - 2026-01-23 (Early Build 3)
 ### Added
