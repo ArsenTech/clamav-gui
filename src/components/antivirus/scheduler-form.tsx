@@ -8,24 +8,40 @@ import { Button } from "../ui/button";
 import { ClipboardClock } from "lucide-react";
 import { Input } from "../ui/input";
 import { DAYS_OF_THE_WEEK, SCAN_OPTIONS } from "@/lib/constants";
+import { ScanType } from "@/lib/types";
+import { useEffect } from "react";
 
 interface Props{
      handleSubmit: (values: SchedulerType) => void
 }
 export default function SchedulerForm({handleSubmit}: Props){
-     const date = new Date();
      const form = useForm<SchedulerType>({
           resolver: zodResolver(SchedulerSchema),
-          defaultValues: {
-               hours: date.getHours(),
-               minutes: date.getMinutes(),
-               days: DAYS_OF_THE_WEEK[date.getDay()]
+          defaultValues:{
+               hours: new Date().getHours(),
+               minutes: new Date().getMinutes(),
+               days: DAYS_OF_THE_WEEK[new Date().getDay()],
+               interval: "weekly",
+               scanType: "main"
           }
      });
      const onSubmit = (values: SchedulerType) => {
-          handleSubmit(values)
-          form.reset()
+          handleSubmit(values);
+          const now = new Date();
+          const interval = localStorage.getItem("scheduler-interval") as SchedulerType["interval"] | null;
+          const scanType = localStorage.getItem("scheduler-scan-type") as ScanType | null
+          form.reset({
+               hours: now.getHours(),
+               minutes: now.getMinutes(),
+               days: DAYS_OF_THE_WEEK[now.getDay()],
+               interval: interval ?? "weekly",
+               scanType: scanType ?? "main",
+          })
      }
+     useEffect(()=>{
+          localStorage.removeItem("scheduler-interval");
+          localStorage.removeItem("scheduler-scan-type");
+     },[])
      const time = `${form.watch("hours").toString().padStart(2,'0')}:${form.watch("minutes").toString().padStart(2,'0')}`
      return (
           <Form {...form}>
@@ -38,8 +54,11 @@ export default function SchedulerForm({handleSubmit}: Props){
                                    <FormItem>
                                         <FormLabel>Interval</FormLabel>
                                         <Select
-                                             onValueChange={field.onChange}
-                                             defaultValue={field.value}
+                                             onValueChange={val=>{
+                                                  field.onChange(val);
+                                                  localStorage.setItem("scheduler-interval",val)
+                                             }}
+                                             value={field.value}
                                         >
                                              <FormControl>
                                                   <SelectTrigger className="w-full">
@@ -63,8 +82,11 @@ export default function SchedulerForm({handleSubmit}: Props){
                                    <FormItem>
                                         <FormLabel>Scan Type</FormLabel>
                                         <Select
-                                             onValueChange={field.onChange}
-                                             defaultValue={field.value}
+                                             onValueChange={val=>{
+                                                  field.onChange(val);
+                                                  localStorage.setItem("scheduler-scan-type",val)
+                                             }}
+                                             value={field.value}
                                         >
                                              <FormControl>
                                                   <SelectTrigger className="w-full">
@@ -89,7 +111,7 @@ export default function SchedulerForm({handleSubmit}: Props){
                                         <FormLabel>Day of the Week</FormLabel>
                                         <Select
                                              onValueChange={field.onChange}
-                                             defaultValue={field.value}
+                                             value={field.value}
                                         >
                                              <FormControl>
                                                   <SelectTrigger className="w-full">

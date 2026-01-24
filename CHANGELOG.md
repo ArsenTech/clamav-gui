@@ -4,7 +4,11 @@ All notable changes of ArsenTech's ClamAV GUI will be documented here.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
-## [0.3.0 Preview 1] - 2026-01-23
+## [0.3.0] - Unreleased
+### Improved
+- Scheduler Page UI
+
+## [0.3.0 (Preview 1)] - 2026-01-23
 ### Highlights
 This Preview is focused more on optimization + code splitting.
 ### Fixed
@@ -71,6 +75,7 @@ This is the first pre-release of the ClamAV GUI. The backend functionality will 
 - The About Page
 - State-gated Layout (It'll show "Oops, No ClamAV found" if ClamAV isn't installed)
 
+[0.3.0]: https://github.com/ArsenTech/clamav-gui/releases/tag/v0.3.0
 [0.3.0 Preview 1]: https://github.com/ArsenTech/clamav-gui/releases/tag/v0.3.0-1
 [0.2.1]: https://github.com/ArsenTech/clamav-gui/releases/tag/v0.2.1
 [0.2.0]: https://github.com/ArsenTech/clamav-gui/releases/tag/v0.2.0

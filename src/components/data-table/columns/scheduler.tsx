@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { ArrowDown, ArrowUp, ArrowUpDown, MoreHorizontal, ScrollText, Search, Trash2 } from "lucide-react";
+import { ArrowDown, ArrowUp, ArrowUpDown, CalendarSearch, MoreHorizontal, ScrollText, Search, Trash2 } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { ISchedulerData } from "../../../lib/types";
+import { ISchedulerData, ScanType } from "../../../lib/types";
+import { Badge } from "@/components/ui/badge";
+import { capitalizeText } from "@/lib/helpers";
+import { SCAN_TYPES } from "@/lib/constants";
 
 export const SCHEDULER_COLS: ColumnDef<ISchedulerData>[] = [
      {
@@ -12,10 +15,26 @@ export const SCHEDULER_COLS: ColumnDef<ISchedulerData>[] = [
      {
           accessorKey: "interval",
           header: "Interval",
+          cell: ({getValue}) => (
+               <Badge>
+                    <CalendarSearch />
+                    {capitalizeText(getValue() as string)}
+               </Badge>
+          )
      },
      {
           accessorKey: "scanType",
           header: "Scan Type",
+          cell: ({getValue}) => {
+               const scanInfo = SCAN_TYPES.find(item=>item.type===getValue() as ScanType);
+               if(!scanInfo) return null;
+               return (
+                    <Badge variant="outline">
+                         <scanInfo.Icon/>
+                         {capitalizeText(scanInfo.name)}
+                    </Badge>
+               )
+          }
      },
      {
           accessorKey: "lastScan",
