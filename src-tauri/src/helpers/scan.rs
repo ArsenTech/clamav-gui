@@ -12,7 +12,7 @@ use crate::{
         structs::HistoryItem
     },
     helpers::{
-        history::append_history,
+        history::append_scan_history,
         log::{log_path, log_err, log_info},
         new_id
     }
@@ -29,12 +29,6 @@ pub fn estimate_total_files(paths: &[PathBuf]) -> u64 {
 
 pub static SCAN_PROCESS: once_cell::sync::Lazy<Mutex<Option<u32>>> =
     once_cell::sync::Lazy::new(|| Mutex::new(None));
-
-pub fn append_scan_history(app: &tauri::AppHandle, item: HistoryItem) {
-    if let Err(e) = append_history(app, item) {
-        eprintln!("History append failed: {}", e);
-    }
-}
 
 pub fn run_scan(app: tauri::AppHandle, log_id: String, mut cmd: Command, scan_type: ScanType) -> Result<(), String> {
     {

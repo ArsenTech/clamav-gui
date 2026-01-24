@@ -33,7 +33,6 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
             scan_result: None
         },
     );
-
     std::thread::spawn(move || {
         app.emit("freshclam:start", ()).ok();
 
@@ -49,7 +48,6 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
                     app.emit("freshclam:output", &stdout_str).ok();
                     log_info(&log_file, &stdout_str);
                 }
-
                 if !stderr.is_empty() {
                     let stderr_str = stderr.to_string();
                     app.emit("freshclam:error", &stderr_str).ok();
@@ -70,7 +68,6 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
                         format!("Update failed with exit code {}", exit_code)
                     ),
                 };
-                
                 append_update_history(
                     &app,
                     HistoryItem {

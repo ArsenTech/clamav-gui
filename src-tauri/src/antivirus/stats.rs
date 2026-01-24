@@ -68,15 +68,12 @@ fn aggregate_scan_types(history: &[HistoryItem]) -> Vec<ScanTypeStat> {
           if item.category != Some(LogCategory::Scan) || item.action != "Scan Finished" {
                continue;
           }
-
           let (Some(scan_type), Some(log_id)) = (item.scan_type, item.log_id.as_ref()) else {
                continue;
           };
-
           if !seen.insert(log_id.clone()) {
                continue;
           }
-
           *map.entry(scan_type).or_insert(0) += item.threat_count.unwrap_or(0);
      }
 
@@ -114,9 +111,9 @@ fn aggregate_threat_status(app: &tauri::AppHandle, quarantined: &HashSet<String>
           if item.category != Some(LogCategory::Quarantine) {
                continue;
           }
-
-          let Some(log_id) = item.log_id else { continue };
-          
+          let Some(log_id) = item.log_id else {
+               continue
+          };
           match item.action.as_str() {
                "Threat deleted" => {
                     deleted.insert(log_id.clone());
@@ -131,9 +128,7 @@ fn aggregate_threat_status(app: &tauri::AppHandle, quarantined: &HashSet<String>
           }
      }
     
-     
      let mut stats = Vec::with_capacity(3);
-     
      if !quarantined.is_empty() {
           stats.push(ThreatStatusStat {
                status: ThreatStatus::Quarantined,
@@ -162,11 +157,9 @@ fn aggregate_curr_quarantine_virus_types(app: &tauri::AppHandle) -> Vec<VirusTyp
      if let Ok(entries) = std::fs::read_dir(quarantine_dir(app)) {
           for entry in entries.flatten() {
                let path = entry.path();
-               
                if path.extension().and_then(|e| e.to_str()) != Some("json") {
                     continue;
                }
-               
                if let Ok(content) = std::fs::read_to_string(path) {
                     if let Ok(meta) = serde_json::from_str::<QuarantinedItem>(&content) {
                          let vt = detect_virus_type(&meta.threat_name);

@@ -3,10 +3,6 @@ pub mod quarantine;
 pub mod scan;
 pub mod log;
 
-pub fn new_id() -> String {
-    uuid::Uuid::new_v4().to_string()
-}
-
 use std::process::{Command,Stdio};
 
 #[cfg(windows)]
@@ -20,7 +16,10 @@ pub fn silent_command(program: &str) -> Command {
     {
         cmd.creation_flags(CREATE_NO_WINDOW);
     }
+    cmd.stdin(Stdio::null());
     cmd
-        .stdin(Stdio::null());
-    cmd
+}
+
+pub fn new_id() -> String {
+    uuid::Uuid::new_v4().to_string()
 }

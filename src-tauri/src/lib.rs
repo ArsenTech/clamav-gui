@@ -5,7 +5,6 @@ mod helpers;
 
 use tauri_specta::{collect_commands, Builder};
 
-// Local Crates
 use crate::{
     antivirus::{
         bulk_actions::{clear_quarantine, delete_all, quarantine_all, restore_all},

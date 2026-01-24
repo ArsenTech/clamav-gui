@@ -5,8 +5,9 @@ use tauri::{command, Emitter};
 use crate::{
     helpers::{
         new_id,
-        scan::{SCAN_PROCESS, append_scan_history, estimate_total_files, run_scan}, silent_command,
-
+        scan::{SCAN_PROCESS, estimate_total_files, run_scan},
+        silent_command,
+        history::append_scan_history
     }, types::{
         enums::{HistoryStatus, LogCategory, ScanType},
         structs::HistoryItem
@@ -17,8 +18,6 @@ use crate::{
 #[specta(result)]
 pub fn start_main_scan(app: tauri::AppHandle) -> Result<(), String> {
     let log_id = new_id();
-    println!("Starting Main Scan...");
-    
     append_scan_history(
         &app,
         HistoryItem {
@@ -37,7 +36,6 @@ pub fn start_main_scan(app: tauri::AppHandle) -> Result<(), String> {
     
     std::thread::spawn(move || {
         let mut paths = Vec::new();
-
         if let Some(home) = std::env::var_os(if cfg!(windows) { "USERPROFILE" } else { "HOME" }) {
             let home = PathBuf::from(home);
             paths.extend([
@@ -46,7 +44,6 @@ pub fn start_main_scan(app: tauri::AppHandle) -> Result<(), String> {
                 home.join("Documents"),
             ]);
         }
-
         let mut cmd = silent_command("clamscan");
         cmd.args([
             "--recursive",
@@ -57,14 +54,11 @@ pub fn start_main_scan(app: tauri::AppHandle) -> Result<(), String> {
             "--verbose",
             "--no-summary",
         ]);
-
         let total_files = estimate_total_files(&paths);
         app.emit("clamscan:total", total_files).ok();
-
         for path in paths {
             cmd.arg(path);
         }
-        
         run_scan(app, log_id, cmd, ScanType::Main).ok();
     });
 
@@ -75,7 +69,6 @@ pub fn start_main_scan(app: tauri::AppHandle) -> Result<(), String> {
 #[specta(result)]
 pub fn start_full_scan(app: tauri::AppHandle) -> Result<(), String> {
     let log_id = new_id();
-    
     append_scan_history(
         &app,
         HistoryItem {
@@ -91,8 +84,6 @@ pub fn start_full_scan(app: tauri::AppHandle) -> Result<(), String> {
             scan_result: None
         },
     );
-    
-    println!("Starting Full Scan...");
     std::thread::spawn(move || {
         let root = if cfg!(windows) { "C:\\" } else { "/" };
 
@@ -117,10 +108,8 @@ pub fn start_custom_scan(app: tauri::AppHandle, paths: Vec<String>) -> Result<()
     if paths.is_empty() {
         return Err("No scan targets provided".into());
     }
-    
     let log_id = new_id();
     let resolved_paths: Vec<PathBuf> = paths.iter().map(PathBuf::from).collect();
-    
     for path in &resolved_paths {
         if !path.try_exists().unwrap_or(false) {
             return Err(format!("Path does not exist: {}", path.display()));
@@ -132,9 +121,6 @@ pub fn start_custom_scan(app: tauri::AppHandle, paths: Vec<String>) -> Result<()
     
     let has_directory = resolved_paths.iter().any(|p| p.is_dir());
     let scan_type = if has_directory { ScanType::Custom } else { ScanType::File };
-    
-    println!("Starting Custom Scan...");
-    
     append_scan_history(
         &app,
         HistoryItem {
@@ -150,15 +136,12 @@ pub fn start_custom_scan(app: tauri::AppHandle, paths: Vec<String>) -> Result<()
             scan_result: None
         },
     );
-    
     let app_clone = app.clone();
     std::thread::spawn(move || {
         let mut cmd = silent_command("clamscan");
-
         if has_directory {
             cmd.arg("--recursive");
         }
-
         cmd.args([
             "--heuristic-alerts",
             "--alert-encrypted",
@@ -167,16 +150,13 @@ pub fn start_custom_scan(app: tauri::AppHandle, paths: Vec<String>) -> Result<()
             "--verbose",
             "--no-summary",
         ]);
-
         for path in &resolved_paths {
             cmd.arg(path);
         }
-
         let total_files = estimate_total_files(&resolved_paths);
         app_clone.emit("clamscan:total", total_files).ok();
         run_scan(app_clone, log_id, cmd, scan_type).ok();
     });
-
     Ok(())
 }
 
@@ -187,7 +167,6 @@ pub fn stop_scan() -> Result<(), String> {
         let mut guard = SCAN_PROCESS.lock().unwrap();
         guard.take()
     };
-
     if let Some(pid) = pid {
         #[cfg(windows)]
         {

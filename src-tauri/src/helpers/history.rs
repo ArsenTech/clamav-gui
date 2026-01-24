@@ -37,3 +37,9 @@ pub fn append_update_history(app: &tauri::AppHandle, item: HistoryItem) {
           eprintln!("Failed to append update history: {}", e);
      }
 }
+
+pub fn append_scan_history(app: &tauri::AppHandle, item: HistoryItem) {
+     if let Err(e) = append_history(app, item) {
+          eprintln!("Scan history append failed: {}", e);
+     }
+}

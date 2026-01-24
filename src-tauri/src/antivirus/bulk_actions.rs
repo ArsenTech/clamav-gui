@@ -21,7 +21,6 @@ pub fn quarantine_all(
     }
 
     let log_id = new_id();
-    
     let mut successes = 0;
     let mut failures = 0;
     
@@ -31,7 +30,6 @@ pub fn quarantine_all(
             Err(_) => failures += 1,
         }
     }
-    
     if successes == 0 && failures > 0 {
         return Err(format!("All {} quarantine operations failed", failures));
     }
@@ -47,7 +45,6 @@ pub fn delete_all(app: tauri::AppHandle, files: Vec<String>) -> Result<(), Strin
     }
 
     let log_id = new_id();
-    
     let mut successes = 0;
     let mut failures = 0;
     
@@ -57,7 +54,6 @@ pub fn delete_all(app: tauri::AppHandle, files: Vec<String>) -> Result<(), Strin
             Err(_) => failures += 1,
         }
     }
-    
     if successes == 0 && failures > 0 {
         return Err(format!("All {} deletion operations failed", failures));
     }
@@ -73,7 +69,6 @@ pub fn restore_all(app: tauri::AppHandle, ids: Vec<String>) -> Result<(), String
     }
 
     let log_id = new_id();
-    
     let mut successes = 0;
     let mut failures = 0;
     
@@ -83,7 +78,6 @@ pub fn restore_all(app: tauri::AppHandle, ids: Vec<String>) -> Result<(), String
             Err(_) => failures += 1,
         }
     }
-    
     if successes == 0 && failures > 0 {
         return Err(format!("All {} restore operations failed", failures));
     }
@@ -99,7 +93,6 @@ pub fn clear_quarantine(app: tauri::AppHandle, ids: Vec<String>) -> Result<(), S
     }
 
     let log_id = new_id();
-    
     let mut successes = 0;
     let mut failures = 0;
     
@@ -109,7 +102,6 @@ pub fn clear_quarantine(app: tauri::AppHandle, ids: Vec<String>) -> Result<(), S
             Err(_) => failures += 1,
         }
     }
-    
     if successes == 0 && failures > 0 {
         return Err(format!("All {} clear operations failed", failures));
     }

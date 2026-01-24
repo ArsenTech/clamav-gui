@@ -56,7 +56,7 @@ pub fn remove_file(app: tauri::AppHandle, file_path: String, log_id: Option<Stri
             log_err(&log_file, &format!("Failed to delete file: {}", file_path));
             log_err(&log_file, &e.to_string());
             
-            if let Err(hist_err) = append_history(
+            if let Err(e) = append_history(
                 &app,
                 HistoryItem {
                     id: new_id(),
@@ -71,7 +71,7 @@ pub fn remove_file(app: tauri::AppHandle, file_path: String, log_id: Option<Stri
                     scan_result: None
                 },
             ) {
-                log_err(&log_file, &format!("Failed to append history: {}", hist_err));
+                log_err(&log_file, &format!("Failed to append history: {}", e));
             }
             Err(e.to_string())
         }
