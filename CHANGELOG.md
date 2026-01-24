@@ -5,8 +5,13 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 ## [0.3.0] - Unreleased
+### Added
+- Flags for launching GUI for different reasons (`--scan=main` and `--scan=full`)
+- Logic for Scheduler (Currently Unfinished)
 ### Improved
 - Scheduler Page UI
+### Changed
+- Separated Scan Menu page from Scan Page to make it work
 
 ## [0.3.0 (Preview 1)] - 2026-01-23
 ### Highlights

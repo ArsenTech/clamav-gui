@@ -1,9 +1,13 @@
+pub mod flags;
 pub mod history;
+pub mod log;
 pub mod quarantine;
 pub mod scan;
-pub mod log;
+pub mod scan_types;
+pub mod scheduler;
+pub use flags::parse_flags;
 
-use std::process::{Command,Stdio};
+use std::process::Command;
 
 #[cfg(windows)]
 use std::os::windows::process::CommandExt;
@@ -16,7 +20,6 @@ pub fn silent_command(program: &str) -> Command {
     {
         cmd.creation_flags(CREATE_NO_WINDOW);
     }
-    cmd.stdin(Stdio::null());
     cmd
 }
 

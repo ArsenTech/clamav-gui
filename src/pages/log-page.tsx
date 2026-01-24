@@ -6,7 +6,10 @@ import { ChevronLeft } from "lucide-react";
 import { useEffect, useState, useTransition } from "react";
 import { Link, useParams, useSearchParams } from "react-router";
 
-export default function LogPage(){
+interface Props{
+     returnUrl: string
+}
+export default function LogPage({returnUrl}: Props){
      const {logId} = useParams<{ logId: string }>();
      const [logs, setLogs] = useState<string[]>([]);
      const [isLoading, startTransition] = useTransition();
@@ -21,7 +24,7 @@ export default function LogPage(){
                try{
                     const logs = await invoke<string>("read_log",{
                          id: logId,
-                         category 
+                         category
                     })
                     setLogs(logs.split("\n").filter(Boolean))
                } catch (err) {
@@ -35,7 +38,7 @@ export default function LogPage(){
                <div className="space-y-4">
                     <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">Log Viewer</h1>
                     <Button asChild size="sm" variant="outline">
-                         <Link to="/history">
+                         <Link to={returnUrl}>
                               <ChevronLeft/> Back
                          </Link>
                     </Button>

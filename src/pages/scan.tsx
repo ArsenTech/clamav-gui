@@ -1,9 +1,7 @@
-import ScanFinishResult from "@/components/antivirus/scan/finish-scan";
-import ScanMenu from "@/components/antivirus/scan/scan-menu";
-import ScanProcess from "@/components/antivirus/scan/scan-process";
 import { AppLayout } from "@/components/layout";
+import { useNavigate, useParams } from "react-router";
+import ScanFinishResult from "@/components/antivirus/scan/finish-scan";
 import LogText from "@/components/log";
-import { SCAN_TYPES } from "@/lib/constants";
 import { GET_INITIAL_SCAN_STATE } from "@/lib/constants/states";
 import { formatDuration } from "@/lib/helpers";
 import { ScanType, IThreatsData } from "@/lib/types";
@@ -14,24 +12,30 @@ import { Timer } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 import { toast } from "sonner";
+import ScanProcess from "@/components/antivirus/scan/scan-process";
+import { useStartupScan } from "@/context/startup-scan";
+import { exit } from "@tauri-apps/plugin-process";
 
 export default function ScanPage(){
-     const [params] = useSearchParams();
-     const type = params.get("type") as ScanType | null;
-     const path = params.getAll("path");
-     const [scanState, setScanState] = useState<IScanPageState>(GET_INITIAL_SCAN_STATE(type,path));
+     const [searchParams] = useSearchParams();
+     const navigate = useNavigate();
+     const {type} = useParams<{type: ScanType}>();
+     const path = searchParams.getAll("path");
+     const [scanState, setScanState] = useState<IScanPageState>(GET_INITIAL_SCAN_STATE(type || "",path));
      const [threats, setThreats] = useState<IThreatsData[]>([]);
      const setState = (overrides: Partial<IScanPageState>) =>
           setScanState(prev=>({ ...prev, ...overrides }))
      const startTimeRef = useRef<number | null>(null);
      const scanActiveRef = useRef(false);
      const scanStartedRef = useRef(false);
-     const handleStartScan = async (type: ScanType, path: string[]) => {
+     const scanStoppedRef = useRef(false);
+     useEffect(() => {
           setState({
                scanType: type,
                paths: type==="main" || type==="full" ? [] : path
-          })
-     }
+          });
+          scanStoppedRef.current = false;
+     }, [type]);
      useEffect(()=>{
           const unsubs: Promise<UnlistenFn>[] = [
                listen<string>("clamscan:log",e=>{
@@ -46,7 +50,7 @@ export default function ScanPage(){
                          setThreats(prev=>[
                               ...prev,
                               {
-                                   id: String(threats.length+1),
+                                   id: String(prev.length+1),
                                    displayName: infectedFile[1],
                                    filePath: filePath.slice(0,filePath.length-1),
                                    status: "detected",
@@ -81,6 +85,7 @@ export default function ScanPage(){
           }
      },[]);
      useEffect(()=>{
+          if (scanStoppedRef.current) return; 
           if(!scanState.scanType) return;
           if (scanStartedRef.current) return;
           scanStartedRef.current = true;
@@ -100,11 +105,18 @@ export default function ScanPage(){
           scanActiveRef.current = true;
           setState({duration: 0, exitCode: 0})
      },[scanState.scanType, scanState.paths])
+     const {isStartup} = useStartupScan();
+     console.log(isStartup)
      const handleStop = async() => {
+          scanStoppedRef.current = true;
           reset();
           try {
                await invoke("stop_scan");
-               toast.success(`The ${SCAN_TYPES.find(val=>val.type===scanState.scanType)?.name || "Unknown Scan"} Process has been stopped.`)
+               if (isStartup){
+                    await exit(0);
+               } else {
+                    navigate("/scan");
+               }
           } catch (e){
                toast.error("Failed to stop the scan");
                console.error(e)
@@ -115,13 +127,13 @@ export default function ScanPage(){
           scanActiveRef.current = false; 
           startTimeRef.current = null;
           setState({
-               ...GET_INITIAL_SCAN_STATE(type,path),
+               ...GET_INITIAL_SCAN_STATE(type || "",path),
                scanType: "",
                exitCode: 0,
                ...overrides
           })
      }
-     const {isFinished, duration, scanType, currLocation, totalFiles, scannedFiles, logs, paths: scanLocations, exitCode} = scanState
+     const {isFinished, duration, scanType, currLocation, totalFiles, scannedFiles, logs, paths: scanLocations, exitCode} = scanState;
      return (
           <AppLayout className={isFinished ? "flex justify-center items-center gap-4 flex-col p-4" : "grid gris-cols-1 md:grid-cols-2 gap-10 p-4"}>
                {isFinished ? (
@@ -133,27 +145,23 @@ export default function ScanPage(){
                               durationElem={(
                                    <h2 className="text-lg sm:text-xl font-semibold flex items-center justify-center gap-2.5 w-fit"><Timer className="text-primary"/>{formatDuration(duration)}</h2>
                               )}
-                              onQuit={reset}
                               exitCode={exitCode}
+                              isStartup={isStartup}
                          />
                     </>
                ) : (
                     <>
                          <div className="space-y-4">
                               <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">Scan</h1>
-                              {scanType==="" ? (
-                                   <ScanMenu handleStartScan={(type,path)=>handleStartScan(type,path || [])}/>
-                              ) : (
-                                   <ScanProcess
-                                        scanType={scanType}
-                                        onStop={handleStop}
-                                        threatsCount={threats.length}
-                                        currLocation={currLocation}
-                                        filesCount={scannedFiles}
-                                        totalFiles={totalFiles}
-                                        scanPaths={scanLocations}
-                                   />
-                              )}
+                              <ScanProcess
+                                   scanType={scanType}
+                                   onStop={handleStop}
+                                   threatsCount={threats.length}
+                                   currLocation={currLocation}
+                                   filesCount={scannedFiles}
+                                   totalFiles={totalFiles}
+                                   scanPaths={scanLocations}
+                              />
                          </div>
                          <div className="space-y-3 px-3 text-lg overflow-y-auto max-h-[800px]">
                               <h2 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">Log</h2>

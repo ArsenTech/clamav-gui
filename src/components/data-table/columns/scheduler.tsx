@@ -1,13 +1,21 @@
 import { Button } from "@/components/ui/button";
-import { ArrowDown, ArrowUp, ArrowUpDown, CalendarSearch, MoreHorizontal, ScrollText, Search, Trash2 } from "lucide-react";
+import { ArrowDown, ArrowUp, ArrowUpDown, CalendarSearch, FileText, MoreHorizontal, ScrollText, Search, Trash2 } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ISchedulerData, ScanType } from "../../../lib/types";
 import { Badge } from "@/components/ui/badge";
 import { capitalizeText } from "@/lib/helpers";
 import { SCAN_TYPES } from "@/lib/constants";
+import { invoke } from "@tauri-apps/api/core";
+import { toast } from "sonner";
+import { Link } from "react-router";
 
-export const SCHEDULER_COLS: ColumnDef<ISchedulerData>[] = [
+export const GET_SCHEDULER_COLS = (
+     setIsOpen: React.Dispatch<React.SetStateAction<{
+          state: boolean,
+          job_id: string
+     }>>,
+): ColumnDef<ISchedulerData<"state">>[] => [
      {
           accessorKey: "id",
           header: "Job ID"
@@ -62,7 +70,29 @@ export const SCHEDULER_COLS: ColumnDef<ISchedulerData>[] = [
           id: "actions",
           cell: ({row}) => {
                const item = row.original
-               console.log(item)
+               const revealLog = async()=>{
+                    if(!item.log_id) return;
+                    try{
+                         await invoke("reveal_log",{
+                              category: "scheduler",
+                              id: item.log_id
+                         })
+                    } catch(err){
+                         toast.error("Failed to reveal log file");
+                         console.error(err)
+                    }
+               }
+               const handleRunScan = async()=>{
+                    try{
+                         await invoke("run_job_now",{
+                              taskName: item.id
+                         });
+                         toast.success("Scan Job Triggered")
+                    } catch (err){
+                         toast.error("Failed to run scheduled task");
+                         console.error(err)
+                    }
+               }
                return (
                     <DropdownMenu>
                          <DropdownMenuTrigger asChild>
@@ -74,9 +104,24 @@ export const SCHEDULER_COLS: ColumnDef<ISchedulerData>[] = [
                          <DropdownMenuContent align="end">
                               <DropdownMenuLabel>Actions</DropdownMenuLabel>
                               <DropdownMenuSeparator/>
-                              <DropdownMenuItem><Search/> Scan Now</DropdownMenuItem>
-                              <DropdownMenuItem><ScrollText/> View Logs</DropdownMenuItem>
-                              <DropdownMenuItem className="text-destructive"><Trash2 className="text-destructive"/> Remove job</DropdownMenuItem>
+                              <DropdownMenuItem onClick={handleRunScan}>
+                                   <Search/> Scan Now
+                              </DropdownMenuItem>
+                              <DropdownMenuItem disabled={!item.log_id} asChild>
+                                   <Link to={`/scheduler/${item.log_id}?category=scheduler`}>
+                                        <ScrollText/> View Logs
+                                   </Link>
+                              </DropdownMenuItem>
+                              <DropdownMenuItem disabled={!item.log_id} onClick={revealLog}>
+                                   <FileText /> Reveal Log File
+                              </DropdownMenuItem>
+                              <DropdownMenuItem className="text-destructive" onClick={()=>setIsOpen(prev=>({
+                                   ...prev,
+                                   state: true,
+                                   job_id: item.id
+                              }))}>
+                                   <Trash2 className="text-destructive"/> Remove job
+                              </DropdownMenuItem>
                          </DropdownMenuContent>
                     </DropdownMenu>
                )

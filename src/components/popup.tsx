@@ -44,7 +44,7 @@ export default function Popup({open, onOpen, title, description, submitTxt = "Su
                     </DialogHeader>
                     {children}
                     <DialogFooter>
-                         <Button variant={["delete","clear"].some(val=>submitTxt.toLowerCase().includes(val)) ? "destructive" : "default"} type="button" onClick={submitEvent}>{submitTxt}</Button>
+                         <Button variant={["delete","clear","remove"].some(val=>submitTxt.toLowerCase().includes(val)) ? "destructive" : "default"} type="button" onClick={submitEvent}>{submitTxt}</Button>
                          <DialogClose asChild>
                               <Button variant="outline">{closeText}</Button>
                          </DialogClose>

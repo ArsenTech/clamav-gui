@@ -3,10 +3,7 @@ use tauri::command;
 
 use crate::{
     helpers::history::history_dir,
-    types::{
-        enums::HistoryStatus,
-        structs::HistoryItem
-    }
+    types::{enums::HistoryStatus, structs::HistoryItem},
 };
 
 #[command]
@@ -18,16 +15,16 @@ pub fn load_history(app: tauri::AppHandle, days: u32) -> Result<Vec<HistoryItem>
     for i in 0..days {
         let date = chrono::Utc::now() - chrono::Duration::days(i as i64);
         let path = dir.join(format!("{}.json", date.format("%Y-%m-%d")));
-        
+
         if !path.try_exists().unwrap_or(false) {
             continue;
         }
-        
+
         let content = std::fs::read_to_string(&path)
             .map_err(|e| format!("Failed to read history file {:?}: {}", path, e))?;
         let mut items: Vec<HistoryItem> = serde_json::from_str(&content)
             .map_err(|e| format!("Failed to parse history file {:?}: {}", path, e))?;
-            
+
         all.append(&mut items);
     }
 
@@ -70,8 +67,9 @@ pub fn mark_as_acknowledged(app: tauri::AppHandle, id: String, date: String) -> 
     }
     std::fs::write(
         &file_path,
-        serde_json::to_string_pretty(&items).map_err(|e| e.to_string())?
-    ).map_err(|e| e.to_string())?;
+        serde_json::to_string_pretty(&items).map_err(|e| e.to_string())?,
+    )
+    .map_err(|e| e.to_string())?;
 
     Ok(())
 }
@@ -109,8 +107,9 @@ pub fn clear_history(app: tauri::AppHandle, mode: String) -> Result<(), String> 
                 } else {
                     std::fs::write(
                         &path,
-                        serde_json::to_string_pretty(&items).map_err(|e| e.to_string())?
-                    ).map_err(|e| e.to_string())?;
+                        serde_json::to_string_pretty(&items).map_err(|e| e.to_string())?,
+                    )
+                    .map_err(|e| e.to_string())?;
                 }
             }
             _ => unreachable!(),

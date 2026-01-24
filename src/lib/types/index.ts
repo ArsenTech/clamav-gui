@@ -1,5 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { LucideProps } from "lucide-react";
+import { DAYS_OF_THE_WEEK } from "../constants";
 
 export type ScanType = "" | "main" | "full" | "custom" | "file"
 export type ClamAVState = "checking" | "available" | "missing";
@@ -66,12 +67,18 @@ export interface IQuarantineData<T extends "state" | "type">{
      quarantined_at: string,
      size: T extends "state" ? string | null : number
 }
-export interface ISchedulerData{
-     id: string,
-     interval: "daily" | "weekly" | "monthly",
+export type ISchedulerData<T extends "state" | "type"> = (T extends "type" ? {
+     scan_type: ScanType,
+     days: typeof DAYS_OF_THE_WEEK[number],
+     time: string
+} : {
      scanType: ScanType,
      lastScan: string,
      nextScan: string
+}) & {
+     id: string,
+     interval: "daily" | "weekly" | "monthly",
+     log_id?: string
 }
 
 interface IStatBase{
@@ -93,7 +100,7 @@ export type StatsResponse<T extends "state" | "type"> = (T extends "state" ? {
 } : {
      scan_types: IScanTypeStat[],
      threat_status: IThreatStatusStat[],
-     virus_types: IVirusTypeStat[]
+     virus_types: IVirusTypeStat[],
 }) & {
      activity: IActivityStat[]
 }

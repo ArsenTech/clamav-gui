@@ -63,6 +63,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - **History** - View the entire GUI actions history and manage it + view or reveal logs
 - **Antivirus Statistics** - View the entire Antivirus Dashboard and Statistics + some real-time device stats
 - **Real-Time Performance Stats** - CPU, RAM Usage, and Disk Usage Stats all without leaving the GUI
+- **Flags** - Launch **Full Scan** and **Main Scan** Directly if needed
 <!-- TODO: Write the Features list -->
 
 ### Coming Soon (To Do List)

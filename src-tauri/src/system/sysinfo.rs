@@ -1,8 +1,8 @@
-use specta::{specta};
+use specta::specta;
 use sysinfo::{ProcessesToUpdate, System};
 use tauri::command;
 
-use crate::types::structs::{SysStats, SysInfo};
+use crate::types::structs::{SysInfo, SysStats};
 
 #[command]
 #[specta(result)]

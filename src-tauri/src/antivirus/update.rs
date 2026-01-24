@@ -1,3 +1,5 @@
+use std::process::Stdio;
+
 use specta::specta;
 use tauri::{command, Emitter};
 
@@ -5,10 +7,12 @@ use crate::{
     helpers::{
         history::append_update_history,
         log::{initialize_log, log_err, log_info},
-        new_id, silent_command
-    }, types::{
-        enums::{HistoryStatus, LogCategory}, structs::HistoryItem
-    }
+        new_id, silent_command,
+    },
+    types::{
+        enums::{HistoryStatus, LogCategory},
+        structs::HistoryItem,
+    },
 };
 
 #[command]
@@ -30,13 +34,17 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
             log_id: Some(log_id.clone()),
             scan_type: None,
             threat_count: None,
-            scan_result: None
+            scan_result: None,
         },
+        &log_file
     );
     std::thread::spawn(move || {
         app.emit("freshclam:start", ()).ok();
 
-        let output = silent_command("freshclam").arg("--stdout").output();
+        let output = silent_command("freshclam")
+            .arg("--stdout")
+            .stdin(Stdio::null())
+            .output();
         match output {
             Ok(out) => {
                 let stdout = String::from_utf8_lossy(&out.stdout);
@@ -56,16 +64,16 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
 
                 let (status, details) = match exit_code {
                     0 => (
-                        HistoryStatus::Success, 
-                        "Definitions are already up to date".to_string()
+                        HistoryStatus::Success,
+                        "Definitions are already up to date".to_string(),
                     ),
                     1 => (
-                        HistoryStatus::Warning, 
-                        "Update completed with warnings".to_string()
+                        HistoryStatus::Warning,
+                        "Update completed with warnings".to_string(),
                     ),
                     _ => (
-                        HistoryStatus::Error, 
-                        format!("Update failed with exit code {}", exit_code)
+                        HistoryStatus::Error,
+                        format!("Update failed with exit code {}", exit_code),
                     ),
                 };
                 append_update_history(
@@ -80,8 +88,9 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
                         log_id: Some(log_id),
                         scan_type: None,
                         threat_count: None,
-                        scan_result: None
+                        scan_result: None,
                     },
+                    &log_file
                 );
 
                 app.emit("freshclam:done", exit_code).ok();
@@ -90,7 +99,7 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
                 let error_msg = e.to_string();
                 app.emit("freshclam:error", &error_msg).ok();
                 log_err(&log_file, &error_msg);
-                
+
                 append_update_history(
                     &app,
                     HistoryItem {
@@ -103,8 +112,9 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
                         log_id: Some(log_id),
                         scan_type: None,
                         threat_count: None,
-                        scan_result: None
+                        scan_result: None,
                     },
+                    &log_file
                 );
             }
         }
@@ -118,6 +128,7 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
 pub fn get_clamav_version() -> Result<String, String> {
     let output = silent_command("freshclam")
         .arg("--version")
+        .stdin(Stdio::null())
         .output()
         .map_err(|e| e.to_string())?;
 

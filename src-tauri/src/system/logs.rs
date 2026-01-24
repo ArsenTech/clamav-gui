@@ -15,10 +15,7 @@ pub fn read_log(
         return Err("Log ID cannot be empty".into());
     }
 
-    let mut path = app
-        .path()
-        .app_data_dir()
-        .map_err(|e| e.to_string())?;
+    let mut path = app.path().app_data_dir().map_err(|e| e.to_string())?;
 
     path.push("logs");
     path.push(category.as_str());
@@ -34,20 +31,20 @@ pub fn read_log(
 #[command]
 #[specta(result)]
 pub fn reveal_log(app: tauri::AppHandle, category: LogCategory, id: String) -> Result<(), String> {
-     if id.trim().is_empty() {
-          return Err("Log ID cannot be empty".into());
-     }
+    if id.trim().is_empty() {
+        return Err("Log ID cannot be empty".into());
+    }
 
-     let mut path = app.path().app_data_dir().map_err(|e| e.to_string())?;
-     path.push("logs");
-     path.push(category.as_str());
-     path.push(format!("{}.log", id));
+    let mut path = app.path().app_data_dir().map_err(|e| e.to_string())?;
+    path.push("logs");
+    path.push(category.as_str());
+    path.push(format!("{}.log", id));
 
-     if !path.try_exists().unwrap_or(false) {
-          return Err("Log file not found".into());
-     }
+    if !path.try_exists().unwrap_or(false) {
+        return Err("Log file not found".into());
+    }
 
-     app.opener()
-          .open_path(path.to_string_lossy(), None::<&str>)
-          .map_err(|e| e.to_string())
+    app.opener()
+        .open_path(path.to_string_lossy(), None::<&str>)
+        .map_err(|e| e.to_string())
 }

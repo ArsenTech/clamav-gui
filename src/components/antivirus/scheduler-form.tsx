@@ -43,6 +43,7 @@ export default function SchedulerForm({handleSubmit}: Props){
           localStorage.removeItem("scheduler-scan-type");
      },[])
      const time = `${form.watch("hours").toString().padStart(2,'0')}:${form.watch("minutes").toString().padStart(2,'0')}`
+     const interval = form.watch("interval");
      return (
           <Form {...form}>
                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full">
@@ -106,12 +107,14 @@ export default function SchedulerForm({handleSubmit}: Props){
                          <FormField
                               control={form.control}
                               name="days"
+                              disabled={interval!=="weekly"}
                               render={({field})=>(
                                    <FormItem>
                                         <FormLabel>Day of the Week</FormLabel>
                                         <Select
                                              onValueChange={field.onChange}
                                              value={field.value}
+                                             disabled={interval!=="weekly"}
                                         >
                                              <FormControl>
                                                   <SelectTrigger className="w-full">

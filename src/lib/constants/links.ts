@@ -54,28 +54,28 @@ export const QUICK_ACCESS_LINKS: IQuickAccessItem[] = [
   {
     name: "Main Scan",
     desc: "Check common locations now",
-    href: "/scan?type=main",
+    href: "/scan/main",
     Icon: Search,
     openDialogType: "none"
   },
   {
     name: "Full Scan",
     desc: "Scan everything (might take a while)",
-    href: "/scan?type=full",
+    href: "/scan/full",
     Icon: SearchCheck,
     openDialogType: "none"
   },
   {
     name: "Custom Scan",
     desc: "Choose a folder to scan",
-    href: "/scan?type=custom",
+    href: "/scan/custom",
     Icon: FolderSearch,
     openDialogType: "folder"
   },
   {
     name: "File Scan",
     desc: "Choose a file to scan",
-    href: "/scan?type=file",
+    href: "/scan/file",
     Icon: FileSearch,
     openDialogType: "file"
   },

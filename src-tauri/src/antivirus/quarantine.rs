@@ -4,16 +4,16 @@ use std::path::PathBuf;
 use tauri::command;
 
 use crate::{
-    types::{
-        enums::{LogCategory, HistoryStatus},
-        structs::{HistoryItem, QuarantinedItem}
-    },
     helpers::{
         history::append_history,
         log::{initialize_log_with_id, log_err, log_info},
         new_id,
-        quarantine::{quarantine_dir,quarantine_id,move_file_cross_device}
-    }
+        quarantine::{move_file_cross_device, quarantine_dir, quarantine_id},
+    },
+    types::{
+        enums::{HistoryStatus, LogCategory},
+        structs::{HistoryItem, QuarantinedItem},
+    },
 };
 
 #[command]
@@ -22,7 +22,7 @@ pub fn quarantine_file(
     app: tauri::AppHandle,
     file_path: String,
     threat_name: String,
-    log_id: Option<String>
+    log_id: Option<String>,
 ) -> Result<(), String> {
     if file_path.trim().is_empty() {
         return Err("File path cannot be empty".into());
@@ -52,7 +52,10 @@ pub fn quarantine_file(
         return Err(e.to_string());
     }
 
-    log_info(&log_file, &format!("{} ({}) was moved to quarantine", threat_name, file_path));
+    log_info(
+        &log_file,
+        &format!("{} ({}) was moved to quarantine", threat_name, file_path),
+    );
 
     if let Err(e) = append_history(
         &app,
@@ -66,7 +69,7 @@ pub fn quarantine_file(
             log_id: Some(log_id.clone()),
             scan_type: None,
             threat_count: None,
-            scan_result: None
+            scan_result: None,
         },
     ) {
         log_err(&log_file, &format!("Failed to append history: {}", e));
@@ -93,7 +96,7 @@ pub fn list_quarantine(app: tauri::AppHandle) -> Result<Vec<QuarantinedItem>, St
     let mut map: HashMap<String, QuarantinedItem> = HashMap::new();
 
     let entries = std::fs::read_dir(&dir).map_err(|e| e.to_string())?;
-    
+
     for entry in entries {
         let path = entry.map_err(|e| e.to_string())?.path();
         if path.extension().and_then(|e| e.to_str()) != Some("json") {
@@ -113,7 +116,11 @@ pub fn list_quarantine(app: tauri::AppHandle) -> Result<Vec<QuarantinedItem>, St
 
 #[command]
 #[specta(result)]
-pub fn restore_quarantine(app: tauri::AppHandle, id: String, log_id: Option<String>) -> Result<(), String> {
+pub fn restore_quarantine(
+    app: tauri::AppHandle,
+    id: String,
+    log_id: Option<String>,
+) -> Result<(), String> {
     if id.trim().is_empty() {
         return Err("ID cannot be empty".into());
     }
@@ -134,7 +141,10 @@ pub fn restore_quarantine(app: tauri::AppHandle, id: String, log_id: Option<Stri
 
     if let Some(parent) = dest.parent() {
         if let Err(e) = std::fs::create_dir_all(parent) {
-            log_err(&log_file, &format!("Failed to create parent directory: {}", e));
+            log_err(
+                &log_file,
+                &format!("Failed to create parent directory: {}", e),
+            );
             return Err(format!("Failed to create parent directory: {}", e));
         }
     }
@@ -147,7 +157,13 @@ pub fn restore_quarantine(app: tauri::AppHandle, id: String, log_id: Option<Stri
         return Err(e.to_string());
     }
 
-    log_info(&log_file, &format!("{} ({}) was restored from quarantine", meta.threat_name, meta.file_path));
+    log_info(
+        &log_file,
+        &format!(
+            "{} ({}) was restored from quarantine",
+            meta.threat_name, meta.file_path
+        ),
+    );
 
     if let Err(e) = append_history(
         &app,
@@ -161,7 +177,7 @@ pub fn restore_quarantine(app: tauri::AppHandle, id: String, log_id: Option<Stri
             log_id: Some(log_id.clone()),
             scan_type: None,
             threat_count: None,
-            scan_result: None
+            scan_result: None,
         },
     ) {
         log_err(&log_file, &format!("Failed to append history: {}", e));
@@ -175,7 +191,11 @@ pub fn restore_quarantine(app: tauri::AppHandle, id: String, log_id: Option<Stri
 
 #[command]
 #[specta(result)]
-pub fn delete_quarantine(app: tauri::AppHandle, id: String, log_id: Option<String>) -> Result<(), String> {
+pub fn delete_quarantine(
+    app: tauri::AppHandle,
+    id: String,
+    log_id: Option<String>,
+) -> Result<(), String> {
     if id.trim().is_empty() {
         return Err("ID cannot be empty".into());
     }
@@ -196,14 +216,23 @@ pub fn delete_quarantine(app: tauri::AppHandle, id: String, log_id: Option<Strin
 
     if bin_path.try_exists().unwrap_or(false) {
         std::fs::remove_file(&bin_path).map_err(|e| e.to_string())?;
-        log_info(&log_file, &format!("Deleted the binary path: {}", bin_path_name));
+        log_info(
+            &log_file,
+            &format!("Deleted the binary path: {}", bin_path_name),
+        );
     }
     if meta_path.try_exists().unwrap_or(false) {
         std::fs::remove_file(&meta_path).map_err(|e| e.to_string())?;
-        log_info(&log_file, &format!("Deleted the metadata path: {}", meta_path_name));
+        log_info(
+            &log_file,
+            &format!("Deleted the metadata path: {}", meta_path_name),
+        );
     }
-    
-    log_info(&log_file, &format!("{} was deleted from quarantine", meta.threat_name));
+
+    log_info(
+        &log_file,
+        &format!("{} was deleted from quarantine", meta.threat_name),
+    );
 
     if let Err(e) = append_history(
         &app,
@@ -217,7 +246,7 @@ pub fn delete_quarantine(app: tauri::AppHandle, id: String, log_id: Option<Strin
             log_id: Some(log_id.clone()),
             scan_type: None,
             threat_count: None,
-            scan_result: None
+            scan_result: None,
         },
     ) {
         log_err(&log_file, &format!("Failed to append history: {}", e));

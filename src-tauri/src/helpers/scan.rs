@@ -7,15 +7,15 @@ use tauri::Emitter;
 use walkdir::WalkDir;
 
 use crate::{
-    types::{
-        enums::{HistoryStatus, LogCategory, ScanResult, ScanType},
-        structs::HistoryItem
-    },
     helpers::{
         history::append_scan_history,
-        log::{log_path, log_err, log_info},
-        new_id
-    }
+        log::{log_err, log_info, log_path},
+        new_id,
+    },
+    types::{
+        enums::{HistoryStatus, LogCategory, ScanResult, ScanType},
+        structs::HistoryItem,
+    },
 };
 
 pub fn estimate_total_files(paths: &[PathBuf]) -> u64 {
@@ -30,7 +30,12 @@ pub fn estimate_total_files(paths: &[PathBuf]) -> u64 {
 pub static SCAN_PROCESS: once_cell::sync::Lazy<Mutex<Option<u32>>> =
     once_cell::sync::Lazy::new(|| Mutex::new(None));
 
-pub fn run_scan(app: tauri::AppHandle, log_id: String, mut cmd: Command, scan_type: ScanType) -> Result<(), String> {
+pub fn run_scan(
+    app: tauri::AppHandle,
+    log_id: String,
+    mut cmd: Command,
+    scan_type: ScanType,
+) -> Result<(), String> {
     {
         let mut guard = SCAN_PROCESS.lock().unwrap();
         if guard.is_some() {
@@ -65,7 +70,7 @@ pub fn run_scan(app: tauri::AppHandle, log_id: String, mut cmd: Command, scan_ty
         let app_clone = app.clone();
         let log_clone = log_file.clone();
         let threats_clone = threats_count.clone();
-        
+
         Some(std::thread::spawn(move || {
             for line in BufReader::new(out).lines().flatten() {
                 if line.contains("FOUND") {
@@ -82,7 +87,7 @@ pub fn run_scan(app: tauri::AppHandle, log_id: String, mut cmd: Command, scan_ty
     let stderr_handle = if let Some(err) = child.stderr.take() {
         let app_clone = app.clone();
         let log_clone = log_file.clone();
-        
+
         Some(std::thread::spawn(move || {
             for line in BufReader::new(err).lines().flatten() {
                 app_clone.emit("clamscan:log", &line).ok();
@@ -106,7 +111,7 @@ pub fn run_scan(app: tauri::AppHandle, log_id: String, mut cmd: Command, scan_ty
         let mut guard = SCAN_PROCESS.lock().unwrap();
         *guard = None;
     }
-    
+
     let found = threats_count.load(Ordering::Relaxed);
 
     let (status, scan_result, details) = match exit_code {
@@ -118,7 +123,11 @@ pub fn run_scan(app: tauri::AppHandle, log_id: String, mut cmd: Command, scan_ty
         1 => (
             HistoryStatus::Warning,
             ScanResult::ThreatsFound,
-            format!("Scan completed successfully, {} threat{} found", found, if found == 1 { "" } else { "s" }),
+            format!(
+                "Scan completed successfully, {} threat{} found",
+                found,
+                if found == 1 { "" } else { "s" }
+            ),
         ),
         2 => (
             HistoryStatus::Warning,
@@ -128,7 +137,7 @@ pub fn run_scan(app: tauri::AppHandle, log_id: String, mut cmd: Command, scan_ty
         _ => (
             HistoryStatus::Error,
             ScanResult::Failed,
-            format!("Scan failed (exit code {})", exit_code)
+            format!("Scan failed (exit code {})", exit_code),
         ),
     };
 
@@ -144,10 +153,32 @@ pub fn run_scan(app: tauri::AppHandle, log_id: String, mut cmd: Command, scan_ty
             log_id: Some(log_id),
             scan_type: Some(scan_type),
             threat_count: Some(found as u32),
-            scan_result: Some(scan_result)
+            scan_result: Some(scan_result),
         },
+        &log_file
     );
-    
+
     app.emit("clamscan:finished", exit_code).ok();
     Ok(())
+}
+
+pub fn get_root_path() -> &'static str {
+    if cfg!(windows) {
+        "C:\\"
+    } else {
+        "/"
+    }
+}
+
+pub fn get_main_scan_paths() -> Vec<PathBuf> {
+    let mut paths = Vec::new();
+    if let Some(home) = std::env::var_os(if cfg!(windows) { "USERPROFILE" } else { "HOME" }) {
+        let home = PathBuf::from(home);
+        paths.extend([
+            home.join("Downloads"),
+            home.join("Desktop"),
+            home.join("Documents"),
+        ]);
+    }
+    paths
 }

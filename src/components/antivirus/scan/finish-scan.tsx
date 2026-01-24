@@ -1,7 +1,7 @@
 import { ThreatsTable } from "@/components/data-table/tables/threats";
 import { Button } from "@/components/ui/button";
-import { BugOff, EyeOff, ShieldAlert, ShieldCheck, Trash } from "lucide-react";
-import { Link } from "react-router";
+import { BugOff, EyeOff, LogOut, ShieldAlert, ShieldCheck, Trash } from "lucide-react";
+import { useNavigate } from "react-router";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { THREATS_COLS } from "@/components/data-table/columns/threats";
@@ -11,17 +11,18 @@ import Popup from "@/components/popup";
 import { invoke } from "@tauri-apps/api/core";
 import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
-import { cn } from "@/lib/utils";
 import { getExitText } from "@/lib/helpers";
+import { exit } from "@tauri-apps/plugin-process";
 
 interface Props{
      setThreats: React.Dispatch<React.SetStateAction<IThreatsData[]>>,
      threats: IThreatsData[],
      durationElem: React.JSX.Element,
-     onQuit: () => void,
-     exitCode: number
+     exitCode: number,
+     isStartup: boolean
 }
-export default function ScanFinishResult({threats,durationElem,onQuit,setThreats, exitCode}: Props){
+export default function ScanFinishResult({threats,durationElem,setThreats, exitCode, isStartup}: Props){
+     const navigate = useNavigate();
      const [isOpenDeletion, setIsOpenDeletion] = useState(false);
      const [isPending, startTransition] = useTransition()
      const [finishScanState, setFinishScanState] = useState<{
@@ -114,14 +115,22 @@ export default function ScanFinishResult({threats,durationElem,onQuit,setThreats
           toast.success("All threats marked as safe!")
           // TODO: Exclude the Threat
      }
+     const handlePrimaryAction = async () => {
+          if (isStartup) {
+               await exit(0);
+          } else {
+               navigate("/");
+          }
+     };
      const isResolved = useMemo(() =>threats.every(t =>["quarantined", "deleted", "safe"].includes(t.status)),[threats]);
      return threats.length<=0 ? (
           <>
                <ShieldCheck className="size-32 text-emerald-700"/>
                <h2 className="text-lg md:text-2xl font-medium">No items detected!</h2>
                {durationElem}
-               <Button asChild>
-                    <Link to="/" onClick={onQuit}>Back to the overview</Link>
+               <Button onClick={handlePrimaryAction}>
+                    {isStartup && <LogOut/>}
+                    {isStartup ? "Close" : "Back to the overview"}
                </Button>
                <p className="text-muted-foreground">{getExitText(exitCode,"scan")}</p>
           </>
@@ -154,8 +163,9 @@ export default function ScanFinishResult({threats,durationElem,onQuit,setThreats
                               </DropdownMenuItem>
                          </DropdownMenuContent>
                     </DropdownMenu>
-                    <Button asChild variant="secondary">
-                         <Link to="/" onClick={onQuit} className={cn(!isResolved && "select-none pointer-events-none opacity-50")}>Back to the overview</Link>
+                    <Button onClick={handlePrimaryAction} variant="secondary" disabled={!isResolved}>
+                         {isStartup && <LogOut/>}
+                         {isStartup ? "Close" : "Back to the overview"}
                     </Button>
                </ButtonGroup>
                <p className="text-muted-foreground">{getExitText(exitCode,"scan")}</p>

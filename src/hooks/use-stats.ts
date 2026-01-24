@@ -39,7 +39,6 @@ export function useAntivirusStats(startTransition: React.TransitionStartFunction
      });
      const refresh = () => startTransition(async()=>{
           const stats = await invoke<StatsResponse<"type">>("get_stats");
-          console.log(stats)
           setStats(prev=>({
                ...prev,
                activity: stats.activity,

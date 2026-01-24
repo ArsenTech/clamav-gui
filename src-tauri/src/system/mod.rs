@@ -1,24 +1,30 @@
-pub mod sysinfo;
 pub mod logs;
+pub mod scheduler;
+pub mod sysinfo;
 
 use specta::specta;
-use tauri::command;
 use std::process::Stdio;
+use tauri::command;
 
 use crate::{
     helpers::{
         history::append_history,
         log::{initialize_log_with_id, log_err, log_info},
-        new_id, silent_command
-    }, types::{
+        new_id, silent_command,
+    },
+    types::{
         enums::{HistoryStatus, LogCategory},
-        structs::HistoryItem
-    }
+        structs::HistoryItem,
+    },
 };
 
 #[command]
 #[specta(result)]
-pub fn remove_file(app: tauri::AppHandle, file_path: String, log_id: Option<String>) -> Result<(), String> {
+pub fn remove_file(
+    app: tauri::AppHandle,
+    file_path: String,
+    log_id: Option<String>,
+) -> Result<(), String> {
     if file_path.trim().is_empty() {
         return Err("File path cannot be empty".into());
     }
@@ -31,7 +37,7 @@ pub fn remove_file(app: tauri::AppHandle, file_path: String, log_id: Option<Stri
         Ok(_) => {
             let message = format!("The file was deleted: {}", file_path);
             log_info(&log_file, &message);
-            
+
             if let Err(e) = append_history(
                 &app,
                 HistoryItem {
@@ -44,7 +50,7 @@ pub fn remove_file(app: tauri::AppHandle, file_path: String, log_id: Option<Stri
                     category: Some(LogCategory::Quarantine),
                     scan_type: None,
                     threat_count: None,
-                    scan_result: None
+                    scan_result: None,
                 },
             ) {
                 log_err(&log_file, &format!("Failed to append history: {}", e));
@@ -55,7 +61,7 @@ pub fn remove_file(app: tauri::AppHandle, file_path: String, log_id: Option<Stri
             let error_msg = format!("Failed to delete file: {} ({})", file_path, e);
             log_err(&log_file, &format!("Failed to delete file: {}", file_path));
             log_err(&log_file, &e.to_string());
-            
+
             if let Err(e) = append_history(
                 &app,
                 HistoryItem {
@@ -68,7 +74,7 @@ pub fn remove_file(app: tauri::AppHandle, file_path: String, log_id: Option<Stri
                     category: Some(LogCategory::Quarantine),
                     scan_type: None,
                     threat_count: None,
-                    scan_result: None
+                    scan_result: None,
                 },
             ) {
                 log_err(&log_file, &format!("Failed to append history: {}", e));
@@ -84,6 +90,7 @@ pub fn check_availability() -> bool {
     let command = if cfg!(windows) { "where" } else { "which" };
     silent_command(command)
         .arg("clamscan")
+        .stdin(Stdio::null())
         .stdout(Stdio::null())
         .stderr(Stdio::null())
         .status()

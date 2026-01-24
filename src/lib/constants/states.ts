@@ -12,8 +12,8 @@ export const INITIAL_VERSION_INFO: IVersion = {
      versionType: "Early Build",
      clamAV: ""
 }
-export const GET_INITIAL_SCAN_STATE = (type: ScanType | null, path: string[] | null): IScanPageState => ({
-     scanType: type ?? "",
+export const GET_INITIAL_SCAN_STATE = (type: ScanType, path: string[] | null): IScanPageState => ({
+     scanType: type,
      logs: [],
      currLocation: "",
      isFinished: false,
