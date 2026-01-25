@@ -9,7 +9,9 @@ pub fn quarantine_id() -> String {
 pub fn quarantine_dir(app: &tauri::AppHandle) -> PathBuf {
     let mut dir = app.path().app_data_dir().unwrap();
     dir.push("quarantine");
-    std::fs::create_dir_all(&dir).ok();
+    if let Err(e) = std::fs::create_dir_all(&dir){
+        eprintln!("[ERROR]: {}",e.to_string())
+    }
     dir
 }
 

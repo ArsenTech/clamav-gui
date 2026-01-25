@@ -15,7 +15,9 @@ pub fn log_path(app: &tauri::AppHandle, log_dir: LogCategory, log_id: &str) -> P
     let mut dir = app.path().app_data_dir().unwrap();
     dir.push("logs");
     dir.push(log_dir.as_str());
-    std::fs::create_dir_all(&dir).ok();
+    if let Err(e) = std::fs::create_dir_all(&dir){
+        eprintln!("[ERROR]: {}",e.to_string())
+    }
     dir.join(format!("{}.log", log_id))
 }
 
@@ -52,12 +54,12 @@ pub fn initialize_log_with_id(
 
 pub fn log_err(log: &Arc<Mutex<File>>, msg: &str) {
     if let Ok(mut f) = log.lock() {
-        writeln!(f, "[{}] [ERROR] {}", chrono::Utc::now().to_rfc3339(), msg).ok();
+        let _ = writeln!(f, "[{}] [ERROR] {}", chrono::Utc::now().to_rfc3339(), msg).map_err(|e|e.to_string());
     }
 }
 
 pub fn log_info(log: &Arc<Mutex<File>>, msg: &str) {
     if let Ok(mut f) = log.lock() {
-        writeln!(f, "[{}] {}", chrono::Utc::now().to_rfc3339(), msg).ok();
+        let _ = writeln!(f, "[{}] {}", chrono::Utc::now().to_rfc3339(), msg).map_err(|e|e.to_string());
     }
 }

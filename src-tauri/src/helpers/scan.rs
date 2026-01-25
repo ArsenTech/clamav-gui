@@ -6,6 +6,8 @@ use std::sync::{Arc, Mutex};
 use tauri::Emitter;
 use walkdir::WalkDir;
 
+use crate::helpers::{resolve_command, silent_command};
+use crate::types::structs::StartupScan;
 use crate::{
     helpers::{
         history::append_scan_history,
@@ -181,4 +183,49 @@ pub fn get_main_scan_paths() -> Vec<PathBuf> {
         ]);
     }
     paths
+}
+
+pub fn run_headless_scan(startup: StartupScan) -> Result<(),String> {
+    let scan_type = match startup.scan_type {
+        Some(s) => s,
+        None => return Ok(()),
+    };
+    let clamscan = resolve_command("clamscan")?;
+    let mut cmd = silent_command(clamscan.to_str().unwrap());
+
+    match scan_type {
+        ScanType::Main => {
+            cmd.args([
+                "--recursive",
+                "--heuristic-alerts",
+                "--alert-encrypted",
+                "--max-filesize=100M",
+                "--max-scansize=400M",
+            ]);
+            for path in get_main_scan_paths() {
+                cmd.arg(path);
+            }
+        }
+        ScanType::Full => {
+            cmd.args([
+                "--recursive",
+                "--cross-fs=yes",
+                "--heuristic-alerts",
+                "--alert-encrypted",
+                get_root_path(),
+            ]);
+        }
+        _ => return Ok(()),
+    }
+
+    let status = cmd
+        .stdin(Stdio::null())
+        .status()
+        .map_err(|e|e.to_string())?;
+    match status.code() {
+        Some(0) => Ok(()),
+        Some(1) => Ok(()),
+        Some(2) => Err("ClamAV scan error".into()),
+        _ => Err("Scan failed".into()),
+    }
 }

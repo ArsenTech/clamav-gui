@@ -1,6 +1,6 @@
 import { ThreatsTable } from "@/components/data-table/tables/threats";
 import { Button } from "@/components/ui/button";
-import { BugOff, EyeOff, LogOut, ShieldAlert, ShieldCheck, Trash } from "lucide-react";
+import { BugOff, EyeOff, LogOut, ShieldAlert, ShieldCheck, ShieldX, Trash } from "lucide-react";
 import { useNavigate } from "react-router";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -19,9 +19,10 @@ interface Props{
      threats: IThreatsData[],
      durationElem: React.JSX.Element,
      exitCode: number,
-     isStartup: boolean
+     isStartup: boolean,
+     errMsg?: string
 }
-export default function ScanFinishResult({threats,durationElem,setThreats, exitCode, isStartup}: Props){
+export default function ScanFinishResult({threats,durationElem,setThreats, exitCode, isStartup, errMsg}: Props){
      const navigate = useNavigate();
      const [isOpenDeletion, setIsOpenDeletion] = useState(false);
      const [isPending, startTransition] = useTransition()
@@ -123,7 +124,19 @@ export default function ScanFinishResult({threats,durationElem,setThreats, exitC
           }
      };
      const isResolved = useMemo(() =>threats.every(t =>["quarantined", "deleted", "safe"].includes(t.status)),[threats]);
-     return threats.length<=0 ? (
+     return (errMsg && errMsg.trim()!=="") ? (
+          <>
+               <ShieldX className="size-32 text-destructive"/>
+               <h2 className="text-lg md:text-2xl font-medium">Scan Failed</h2>
+               {durationElem}
+               <p>{errMsg}</p>
+               <Button onClick={handlePrimaryAction}>
+                    {isStartup && <LogOut/>}
+                    {isStartup ? "Close" : "Back to the overview"}
+               </Button>
+               <p className="text-muted-foreground">{getExitText(exitCode,"scan")}</p>
+          </>
+     )  : threats.length<=0 ? (
           <>
                <ShieldCheck className="size-32 text-emerald-700"/>
                <h2 className="text-lg md:text-2xl font-medium">No items detected!</h2>

@@ -74,39 +74,51 @@ export default function ScanPage(){
                     setState({
                          isFinished: true,
                          duration: startTimeRef.current ? Math.floor((Date.now() - startTimeRef.current)/1000) : 0,
-                         exitCode: e.payload
+                         exitCode: e.payload,
+                         errMsg: undefined
                     });
                     startTimeRef.current = null;
                }),
-               listen<number>("clamscan:total", e =>setState({ totalFiles: e.payload }))
+               listen<number>("clamscan:total", e =>setState({ totalFiles: e.payload })),
+               listen<string>("clamscan:error", e => {
+                    if (!scanActiveRef.current) return;
+                    scanStartedRef.current = false;
+                    scanActiveRef.current = false;
+                    setState({
+                         isFinished: true,
+                         errMsg: e.payload,
+                         duration: startTimeRef.current ? Math.floor((Date.now() - startTimeRef.current)/1000) : 0,
+                         exitCode: -1
+                    })
+                    startTimeRef.current = null;
+               })
           ];
           return () => {
                Promise.all(unsubs).then(fns=>fns.forEach(fn=>fn()));
           }
      },[]);
-     useEffect(()=>{
-          if (scanStoppedRef.current) return; 
-          if(!scanState.scanType) return;
-          if (scanStartedRef.current) return;
-          scanStartedRef.current = true;
-          if(
-               scanState.scanType==="main" ||
-               scanState.scanType==="full"
-          ) {
-               invoke(`start_${scanState.scanType}_scan`).catch(()=>{
-                    toast.error("Scan command not found")
-               })
-          } else {
-               invoke("start_custom_scan",{
-                    paths: Array.isArray(scanState.paths) ? scanState.paths : [scanState.paths]
-               })
-          }
-          startTimeRef.current = Date.now();
-          scanActiveRef.current = true;
-          setState({duration: 0, exitCode: 0})
-     },[scanState.scanType, scanState.paths])
      const {isStartup} = useStartupScan();
-     console.log(isStartup)
+     useEffect(() => {
+          if (scanStoppedRef.current) return;
+          if (!scanState.scanType) return;
+          if (scanStartedRef.current) return;
+          if (isStartup && scanActiveRef.current) return;
+          scanStartedRef.current = true;
+          scanActiveRef.current = true;
+          startTimeRef.current = Date.now();
+          if (scanState.scanType === "main" || scanState.scanType === "full") {
+               invoke(`start_${scanState.scanType}_scan`).catch(() => {
+                    toast.error("Scan command not found");
+               });
+          } else {
+               invoke("start_custom_scan", {
+                    paths: Array.isArray(scanState.paths)
+                    ? scanState.paths
+                    : [scanState.paths],
+               });
+          }
+          setState({ duration: 0, exitCode: 0, errMsg: undefined });
+     }, [scanState.scanType, scanState.paths, isStartup]);
      const handleStop = async() => {
           scanStoppedRef.current = true;
           reset();
@@ -133,7 +145,7 @@ export default function ScanPage(){
                ...overrides
           })
      }
-     const {isFinished, duration, scanType, currLocation, totalFiles, scannedFiles, logs, paths: scanLocations, exitCode} = scanState;
+     const {isFinished, duration, scanType, currLocation, totalFiles, scannedFiles, logs, paths: scanLocations, exitCode, errMsg} = scanState;
      return (
           <AppLayout className={isFinished ? "flex justify-center items-center gap-4 flex-col p-4" : "grid gris-cols-1 md:grid-cols-2 gap-10 p-4"}>
                {isFinished ? (
@@ -147,6 +159,7 @@ export default function ScanPage(){
                               )}
                               exitCode={exitCode}
                               isStartup={isStartup}
+                              errMsg={errMsg}
                          />
                     </>
                ) : (

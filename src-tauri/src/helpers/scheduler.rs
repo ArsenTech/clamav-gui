@@ -1,9 +1,8 @@
-use std::process::Stdio;
 use tauri::{Manager, Emitter};
 use std::path::PathBuf;
 
 use crate::{
-    helpers::{history::append_history, log::{initialize_log, log_err, log_info}, new_id, silent_command},
+    helpers::{history::append_history, log::{initialize_log, log_err, log_info}, new_id, resolve_command, silent_command},
     types::{enums::{DayOfTheWeek, HistoryStatus, LogCategory, ScanType, SchedulerInterval}, structs::{HistoryItem, SchedulerEntry, SchedulerEvent, SchedulerFile}},
 };
 
@@ -39,8 +38,8 @@ pub fn schedule_scan_windows(
      let log = initialize_log(app, LogCategory::Scheduler)?;
      let log_id = log.id.clone();
      let log_file = log.file.clone();
-     let mut cmd = silent_command("schtasks");
-
+     let task_scheduler = resolve_command("schtasks")?;
+     let mut cmd = silent_command(task_scheduler.to_str().unwrap());
      cmd.args([
           "/create",
           "/tn",
@@ -50,8 +49,7 @@ pub fn schedule_scan_windows(
           "/tr",
           &task_command,
           "/f",
-     ])
-     .stdin(Stdio::null());
+     ]);
 
      match interval {
           SchedulerInterval::Daily => {
@@ -135,14 +133,14 @@ pub fn remove_job_windows(
      let log = initialize_log(app, LogCategory::Scheduler)?;
      let log_id = log.id.clone();
      let log_file = log.file.clone();
-     let mut cmd = silent_command("schtasks");
+     let task_scheduler = resolve_command("schtasks")?;
+     let mut cmd = silent_command(task_scheduler.to_str().unwrap());
      cmd.args([
           "/delete",
           "/tn",
           &task_name,
           "/f",
-     ])
-     .stdin(Stdio::null());
+     ]);
 
      let status = cmd.status().map_err(|e| e.to_string())?;
      if !status.success() {
@@ -198,14 +196,14 @@ pub fn run_job_now_windows(app: &tauri::AppHandle, task_name: String) -> Result<
      let log = initialize_log(app, LogCategory::Scheduler)?;
      let log_id = log.id.clone();
      let log_file = log.file.clone();
-     let mut cmd = silent_command("schtasks");
+     let task_scheduler = resolve_command("schtasks")?;
+     let mut cmd = silent_command(task_scheduler.to_str().unwrap());
 
      cmd.args([
           "/run",
           "/tn",
           &task_name,
-     ])
-     .stdin(Stdio::null());
+     ]);
 
      let status = cmd.status().map_err(|e| e.to_string())?;
 

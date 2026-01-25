@@ -91,6 +91,7 @@ pub struct QuarantinedItem {
 pub struct StartupScan {
     pub scan_type: Option<ScanType>,
     pub is_startup: bool,
+    pub is_scheduled: bool,
 }
 
 #[derive(Serialize, Clone, Type)]

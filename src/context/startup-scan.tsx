@@ -5,6 +5,7 @@ import { invoke } from "@tauri-apps/api/core";
 export interface StartupScanState {
   scanType: ScanType | null;
   isStartup: boolean;
+  isScheduled: boolean
 }
 
 export const StartupScanContext =
@@ -25,15 +26,18 @@ export default function StartupScanProvider({children}: ContextProps){
      const [startupScan, setStartupScan] = useState<{
           scanType: ScanType | null;
           isStartup: boolean;
+          isScheduled: boolean;
      } | null>(null);
      useEffect(() => {
           invoke<{
                scan_type: ScanType | null;
                is_startup: boolean;
+               is_scheduled: boolean;
           }>("get_startup_scan").then(res => {
                setStartupScan({
                     scanType: res.scan_type,
                     isStartup: res.is_startup,
+                    isScheduled: res.is_scheduled
                });
           });
      }, []);

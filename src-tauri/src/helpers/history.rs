@@ -6,7 +6,9 @@ use crate::{helpers::log::log_err, types::structs::HistoryItem};
 pub fn history_dir(app: &tauri::AppHandle) -> PathBuf {
     let mut dir = app.path().app_data_dir().unwrap();
     dir.push("history");
-    std::fs::create_dir_all(&dir).ok();
+    if let Err(e) = std::fs::create_dir_all(&dir){
+        eprintln!("[ERROR]: {}",e.to_string())
+    }
     dir
 }
 

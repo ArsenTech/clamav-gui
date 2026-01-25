@@ -5,9 +5,7 @@ use tauri::{command, Emitter};
 
 use crate::{
     helpers::{
-        history::append_update_history,
-        log::{initialize_log, log_err, log_info},
-        new_id, silent_command,
+        history::append_update_history, log::{initialize_log, log_err, log_info}, new_id, resolve_command, silent_command
     },
     types::{
         enums::{HistoryStatus, LogCategory},
@@ -38,10 +36,11 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
         },
         &log_file
     );
+    let freshclam = resolve_command("freshclam")?;
     std::thread::spawn(move || {
         app.emit("freshclam:start", ()).ok();
 
-        let output = silent_command("freshclam")
+        let output = silent_command(freshclam.to_str().unwrap())
             .arg("--stdout")
             .stdin(Stdio::null())
             .output();
@@ -126,7 +125,8 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
 #[command]
 #[specta(result)]
 pub fn get_clamav_version() -> Result<String, String> {
-    let output = silent_command("freshclam")
+    let freshclam = resolve_command("freshclam")?;
+    let output = silent_command(freshclam.to_str().unwrap())
         .arg("--version")
         .stdin(Stdio::null())
         .output()

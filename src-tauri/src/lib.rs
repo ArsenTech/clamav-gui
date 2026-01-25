@@ -19,22 +19,27 @@ use crate::{
         update::{get_clamav_version, update_definitions},
     },
     helpers::{
-        parse_flags,
-        scan_types::{run_full_scan, run_main_scan},
+        flags::parse_startup_flags,
+        scan::run_headless_scan,
     },
     system::{
         check_availability,
         logs::{read_log, reveal_log},
         remove_file,
-        scheduler::{list_scheduler,schedule_task,remove_scheduled_task,run_job_now},
+        scheduler::{list_scheduler, remove_scheduled_task, run_job_now, schedule_task},
         sysinfo::{get_sys_info, get_sys_stats},
     },
-    types::{enums::ScanType, structs::StartupScan},
 };
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-    let scan_flag = parse_flags();
+    let scan_flag = parse_startup_flags();
+    if scan_flag.is_scheduled {
+        if let Err(e) = run_headless_scan(scan_flag){
+            eprintln!("Failed to run a headless scan: {}",e.to_string());
+        }
+        std::process::exit(0);
+    }
 
     let specta_builder = Builder::<tauri::Wry>::new().commands(collect_commands![
         check_availability,
@@ -68,34 +73,14 @@ pub fn run() {
         run_job_now
     ]);
 
-    let app = tauri::Builder::default()
+    tauri::Builder::default()
         .plugin(tauri_plugin_process::init())
-        .manage(StartupScan {
-            scan_type: scan_flag.clone(),
-            is_startup: scan_flag.is_some()
-        })
+        .manage(scan_flag.clone())
         .plugin(tauri_plugin_fs::init())
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_os::init())
         .invoke_handler(specta_builder.invoke_handler())
-        .build(tauri::generate_context!())
+        .run(tauri::generate_context!())
         .expect("error while building tauri application");
-
-    app.run(move |app_handle, event| {
-        if let tauri::RunEvent::Ready = event {
-            if let Some(scan_type) = scan_flag.clone() {
-                let handle = app_handle.clone();
-                std::thread::spawn(move || match scan_type {
-                    ScanType::Main => {
-                        run_main_scan(handle).ok();
-                    }
-                    ScanType::Full => {
-                        run_full_scan(handle).ok();
-                    }
-                    _ => {}
-                });
-            }
-        }
-    });
 }

@@ -10,6 +10,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Logic for Scheduler (Currently Unfinished)
 ### Improved
 - Scheduler Page UI
+### Fixed
+- The bug that ends the scan after 1 second and scans nothing (implemented the `resolve_command` function)
+- Applied the same fix to every command to prevent any future bugs
 ### Changed
 - Separated Scan Menu page from Scan Page to make it work
 

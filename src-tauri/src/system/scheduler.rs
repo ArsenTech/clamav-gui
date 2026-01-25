@@ -4,7 +4,7 @@ use tauri::{Manager,command};
 #[cfg(windows)]
 use crate::helpers::scheduler::schedule_scan_windows;
 use crate::{
-     helpers::{scheduler::{load_scheduler_file, remove_job_windows, run_job_now_windows}, silent_command},
+     helpers::{resolve_command, scheduler::{load_scheduler_file, remove_job_windows, run_job_now_windows}},
      types::{
           enums::{DayOfTheWeek, ScanType, SchedulerInterval},
           structs::SchedulerEvent
@@ -28,25 +28,7 @@ pub fn schedule_task(
           ScanType::Custom => "Custom",
           _ => return Err("Unsupported scan type".into())
      }, interval);
-     let command = if cfg!(windows) { "where" } else { "which" };
-     let output = silent_command(command).arg("clamav-gui")
-        .output()
-        .map_err(|e| e.to_string())?;
-     let gui_path = String::from_utf8_lossy(&output.stdout)
-          .lines()
-          .next()
-          .unwrap_or("")
-          .trim()
-          .to_string();
-     if gui_path.is_empty(){
-          return Err("The ClamAV GUI isn't installed".into())
-     }
-     #[cfg(windows)]
-     let gui_path = if gui_path.ends_with(".exe") {
-          gui_path
-     } else {
-          format!("{}.exe", gui_path)
-     };
+     let gui_command = resolve_command("clamav-gui")?;
      let scan_args = match scan_type {
           ScanType::Main => "--scan=main",
           ScanType::Full => "--scan=full",
@@ -54,8 +36,8 @@ pub fn schedule_task(
           _ => return Ok(())
      };
      let task_command = format!(
-          r#""{}" {}"#,
-          gui_path,
+          r#""{}" {} --scheduled"#,
+          gui_command.to_string_lossy(),
           scan_args
      );
 
