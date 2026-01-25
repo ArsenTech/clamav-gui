@@ -6,9 +6,10 @@ pub mod scan;
 pub mod scheduler;
 
 use std::process::Command;
+use std::path::PathBuf;
 
 #[cfg(windows)]
-use std::{os::windows::process::CommandExt, path::PathBuf};
+use std::os::windows::process::CommandExt;
 
 const CREATE_NO_WINDOW: u32 = 0x08000000;
 
