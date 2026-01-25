@@ -24,9 +24,7 @@ export default function ScanChart({data}: ChartProps<IScanTypeStat[]>) {
           tickLine={false}
           tickMargin={2}
           axisLine={false}
-          tickFormatter={(value) =>
-            SCAN_TYPE_CONFIG[value as keyof typeof SCAN_TYPE_CONFIG]?.label
-          }
+          tickFormatter={(value) =>SCAN_TYPE_CONFIG[value as keyof typeof SCAN_TYPE_CONFIG]?.label}
         />
         <XAxis dataKey="threats" type="number" hide />
         <ChartTooltip

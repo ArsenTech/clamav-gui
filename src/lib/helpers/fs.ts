@@ -18,8 +18,6 @@ export const escapeCSV = (value: unknown) => {
 
 export const exportCSV = async (path: string, historyData: IHistoryData<"state">[]) => {
      const headers = ["timestamp", "action", "details", "status"];
-
      const rows = historyData.map(item =>headers.map(h => escapeCSV(item[h as keyof typeof item])).join(","));
-
      await writeTextFile(path, [headers.join(","), ...rows].join("\n"));
 };
