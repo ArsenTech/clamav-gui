@@ -1,10 +1,11 @@
 use specta::specta;
 use tauri::{Manager,command};
 
-#[cfg(windows)]
-use crate::helpers::scheduler::schedule_scan_windows;
 use crate::{
-     helpers::{resolve_command, scheduler::{load_scheduler_file, remove_job_windows, run_job_now_windows}},
+     helpers::{
+          resolve_command,
+          scheduler::load_scheduler_file,
+     },
      types::{
           enums::{DayOfTheWeek, ScanType, SchedulerInterval},
           structs::SchedulerEvent
@@ -42,6 +43,7 @@ pub fn schedule_task(
      );
 
      #[cfg(windows)]{
+          use crate::helpers::scheduler::schedule_scan_windows;
           schedule_scan_windows(&app, task_name, time, task_command, interval, days, scan_type)
      }
      #[cfg(not(windows))]
@@ -54,6 +56,7 @@ pub fn schedule_task(
 #[specta(result)]
 pub fn remove_scheduled_task(app: tauri::AppHandle,task_name: String) -> Result<(),String>{
      #[cfg(windows)]{
+          use crate::helpers::scheduler::remove_job_windows;
           remove_job_windows(&app,task_name)
      }
      #[cfg(not(windows))]
@@ -94,6 +97,7 @@ pub fn list_scheduler(app: tauri::AppHandle) -> Result<Vec<SchedulerEvent>,Strin
 #[specta(result)]
 pub fn run_job_now(app: tauri::AppHandle,task_name: String) -> Result<(),String>{
      #[cfg(windows)]{
+          use crate::helpers::scheduler::run_job_now_windows;
           run_job_now_windows(&app,task_name)
      }
      #[cfg(not(windows))]

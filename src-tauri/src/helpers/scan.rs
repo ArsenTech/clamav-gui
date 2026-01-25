@@ -6,17 +6,15 @@ use std::sync::{Arc, Mutex};
 use tauri::Emitter;
 use walkdir::WalkDir;
 
-use crate::helpers::{resolve_command, silent_command};
-use crate::types::structs::StartupScan;
 use crate::{
     helpers::{
         history::append_scan_history,
         log::{log_err, log_info, log_path},
-        new_id,
+        new_id,resolve_command, silent_command
     },
     types::{
         enums::{HistoryStatus, LogCategory, ScanResult, ScanType},
-        structs::HistoryItem,
+        structs::{HistoryItem,StartupScan},
     },
 };
 

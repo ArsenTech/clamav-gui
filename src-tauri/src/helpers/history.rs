@@ -1,7 +1,10 @@
 use std::{fs::File, path::PathBuf, sync::{Arc, Mutex}};
 use tauri::Manager;
 
-use crate::{helpers::log::log_err, types::structs::HistoryItem};
+use crate::{
+    helpers::log::log_err,
+    types::structs::HistoryItem
+};
 
 pub fn history_dir(app: &tauri::AppHandle) -> PathBuf {
     let mut dir = app.path().app_data_dir().unwrap();
