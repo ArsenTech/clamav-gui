@@ -71,6 +71,7 @@ export type ISchedulerData<T extends "state" | "type"> = (T extends "type" ? {
      scan_type: ScanType,
      days: typeof DAYS_OF_THE_WEEK[number],
      time: string
+     last_run: string | null
 } : {
      scanType: ScanType,
      lastScan: string,

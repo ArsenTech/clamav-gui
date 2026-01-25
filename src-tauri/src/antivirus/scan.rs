@@ -59,12 +59,12 @@ pub fn start_main_scan(app: tauri::AppHandle) -> Result<(), String> {
             "--no-summary",
         ]);
         let total_files = estimate_total_files(&paths);
-        app.emit("clamscan:total", total_files).ok();
+        app.emit("clamscan:total", total_files).map_err(|e| e.to_string())?;
         for path in paths {
             cmd.arg(path);
         }
         if let Err(e) = run_scan(app.clone(), log_id, cmd, ScanType::Main){
-            app.emit("clamscan:error", &e.to_string()).ok();
+            app.emit("clamscan:error", &e.to_string()).map_err(|e| e.to_string())?;
             log_err(&log_file, &e.to_string());
             Err(e.to_string())
         } else {
@@ -113,7 +113,7 @@ pub fn start_full_scan(app: tauri::AppHandle) -> Result<(), String> {
             root,
         ]);
         if let Err(e) = run_scan(app.clone(), log_id, cmd, ScanType::Full) {
-            app.emit("clamscan:error", &e.to_string()).ok();
+            app.emit("clamscan:error", &e.to_string()).map_err(|e| e.to_string())?;
             log_err(&log_file, &e.to_string());
             Err(e.to_string())
         } else {
@@ -184,9 +184,9 @@ pub fn start_custom_scan(app: tauri::AppHandle, paths: Vec<String>) -> Result<()
             cmd.arg(path);
         }
         let total_files = estimate_total_files(&resolved_paths);
-        app_clone.emit("clamscan:total", total_files).ok();
+        let _ = app_clone.emit("clamscan:total", total_files).map_err(|e| e.to_string());
         if let Err(e) = run_scan(app_clone.clone(), log_id.clone(), cmd, scan_type){
-            app_clone.emit("clamscan:error", &e.to_string()).ok();
+            let _ = app_clone.emit("clamscan:error", &e.to_string()).map_err(|e| e.to_string());
             log_err(&log_file, &e.to_string());
         }
     });

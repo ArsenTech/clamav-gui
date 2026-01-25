@@ -101,3 +101,10 @@ impl DayOfTheWeek {
         }
     }
 }
+
+#[derive(Serialize, Deserialize, Type, Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[serde(rename_all = "lowercase")]
+pub enum ClearHistoryMode{
+    All,
+    Acknowledged
+}

@@ -38,7 +38,7 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
     );
     let freshclam = resolve_command("freshclam")?;
     std::thread::spawn(move || {
-        app.emit("freshclam:start", ()).ok();
+        let _ = app.emit("freshclam:start", ()).map_err(|e| e.to_string());
 
         let output = silent_command(freshclam.to_str().unwrap())
             .arg("--stdout")
@@ -52,12 +52,12 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
 
                 if !stdout.is_empty() {
                     let stdout_str = stdout.to_string();
-                    app.emit("freshclam:output", &stdout_str).ok();
+                    let _ = app.emit("freshclam:output", &stdout_str).map_err(|e| e.to_string());
                     log_info(&log_file, &stdout_str);
                 }
                 if !stderr.is_empty() {
                     let stderr_str = stderr.to_string();
-                    app.emit("freshclam:error", &stderr_str).ok();
+                    let _ = app.emit("freshclam:error", &stderr_str).map_err(|e| e.to_string());
                     log_err(&log_file, &stderr_str);
                 }
 
@@ -91,12 +91,11 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
                     },
                     &log_file
                 );
-
-                app.emit("freshclam:done", exit_code).ok();
+                let _ = app.emit("freshclam:done", exit_code).map_err(|e| e.to_string());
             }
             Err(e) => {
                 let error_msg = e.to_string();
-                app.emit("freshclam:error", &error_msg).ok();
+                let _ = app.emit("freshclam:error", &error_msg).map_err(|e| e.to_string());
                 log_err(&log_file, &error_msg);
 
                 append_update_history(

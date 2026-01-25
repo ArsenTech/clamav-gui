@@ -10,11 +10,13 @@ import { Input } from "../ui/input";
 import { DAYS_OF_THE_WEEK, SCAN_OPTIONS } from "@/lib/constants";
 import { ScanType } from "@/lib/types";
 import { useEffect } from "react";
+import { Spinner } from "../ui/spinner";
 
 interface Props{
-     handleSubmit: (values: SchedulerType) => void
+     handleSubmit: (values: SchedulerType) => void,
+     isSubmitting: boolean
 }
-export default function SchedulerForm({handleSubmit}: Props){
+export default function SchedulerForm({handleSubmit, isSubmitting}: Props){
      const form = useForm<SchedulerType>({
           resolver: zodResolver(SchedulerSchema),
           defaultValues:{
@@ -51,6 +53,7 @@ export default function SchedulerForm({handleSubmit}: Props){
                          <FormField
                               control={form.control}
                               name="interval"
+                              disabled={isSubmitting}
                               render={({field})=>(
                                    <FormItem>
                                         <FormLabel>Interval</FormLabel>
@@ -60,6 +63,7 @@ export default function SchedulerForm({handleSubmit}: Props){
                                                   localStorage.setItem("scheduler-interval",val)
                                              }}
                                              value={field.value}
+                                             disabled={isSubmitting}
                                         >
                                              <FormControl>
                                                   <SelectTrigger className="w-full">
@@ -79,6 +83,7 @@ export default function SchedulerForm({handleSubmit}: Props){
                          <FormField
                               control={form.control}
                               name="scanType"
+                              disabled={isSubmitting}
                               render={({field})=>(
                                    <FormItem>
                                         <FormLabel>Scan Type</FormLabel>
@@ -88,6 +93,7 @@ export default function SchedulerForm({handleSubmit}: Props){
                                                   localStorage.setItem("scheduler-scan-type",val)
                                              }}
                                              value={field.value}
+                                             disabled={isSubmitting}
                                         >
                                              <FormControl>
                                                   <SelectTrigger className="w-full">
@@ -107,14 +113,14 @@ export default function SchedulerForm({handleSubmit}: Props){
                          <FormField
                               control={form.control}
                               name="days"
-                              disabled={interval!=="weekly"}
+                              disabled={interval!=="weekly" || isSubmitting}
                               render={({field})=>(
                                    <FormItem>
                                         <FormLabel>Day of the Week</FormLabel>
                                         <Select
                                              onValueChange={field.onChange}
                                              value={field.value}
-                                             disabled={interval!=="weekly"}
+                                             disabled={interval!=="weekly" || isSubmitting}
                                         >
                                              <FormControl>
                                                   <SelectTrigger className="w-full">
@@ -140,11 +146,12 @@ export default function SchedulerForm({handleSubmit}: Props){
                          <FormField
                               control={form.control}
                               name="hours"
+                              disabled={isSubmitting}
                               render={({field})=>(
                                    <FormItem className="flex-1">
                                         <FormLabel>Hour</FormLabel>
                                         <FormControl>
-                                             <Input {...field} type="number" onChange={e=>field.onChange(e.target.valueAsNumber)} placeholder="12" min={0} max={23}/>
+                                             <Input {...field} type="number" onChange={e=>field.onChange(e.target.valueAsNumber)} placeholder="12" min={0} max={23} disabled={isSubmitting}/>
                                         </FormControl>
                                    </FormItem>
                               )}
@@ -152,13 +159,14 @@ export default function SchedulerForm({handleSubmit}: Props){
                          <FormField
                               control={form.control}
                               name="minutes"
+                              disabled={isSubmitting}
                               render={({field})=>(
                                    <FormItem
                                         className="flex-1"
                                    >
                                         <FormLabel>Minute</FormLabel>
                                         <FormControl>
-                                             <Input {...field} type="number" onChange={e=>field.onChange(e.target.valueAsNumber)} placeholder="00" min={0} max={59}/>
+                                             <Input {...field} type="number" onChange={e=>field.onChange(e.target.valueAsNumber)} placeholder="00" min={0} max={59} disabled={isSubmitting}/>
                                         </FormControl>
                                    </FormItem>
                               )}
@@ -167,8 +175,9 @@ export default function SchedulerForm({handleSubmit}: Props){
                     {time!==":" && (
                          <p className="text-lg font-semibold text-muted-foreground">Scheduled Time: {time}</p>
                     )}
-                    <Button type="submit">
-                         <ClipboardClock/> Schedule
+                    <Button type="submit" disabled={isSubmitting}>
+                         {isSubmitting ? <Spinner/> : <ClipboardClock/>}
+                         {isSubmitting ? "Please Wait..." : "Schedule"}
                     </Button>
                </form>
           </Form>

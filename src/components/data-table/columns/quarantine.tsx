@@ -3,12 +3,11 @@ import { ArrowDown, ArrowUp, ArrowUpDown, MoreHorizontal, RotateCcw, Trash } fro
 import { ColumnDef } from "@tanstack/react-table";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { IQuarantineData } from "@/lib/types";
+import { IQuarantineState } from "@/lib/types/states";
 
-export const QUARANTINE_COLS = (setIsOpen: React.Dispatch<React.SetStateAction<{
-     isOpenRestore: boolean,
-     isOpenDelete: boolean,
-     id: string
-}>>): ColumnDef<IQuarantineData<"state">>[] => [
+export const QUARANTINE_COLS = (
+     setState: (overrides: Partial<IQuarantineState>) => void
+): ColumnDef<IQuarantineData<"state">>[] => [
      {
           accessorKey: "threat_name",
           header: ({column}) => (
@@ -61,16 +60,15 @@ export const QUARANTINE_COLS = (setIsOpen: React.Dispatch<React.SetStateAction<{
                          <DropdownMenuContent align="end">
                               <DropdownMenuLabel>Actions</DropdownMenuLabel>
                               <DropdownMenuSeparator/>
-                              <DropdownMenuItem onClick={()=>setIsOpen(prev=>({
-                                   ...prev,
+                              {}
+                              <DropdownMenuItem onClick={()=>setState({
                                    id: threat.id,
                                    isOpenRestore: true
-                              }))}><RotateCcw/> Restore</DropdownMenuItem>
-                              <DropdownMenuItem className="text-destructive" onClick={()=>setIsOpen(prev=>({
-                                   ...prev,
+                              })}><RotateCcw/> Restore</DropdownMenuItem>
+                              <DropdownMenuItem className="text-destructive" onClick={()=>setState({
                                    id: threat.id,
                                    isOpenDelete: true
-                              }))}>
+                              })}>
                                    <Trash className="text-destructive"/> Delete permanently
                               </DropdownMenuItem>
                          </DropdownMenuContent>

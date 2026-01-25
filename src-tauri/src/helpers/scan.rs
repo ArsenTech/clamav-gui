@@ -10,7 +10,7 @@ use crate::{
     helpers::{
         history::append_scan_history,
         log::{log_err, log_info, log_path},
-        new_id,resolve_command, silent_command
+        new_id,resolve_command, silent_command,
     },
     types::{
         enums::{HistoryStatus, LogCategory, ScanResult, ScanType},
@@ -76,7 +76,7 @@ pub fn run_scan(
                 if line.contains("FOUND") {
                     threats_clone.fetch_add(1, Ordering::Relaxed);
                 }
-                app_clone.emit("clamscan:log", &line).ok();
+                let _ = app_clone.emit("clamscan:log", &line).map_err(|e| e.to_string());
                 log_info(&log_clone, &line);
             }
         }))
@@ -90,7 +90,7 @@ pub fn run_scan(
 
         Some(std::thread::spawn(move || {
             for line in BufReader::new(err).lines().flatten() {
-                app_clone.emit("clamscan:log", &line).ok();
+                let _ = app_clone.emit("clamscan:log", &line).map_err(|e| e.to_string());
                 log_err(&log_clone, &line);
             }
         }))
@@ -158,7 +158,7 @@ pub fn run_scan(
         &log_file
     );
 
-    app.emit("clamscan:finished", exit_code).ok();
+    app.emit("clamscan:finished", exit_code).map_err(|e| e.to_string())?;
     Ok(())
 }
 
@@ -221,8 +221,7 @@ pub fn run_headless_scan(startup: StartupScan) -> Result<(),String> {
         .status()
         .map_err(|e|e.to_string())?;
     match status.code() {
-        Some(0) => Ok(()),
-        Some(1) => Ok(()),
+        Some(0) | Some(1) => Ok(()),
         Some(2) => Err("ClamAV scan error".into()),
         _ => Err("Scan failed".into()),
     }

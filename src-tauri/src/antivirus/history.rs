@@ -3,7 +3,7 @@ use tauri::command;
 
 use crate::{
     helpers::history::history_dir,
-    types::{enums::HistoryStatus, structs::HistoryItem},
+    types::{enums::{ClearHistoryMode, HistoryStatus}, structs::HistoryItem},
 };
 
 #[command]
@@ -76,8 +76,8 @@ pub fn mark_as_acknowledged(app: tauri::AppHandle, id: String, date: String) -> 
 
 #[command]
 #[specta(result)]
-pub fn clear_history(app: tauri::AppHandle, mode: String) -> Result<(), String> {
-    if mode != "all" && mode != "acknowledged" {
+pub fn clear_history(app: tauri::AppHandle, mode: ClearHistoryMode) -> Result<(), String> {
+    if mode != ClearHistoryMode::All && mode != ClearHistoryMode::Acknowledged{
         return Err("Invalid clear history mode. Use 'all' or 'acknowledged'".into());
     }
 
@@ -91,11 +91,11 @@ pub fn clear_history(app: tauri::AppHandle, mode: String) -> Result<(), String> 
             continue;
         }
 
-        match mode.as_str() {
-            "all" => {
+        match mode {
+            ClearHistoryMode::All => {
                 std::fs::remove_file(&path).map_err(|e| e.to_string())?;
             }
-            "acknowledged" => {
+            ClearHistoryMode::Acknowledged => {
                 let content = std::fs::read_to_string(&path).map_err(|e| e.to_string())?;
                 let mut items: Vec<HistoryItem> =
                     serde_json::from_str(&content).map_err(|e| e.to_string())?;
@@ -112,7 +112,6 @@ pub fn clear_history(app: tauri::AppHandle, mode: String) -> Result<(), String> 
                     .map_err(|e| e.to_string())?;
                 }
             }
-            _ => unreachable!(),
         }
     }
     Ok(())

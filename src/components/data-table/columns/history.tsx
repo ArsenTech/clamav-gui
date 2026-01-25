@@ -8,9 +8,10 @@ import { invoke } from "@tauri-apps/api/core";
 import { toast } from "sonner";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Link } from "react-router";
+import { IHistoryPageState } from "@/lib/types/states";
 
 export const GET_HISTORY_COLS = (
-     setData: React.Dispatch<React.SetStateAction<IHistoryData<"state">[]>>
+     setHistoryState: React.Dispatch<React.SetStateAction<IHistoryPageState>>
 ): ColumnDef<IHistoryData<"state">>[] => [
      {
           id: "isAcknowledged",
@@ -22,10 +23,13 @@ export const GET_HISTORY_COLS = (
                               id: item.id,
                               date: item.timestamp.split("T")[0]
                          });
-                         setData(prev=>prev.map(val=>({
-                              ...val,
-                              status: val.id===item.id ? "acknowledged" : val.status
-                         })))
+                         setHistoryState(prev=>({
+                              ...prev,
+                              data: prev.data.map(val=>({
+                                   ...val,
+                                   status: val.id===item.id ? "acknowledged" : val.status
+                              }))
+                         }))
                          toast.success("Entry acknowledged!")
                     } catch (error){
                          toast.error("Failed to mark the entry as acknowledged");

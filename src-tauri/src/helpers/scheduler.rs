@@ -2,14 +2,14 @@ use tauri::{Manager, Emitter};
 use std::path::PathBuf;
 
 use crate::{
-    helpers::{history::append_history, log::{initialize_log, log_err, log_info}, new_id, resolve_command, silent_command},
+    helpers::{history::append_scheduler_history, log::{initialize_log, log_err, log_info}, new_id, resolve_command, silent_command},
     types::{enums::{DayOfTheWeek, HistoryStatus, LogCategory, ScanType, SchedulerInterval}, structs::{HistoryItem, SchedulerEntry, SchedulerEvent, SchedulerFile}},
 };
 
 pub fn load_scheduler_file(path: &PathBuf) -> Result<SchedulerFile, String> {
      if path.exists() {
           let data = std::fs::read_to_string(path).map_err(|e| e.to_string())?;
-          serde_json::from_str(&data).map_err(|e| e.to_string())
+          serde_json::from_str(&data).map_err(|e| format!("Failed to parse scheduler file: {}", e))
      } else {
           Ok(SchedulerFile {
                version: 1,
@@ -18,32 +18,46 @@ pub fn load_scheduler_file(path: &PathBuf) -> Result<SchedulerFile, String> {
      }
 }
 
-fn save_scheduler_file(path: &PathBuf, file: &SchedulerFile) -> Result<(), String> {
+pub fn save_scheduler_file(path: &PathBuf, file: &SchedulerFile) -> Result<(), String> {
+     if let Some(parent) = path.parent() {
+          std::fs::create_dir_all(parent).map_err(|e| e.to_string())?;
+     }
      let tmp = path.with_extension("tmp");
      let json = serde_json::to_string_pretty(file).map_err(|e| e.to_string())?;
      std::fs::write(&tmp, json).map_err(|e| e.to_string())?;
-     std::fs::rename(tmp, path).map_err(|e| e.to_string())?;
+     std::fs::rename(&tmp, path).map_err(|e| e.to_string())?;
      Ok(())
 }
 
 pub fn schedule_scan_windows(
-    app: &tauri::AppHandle,
-    task_name: String,
-    time: String,
-    task_command: String,
-    interval: SchedulerInterval,
-    days: DayOfTheWeek,
-    scan_type: ScanType,
+     app: &tauri::AppHandle,
+     task_name: String,
+     time: String,
+     task_command: String,
+     interval: SchedulerInterval,
+     days: DayOfTheWeek,
+     scan_type: ScanType,
 ) -> Result<(), String> {
+     if task_name.trim().is_empty() {
+          return Err("Task name cannot be empty".into());
+     }
+     if time.trim().is_empty() {
+          return Err("Time cannot be empty".into());
+     }
+     if task_command.trim().is_empty() {
+          return Err("Task command cannot be empty".into());
+     }
+
      let log = initialize_log(app, LogCategory::Scheduler)?;
      let log_id = log.id.clone();
      let log_file = log.file.clone();
-     let task_scheduler = resolve_command("schtasks")?;
-     let mut cmd = silent_command(task_scheduler.to_str().unwrap());
+     
+     let schtasks = resolve_command("schtasks")?;
+     let mut cmd = silent_command(schtasks.to_str().unwrap());
      cmd.args([
           "/create",
           "/tn",
-          &task_name,
+          &format!(r"\{}", task_name),
           "/st",
           &time,
           "/tr",
@@ -79,6 +93,13 @@ pub fn schedule_scan_windows(
      let file_path = config_dir.join("scheduler.json");
 
      let mut scheduler_file = load_scheduler_file(&file_path)?;
+     
+     if scheduler_file.schedulers.iter().any(|e| e.id == task_name) {
+          log_err(&log_file, "Scheduled job already exists");
+          return Err("Scheduled job already exists".into());
+     }
+     
+     let last_run = get_last_run_time_windows(&task_name).unwrap_or(None);
 
      let entry = SchedulerEntry {
           id: task_name.clone(),
@@ -87,14 +108,15 @@ pub fn schedule_scan_windows(
           days,
           time: time.clone(),
           enabled: true,
-          last_run: None,
+          last_run: last_run.clone(),
           created_at: chrono::Utc::now().to_rfc3339(),
           log_id: Some(log_id.clone())
      };
+     
      scheduler_file.schedulers.push(entry);
      save_scheduler_file(&file_path, &scheduler_file)?;
 
-     app.emit(
+     if let Err(e) = app.emit(
           "scheduler:created",
           SchedulerEvent {
                id: task_name.clone(),
@@ -102,39 +124,48 @@ pub fn schedule_scan_windows(
                interval,
                days,
                time,
+               last_run: last_run.clone(),
                log_id: Some(log_id.clone())
           },
-     )
-     .map_err(|e| e.to_string())?;
-
-     log_info(&log_file, &format!("New Scheduled Job Created Successfully: {}", task_name));
-     if let Err(e) = append_history(app, HistoryItem {
-          id: new_id(),
-          timestamp: chrono::Utc::now().to_rfc3339(),
-          action: "New Scheduled Scan Job created".into(),
-          details: format!("New Scheduled Job Created Successfully: {}", task_name).into(),
-          status: HistoryStatus::Success,
-          category: Some(LogCategory::Scheduler),
-          log_id: Some(log_id.clone()),
-          scan_type: None,
-          threat_count: None,
-          scan_result: None,
-     }) {
-          log_err(&log_file, &e.to_string());
+     ) {
+          log_err(&log_file, &format!("Failed to emit scheduler:created event: {}", e));
      }
+     log_info(&log_file, &format!("New Scheduled Job Created Successfully: {}", task_name));
+     
+     append_scheduler_history(
+          app,
+          HistoryItem {
+               id: new_id(),
+               timestamp: chrono::Utc::now().to_rfc3339(),
+               action: "New Scheduled Scan Job created".into(),
+               details: format!("New Scheduled Job Created Successfully: {}", task_name),
+               status: HistoryStatus::Success,
+               category: Some(LogCategory::Scheduler),
+               log_id: Some(log_id),
+               scan_type: None,
+               threat_count: None,
+               scan_result: None,
+          },
+          &log_file,
+     );
 
      Ok(())
 }
 
 pub fn remove_job_windows(
-     app: &tauri::AppHandle,
-     task_name: String,
-) -> Result<(),String> {
+    app: &tauri::AppHandle,
+    task_name: String,
+) -> Result<(), String> {
+     if task_name.trim().is_empty() {
+          return Err("Task name cannot be empty".into());
+     }
+
      let log = initialize_log(app, LogCategory::Scheduler)?;
      let log_id = log.id.clone();
      let log_file = log.file.clone();
-     let task_scheduler = resolve_command("schtasks")?;
-     let mut cmd = silent_command(task_scheduler.to_str().unwrap());
+     
+     let schtasks = resolve_command("schtasks")?;
+     let mut cmd = silent_command(schtasks.to_str().unwrap());
      cmd.args([
           "/delete",
           "/tn",
@@ -170,34 +201,43 @@ pub fn remove_job_windows(
 
      save_scheduler_file(&file_path, &scheduler_file)?;
 
-     app.emit("scheduler:deleted", &task_name)
-          .map_err(|e| e.to_string())?;
+     if let Err(e) = app.emit("scheduler:deleted", &task_name) {
+          log_err(&log_file, &format!("Failed to emit scheduler:deleted event: {}", e));
+     }
 
      log_info(&log_file, &format!("Scan Job Deleted Successfully: {}", task_name));
-     if let Err(e) = append_history(app, HistoryItem {
-          id: new_id(),
-          timestamp: chrono::Utc::now().to_rfc3339(),
-          action: "Scheduled Scan Job Deleted".into(),
-          details: format!("Scan Job Deleted Successfully: {}", task_name).into(),
-          status: HistoryStatus::Success,
-          category: Some(LogCategory::Scheduler),
-          log_id: Some(log_id.clone()),
-          scan_type: None,
-          threat_count: None,
-          scan_result: None,
-     }) {
-          log_err(&log_file, &e.to_string());
-     }
+     
+     append_scheduler_history(
+          app,
+          HistoryItem {
+               id: new_id(),
+               timestamp: chrono::Utc::now().to_rfc3339(),
+               action: "Scheduled Scan Job Deleted".into(),
+               details: format!("Scan Job Deleted Successfully: {}", task_name),
+               status: HistoryStatus::Success,
+               category: Some(LogCategory::Scheduler),
+               log_id: Some(log_id),
+               scan_type: None,
+               threat_count: None,
+               scan_result: None,
+          },
+          &log_file,
+     );
 
      Ok(())
 }
 
 pub fn run_job_now_windows(app: &tauri::AppHandle, task_name: String) -> Result<(), String> {
+     if task_name.trim().is_empty() {
+          return Err("Task name cannot be empty".into());
+     }
+
      let log = initialize_log(app, LogCategory::Scheduler)?;
      let log_id = log.id.clone();
      let log_file = log.file.clone();
-     let task_scheduler = resolve_command("schtasks")?;
-     let mut cmd = silent_command(task_scheduler.to_str().unwrap());
+     
+     let schtasks = resolve_command("schtasks")?;
+     let mut cmd = silent_command(schtasks.to_str().unwrap());
 
      cmd.args([
           "/run",
@@ -209,37 +249,91 @@ pub fn run_job_now_windows(app: &tauri::AppHandle, task_name: String) -> Result<
 
      if status.success() {
           log_info(&log_file, &format!("Scheduled job triggered manually: {}", task_name));
-          if let Err(e) = append_history(app, HistoryItem {
-               id: new_id(),
-               timestamp: chrono::Utc::now().to_rfc3339(),
-               action: "Scheduled job Triggered".into(),
-               details: format!("Scheduled job triggered manually: {}", task_name).into(),
-               status: HistoryStatus::Success,
-               category: Some(LogCategory::Scheduler),
-               log_id: Some(log_id.clone()),
-               scan_type: None,
-               threat_count: None,
-               scan_result: None
-          }) {
-               log_err(&log_file, &e.to_string());
-          }
+          
+          append_scheduler_history(
+               app,
+               HistoryItem {
+                    id: new_id(),
+                    timestamp: chrono::Utc::now().to_rfc3339(),
+                    action: "Scheduled job Triggered".into(),
+                    details: format!("Scheduled job triggered manually: {}", task_name),
+                    status: HistoryStatus::Success,
+                    category: Some(LogCategory::Scheduler),
+                    log_id: Some(log_id),
+                    scan_type: None,
+                    threat_count: None,
+                    scan_result: None
+               },
+               &log_file,
+          );
           Ok(())
      } else {
           log_err(&log_file, "Failed to run scheduled task");
-          if let Err(e) = append_history(app, HistoryItem {
-               id: new_id(),
-               timestamp: chrono::Utc::now().to_rfc3339(),
-               action: "Scheduled job Triggered".into(),
-               details: format!("Failed to run scheduled task: {}", task_name).into(),
-               status: HistoryStatus::Error,
-               category: Some(LogCategory::Scheduler),
-               log_id: Some(log_id.clone()),
-               scan_type: None,
-               threat_count: None,
-               scan_result: None
-          }) {
-               log_err(&log_file, &e.to_string());
-          }
+          
+          append_scheduler_history(
+               app,
+               HistoryItem {
+                    id: new_id(),
+                    timestamp: chrono::Utc::now().to_rfc3339(),
+                    action: "Scheduled job Triggered".into(),
+                    details: format!("Failed to run scheduled task: {}", task_name),
+                    status: HistoryStatus::Error,
+                    category: Some(LogCategory::Scheduler),
+                    log_id: Some(log_id),
+                    scan_type: None,
+                    threat_count: None,
+                    scan_result: None
+               },
+               &log_file,
+          );
           Err("Failed to run scheduled task".into())
      }
+}
+
+pub fn get_last_run_time_windows(task_name: &str) -> Result<Option<String>, String> {
+     if task_name.trim().is_empty() {
+          return Err("Task name cannot be empty".into());
+     }
+
+     let full_name = format!(r"\{}", task_name);
+     let schtasks = resolve_command("schtasks")?;
+     let mut cmd = silent_command(schtasks.to_str().unwrap());
+     
+     let output = cmd.args([
+               "/query",
+               "/tn",
+               &full_name,
+               "/fo",
+               "CSV",
+               "/v",
+          ])
+          .output()
+          .map_err(|e| e.to_string())?;
+
+     if !output.status.success() {
+          let err = String::from_utf8_lossy(&output.stderr);
+          return Err(format!("schtasks query failed: {}", err));
+     }
+
+     let stdout = String::from_utf8_lossy(&output.stdout);
+     let mut lines = stdout.lines();
+
+     let header = lines.next().ok_or("Missing CSV header")?;
+     let row = lines.next().ok_or("Missing CSV row")?;
+
+     let headers: Vec<&str> = header.split(',').map(|s| s.trim_matches('"')).collect();
+     let values: Vec<&str> = row.split(',').map(|s| s.trim_matches('"')).collect();
+
+     let idx = headers
+          .iter()
+          .position(|h| *h == "Last Run Time")
+          .ok_or("Last Run Time column not found")?;
+
+     let last_run = values.get(idx).map(|v| v.to_string());
+
+     Ok(match last_run.as_deref() {
+          Some("N/A") | Some("30/11/1999 00:00:00") | Some("01/01/1970 00:00:00") | None => None,
+          Some(v) if v.trim().is_empty() => None,
+          Some(v) => Some(v.trim().to_string()),
+     })
 }

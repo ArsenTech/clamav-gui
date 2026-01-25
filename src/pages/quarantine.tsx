@@ -12,25 +12,13 @@ import { toast } from "sonner";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { IQuarantineState } from "@/lib/types/states";
+import { INITIAL_QUARANTINE_STATE } from "@/lib/constants/states";
 
 export default function QuarantinePage(){
-     const [isOpenBulk, setIsOpenBulk] = useState({
-          restore: false,
-          delete: false,
-     })
      const [isRefreshing, startTransition] = useTransition();
-     const setBulkState = (overrides: Partial<typeof isOpenBulk>) =>
-          setIsOpenBulk(prev=>({
-               ...prev,
-               ...overrides
-          }))
-     const [data, setData] = useState<IQuarantineData<"state">[]>([]);
-     const [quarantineState, setQuarantineState] = useState({
-          isOpenRestore: false,
-          isOpenDelete: false,
-          id: ""
-     });
-     const setState = (overrides: Partial<typeof quarantineState>) =>
+     const [quarantineState, setQuarantineState] = useState<IQuarantineState>(INITIAL_QUARANTINE_STATE);
+     const setState = (overrides: Partial<IQuarantineState>) =>
           setQuarantineState(prev=>({
                ...prev,
                ...overrides
@@ -44,8 +32,8 @@ export default function QuarantinePage(){
                     quarantined_at: new Date(quarantined_at).toLocaleString(),
                     size: isNaN(size) ? null : formatBytes(size)
                }))
-               setData(newData)
-          }).catch(() => setData([])));
+               setState({ data: newData });
+          }).catch(() => setState({ data: [] })));
      }
      useEffect(()=>{
           fetchData()
@@ -59,8 +47,8 @@ export default function QuarantinePage(){
                     id: quarantineState.id,
                     logId: null,
                })
-               const dataCopy = [...data].filter(val=>val.id!==quarantineState.id)
-               setData(dataCopy)
+               const dataCopy = [...quarantineState.data].filter(val=>val.id!==quarantineState.id)
+               setState({ data: dataCopy });
                toast.success(message);
           } catch (e){
                toast.error(errorMessage);
@@ -74,32 +62,30 @@ export default function QuarantinePage(){
           }
      }
      const handleBulkDelete = async()=>{
-          setBulkState({
-               delete: false
-          })
+          setState({bulkDelete: false})
           try {
                const ids = data.map(t => t.id);
                await invoke("clear_quarantine", { ids });
-               setData([]);
+               setState({ data: [] })
                toast.success("All threats deleted");
           } catch {
                toast.error("Failed to delete all threats");
           }
      }
      const handleBulkRestore = async()=>{
-          setBulkState({
-               restore: false
+          setState({
+               bulkRestore: false
           })
           try {
                const ids = data.map(t => t.id);
                await invoke("restore_all", { ids });
-               setData([]);
+               setState({ data: [] })
                toast.success("All threats restored!");
           } catch {
                toast.error("Failed to restore all threats");
           }
      }
-     const {isOpenDelete, isOpenRestore} = quarantineState
+     const {isOpenDelete, isOpenRestore, bulkDelete, bulkRestore, data} = quarantineState
      return (
           <AppLayout className="flex justify-center items-center gap-4 flex-col p-4">
                <h1 className="text-2xl md:text-3xl lg:text-4xl font-medium border-b pb-2 w-fit">Quarantine</h1>
@@ -110,15 +96,15 @@ export default function QuarantinePage(){
                               <RotateCw className={cn(isRefreshing && "animate-spin")}/>
                               {isRefreshing ? "Refreshing..." : "Refresh"}
                          </Button>
-                         <Button variant="secondary" onClick={()=>setBulkState({ delete: true })}>
+                         <Button variant="secondary" onClick={()=>setState({ bulkDelete: true })}>
                               <Trash2/> Clear All
                          </Button>
-                         <Button variant="secondary" onClick={()=>setBulkState({ restore: true })}>
+                         <Button variant="secondary" onClick={()=>setState({ bulkRestore: true })}>
                               <RotateCcw/> Restore All
                          </Button>
                     </ButtonGroup>
                          <ThreatsTable
-                              columns={QUARANTINE_COLS(setQuarantineState)}
+                              columns={QUARANTINE_COLS(setState)}
                               data={data}
                               searchColumn="threat_name"
                          />
@@ -152,8 +138,8 @@ export default function QuarantinePage(){
                     submitEvent={()=>quarantineAction("delete")}
                />
                <Popup
-                    open={isOpenBulk.delete}
-                    onOpen={open=>setBulkState({delete: open})}
+                    open={bulkDelete}
+                    onOpen={bulkDelete=>setState({bulkDelete})}
                     title="This will permanently delete all quarantined threats."
                     description="Continue?"
                     submitTxt="Delete"
@@ -161,8 +147,8 @@ export default function QuarantinePage(){
                     submitEvent={handleBulkDelete}
                />
                <Popup
-                    open={isOpenBulk.restore}
-                    onOpen={open=>setBulkState({restore: open})}
+                    open={bulkRestore}
+                    onOpen={bulkRestore=>setState({bulkRestore})}
                     title="This will restore all quarantined threats."
                     description="Continue?"
                     submitTxt="Restore"

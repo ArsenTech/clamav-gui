@@ -1,4 +1,4 @@
-import { ScanType } from ".";
+import { IHistoryData, IQuarantineData, ISchedulerData, IThreatsData, ScanType } from ".";
 
 export interface IDeviceInfo {
      sys_name: string;
@@ -21,7 +21,8 @@ export interface IScanPageState{
      totalFiles: number,
      paths: string[],
      exitCode: number,
-     errMsg?: string
+     errMsg?: string,
+     threats: IThreatsData[]
 }
 export interface IUpdatePageState{
      isUpdating: boolean,
@@ -29,4 +30,28 @@ export interface IUpdatePageState{
      isRequired: boolean,
      lastUpdated: Date | null,
      log: string[]
+}
+export interface IFinishScanState{
+     currThreat: IThreatsData | null,
+     isOpenDelete: boolean,
+     bulkDelete: boolean
+}
+export interface IHistoryPageState{
+     clearAll: boolean,
+     clearAcknowledged: boolean,
+     data: IHistoryData<"state">[]
+}
+export interface IQuarantineState{
+     bulkRestore: boolean,
+     bulkDelete: boolean,
+     isOpenRestore: boolean,
+     isOpenDelete: boolean,
+     id: string,
+     data: IQuarantineData<"state">[]
+}
+export interface ISchedulerState{
+     isOpenDelete: boolean,
+     isOpenClear: boolean,
+     job_id: string,
+     data: ISchedulerData<"state">[]
 }

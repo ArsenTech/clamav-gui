@@ -64,6 +64,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - **Antivirus Statistics** - View the entire Antivirus Dashboard and Statistics + some real-time device stats
 - **Real-Time Performance Stats** - CPU, RAM Usage, and Disk Usage Stats all without leaving the GUI
 - **Flags** - Launch **Full Scan** and **Main Scan** Directly if needed
+- **Scheduler** - Schedule some scans if needed + manage other scheduled scan jobs
 <!-- TODO: Write the Features list -->
 
 ### Coming Soon (To Do List)

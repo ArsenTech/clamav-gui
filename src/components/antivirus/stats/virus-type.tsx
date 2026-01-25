@@ -1,19 +1,15 @@
 import { Bug } from "lucide-react"
-import { Pie, PieChart } from "recharts"
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart"
-import { VIRUS_TYPE_CONFIG } from "@/lib/constants/chart"
 import { ChartProps, IVirusTypeStat } from "@/lib/types"
-import { NoData } from "./no-data"
+import { NoData } from "@/components/charts/no-data"
+import { Suspense } from "react"
+import React from "react"
+const VirusTypesChart = React.lazy(()=>import("@/components/charts/virus-type"))
 
 export function VirusTypes({data}: ChartProps<IVirusTypeStat[]>) {
   return (
@@ -22,26 +18,9 @@ export function VirusTypes({data}: ChartProps<IVirusTypeStat[]>) {
         <CardTitle className="flex items-center gap-2"><Bug className="size-5"/> Threats by Malware Type</CardTitle>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
-        {!data.length ? (
-          <NoData/>
-        ) : (
-          <ChartContainer
-            config={VIRUS_TYPE_CONFIG}
-            className="mx-auto aspect-square max-h-[300px]"
-          >
-            <PieChart>
-              <ChartTooltip
-                cursor={false}
-                content={<ChartTooltipContent hideLabel />}
-              />
-              <Pie
-                data={data}
-                dataKey="threats"
-                nameKey="virus_type"
-              />
-            </PieChart>
-          </ChartContainer>
-        )}
+        <Suspense fallback={<NoData label="Loading..."/>}>
+          <VirusTypesChart data={data}/>
+        </Suspense>
       </CardContent>
     </Card>
   )

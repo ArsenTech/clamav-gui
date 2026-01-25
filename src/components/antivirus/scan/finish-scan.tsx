@@ -5,7 +5,6 @@ import { useNavigate } from "react-router";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { THREATS_COLS } from "@/components/data-table/columns/threats";
-import { IThreatsData } from "@/lib/types";
 import { useMemo, useState, useTransition } from "react";
 import Popup from "@/components/popup";
 import { invoke } from "@tauri-apps/api/core";
@@ -13,32 +12,24 @@ import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
 import { getExitText } from "@/lib/helpers";
 import { exit } from "@tauri-apps/plugin-process";
+import { IFinishScanState, IScanPageState } from "@/lib/types/states";
+import { INITIAL_FINISH_SCAN_STATE } from "@/lib/constants/states";
 
 interface Props{
-     setThreats: React.Dispatch<React.SetStateAction<IThreatsData[]>>,
-     threats: IThreatsData[],
+     setScanState: React.Dispatch<React.SetStateAction<IScanPageState>>,
+     scanState: IScanPageState
      durationElem: React.JSX.Element,
-     exitCode: number,
      isStartup: boolean,
-     errMsg?: string
 }
-export default function ScanFinishResult({threats,durationElem,setThreats, exitCode, isStartup, errMsg}: Props){
+export default function ScanFinishResult({durationElem, setScanState, isStartup, scanState}: Props){
      const navigate = useNavigate();
-     const [isOpenDeletion, setIsOpenDeletion] = useState(false);
      const [isPending, startTransition] = useTransition()
-     const [finishScanState, setFinishScanState] = useState<{
-          currThreat: IThreatsData | null,
-          isOpen: boolean
-     }>({
-          currThreat: null,
-          isOpen: false
-     })
-     const setState = (overrides: Partial<typeof finishScanState>) =>
+     const [finishScanState, setFinishScanState] = useState<IFinishScanState>(INITIAL_FINISH_SCAN_STATE)
+     const setState = (overrides: Partial<IFinishScanState>) =>
           setFinishScanState(prev=>({
                ...prev,
                ...overrides
           }));
-     const {isOpen} = finishScanState;
      const handleDelete = async() => {
           try{
                if(!finishScanState.currThreat) return;
@@ -47,58 +38,47 @@ export default function ScanFinishResult({threats,durationElem,setThreats, exitC
                     filePath,
                     logId: null,
                })
-               setThreats(prev=>prev.map(val =>
-                    val.filePath === filePath &&
-                    val.displayName === displayName
-                         ? { ...val, status: "deleted" }
-                         : val
-               ));
+               setScanState(prev=>({
+                    ...prev,
+                    threats: prev.threats.map(val => val.filePath === filePath && val.displayName === displayName ? { ...val, status: "deleted" } : val)
+               }))
                toast.success("Threat deleted permanently!")
           } catch (e){
                toast.error("Failed to delete threat");
                console.error(e);
           } finally {
-               setState({
-                    currThreat: null,
-                    isOpen: false
-               })
+               setState(INITIAL_FINISH_SCAN_STATE)
           }
      }
      const handleBulkQuarantine = () => {
           startTransition(async()=>{
                try {
-                    const targets = threats
+                    const targets = scanState.threats
                          .filter(t => t.status === "detected")
                          .map(t => [t.filePath, t.displayName]);
                     await invoke("quarantine_all", { files: targets });
-                    setThreats(prev =>
-                         prev.map(t =>
-                         t.status === "detected"
-                              ? { ...t, status: "quarantined" }
-                              : t
-                         )
-                    );
+                    setScanState(prev=>({
+                         ...prev,
+                         threats: prev.threats.map(t =>t.status === "detected" ? { ...t, status: "quarantined" } : t)
+                    }))
                     toast.success("All threats quarantined");
                } catch {
                     toast.error("Failed to quarantine all threats");
                }
           })
      }
-     const handleBulkDeletion = () => {
-          setIsOpenDeletion(false);
+     const handleBulkDelete = () => {
+          setState({bulkDelete: false})
           startTransition(async()=>{
                try {
-                    const paths = threats
+                    const paths = scanState.threats
                          .filter(t => t.status === "detected")
                          .map(t => t.filePath);
                     await invoke("delete_all", { files: paths });
-                    setThreats(prev =>
-                         prev.map(t =>
-                         t.status === "detected"
-                              ? { ...t, status: "deleted" }
-                              : t
-                         )
-                    );
+                    setScanState(prev=>({
+                         ...prev,
+                         threats: prev.threats.map(t =>t.status === "detected" ? { ...t, status: "deleted" } : t)
+                    }))
                     toast.success("All threats deleted");
                } catch {
                     toast.error("Failed to delete all threats");
@@ -106,13 +86,10 @@ export default function ScanFinishResult({threats,durationElem,setThreats, exitC
           })
      }
      const handleBulkMarkSafe = () => {
-          setThreats(prev =>
-               prev.map(t =>
-               t.status === "detected"
-                    ? { ...t, status: "safe" }
-                    : t
-               )
-          );
+          setScanState(prev=>({
+               ...prev,
+               threats: prev.threats.map(t =>t.status === "detected" ? { ...t, status: "safe" } : t)
+          }))
           toast.success("All threats marked as safe!")
           // TODO: Exclude the Threat
      }
@@ -123,7 +100,9 @@ export default function ScanFinishResult({threats,durationElem,setThreats, exitC
                navigate("/");
           }
      };
+     const {errMsg, exitCode, threats} = scanState;
      const isResolved = useMemo(() =>threats.every(t =>["quarantined", "deleted", "safe"].includes(t.status)),[threats]);
+     const {isOpenDelete, bulkDelete} = finishScanState
      return (errMsg && errMsg.trim()!=="") ? (
           <>
                <ShieldX className="size-32 text-destructive"/>
@@ -153,7 +132,7 @@ export default function ScanFinishResult({threats,durationElem,setThreats, exitC
                <h2 className="text-lg md:text-2xl font-medium">{threats.length} {threats.length<=1 ? "threat" : "threats"} require attention</h2>
                {durationElem}
                <ThreatsTable
-                    columns={THREATS_COLS(setThreats,setState)}
+                    columns={THREATS_COLS(setScanState,setState)}
                     data={threats}
                />
                <ButtonGroup>
@@ -171,7 +150,7 @@ export default function ScanFinishResult({threats,durationElem,setThreats, exitC
                               <DropdownMenuItem onClick={handleBulkMarkSafe}>
                                    <EyeOff/> Mark All Safe
                               </DropdownMenuItem>
-                              <DropdownMenuItem className="text-destructive" onClick={()=>setIsOpenDeletion(true)}>
+                              <DropdownMenuItem className="text-destructive" onClick={()=>setState({bulkDelete: true})}>
                                    <Trash className="text-destructive"/> Delete All
                               </DropdownMenuItem>
                          </DropdownMenuContent>
@@ -183,8 +162,8 @@ export default function ScanFinishResult({threats,durationElem,setThreats, exitC
                </ButtonGroup>
                <p className="text-muted-foreground">{getExitText(exitCode,"scan")}</p>
                <Popup
-                    open={isOpen}
-                    onOpen={isOpen=>setState({isOpen})}
+                    open={isOpenDelete}
+                    onOpen={isOpenDelete=>setState({isOpenDelete})}
                     title="Are you sure to delete this file permanently?"
                     description="The process can't be undone."
                     submitTxt="Delete"
@@ -192,13 +171,13 @@ export default function ScanFinishResult({threats,durationElem,setThreats, exitC
                     submitEvent={handleDelete}
                />
                <Popup
-                    open={isOpenDeletion}
-                    onOpen={setIsOpenDeletion}
+                    open={bulkDelete}
+                    onOpen={bulkDelete=>setState({bulkDelete})}
                     title="This will permanently delete all detected threats."
                     description="Continue?"
                     submitTxt="Delete"
                     closeText="Cancel"
-                    submitEvent={handleBulkDeletion}
+                    submitEvent={handleBulkDelete}
                />
           </>
      )

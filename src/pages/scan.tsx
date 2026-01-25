@@ -4,7 +4,7 @@ import ScanFinishResult from "@/components/antivirus/scan/finish-scan";
 import LogText from "@/components/log";
 import { GET_INITIAL_SCAN_STATE } from "@/lib/constants/states";
 import { formatDuration } from "@/lib/helpers";
-import { ScanType, IThreatsData } from "@/lib/types";
+import { ScanType } from "@/lib/types";
 import { IScanPageState } from "@/lib/types/states";
 import { invoke } from "@tauri-apps/api/core";
 import { listen, UnlistenFn } from "@tauri-apps/api/event";
@@ -22,9 +22,7 @@ export default function ScanPage(){
      const {type} = useParams<{type: ScanType}>();
      const path = searchParams.getAll("path");
      const [scanState, setScanState] = useState<IScanPageState>(GET_INITIAL_SCAN_STATE(type || "",path));
-     const [threats, setThreats] = useState<IThreatsData[]>([]);
-     const setState = (overrides: Partial<IScanPageState>) =>
-          setScanState(prev=>({ ...prev, ...overrides }))
+     const setState = (overrides: Partial<IScanPageState>) => setScanState(prev=>({ ...prev, ...overrides }))
      const startTimeRef = useRef<number | null>(null);
      const scanActiveRef = useRef(false);
      const scanStartedRef = useRef(false);
@@ -47,16 +45,19 @@ export default function ScanPage(){
                     if(e.payload.endsWith("FOUND")){
                          const infectedFile = e.payload.split(" ");
                          const filePath = infectedFile[0];
-                         setThreats(prev=>[
+                         setScanState(prev=>({
                               ...prev,
-                              {
-                                   id: String(prev.length+1),
-                                   displayName: infectedFile[1],
-                                   filePath: filePath.slice(0,filePath.length-1),
-                                   status: "detected",
-                                   detectedAt: new Date().toLocaleString()
-                              }
-                         ])
+                              threats: [
+                                   ...prev.threats,
+                                   {
+                                        id: String(prev.threats.length+1),
+                                        displayName: infectedFile[1],
+                                        filePath: filePath.slice(0,filePath.length-1),
+                                        status: "detected",
+                                        detectedAt: new Date().toLocaleString()
+                                   }
+                              ]
+                         }))
                     }
                     if (e.payload.includes(": OK") || e.payload.includes(" FOUND")) {
                          const idx = e.payload.lastIndexOf(": ");
@@ -145,21 +146,19 @@ export default function ScanPage(){
                ...overrides
           })
      }
-     const {isFinished, duration, scanType, currLocation, totalFiles, scannedFiles, logs, paths: scanLocations, exitCode, errMsg} = scanState;
+     const {isFinished, duration, scanType, currLocation, totalFiles, scannedFiles, logs, paths: scanLocations, threats} = scanState;
      return (
           <AppLayout className={isFinished ? "flex justify-center items-center gap-4 flex-col p-4" : "grid gris-cols-1 md:grid-cols-2 gap-10 p-4"}>
                {isFinished ? (
                     <>
                          <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">Scan Completed!</h1>
                          <ScanFinishResult
-                              setThreats={setThreats}
-                              threats={threats}
                               durationElem={(
                                    <h2 className="text-lg sm:text-xl font-semibold flex items-center justify-center gap-2.5 w-fit"><Timer className="text-primary"/>{formatDuration(duration)}</h2>
                               )}
-                              exitCode={exitCode}
                               isStartup={isStartup}
-                              errMsg={errMsg}
+                              setScanState={setScanState}
+                              scanState={scanState}
                          />
                     </>
                ) : (

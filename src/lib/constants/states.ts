@@ -1,5 +1,5 @@
 import { ScanType } from "../types";
-import { IDeviceInfo, IScanPageState, IUpdatePageState, IVersion } from "../types/states";
+import { IDeviceInfo, IFinishScanState, IHistoryPageState, IQuarantineState, IScanPageState, ISchedulerState, IUpdatePageState, IVersion } from "../types/states";
 
 export const INITIAL_DEIVCE_INFO: IDeviceInfo = {
      sys_os: "",
@@ -22,7 +22,8 @@ export const GET_INITIAL_SCAN_STATE = (type: ScanType, path: string[] | null): I
      totalFiles: 0,
      paths: path ?? [],
      exitCode: 0,
-     errMsg: undefined
+     errMsg: undefined,
+     threats: []
 })
 export const INITIAL_UPDATE_STATE: IUpdatePageState = {
      isUpdating: false,
@@ -30,4 +31,28 @@ export const INITIAL_UPDATE_STATE: IUpdatePageState = {
      isRequired: false,
      lastUpdated: null,
      log: []
+}
+export const INITIAL_FINISH_SCAN_STATE: IFinishScanState = {
+     currThreat: null,
+     isOpenDelete: false,
+     bulkDelete: false
+}
+export const INITIAL_HISTORY_STATE: IHistoryPageState = {
+     clearAll: false,
+     clearAcknowledged: false,
+     data: []
+}
+export const INITIAL_QUARANTINE_STATE: IQuarantineState = {
+     isOpenRestore: false,
+     isOpenDelete: false,
+     id: "",
+     bulkDelete: false,
+     bulkRestore: false,
+     data: []
+}
+export const INITIAL_SCHEDULER_STATE: ISchedulerState = {
+     isOpenDelete: false,
+     isOpenClear: false,
+     job_id: "",
+     data: []
 }

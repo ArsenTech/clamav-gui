@@ -4,17 +4,18 @@ All notable changes of ArsenTech's ClamAV GUI will be documented here.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
-## [0.3.0] - Unreleased
+## [0.3.0] - 2026-01-25
 ### Added
 - Flags for launching GUI for different reasons (`--scan=main` and `--scan=full`)
-- Logic for Scheduler (Currently Unfinished)
+- Logic for Scheduler
 ### Improved
 - Scheduler Page UI
 ### Fixed
-- The bug that ends the scan after 1 second and scans nothing (implemented the `resolve_command` function)
-- Applied the same fix to every command to prevent any future bugs
+- The bug that ends the scan after 1 second and scans nothing (implemented the `resolve_command` helper function)
+- Applied the same fix (the `resolve_command` helper) to every command to prevent any future bugs
 ### Changed
 - Separated Scan Menu page from Scan Page to make it work
+- Implemented Code Splitting on every single chart inside the Statistics page
 
 ## [0.3.0 (Preview 1)] - 2026-01-23
 ### Highlights

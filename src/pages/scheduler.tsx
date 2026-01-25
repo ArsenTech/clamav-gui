@@ -10,37 +10,65 @@ import { invoke } from "@tauri-apps/api/core";
 import { listen, UnlistenFn } from "@tauri-apps/api/event";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { RotateCw } from "lucide-react";
+import { RotateCw, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Popup from "@/components/popup";
+import { ButtonGroup } from "@/components/ui/button-group";
+import { ISchedulerState } from "@/lib/types/states";
+import { INITIAL_SCHEDULER_STATE } from "@/lib/constants/states";
 
 export default function SchedulerPage(){
      const [isPending, startTransition] = useTransition();
-     const [isOpen, setIsOpen] = useState({
-          state: false,
-          job_id: ""
-     });
-     const [schedulerData, setSchedulerData] = useState<ISchedulerData<"state">[]>([]);
-     const handleSchedule = async(values: SchedulerType) => {
-          const currDay = new Date().getDay();
-          await invoke<SchedulerType>("schedule_task",{
-               ...values,
-               days: values.days || DAYS_OF_THE_WEEK[currDay]
+     const [isSubmitting, startSubmitTransition] = useTransition();
+     const [schedulerState, setSchedulerState] = useState<ISchedulerState>(INITIAL_SCHEDULER_STATE);
+     const setState = (overrides: Partial<ISchedulerState>) =>
+          setSchedulerState(prev=>({
+               ...prev,
+               ...overrides
+          }))
+     const handleSchedule = (values: SchedulerType) => {
+          startSubmitTransition(async()=>{
+               try{
+                    const currDay = new Date().getDay();
+                    await invoke<SchedulerType>("schedule_task",{
+                         ...values,
+                         days: values.days || DAYS_OF_THE_WEEK[currDay]
+                    })
+               } catch (err) {
+                    toast.error("Failed to schedule a scan job");
+                    console.error(err);
+               }
           })
      }
      const handleRemoveJob = () => {
-          setIsOpen(prev=>({...prev,state: false}));
+          setState({isOpenDelete: false})
           startTransition(async()=>{
-               if(!isOpen.job_id) return;
+               if(!schedulerState.job_id) return;
                try{
                     await invoke("remove_scheduled_task",{
-                         taskName: isOpen.job_id
+                         taskName: schedulerState.job_id
                     })
-                    setSchedulerData(prev=>prev.filter(val=>val.id!==isOpen.job_id))
-                    setIsOpen(prev=>({...prev,job_id: ""}));
+                    setSchedulerState(prev=>({
+                         ...prev,
+                         job_id: "",
+                         data: prev.data.filter(val=>val.id!==schedulerState.job_id)
+                    }))
                     toast.success("Scheduled scan job removed!")
                } catch (err){
                     toast.error("Failed to remove the scheduled scan job");
+                    console.error(err);
+               }
+          })
+     }
+     const handleClear = () => {
+          setState({isOpenClear: false});
+          startTransition(async() => {
+               try {
+                    await invoke("clear_scheduled_jobs");
+                    setState(INITIAL_SCHEDULER_STATE)
+                    toast.success("Scheduled scan job removed!")
+               } catch (err){
+                    toast.error("Failed to remove all scheduled scan jobs");
                     console.error(err);
                }
           })
@@ -49,8 +77,7 @@ export default function SchedulerPage(){
           startTransition(async()=>{
                try{
                     const data = await invoke<ISchedulerData<"type">[]>("list_scheduler");
-                    
-                    const newData: ISchedulerData<"state">[] = data.map(({id,interval,scan_type,time,log_id})=>{
+                    const newData: ISchedulerData<"state">[] = data.map(({id,interval,scan_type,time,log_id, last_run})=>{
                          const [hours, minutes] = time.split(":");
                          const nextScan = new Date();
                          nextScan.setHours(Number(hours));
@@ -66,16 +93,16 @@ export default function SchedulerPage(){
                               id,
                               interval,
                               scanType: scan_type,
-                              lastScan: "Never",
+                              lastScan: last_run ?? "Never",
                               nextScan: nextScan.toLocaleString(),
                               log_id
                          })
                     })
-                    setSchedulerData([...new Set(newData)])
+                    setState({data: newData})
                } catch (err){
                     toast.error("Failed to fetch scheduled scans");
                     console.error(err);
-                    setSchedulerData([])
+                    setState({data: []})
                }
           })
      }
@@ -87,19 +114,20 @@ export default function SchedulerPage(){
                     const [hours, minutes] = payload.time.split(":");
                     nextScan.setHours(Number(hours));
                     nextScan.setMinutes(Number(minutes));
-                    setSchedulerData(prev=>{
-                         if(prev.some(i=>i.id===payload.id)) return prev;
-                         return [
+                    setSchedulerState(prev=>{
+                         if(prev.data.some(i=>i.id===payload.id)) return prev;
+                         const data = [...prev.data, {
+                              id: payload.id,
+                              interval: payload.interval,
+                              scanType: payload.scan_type,
+                              lastScan: payload.last_run ?? "Never",
+                              nextScan: nextScan.toLocaleString(),
+                              log_id: payload.log_id
+                         }];
+                         return {
                               ...prev,
-                              {
-                                   id: payload.id,
-                                   interval: payload.interval,
-                                   scanType: payload.scan_type,
-                                   lastScan: "Never",
-                                   nextScan: nextScan.toLocaleString(),
-                                   log_id: payload.log_id
-                              }
-                         ]
+                              data
+                         }
                     });
                })
           ];
@@ -108,29 +136,46 @@ export default function SchedulerPage(){
                Promise.all(unsubs).then(fns=>fns.forEach(f=>f()))
           }
      },[])
+     const {data,isOpenClear,isOpenDelete} = schedulerState
      return (
           <AppLayout className="flex justify-center items-center gap-4 flex-col p-4">
                <h1 className="text-2xl md:text-3xl lg:text-4xl font-medium border-b pb-2 w-fit">Scheduler</h1>
-               <Button disabled={isPending} onClick={refresh}>
-                    <RotateCw className={cn(isPending && "animate-spin")}/>
-                    {isPending ? "Please wait..." : "Refresh"}
-               </Button>
+               <ButtonGroup>
+                    <Button disabled={isPending || isSubmitting} onClick={refresh}>
+                         <RotateCw className={cn(isPending && "animate-spin")}/>
+                         {isPending ? "Please wait..." : "Refresh"}
+                    </Button>
+                    <Button variant="outline" disabled={isPending || !data.length || isSubmitting} onClick={()=>setState({isOpenClear: true})}>
+                         <Trash2/>
+                         Clear Jobs
+                    </Button>
+               </ButtonGroup>
                <SchedulerTable
-                    columns={GET_SCHEDULER_COLS(setIsOpen)}
-                    data={schedulerData}
+                    columns={GET_SCHEDULER_COLS(setState)}
+                    data={data}
                />
                <h2 className="text-xl md:text-2xl font-medium border-b pb-2 w-fit self-start text-left">Schedule a scan</h2>
                <SchedulerForm
                     handleSubmit={handleSchedule}
+                    isSubmitting={isSubmitting}
                />
                <Popup
-                    open={isOpen.state}
-                    onOpen={state=>setIsOpen(prev=>({...prev,state}))}
+                    open={isOpenDelete}
+                    onOpen={isOpenDelete=>setState({isOpenDelete})}
                     title="This will remove the selected scheduled scan job"
                     description="Continue?"
                     submitTxt="Remove"
                     closeText="Cancel"
                     submitEvent={handleRemoveJob}
+               />
+               <Popup
+                    open={isOpenClear}
+                    onOpen={isOpenClear=>setState({isOpenClear})}
+                    title="This will remove all scheduled scan jobs"
+                    description="Continue?"
+                    submitTxt="Clear Jobs"
+                    closeText="Cancel"
+                    submitEvent={handleClear}
                />
           </AppLayout>
      )

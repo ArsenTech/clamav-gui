@@ -26,7 +26,7 @@ use crate::{
         check_availability,
         logs::{read_log, reveal_log},
         remove_file,
-        scheduler::{list_scheduler, remove_scheduled_task, run_job_now, schedule_task},
+        scheduler::{list_scheduler, remove_scheduled_task, run_job_now, schedule_task,clear_scheduled_jobs},
         sysinfo::{get_sys_info, get_sys_stats},
     },
 };
@@ -70,7 +70,8 @@ pub fn run() {
         schedule_task,
         list_scheduler,
         remove_scheduled_task,
-        run_job_now
+        run_job_now,
+        clear_scheduled_jobs
     ]);
 
     tauri::Builder::default()

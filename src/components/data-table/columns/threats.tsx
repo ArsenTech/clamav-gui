@@ -10,13 +10,11 @@ import { dirname } from "@tauri-apps/api/path";
 import { useMemo } from "react";
 import { capitalizeText, getThreatStatusBadges } from "@/lib/helpers";
 import { Badge } from "@/components/ui/badge";
+import { IFinishScanState, IScanPageState } from "@/lib/types/states";
 
 export const THREATS_COLS = (
-     setThreats: React.Dispatch<React.SetStateAction<IThreatsData[]>>,
-     setState: (overrides: Partial<{
-          currThreat: IThreatsData | null,
-          isOpen: boolean
-     }>) => void
+     setScanState: React.Dispatch<React.SetStateAction<IScanPageState>>,
+     setState: (overrides: Partial<IFinishScanState>) => void
 ): ColumnDef<IThreatsData>[] => [
      {
           accessorKey: "displayName",
@@ -56,12 +54,10 @@ export const THREATS_COLS = (
                               threatName: displayName,
                               logId: null,
                          })
-                         setThreats(prev=>prev.map(val =>
-                              val.filePath === filePath &&
-                              val.displayName === displayName
-                                   ? { ...val, status: "quarantined" }
-                                   : val
-                         ));
+                         setScanState(prev=>({
+                              ...prev,
+                              threats: prev.threats.map(val => val.filePath === filePath && val.displayName === displayName ? { ...val, status: "quarantined" } : val)
+                         }))
                          toast.success("Threat quarantined!")
                     } catch (e){
                          toast.error("Failed to quarantine threat");
@@ -70,12 +66,10 @@ export const THREATS_COLS = (
                }
                const handleMarkAsSafe = () => {
                     const {filePath, displayName} = threat
-                    setThreats(prev=>prev.map(val =>
-                         val.filePath === filePath &&
-                         val.displayName === displayName
-                              ? { ...val, status: "safe" }
-                              : val
-                    ));
+                    setScanState(prev=>({
+                         ...prev,
+                         threats: prev.threats.map(val => val.filePath === filePath && val.displayName === displayName ? { ...val, status: "safe" } : val)
+                    }))
                     toast.success("Threat marked as safe!")
                     // TODO: Exclude the Threat
                }
@@ -102,7 +96,7 @@ export const THREATS_COLS = (
                                    <EyeOff/> Mark as safe
                               </DropdownMenuItem>
                               <DropdownMenuItem className="text-destructive" onClick={()=>setState({
-                                   isOpen: true,
+                                   isOpenDelete: true,
                                    currThreat: threat
                               })} disabled={isResolved} >
                                    <Trash className="text-destructive"/> Delete permanently

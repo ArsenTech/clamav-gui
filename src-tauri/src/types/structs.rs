@@ -101,7 +101,8 @@ pub struct SchedulerEvent {
     pub scan_type: ScanType,
     pub days: DayOfTheWeek,
     pub time: String,
-    pub log_id: Option<String>
+    pub log_id: Option<String>,
+    pub last_run: Option<String>,
 }
 
 #[derive(Serialize, Deserialize)]

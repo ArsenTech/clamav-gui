@@ -9,12 +9,10 @@ import { SCAN_TYPES } from "@/lib/constants";
 import { invoke } from "@tauri-apps/api/core";
 import { toast } from "sonner";
 import { Link } from "react-router";
+import { ISchedulerState } from "@/lib/types/states";
 
 export const GET_SCHEDULER_COLS = (
-     setIsOpen: React.Dispatch<React.SetStateAction<{
-          state: boolean,
-          job_id: string
-     }>>,
+     setState:  (overrides: Partial<ISchedulerState>) => void
 ): ColumnDef<ISchedulerData<"state">>[] => [
      {
           accessorKey: "id",
@@ -115,11 +113,10 @@ export const GET_SCHEDULER_COLS = (
                               <DropdownMenuItem disabled={!item.log_id} onClick={revealLog}>
                                    <FileText /> Reveal Log File
                               </DropdownMenuItem>
-                              <DropdownMenuItem className="text-destructive" onClick={()=>setIsOpen(prev=>({
-                                   ...prev,
-                                   state: true,
+                              <DropdownMenuItem className="text-destructive" onClick={()=>setState({
+                                   isOpenDelete: true,
                                    job_id: item.id
-                              }))}>
+                              })}>
                                    <Trash2 className="text-destructive"/> Remove job
                               </DropdownMenuItem>
                          </DropdownMenuContent>

@@ -15,17 +15,15 @@ import { exportCSV, exportJSON } from "@/lib/helpers/fs";
 import { Spinner } from "@/components/ui/spinner";
 import Popup from "@/components/popup";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { IHistoryPageState } from "@/lib/types/states";
+import { INITIAL_HISTORY_STATE } from "@/lib/constants/states";
 
 export default function HistoryPage(){
-     const [data, setData] = useState<IHistoryData<"state">[]>([])
      const [isRefreshing, startTransition] = useTransition();
      const [isClearing, startClearTransition] = useTransition();
-     const [isOpen, setIsOpen] = useState({
-          clearAll: false,
-          clearAcknowledged: false
-     })
-     const setOpenState = (overrides: Partial<typeof isOpen>) =>
-          setIsOpen(prev=>({
+     const [historyState, setHistoryState] = useState<IHistoryPageState>(INITIAL_HISTORY_STATE)
+     const setState = (overrides: Partial<IHistoryPageState>) =>
+          setHistoryState(prev=>({
                ...prev,
                ...overrides
           }))
@@ -37,23 +35,26 @@ export default function HistoryPage(){
                          ...val,
                          logId: val.log_id
                     }))
-                    setData(newData)
+                    setState({ data: newData })
                } catch (error){
                     toast.error("Failed to fetch the recent history data")
                     console.error(error);
-                    setData([])
+                    setState({ data: [] })
                }
           })
      }
      const clearHistory = (mode: "all" | "acknowledged" = "all") => {
-          setOpenState({
+          setState({
                clearAll: false,
                clearAcknowledged: false
           })
           startClearTransition(async()=>{
                try {
                     await invoke("clear_history",{mode});
-                    setData(mode==="all" ? [] : prev=>prev.filter(val=>val.status!=="acknowledged"));
+                    setHistoryState(prev=>({
+                         ...prev,
+                         data: mode==="all" ? [] : prev.data.filter(val=>val.status!=="acknowledged")
+                    }))
                     toast.success(mode==="all" ? "History Cleared!" : "Acknowledged Entries Cleared!")
                } catch (error){
                     toast.error("Failed to clear history")
@@ -71,7 +72,7 @@ export default function HistoryPage(){
                })
                if(!path) return;
                const exportFile = path.endsWith(".csv") ? exportCSV : exportJSON;
-               await exportFile(path,data);
+               await exportFile(path,historyState.data);
                toast.success(`History data exported as ${path.endsWith(".csv") ? "CSV File" : "JSON File"}`)
           } catch (error) {
                toast.error("Failed to export the history data");
@@ -81,13 +82,14 @@ export default function HistoryPage(){
      useEffect(()=>{
           fetchData()
      },[])
+     const {data, clearAcknowledged, clearAll} = historyState
      const isEmpty = useMemo(()=>data.length<=0,[data])
      return (
           <AppLayout className="space-y-4 p-4">
                <div className="space-y-4">
                     <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">History</h1>
                     <HistoryTable
-                         columns={GET_HISTORY_COLS(setData)}
+                         columns={GET_HISTORY_COLS(setHistoryState)}
                          data={data}
                          headerElement={(
                               <ButtonGroup>
@@ -103,10 +105,10 @@ export default function HistoryPage(){
                                              </Button>
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent>
-                                             <DropdownMenuItem onClick={()=>setOpenState({clearAll: true})} disabled={isEmpty}>
+                                             <DropdownMenuItem onClick={()=>setState({clearAll: true})} disabled={isEmpty}>
                                                   Clear all history
                                              </DropdownMenuItem>
-                                             <DropdownMenuItem onClick={()=>setOpenState({clearAcknowledged: true})} disabled={isEmpty}>
+                                             <DropdownMenuItem onClick={()=>setState({clearAcknowledged: true})} disabled={isEmpty}>
                                                   Clear acknowledged only
                                              </DropdownMenuItem>
                                         </DropdownMenuContent>
@@ -119,8 +121,8 @@ export default function HistoryPage(){
                     />
                </div>
                <Popup
-                    open={isOpen.clearAll}
-                    onOpen={clearAll=>setOpenState({clearAll})}
+                    open={clearAll}
+                    onOpen={clearAll=>setState({clearAll})}
                     title="Clear history?"
                     description="This will remove all scan, update, and action history. Logs and quarantine items will not be affected."
                     submitTxt="Clear history"
@@ -128,8 +130,8 @@ export default function HistoryPage(){
                     submitEvent={()=>clearHistory("all")}
                />
                <Popup
-                    open={isOpen.clearAcknowledged}
-                    onOpen={clearAcknowledged=>setOpenState({clearAcknowledged})}
+                    open={clearAcknowledged}
+                    onOpen={clearAcknowledged=>setState({clearAcknowledged})}
                     title="Clear acknowledged entries?"
                     description="This will remove only acknowledged history entries. Unresolved events will remain."
                     submitTxt="Clear"
