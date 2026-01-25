@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [0.3.0] - 2026-01-25
 ### Added
 - Flags for launching GUI for different reasons (`--scan=main` and `--scan=full`)
+- A flag to schedule the headless scan (the `--scheduled` flag)
 - Logic for Scheduler
 ### Improved
 - Scheduler Page UI
