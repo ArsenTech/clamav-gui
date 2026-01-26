@@ -12,14 +12,14 @@ export default function SafetyIndicator({type, definitionStatus}: Props){
      return (
           <div className={cn(
                "h-72 bg-linear-to-b from-transparent w-full rounded-bl-[128px] flex justify-center md:justify-between items-center px-10 flex-col md:flex-row",
-               type==="safe" && "to-emerald-200 dark:to-emerald-950",
-               type==="alert" && "to-red-200 dark:to-red-950",
-               (type==="warning" || definitionStatus==="outdated") && "to-amber-200 dark:to-amber-950"
+               type==="safe" && "to-emerald-200 dark:to-emerald-900",
+               type==="alert" && "to-red-200 dark:to-red-900",
+               (type==="warning" || definitionStatus==="outdated") && "to-amber-200 dark:to-amber-900"
           )}>
                {definitionStatus==="outdated" ? (
-                    <ShieldAlert className="size-24 md:size-48 md:flex-1 text-amber-950 dark:text-amber-400"/>
+                    <ShieldAlert className="size-24 md:size-48 md:flex-1 text-amber-900 dark:text-amber-400"/>
                ) : (
-                    <Icon className={cn("size-24 md:size-48 md:flex-1",type==="safe" && "text-emerald-950 dark:text-emerald-400",type==="alert" && "text-red-950 dark:text-red-400",type==="warning" && "text-amber-950 dark:text-amber-400")}/>
+                    <Icon className={cn("size-24 md:size-48 md:flex-1",type==="safe" && "text-emerald-900 dark:text-emerald-400",type==="alert" && "text-red-900 dark:text-red-400",type==="warning" && "text-amber-900 dark:text-amber-400")}/>
                )}
                <div className="flex flex-col items-center justify-center gap-2 flex-wrap md:flex-3">
                     <h1 className={

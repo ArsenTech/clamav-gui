@@ -7,11 +7,11 @@ import StartupScanProvider from "./context/startup-scan";
 import { ThemeProvider } from "./context/themes";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <React.StrictMode>
-    <ThemeProvider>
-      <StartupScanProvider>
-        <RouterProvider router={router}/>
-      </StartupScanProvider>
-    </ThemeProvider>
-  </React.StrictMode>,
+     <React.StrictMode>
+          <ThemeProvider>
+               <StartupScanProvider>
+                    <RouterProvider router={router}/>
+               </StartupScanProvider>
+          </ThemeProvider>
+     </React.StrictMode>,
 );

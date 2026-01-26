@@ -10,9 +10,11 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Skeleton Loaders on Settings + Overview + Stats Page + Scan Menu Page
 - Used Code Splitting on Real-time Performance Stats
 - Themes Support (Dark, Light, System) inside the Appearance settings
+- 2 new colors: **Green** and **Rose**
 ### Fixed
 - URL redirection bug (converted `target="_blank"` into `openUrl()`)
 - Bug from Accessing Custom and File Scans directly from the overview page.
+- Startup Scan Provider bug (a.k.a. the `useStartupScan must be used inside StartupScanProvider` bug)
 ### Changed
 - Expanded the Credits Section with more credits
 

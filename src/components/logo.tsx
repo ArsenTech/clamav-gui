@@ -6,11 +6,11 @@ interface Props{
      height: number
 }
 export default function Logo({width, height}: Props){
-     const {resolvedTheme} = useTheme();
+     const {resolvedTheme, color} = useTheme();
      const imgPath = useMemo(()=>{
           const isDark = resolvedTheme==="dark"
-          return `/logo-blue${isDark ? "-dark" : ""}.webp`.trim()
-     },[resolvedTheme])
+          return `/logo-${color}${isDark ? "-dark" : ""}.webp`.trim()
+     },[resolvedTheme, color])
      return (
           <img
                src={imgPath}

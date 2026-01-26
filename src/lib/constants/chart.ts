@@ -96,7 +96,7 @@ export const DISK_USAGE_CONFIG = {
 export const CPU_STATS_CONFIG = {
   util: {
     label: "Utilization (%): ",
-    color: "var(--chart-2)",
+    color: "oklch(0.623 0.214 259.815)",
   },
 } satisfies ChartConfig;
 
