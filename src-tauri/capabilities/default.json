@@ -17,6 +17,14 @@
         }
       ]
     },
+    {
+      "identifier": "opener:allow-open-url",
+      "allow": [
+        { "url": "https://*.clamav.net/**" },
+        { "url": "https://*.github.com/**" },
+        { "url": "https://*.youtube.com/**" }
+      ]
+    },
     "fs:allow-write-text-file",
     "process:default"
   ]

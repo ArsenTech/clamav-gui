@@ -1,14 +1,15 @@
-import React, { useEffect, useState, useTransition } from "react";
+import React, { lazy, Suspense, useEffect, useState, useTransition } from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import MainSidebar from "@/components/main-sidebar";
 import { cn } from "@/lib/utils";
 import {invoke} from "@tauri-apps/api/core"
-import NoClamAVPage from "./no-clamav";
 import SplashScreen from "./splash-screen";
 import { ClamAVState } from "@/lib/types";
 import { Toaster } from "../ui/sonner";
 import { useNavigate } from "react-router";
 import { useStartupScan } from "@/context/startup-scan";
+
+const NoClamAVPage = lazy(()=>import("./no-clamav"));
 
 interface Props{
      children: React.ReactNode,
@@ -24,14 +25,18 @@ export function AppLayout({children, className}: Props){
           startTransition(async() => {
                try{
                     const isAvailable = await invoke<boolean>("check_availability");
-                    setStatus(isAvailable ? "available" : "missing");
-                    localStorage.setItem("clamav",isAvailable ? "available" : "missing");
+                    const next: ClamAVState = isAvailable ? "available" : "missing";
+                    setStatus(next);
+                    localStorage.setItem("clamav",next);
                } catch {
                     setStatus("missing");
                     localStorage.setItem("clamav","missing");
                }
           })
      }
+     useEffect(() => {
+          handleCheck();
+     }, []);
      useEffect(() => {
           if (!startupScan) return;
           if (startupScan.isStartup && startupScan.scanType)
@@ -42,10 +47,12 @@ export function AppLayout({children, className}: Props){
                {status==="checking" ? (
                     <SplashScreen/>
                ) : status==="missing" ? (
-                    <NoClamAVPage
-                         isPending={isLoading}
-                         handleCheck={handleCheck}
-                    />
+                    <Suspense fallback={<SplashScreen/>}>
+                         <NoClamAVPage
+                              isPending={isLoading}
+                              handleCheck={handleCheck}
+                         />
+                    </Suspense>
                ) : startupScan?.isStartup ? (
                     <main className="py-2 w-full">
                          <div className={cn("w-full",className)}>

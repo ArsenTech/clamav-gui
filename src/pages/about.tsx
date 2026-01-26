@@ -1,3 +1,4 @@
+import CreditsSection from "@/components/credits";
 import { AppLayout } from "@/components/layout";
 import { INITIAL_VERSION_INFO } from "@/lib/constants/states";
 import { parseClamVersion } from "@/lib/helpers";
@@ -40,11 +41,11 @@ export default function AboutPage(){
      return (
           <AppLayout className="grid grid-cols-1 lg:grid-cols-2 gap-10 p-4">
                <div className="space-y-4">
-                    <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">About ClamAV GUI</h1>
+                    <h1 className="text-2xl md:text-3xl font-medium border-b pb-1 w-fit border-primary/50">About ClamAV GUI</h1>
                     <img src="/logo-blue.webp" alt="ClamAV GUI" width={500} height={130}/>
                     <h2 className="text-2xl md:text-3xl text-center font-medium">Version {versions.app} {versions.versionType.trim()!=="" ? `- ${versions.versionType}` : null}</h2>
                     <p>A minimal, open-source interface for file scanning and threat detection that makes the Antivirus itself look professional and work exactly like ClamAV (A FOSS CLI Antivirus).</p>
-                    <p>Built with Tauri, React, and modern desktop and web tools. This software is provided as-is. No data is collected or transmitted. This GUI uses ClamAV's <code className="text-muted-foreground font-medium">clamscan</code> engine.
+                    <p>Built with Tauri, React, and modern desktop and web tools. This software is provided as-is. No data is collected or transmitted. This GUI uses ClamAV's <code className="text-muted-foreground font-medium">clamscan</code> and <code className="text-muted-foreground font-medium">freshclam</code> engines.
 Scan types are presets that define which locations and which limits are used.</p>
                     <ul className="text-sm text-muted-foreground">
                          <li title="Virus definition database version">{versions.clamAV}</li>
@@ -53,26 +54,7 @@ Scan types are presets that define which locations and which limits are used.</p
                     <p className="text-sm text-muted-foreground"></p>
                     <p className="text-muted-foreground text-center">&copy; {year} ArsenTech | All Rights Reserved</p>
                </div>
-               <div className="space-y-3 px-3 text-lg overflow-y-auto max-h-[700px]">
-                    <h2 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">Credits</h2>
-                    <p>Core Technologies</p>
-                    <ul className="list-disc px-5">
-                         <li>ClamAV</li>
-                    </ul>
-                    <p>Interface & Platform</p>
-                    <ul className="list-disc px-5">
-                         <li>Tauri (Desktop RunTime)</li>
-                         <li>React (UI)</li>
-                         <li>Rust (Backend)</li>
-                         <li>React Router (Navigation)</li>
-                         <li>ShadCN UI (Design system)</li>
-                    </ul>
-                    <p>Inspiration & Community</p>
-                    <ul className="list-disc px-5">
-                         <li>Open Source contributors</li>
-                    </ul>
-                    <p className="font-semibold">Made by ArsenTech with love & trust</p>
-               </div>
+               <CreditsSection/>
           </AppLayout>
      )
 }

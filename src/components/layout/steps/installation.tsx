@@ -2,13 +2,14 @@ import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import CommandSnippetBlock from "@/components/command-snippet";
+import { openUrl } from "@tauri-apps/plugin-opener";
 
 export default function Installation(){
      return (
           <div className="space-y-3 text-left self-start px-6">
                <p>Make sure to Install ClamAV by following the installation guide here:</p>
-               <Button variant="link" asChild>
-                    <a href="https:/docs.clamav.net/manual/Installing.html" target="_blank"><ExternalLink/> docs.clamav.net/manual/Installing.html</a>
+               <Button variant="link" onClick={()=>openUrl("https://docs.clamav.net/manual/Installing.html")}>
+                    <ExternalLink/> docs.clamav.net/manual/Installing.html
                </Button>
                <h2 className="text-xl md:text-2xl lg:text-3xl font-semibold">Recommended Linux Commands</h2>
                <Tabs defaultValue="deb">

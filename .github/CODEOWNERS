@@ -14,11 +14,15 @@ build.rs            @ArsenTech
 src/main.rs         @ArsenTech
 
 # Common Repo Files
-README.md           @ArsenTech
-LICENSE.md          @ArsenTech
-docs/**             @ArsenTech
-CHANGELOG.md        @ArsenTech
-.gitignore          @ArsenTech
+README.md                     @ArsenTech
+LICENSE.md                    @ArsenTech
+docs/**                       @ArsenTech
+CHANGELOG.md                  @ArsenTech
+.gitignore                    @ArsenTech
+
+# Credits data
+src/components/credits.tsx    @ArsenTech
+src/lib/constants/credits.ts  @ArsenTech
 
 # All GitHub workflow files
 .github/**          @ArsenTech

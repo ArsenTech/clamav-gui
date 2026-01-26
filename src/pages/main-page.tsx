@@ -20,7 +20,7 @@ export default function App() {
     const params = new URLSearchParams();
     for(const path of paths)
       params.append("path",path);
-    navigate(`${href}&${params.toString()}`)
+    navigate(`${href}?${params.toString()}`)
   }
   useEffect(()=>{
     (async()=>{
