@@ -1,7 +1,7 @@
 import { AppLayout } from "@/components/layout";
 import { lazy, Suspense } from "react";
 import StatsLoader from "@/loaders/stats";
-const StatsContent = lazy(()=>import("@/components/contents/stats"))
+const StatsContent = lazy(()=>import("@/contents/stats"))
 
 export default function StatsPage(){
      return (

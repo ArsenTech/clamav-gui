@@ -1,6 +1,6 @@
 import { AppLayout } from "@/components/layout";
 import { useNavigate, useParams } from "react-router";
-import ScanFinishResult from "@/components/antivirus/scan/finish-scan";
+import ScanFinishResult from "@/components/antivirus/finish-scan";
 import LogText from "@/components/log";
 import { GET_INITIAL_SCAN_STATE } from "@/lib/constants/states";
 import { formatDuration } from "@/lib/helpers";
@@ -12,7 +12,7 @@ import { Timer } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 import { toast } from "sonner";
-import ScanProcess from "@/components/antivirus/scan/scan-process";
+import ScanProcess from "@/components/antivirus/scan-process";
 import { useStartupScan } from "@/context/startup-scan";
 import { exit } from "@tauri-apps/plugin-process";
 

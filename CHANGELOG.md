@@ -7,7 +7,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [0.3.1] - Unreleased
 ### Added
 - License (GNU GPL v3)
-- Skeleton Loaders on Settings + Overview + Stats Page
+- Skeleton Loaders on Settings + Overview + Stats Page + Scan Menu Page
 - Used Code Splitting on Real-time Performance Stats
 - Themes Support (Dark, Light, System) inside the Appearance settings
 ### Fixed

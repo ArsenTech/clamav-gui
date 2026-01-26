@@ -7,7 +7,7 @@ import {
      ScanTypes,
      ThreatsStats,
      VirusTypes
-} from "@/components/antivirus/stats"
+} from "@/components/stats"
 import { Button } from "@/components/ui/button";
 import { RotateCw } from "lucide-react";
 import { useTransition } from "react";
