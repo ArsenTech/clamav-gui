@@ -10,11 +10,11 @@ use crate::{
     helpers::{
         history::append_scan_history,
         log::{log_err, log_info, log_path},
-        new_id,resolve_command, silent_command,
+        new_id, resolve_command, silent_command,
     },
     types::{
         enums::{HistoryStatus, LogCategory, ScanResult, ScanType},
-        structs::{HistoryItem,StartupScan},
+        structs::{HistoryItem, StartupScan},
     },
 };
 
@@ -76,7 +76,9 @@ pub fn run_scan(
                 if line.contains("FOUND") {
                     threats_clone.fetch_add(1, Ordering::Relaxed);
                 }
-                let _ = app_clone.emit("clamscan:log", &line).map_err(|e| e.to_string());
+                let _ = app_clone
+                    .emit("clamscan:log", &line)
+                    .map_err(|e| e.to_string());
                 log_info(&log_clone, &line);
             }
         }))
@@ -90,7 +92,9 @@ pub fn run_scan(
 
         Some(std::thread::spawn(move || {
             for line in BufReader::new(err).lines().flatten() {
-                let _ = app_clone.emit("clamscan:log", &line).map_err(|e| e.to_string());
+                let _ = app_clone
+                    .emit("clamscan:log", &line)
+                    .map_err(|e| e.to_string());
                 log_err(&log_clone, &line);
             }
         }))
@@ -155,10 +159,11 @@ pub fn run_scan(
             threat_count: Some(found as u32),
             scan_result: Some(scan_result),
         },
-        &log_file
+        &log_file,
     );
 
-    app.emit("clamscan:finished", exit_code).map_err(|e| e.to_string())?;
+    app.emit("clamscan:finished", exit_code)
+        .map_err(|e| e.to_string())?;
     Ok(())
 }
 
@@ -183,7 +188,7 @@ pub fn get_main_scan_paths() -> Vec<PathBuf> {
     paths
 }
 
-pub fn run_headless_scan(startup: StartupScan) -> Result<(),String> {
+pub fn run_headless_scan(startup: StartupScan) -> Result<(), String> {
     let scan_type = match startup.scan_type {
         Some(s) => s,
         None => return Ok(()),
@@ -219,7 +224,7 @@ pub fn run_headless_scan(startup: StartupScan) -> Result<(),String> {
     let status = cmd
         .stdin(Stdio::null())
         .status()
-        .map_err(|e|e.to_string())?;
+        .map_err(|e| e.to_string())?;
     match status.code() {
         Some(0) | Some(1) => Ok(()),
         Some(2) => Err("ClamAV scan error".into()),

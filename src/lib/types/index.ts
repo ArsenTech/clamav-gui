@@ -1,6 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { LucideProps } from "lucide-react";
 import { DAYS_OF_THE_WEEK } from "../constants";
+import { CUSTOM_SCAN_OPTIONS } from "../constants/settings";
 
 export type ScanType = "" | "main" | "full" | "custom" | "file"
 export type ClamAVState = "checking" | "available" | "missing";
@@ -115,3 +116,10 @@ export interface DataTableProps<TData, TValue> {
      searchColumn?: string,
      headerElement?: React.JSX.Element
 }
+export type ScanOptionKey = keyof typeof CUSTOM_SCAN_OPTIONS;
+export type ScanOption = Record<string,{
+     label: string,
+     flag: string,
+     conflictsWith: readonly ScanOptionKey[],
+     level: "basic" | "advanced"
+}>

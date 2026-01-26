@@ -3,7 +3,10 @@ use tauri::command;
 
 use crate::{
     helpers::history::history_dir,
-    types::{enums::{ClearHistoryMode, HistoryStatus}, structs::HistoryItem},
+    types::{
+        enums::{ClearHistoryMode, HistoryStatus},
+        structs::HistoryItem,
+    },
 };
 
 #[command]
@@ -77,7 +80,7 @@ pub fn mark_as_acknowledged(app: tauri::AppHandle, id: String, date: String) -> 
 #[command]
 #[specta(result)]
 pub fn clear_history(app: tauri::AppHandle, mode: ClearHistoryMode) -> Result<(), String> {
-    if mode != ClearHistoryMode::All && mode != ClearHistoryMode::Acknowledged{
+    if mode != ClearHistoryMode::All && mode != ClearHistoryMode::Acknowledged {
         return Err("Invalid clear history mode. Use 'all' or 'acknowledged'".into());
     }
 

@@ -67,7 +67,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - **Scheduler** - Schedule some scans if needed + manage other scheduled scan jobs
 <!-- TODO: Write the Features list -->
 
-### Coming Soon (To Do List)
+### To Do List
 - [ ] Settings
   - [ ] Themes
   - [ ] Custom Scan Settings

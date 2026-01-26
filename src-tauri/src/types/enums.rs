@@ -18,7 +18,7 @@ pub enum ScanType {
     Custom,
     File,
     Realtime,
-    Scheduled
+    Scheduled,
 }
 
 #[derive(Serialize, Deserialize, Type, Debug, PartialEq, Eq, Hash)]
@@ -104,7 +104,7 @@ impl DayOfTheWeek {
 
 #[derive(Serialize, Deserialize, Type, Debug, Clone, Copy, PartialEq, Eq, Hash)]
 #[serde(rename_all = "lowercase")]
-pub enum ClearHistoryMode{
+pub enum ClearHistoryMode {
     All,
-    Acknowledged
+    Acknowledged,
 }

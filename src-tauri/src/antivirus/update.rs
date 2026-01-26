@@ -5,7 +5,9 @@ use tauri::{command, Emitter};
 
 use crate::{
     helpers::{
-        history::append_update_history, log::{initialize_log, log_err, log_info}, new_id, resolve_command, silent_command
+        history::append_update_history,
+        log::{initialize_log, log_err, log_info},
+        new_id, resolve_command, silent_command,
     },
     types::{
         enums::{HistoryStatus, LogCategory},
@@ -34,7 +36,7 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
             threat_count: None,
             scan_result: None,
         },
-        &log_file
+        &log_file,
     );
     let freshclam = resolve_command("freshclam")?;
     std::thread::spawn(move || {
@@ -52,12 +54,16 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
 
                 if !stdout.is_empty() {
                     let stdout_str = stdout.to_string();
-                    let _ = app.emit("freshclam:output", &stdout_str).map_err(|e| e.to_string());
+                    let _ = app
+                        .emit("freshclam:output", &stdout_str)
+                        .map_err(|e| e.to_string());
                     log_info(&log_file, &stdout_str);
                 }
                 if !stderr.is_empty() {
                     let stderr_str = stderr.to_string();
-                    let _ = app.emit("freshclam:error", &stderr_str).map_err(|e| e.to_string());
+                    let _ = app
+                        .emit("freshclam:error", &stderr_str)
+                        .map_err(|e| e.to_string());
                     log_err(&log_file, &stderr_str);
                 }
 
@@ -89,13 +95,17 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
                         threat_count: None,
                         scan_result: None,
                     },
-                    &log_file
+                    &log_file,
                 );
-                let _ = app.emit("freshclam:done", exit_code).map_err(|e| e.to_string());
+                let _ = app
+                    .emit("freshclam:done", exit_code)
+                    .map_err(|e| e.to_string());
             }
             Err(e) => {
                 let error_msg = e.to_string();
-                let _ = app.emit("freshclam:error", &error_msg).map_err(|e| e.to_string());
+                let _ = app
+                    .emit("freshclam:error", &error_msg)
+                    .map_err(|e| e.to_string());
                 log_err(&log_file, &error_msg);
 
                 append_update_history(
@@ -112,7 +122,7 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
                         threat_count: None,
                         scan_result: None,
                     },
-                    &log_file
+                    &log_file,
                 );
             }
         }

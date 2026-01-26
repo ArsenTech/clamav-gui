@@ -1,12 +1,19 @@
 import { cn } from "@/lib/utils";
 import { AlertCircle, CheckCircle, SearchCheck, ShieldAlert, ShieldCheck, ShieldClose } from "lucide-react"
 import { Spinner } from "../ui/spinner";
+import { useEffect, useState } from "react";
+import { formatDistanceToNow } from "date-fns";
 
 interface Props{
      type: "safe" | "warning" | "alert" | "outdated",
      definitionStatus: "updated" | "outdated" | "loading"
 }
 export default function SafetyIndicator({type, definitionStatus}: Props){
+     const [lastScanned, setLastScanned] = useState<Date|null>(null);
+     useEffect(()=>{
+          const stored = localStorage.getItem("last-scanned-ms");
+          setLastScanned(stored ? new Date(parseInt(stored)) : null);
+     },[])
      const Icon = type==="safe" ? ShieldCheck : type==="warning" ? ShieldAlert : ShieldClose;
      const text = type==="safe" ? "The Device is safe!" : type==="alert" ? "The Device is Vulnerable!" : "Some Protection settings are disabled.";
      return (
@@ -29,7 +36,10 @@ export default function SafetyIndicator({type, definitionStatus}: Props){
                          )
                     }>{definitionStatus==="outdated" ? "Definitions are older than 7 days. Update immediately!" : text}</h1>
                     <ul className="flex justify-center items-center gap-4 flex-wrap flex-col lg:flex-row w-full md:w-3/4">
-                         <li className="flex items-center gap-2 text-base md:text-lg flex-1 md:flex-none!"><SearchCheck className="size-5 md:size-6"/> Last Scan: 2 hours ago</li>
+                         <li className="flex items-center gap-2 text-base md:text-lg flex-1 md:flex-none!"><SearchCheck className="size-5 md:size-6"/> Last Scan: {lastScanned ? formatDistanceToNow(lastScanned,{
+                              includeSeconds: true,
+                              addSuffix: true
+                         }) : "Never"}</li>
                          <li className="flex items-center gap-2 text-base md:text-lg flex-1 md:flex-none!">
                               {definitionStatus==="loading" ? <Spinner className="size-5 md:size-6"/> : definitionStatus==="outdated" ? <AlertCircle className="size-5 md:size-6"/> : <CheckCircle className="size-5 md:size-6"/>}
                               Definitions: {definitionStatus==="loading" ? "Loading..." : definitionStatus==="outdated" ? "Outdated" : "Up to date"}

@@ -5,8 +5,8 @@ pub mod quarantine;
 pub mod scan;
 pub mod scheduler;
 
-use std::process::Command;
 use std::path::PathBuf;
+use std::process::Command;
 
 #[cfg(windows)]
 use std::os::windows::process::CommandExt;

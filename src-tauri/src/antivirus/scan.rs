@@ -5,7 +5,11 @@ use tauri::{command, Emitter};
 
 use crate::{
     helpers::{
-        history::append_scan_history, log::{initialize_log_with_id, log_err}, new_id, resolve_command, scan::{SCAN_PROCESS, estimate_total_files, get_main_scan_paths, get_root_path, run_scan}, silent_command
+        history::append_scan_history,
+        log::{initialize_log_with_id, log_err},
+        new_id, resolve_command,
+        scan::{estimate_total_files, get_main_scan_paths, get_root_path, run_scan, SCAN_PROCESS},
+        silent_command,
     },
     types::{
         enums::{HistoryStatus, LogCategory, ScanType},
@@ -23,7 +27,8 @@ pub fn get_startup_scan(state: tauri::State<StartupScan>) -> StartupScan {
 #[specta(result)]
 pub fn start_main_scan(app: tauri::AppHandle) -> Result<(), String> {
     let log_id = new_id();
-    let log = initialize_log_with_id(&app, LogCategory::Scan, &log_id).map_err(|e|e.to_string())?;
+    let log =
+        initialize_log_with_id(&app, LogCategory::Scan, &log_id).map_err(|e| e.to_string())?;
     let log_file = log.file;
     append_scan_history(
         &app,
@@ -39,14 +44,14 @@ pub fn start_main_scan(app: tauri::AppHandle) -> Result<(), String> {
             threat_count: None,
             scan_result: None,
         },
-        &log_file
+        &log_file,
     );
 
     std::thread::spawn(move || {
         let paths = get_main_scan_paths();
         let clamscan = match resolve_command("clamscan") {
-            Ok(cmd ) => cmd,
-            Err(e) => return Err(format!("Failed to resolve command: {}",e)) 
+            Ok(cmd) => cmd,
+            Err(e) => return Err(format!("Failed to resolve command: {}", e)),
         };
         let mut cmd = silent_command(clamscan.to_str().unwrap());
         cmd.args([
@@ -59,12 +64,14 @@ pub fn start_main_scan(app: tauri::AppHandle) -> Result<(), String> {
             "--no-summary",
         ]);
         let total_files = estimate_total_files(&paths);
-        app.emit("clamscan:total", total_files).map_err(|e| e.to_string())?;
+        app.emit("clamscan:total", total_files)
+            .map_err(|e| e.to_string())?;
         for path in paths {
             cmd.arg(path);
         }
-        if let Err(e) = run_scan(app.clone(), log_id, cmd, ScanType::Main){
-            app.emit("clamscan:error", &e.to_string()).map_err(|e| e.to_string())?;
+        if let Err(e) = run_scan(app.clone(), log_id, cmd, ScanType::Main) {
+            app.emit("clamscan:error", &e.to_string())
+                .map_err(|e| e.to_string())?;
             log_err(&log_file, &e.to_string());
             Err(e.to_string())
         } else {
@@ -79,7 +86,8 @@ pub fn start_main_scan(app: tauri::AppHandle) -> Result<(), String> {
 #[specta(result)]
 pub fn start_full_scan(app: tauri::AppHandle) -> Result<(), String> {
     let log_id = new_id();
-    let log = initialize_log_with_id(&app, LogCategory::Scan, &log_id).map_err(|e|e.to_string())?;
+    let log =
+        initialize_log_with_id(&app, LogCategory::Scan, &log_id).map_err(|e| e.to_string())?;
     let log_file = log.file;
     append_scan_history(
         &app,
@@ -95,13 +103,13 @@ pub fn start_full_scan(app: tauri::AppHandle) -> Result<(), String> {
             threat_count: None,
             scan_result: None,
         },
-        &log_file
+        &log_file,
     );
     std::thread::spawn(move || {
         let root = get_root_path();
         let clamscan = match resolve_command("clamscan") {
-            Ok(cmd ) => cmd,
-            Err(e) => return Err(format!("Failed to resolve command: {}",e)) 
+            Ok(cmd) => cmd,
+            Err(e) => return Err(format!("Failed to resolve command: {}", e)),
         };
         let mut cmd = silent_command(clamscan.to_str().unwrap());
         cmd.args([
@@ -113,7 +121,8 @@ pub fn start_full_scan(app: tauri::AppHandle) -> Result<(), String> {
             root,
         ]);
         if let Err(e) = run_scan(app.clone(), log_id, cmd, ScanType::Full) {
-            app.emit("clamscan:error", &e.to_string()).map_err(|e| e.to_string())?;
+            app.emit("clamscan:error", &e.to_string())
+                .map_err(|e| e.to_string())?;
             log_err(&log_file, &e.to_string());
             Err(e.to_string())
         } else {
@@ -131,7 +140,8 @@ pub fn start_custom_scan(app: tauri::AppHandle, paths: Vec<String>) -> Result<()
         return Err("No scan targets provided".into());
     }
     let log_id = new_id();
-    let log = initialize_log_with_id(&app, LogCategory::Scan, &log_id).map_err(|e|e.to_string())?;
+    let log =
+        initialize_log_with_id(&app, LogCategory::Scan, &log_id).map_err(|e| e.to_string())?;
     let log_file = log.file;
     let resolved_paths: Vec<PathBuf> = paths.iter().map(PathBuf::from).collect();
     for path in &resolved_paths {
@@ -163,7 +173,7 @@ pub fn start_custom_scan(app: tauri::AppHandle, paths: Vec<String>) -> Result<()
             threat_count: None,
             scan_result: None,
         },
-        &log_file
+        &log_file,
     );
     let clamscan = resolve_command("clamscan")?;
     let app_clone = app.clone();
@@ -184,9 +194,13 @@ pub fn start_custom_scan(app: tauri::AppHandle, paths: Vec<String>) -> Result<()
             cmd.arg(path);
         }
         let total_files = estimate_total_files(&resolved_paths);
-        let _ = app_clone.emit("clamscan:total", total_files).map_err(|e| e.to_string());
-        if let Err(e) = run_scan(app_clone.clone(), log_id.clone(), cmd, scan_type){
-            let _ = app_clone.emit("clamscan:error", &e.to_string()).map_err(|e| e.to_string());
+        let _ = app_clone
+            .emit("clamscan:total", total_files)
+            .map_err(|e| e.to_string());
+        if let Err(e) = run_scan(app_clone.clone(), log_id.clone(), cmd, scan_type) {
+            let _ = app_clone
+                .emit("clamscan:error", &e.to_string())
+                .map_err(|e| e.to_string());
             log_err(&log_file, &e.to_string());
         }
     });

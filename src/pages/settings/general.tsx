@@ -2,11 +2,11 @@ import { useTheme } from "@/context/themes";
 import { cn } from "@/lib/utils";
 import { Monitor, Moon, Palette, Sun } from "lucide-react";
 
-export default function AppearanceSettings(){
+export default function GeneralSettings(){
      const {setTheme, theme, setColor, color} = useTheme()
      return (
-          <div className="px-1 py-2 space-y-2">
-               <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold">Theme</h2>
+          <div className="px-1 py-2 space-y-3">
+               <h2 className="text-lg sm:text-xl font-semibold">Theme</h2>
                <div className="flex justify-center items-center flex-wrap gap-3">
                     <div className={cn("bgxt-card-foreground rounded-md shadow-sm border p-4 flex justify-center items-center gap-2 flex-col h-32 min-w-32 flex-1 text-center hover:border-primary hover:cursor-pointer transition-all",theme==="system" ? "border-primary bg-primary/10" : "border-border bg-card")} onClick={()=>setTheme("system")}>
                          <Monitor className="size-16"/>
@@ -21,7 +21,7 @@ export default function AppearanceSettings(){
                          <h2 className="text-lg font-medium">Dark</h2>
                     </div>
                </div>
-               <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold">Color</h2>
+               <h2 className="text-lg sm:text-xl font-semibold">Color</h2>
                <div className="flex justify-center items-center flex-wrap gap-3">
                     <div className={cn("bgxt-card-foreground rounded-md shadow-sm border p-4 flex justify-center items-center gap-2 flex-col h-32 min-w-32 flex-1 text-center hover:border-blue-600 hover:cursor-pointer transition-all",color==="blue" ? "border-primary bg-primary/10" : "border-border bg-card")} onClick={()=>setColor("blue")}>
                          <Palette className="size-16 text-blue-600 dark:text-blue-400"/>

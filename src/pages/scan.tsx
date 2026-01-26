@@ -3,18 +3,17 @@ import { useNavigate, useParams } from "react-router";
 import ScanFinishResult from "@/components/antivirus/finish-scan";
 import LogText from "@/components/log";
 import { GET_INITIAL_SCAN_STATE } from "@/lib/constants/states";
-import { formatDuration } from "@/lib/helpers";
 import { ScanType } from "@/lib/types";
 import { IScanPageState } from "@/lib/types/states";
 import { invoke } from "@tauri-apps/api/core";
 import { listen, UnlistenFn } from "@tauri-apps/api/event";
-import { Timer } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 import { toast } from "sonner";
-import ScanProcess from "@/components/antivirus/scan-process";
 import { useStartupScan } from "@/context/startup-scan";
 import { exit } from "@tauri-apps/plugin-process";
+import ScanLoader from "@/loaders/scan";
+const ScanProcess = lazy(()=>import("@/components/antivirus/scan-process"))
 
 export default function ScanPage(){
      const [searchParams] = useSearchParams();
@@ -79,6 +78,7 @@ export default function ScanPage(){
                          errMsg: undefined
                     });
                     startTimeRef.current = null;
+                    localStorage.setItem("last-scanned-ms",Date.now().toString())
                }),
                listen<number>("clamscan:total", e =>setState({ totalFiles: e.payload })),
                listen<string>("clamscan:error", e => {
@@ -146,16 +146,13 @@ export default function ScanPage(){
                ...overrides
           })
      }
-     const {isFinished, duration, scanType, currLocation, totalFiles, scannedFiles, logs, paths: scanLocations, threats} = scanState;
+     const {isFinished, logs, scanType} = scanState;
      return (
           <AppLayout className={isFinished ? "flex justify-center items-center gap-4 flex-col p-4" : "grid gris-cols-1 md:grid-cols-2 gap-10 p-4"}>
                {isFinished ? (
                     <>
                          <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">Scan Completed!</h1>
                          <ScanFinishResult
-                              durationElem={(
-                                   <h2 className="text-lg sm:text-xl font-semibold flex items-center justify-center gap-2.5 w-fit"><Timer className="text-primary"/>{formatDuration(duration)}</h2>
-                              )}
                               isStartup={isStartup}
                               setScanState={setScanState}
                               scanState={scanState}
@@ -165,15 +162,12 @@ export default function ScanPage(){
                     <>
                          <div className="space-y-4">
                               <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">Scan</h1>
-                              <ScanProcess
-                                   scanType={scanType}
-                                   onStop={handleStop}
-                                   threatsCount={threats.length}
-                                   currLocation={currLocation}
-                                   filesCount={scannedFiles}
-                                   totalFiles={totalFiles}
-                                   scanPaths={scanLocations}
-                              />
+                              <Suspense fallback={<ScanLoader type={scanType}/>}>
+                                   <ScanProcess
+                                        onStop={handleStop}
+                                        scanState={scanState}
+                                   />
+                              </Suspense>
                          </div>
                          <div className="space-y-3 px-3 text-lg overflow-y-auto max-h-[800px]">
                               <h2 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">Log</h2>

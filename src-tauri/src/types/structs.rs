@@ -6,7 +6,8 @@ use std::{
 };
 
 use crate::types::enums::{
-    ComputerVirusType, DayOfTheWeek, HistoryStatus, LogCategory, ScanResult, ScanType, SchedulerInterval, ThreatStatus
+    ComputerVirusType, DayOfTheWeek, HistoryStatus, LogCategory, ScanResult, ScanType,
+    SchedulerInterval, ThreatStatus,
 };
 
 #[derive(Debug, Serialize, Type, Deserialize)]
@@ -121,5 +122,5 @@ pub struct SchedulerEntry {
     pub enabled: bool,
     pub last_run: Option<String>,
     pub created_at: String,
-    pub log_id: Option<String>
+    pub log_id: Option<String>,
 }

@@ -18,15 +18,14 @@ use crate::{
         stats::get_stats,
         update::{get_clamav_version, update_definitions},
     },
-    helpers::{
-        flags::parse_startup_flags,
-        scan::run_headless_scan,
-    },
+    helpers::{flags::parse_startup_flags, scan::run_headless_scan},
     system::{
         check_availability,
         logs::{read_log, reveal_log},
         remove_file,
-        scheduler::{list_scheduler, remove_scheduled_task, run_job_now, schedule_task,clear_scheduled_jobs},
+        scheduler::{
+            clear_scheduled_jobs, list_scheduler, remove_scheduled_task, run_job_now, schedule_task,
+        },
         sysinfo::{get_sys_info, get_sys_stats},
     },
 };
@@ -35,8 +34,8 @@ use crate::{
 pub fn run() {
     let scan_flag = parse_startup_flags();
     if scan_flag.is_scheduled {
-        if let Err(e) = run_headless_scan(scan_flag){
-            eprintln!("Failed to run a headless scan: {}",e.to_string());
+        if let Err(e) = run_headless_scan(scan_flag) {
+            eprintln!("Failed to run a headless scan: {}", e.to_string());
         }
         std::process::exit(0);
     }
@@ -75,6 +74,7 @@ pub fn run() {
     ]);
 
     tauri::Builder::default()
+        .plugin(tauri_plugin_store::Builder::new().build())
         .plugin(tauri_plugin_process::init())
         .manage(scan_flag.clone())
         .plugin(tauri_plugin_fs::init())

@@ -1,16 +1,17 @@
-use std::{fs::File, path::PathBuf, sync::{Arc, Mutex}};
+use std::{
+    fs::File,
+    path::PathBuf,
+    sync::{Arc, Mutex},
+};
 use tauri::Manager;
 
-use crate::{
-    helpers::log::log_err,
-    types::structs::HistoryItem
-};
+use crate::{helpers::log::log_err, types::structs::HistoryItem};
 
 pub fn history_dir(app: &tauri::AppHandle) -> PathBuf {
     let mut dir = app.path().app_data_dir().unwrap();
     dir.push("history");
-    if let Err(e) = std::fs::create_dir_all(&dir){
-        eprintln!("[ERROR]: {}",e.to_string())
+    if let Err(e) = std::fs::create_dir_all(&dir) {
+        eprintln!("[ERROR]: {}", e.to_string())
     }
     dir
 }
@@ -49,7 +50,11 @@ pub fn append_scan_history(app: &tauri::AppHandle, item: HistoryItem, log: &Arc<
     }
 }
 
-pub fn append_scheduler_history(app: &tauri::AppHandle, item: HistoryItem, log_file: &std::sync::Arc<std::sync::Mutex<std::fs::File>>) {
+pub fn append_scheduler_history(
+    app: &tauri::AppHandle,
+    item: HistoryItem,
+    log_file: &std::sync::Arc<std::sync::Mutex<std::fs::File>>,
+) {
     if let Err(e) = append_history(app, item) {
         log_err(log_file, &format!("Failed to append history: {}", e));
     }

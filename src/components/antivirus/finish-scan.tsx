@@ -1,6 +1,6 @@
 import { ThreatsTable } from "@/components/data-table/tables/threats";
 import { Button } from "@/components/ui/button";
-import { BugOff, EyeOff, LogOut, ShieldAlert, ShieldCheck, ShieldX, Trash } from "lucide-react";
+import { BugOff, EyeOff, LogOut, ShieldAlert, ShieldCheck, ShieldX, Timer, Trash } from "lucide-react";
 import { useNavigate } from "react-router";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -10,7 +10,7 @@ import Popup from "@/components/popup";
 import { invoke } from "@tauri-apps/api/core";
 import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
-import { getExitText } from "@/lib/helpers";
+import { formatDuration, getExitText } from "@/lib/helpers";
 import { exit } from "@tauri-apps/plugin-process";
 import { IFinishScanState, IScanPageState } from "@/lib/types/states";
 import { INITIAL_FINISH_SCAN_STATE } from "@/lib/constants/states";
@@ -18,10 +18,9 @@ import { INITIAL_FINISH_SCAN_STATE } from "@/lib/constants/states";
 interface Props{
      setScanState: React.Dispatch<React.SetStateAction<IScanPageState>>,
      scanState: IScanPageState
-     durationElem: React.JSX.Element,
      isStartup: boolean,
 }
-export default function ScanFinishResult({durationElem, setScanState, isStartup, scanState}: Props){
+export default function ScanFinishResult({setScanState, isStartup, scanState}: Props){
      const navigate = useNavigate();
      const [isPending, startTransition] = useTransition()
      const [finishScanState, setFinishScanState] = useState<IFinishScanState>(INITIAL_FINISH_SCAN_STATE)
@@ -100,14 +99,14 @@ export default function ScanFinishResult({durationElem, setScanState, isStartup,
                navigate("/");
           }
      };
-     const {errMsg, exitCode, threats} = scanState;
+     const {errMsg, exitCode, threats, duration} = scanState;
      const isResolved = useMemo(() =>threats.every(t =>["quarantined", "deleted", "safe"].includes(t.status)),[threats]);
      const {isOpenDelete, bulkDelete} = finishScanState
      return (errMsg && errMsg.trim()!=="") ? (
           <>
                <ShieldX className="size-32 text-destructive"/>
                <h2 className="text-lg md:text-2xl font-medium">Scan Failed</h2>
-               {durationElem}
+               <h2 className="text-lg sm:text-xl font-semibold flex items-center justify-center gap-2.5 w-fit"><Timer className="text-primary"/>{formatDuration(duration)}</h2>
                <p>{errMsg}</p>
                <Button onClick={handlePrimaryAction}>
                     {isStartup && <LogOut/>}
@@ -119,7 +118,7 @@ export default function ScanFinishResult({durationElem, setScanState, isStartup,
           <>
                <ShieldCheck className="size-32 text-emerald-700 dark:text-emerald-500"/>
                <h2 className="text-lg md:text-2xl font-medium">No items detected!</h2>
-               {durationElem}
+               <h2 className="text-lg sm:text-xl font-semibold flex items-center justify-center gap-2.5 w-fit"><Timer className="text-primary"/>{formatDuration(duration)}</h2>
                <Button onClick={handlePrimaryAction}>
                     {isStartup && <LogOut/>}
                     {isStartup ? "Close" : "Back to the overview"}
@@ -130,7 +129,7 @@ export default function ScanFinishResult({durationElem, setScanState, isStartup,
           <>
                <ShieldAlert className="size-32 text-destructive"/>
                <h2 className="text-lg md:text-2xl font-medium">{threats.length} {threats.length<=1 ? "threat" : "threats"} require attention</h2>
-               {durationElem}
+               <h2 className="text-lg sm:text-xl font-semibold flex items-center justify-center gap-2.5 w-fit"><Timer className="text-primary"/>{formatDuration(duration)}</h2>
                <ThreatsTable
                     columns={THREATS_COLS(setScanState,setState)}
                     data={threats}
