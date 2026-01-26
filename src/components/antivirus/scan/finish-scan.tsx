@@ -117,7 +117,7 @@ export default function ScanFinishResult({durationElem, setScanState, isStartup,
           </>
      )  : threats.length<=0 ? (
           <>
-               <ShieldCheck className="size-32 text-emerald-700"/>
+               <ShieldCheck className="size-32 text-emerald-700 dark:text-emerald-500"/>
                <h2 className="text-lg md:text-2xl font-medium">No items detected!</h2>
                {durationElem}
                <Button onClick={handlePrimaryAction}>
@@ -128,7 +128,7 @@ export default function ScanFinishResult({durationElem, setScanState, isStartup,
           </>
      ) : (
           <>
-               <ShieldAlert className="size-32 text-red-700"/>
+               <ShieldAlert className="size-32 text-destructive"/>
                <h2 className="text-lg md:text-2xl font-medium">{threats.length} {threats.length<=1 ? "threat" : "threats"} require attention</h2>
                {durationElem}
                <ThreatsTable

@@ -10,13 +10,14 @@ import {
 } from "@/components/ui/sidebar"
 import { SIDEBAR_FOOTER_LINKS, SIDEBAR_LINKS } from "@/lib/constants/links";
 import { Link, useLocation } from "react-router"
+import Logo from "./logo";
 
 export default function MainSidebar(){
      const location = useLocation();
      return (
           <Sidebar>
                <SidebarHeader>
-                    <img src="/logo-blue.webp" alt="ClamAV GUI" width={1500} height={400}/>
+                    <Logo width={1500} height={400}/>
                </SidebarHeader>
                <SidebarContent>
                     <SidebarGroup>
@@ -24,7 +25,7 @@ export default function MainSidebar(){
                               {SIDEBAR_LINKS.map(({Icon,name,href},i)=>(
                                    <SidebarMenuItem key={`${name}-${i}`}>
                                         <SidebarMenuButton isActive={location.pathname===href} asChild>
-                                             <Link to={href} className="text-muted-foreground"><Icon className="text-primary"/> {name}</Link>
+                                             <Link to={href} className="text-muted-foreground"><Icon className="text-primary dark:text-accent-foreground"/> {name}</Link>
                                         </SidebarMenuButton>
                                    </SidebarMenuItem>
                               ))}
@@ -36,7 +37,7 @@ export default function MainSidebar(){
                          <SidebarMenu>
                               {SIDEBAR_FOOTER_LINKS.map(({Icon,name,href},i)=>(
                                    <SidebarMenuButton isActive={location.pathname===href} asChild key={`${name}-${i}`}>
-                                        <Link to={href} className="text-muted-foreground"><Icon className="text-primary"/> {name}</Link>
+                                        <Link to={href} className="text-muted-foreground"><Icon className="text-primary dark:text-accent-foreground"/> {name}</Link>
                                    </SidebarMenuButton>
                               ))}
                          </SidebarMenu>

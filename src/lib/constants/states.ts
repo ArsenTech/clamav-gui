@@ -26,11 +26,10 @@ export const GET_INITIAL_SCAN_STATE = (type: ScanType, path: string[] | null): I
      threats: []
 })
 export const INITIAL_UPDATE_STATE: IUpdatePageState = {
-     isUpdating: false,
-     isFetching: true,
+     exitMsg: null,
      isRequired: false,
      lastUpdated: null,
-     log: []
+     log: [],
 }
 export const INITIAL_FINISH_SCAN_STATE: IFinishScanState = {
      currThreat: null,

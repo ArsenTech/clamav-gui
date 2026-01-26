@@ -7,8 +7,8 @@ import {
 } from "@/components/ui/card"
 import { ChartProps, IScanTypeStat } from "@/lib/types"
 import { NoData } from "@/components/charts/no-data"
-import React, { Suspense } from "react"
-const ScanChart = React.lazy(()=>import("@/components/charts/scan"))
+import { Suspense, lazy } from "react"
+const ScanChart = lazy(()=>import("@/components/charts/scan"))
 
 export function ScanTypes({data}: ChartProps<IScanTypeStat[]>) {
   return (

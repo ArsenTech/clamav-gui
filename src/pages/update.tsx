@@ -6,7 +6,7 @@ import { IUpdatePageState } from "@/lib/types/states";
 import { cn } from "@/lib/utils";
 import { listen, UnlistenFn } from "@tauri-apps/api/event";
 import { AlertCircle, CheckCircle, RotateCw } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { Spinner } from "@/components/ui/spinner";
 import { invoke } from "@tauri-apps/api/core";
@@ -14,19 +14,21 @@ import { getExitText, parseClamVersion } from "@/lib/helpers";
 import { toast } from "sonner";
 
 export default function UpdateDefinitions(){
+     const [isUpdating, startTransition] = useTransition()
      const [updateState, setUpdateState] = useState<IUpdatePageState>(INITIAL_UPDATE_STATE);
      const [clamavVersion, setClamavVersion] = useState<string | null>(
           localStorage.getItem("clamav-version")
      );
-     const [exitMsg, setExitMsg] = useState<number | null>(null)
      const setState = (overrides: Partial<IUpdatePageState>) =>
           setUpdateState(prev=>({
                ...prev,
                ...overrides
           }))
-     const handleUpdate = async () => {
-          if (updateState.isUpdating) return;
-          await invoke("update_definitions")
+     const handleUpdate = ()=>{
+          if (isUpdating) return;
+          startTransition(async()=>{
+               await invoke("update_definitions")
+          })
      }
      const updateVersions = (parsed: ReturnType<typeof parseClamVersion>) => {
           if(!parsed) return;
@@ -35,7 +37,6 @@ export default function UpdateDefinitions(){
           setClamavVersion(versionText);
      }
      useEffect(()=>{
-          setState({ isFetching: true });
           (async()=>{
                try{
                     const raw = await invoke<string>("get_clamav_version");
@@ -47,22 +48,19 @@ export default function UpdateDefinitions(){
                               ? new Date(stored)
                               : parsed.dbDate ?? null,
                          isRequired: parsed.isOutdated,
-                         isFetching: false,
                     });
                     updateVersions(parsed)
                } catch {
                     setState({
                          isRequired: true,
-                         isFetching: false
                     })
                }
           })()
      },[])
      useEffect(()=>{
           const unsubs: Promise<UnlistenFn>[] = [
-               listen("freshclam:start",() => setState({
-                    isUpdating: true,
-                    log: []
+               listen("freshclam:start",() => startTransition(()=>{
+                    setState({log: []})
                })),
                listen<string>("freshclam:output",e=>
                     setUpdateState(prev=>({
@@ -80,7 +78,6 @@ export default function UpdateDefinitions(){
                               ...prev.log,
                               `ERROR: ${e.payload}`
                          ],
-                         isUpdating: false,
                          isRequired: true
                     }))
                ),
@@ -90,10 +87,9 @@ export default function UpdateDefinitions(){
                          localStorage.setItem("last-updated", now.toISOString());
                          setState({
                               isRequired: false,
-                              isUpdating: false,
                               lastUpdated: now,
+                              exitMsg: e.payload
                          });
-                         setExitMsg(e.payload)
                          const raw = await invoke<string>("get_clamav_version");
                          const parsed = parseClamVersion(raw);
                          updateVersions(parsed);
@@ -107,19 +103,20 @@ export default function UpdateDefinitions(){
                Promise.all(unsubs).then(fns=>fns.forEach(fn=>fn()));
           }
      },[])
-     const {isRequired, isFetching, isUpdating, log, lastUpdated} = updateState
-     const Icon = (isUpdating || isFetching) ? Spinner : !isRequired ? CheckCircle : AlertCircle
+     const {isRequired, exitMsg, log, lastUpdated} = updateState
+     const isInitializing = !lastUpdated && !isUpdating
+     const Icon = (isUpdating || isInitializing) ? Spinner : !isRequired ? CheckCircle : AlertCircle
      return (
-          <AppLayout className="flex flex-col items-center justify-center gap-6 p-4">
+          <AppLayout className="flex flex-col justify-center gap-6 p-4">
                <div className="space-y-4">
                     <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">Definition Updater</h1>
                     <div className="flex flex-col items-center gap-4">
                          <div className="flex justify-center items-center gap-4">
-                              <Icon className={cn("size-12",isRequired ? "text-destructive" : "text-emerald-600", (isUpdating || isFetching) && "text-muted-foreground")}/>
+                              <Icon className={cn("size-12",isRequired ? "text-destructive" : "text-emerald-600", (isUpdating || isInitializing) && "text-muted-foreground")}/>
                               <div className="text-center space-y-0.5">
-                                   <h2 className={cn("text-xl md:text-2xl lg:text-3xl xl:text-[32px] font-semibold",isRequired ? "text-red-900" : "text-emerald-900", (isUpdating || isFetching) && "text-muted-foreground")}>
+                                   <h2 className={cn("text-xl md:text-2xl lg:text-3xl xl:text-[32px] font-semibold",isRequired ? "text-red-900 dark:text-red-300" : (isUpdating || isInitializing) ? "text-muted-foreground" : "text-emerald-900 dark:text-emerald-300")}>
                                         {isUpdating ? "Updating definitions..." :
-                                        isFetching ? "Fetching the current version..." :
+                                        isInitializing ? "Checking database status..." :
                                         isRequired ? "Update Required!" : "Up to date!"}
                                    </h2>
                                    {lastUpdated && (
@@ -130,9 +127,9 @@ export default function UpdateDefinitions(){
                                    )}
                               </div>
                          </div>
-                         <Button disabled={isUpdating || isFetching} onClick={handleUpdate}>
-                              {isFetching ? <Spinner/> : <RotateCw className={cn(isUpdating && "animate-spin")}/>}
-                              {isFetching ? "Fetching..." : isUpdating ? "Updating..." : "Update Database"}
+                         <Button disabled={isUpdating} onClick={handleUpdate}>
+                              <RotateCw className={cn(isUpdating && "animate-spin")}/>
+                              {isUpdating ? "Updating..." : "Update Database"}
                          </Button>
                          {!!clamavVersion && (
                               <p className="text-sm text-muted-foreground" title="Virus definition database version">{clamavVersion}</p>

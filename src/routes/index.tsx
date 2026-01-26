@@ -1,25 +1,25 @@
-import React from "react";
+import {lazy} from "react";
 import { createBrowserRouter, Outlet } from "react-router";
 import LazyLayout from "./layout";
 
 // Core pages
-const App = React.lazy(() => import("@/pages/main-page"));
-const AboutPage = React.lazy(() => import("@/pages/about"));
-const SettingsPage = React.lazy(() => import("@/pages/settings"));
+const App = lazy(() => import("@/pages/main-page"));
+const AboutPage = lazy(() => import("@/pages/about"));
+const SettingsPage = lazy(() => import("@/pages/settings"));
 
 // Scan-related bundle
-const ScanMenu = React.lazy(() => import("@/pages/scan-menu"));
-const QuarantinePage = React.lazy(() => import("@/pages/quarantine"));
-const ScanPage = React.lazy(()=>import("@/pages/scan"));
-const StatsPage = React.lazy(() => import("@/pages/stats"));
+const ScanMenu = lazy(() => import("@/pages/scan-menu"));
+const QuarantinePage = lazy(() => import("@/pages/quarantine"));
+const ScanPage = lazy(()=>import("@/pages/scan"));
+const StatsPage = lazy(() => import("@/pages/stats"));
 
 // History bundle
-const HistoryPage = React.lazy(() => import("@/pages/history"));
-const LogPage = React.lazy(() => import("@/pages/log-page"));
+const HistoryPage = lazy(() => import("@/pages/history"));
+const LogPage = lazy(() => import("@/pages/log-page"));
 
 // Tools bundle
-const SchedulerPage = React.lazy(() => import("@/pages/scheduler"));
-const UpdateDefinitions = React.lazy(() => import("@/pages/update"));
+const SchedulerPage = lazy(() => import("@/pages/scheduler"));
+const UpdateDefinitions = lazy(() => import("@/pages/update"));
 
 export const router = createBrowserRouter([
      {
@@ -32,7 +32,7 @@ export const router = createBrowserRouter([
                     element: <Outlet/>,
                     children: [
                          {index: true, element: <ScanMenu />},
-                         {path: ":type", element: <ScanPage/>}
+                         {path: ":type", element: <ScanPage/> }
                     ]
                },
                { path: "/stats", element: <StatsPage /> },

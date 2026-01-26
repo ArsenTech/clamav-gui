@@ -63,7 +63,7 @@ export default function ScanProcess({scanType, onStop, threatsCount, currLocatio
                     )}
                     <div className="p-4 border bg-card text-card-foreground shadow-sm rounded-md w-full">
                          <h2 className="text-lg sm:text-xl font-semibold flex items-center gap-2.5 border-b pb-0.5 mb-2 w-fit"><Bug className="text-primary"/> Findings</h2>
-                         <p className="flex items-center gap-2 min-h-6">{threatsCount<=0 ? <ShieldCheck className="text-emerald-700"/> : <ShieldAlert className="text-destructive"/>} {threatsCount} Threats</p>
+                         <p className="flex items-center gap-2 min-h-6">{threatsCount<=0 ? <ShieldCheck className="text-emerald-700 dark:text-emerald-500"/> : <ShieldAlert className="text-destructive"/>} {threatsCount} Threats</p>
                     </div>
                     <div className="p-4 border bg-card text-card-foreground shadow-sm rounded-md w-full">
                          <h2 className="text-lg sm:text-xl font-semibold flex items-center gap-2.5 border-b pb-0.5 mb-2 w-fit"><Clock className="text-primary"/> Start Time</h2>

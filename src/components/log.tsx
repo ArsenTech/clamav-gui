@@ -14,8 +14,8 @@ export default function LogText({logs, isLoading}: Props){
                ) : logs.map((val,i)=>(
                     <code key={`log-${i+1}`} className={cn(
                          "inline-block w-full break-all",
-                         val.includes("WARNING") && "text-amber-600",
-                         (val.includes("OK") || val.includes("updated")) && "text-emerald-700",
+                         val.includes("WARNING") && "text-amber-600 dark:text-amber-400",
+                         (val.includes("OK") || val.includes("updated")) && "text-emerald-700 dark:text-emerald-400",
                          (val.includes("FOUND") || val.includes("ERROR")) && "text-destructive"
                     )}>{val}</code>
                ))}</pre>

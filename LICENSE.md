@@ -552,7 +552,8 @@ to the start of each source file to most effectively state the exclusion of warr
 and each file should have at least the “copyright” line and a pointer to
 where the full notice is found.
 
-    ClamAV GUI - A minimal, open-source GUI for ClamAV Antivirus that makes the Antivirus itself look professional and work exactly like ClamAV (A FOSS CLI Antivirus)
+    ClamAV GUI - A minimal, open-source GUI for ClamAV Antivirus that makes
+    the Antivirus itself look professional and work exactly like ClamAV (A FOSS CLI Antivirus)
     Copyright (C) 2026  ArsenTech
 
     This program is free software: you can redistribute it and/or modify

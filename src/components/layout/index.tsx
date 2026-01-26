@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useEffect, useState, useTransition } from "react";
+import { lazy, Suspense, useEffect, useState, useTransition } from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import MainSidebar from "@/components/main-sidebar";
 import { cn } from "@/lib/utils";

@@ -8,9 +8,8 @@ import {
 } from "@/components/ui/card"
 import { ChartProps, IActivityStat } from "@/lib/types"
 import { NoData } from "@/components/charts/no-data"
-import { Suspense } from "react"
-import React from "react"
-const ActivityChart = React.lazy(()=>import("@/components/charts/activity"))
+import { Suspense, lazy  } from "react"
+const ActivityChart = lazy(()=>import("@/components/charts/activity"))
 
 export function ScanActivity({data}: ChartProps<IActivityStat[]>) {
   return (

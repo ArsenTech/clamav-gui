@@ -12,19 +12,19 @@ export default function SafetyIndicator({type, definitionStatus}: Props){
      return (
           <div className={cn(
                "h-72 bg-linear-to-b from-transparent w-full rounded-bl-[128px] flex justify-center md:justify-between items-center px-10 flex-col md:flex-row",
-               type==="safe" && "to-emerald-200",
-               type==="alert" && "to-red-200",
-               (type==="warning" || definitionStatus==="outdated") && "to-amber-200"
+               type==="safe" && "to-emerald-200 dark:to-emerald-950",
+               type==="alert" && "to-red-200 dark:to-red-950",
+               (type==="warning" || definitionStatus==="outdated") && "to-amber-200 dark:to-amber-950"
           )}>
                {definitionStatus==="outdated" ? (
-                    <ShieldAlert className="size-24 md:size-48 md:flex-1 text-amber-950"/>
+                    <ShieldAlert className="size-24 md:size-48 md:flex-1 text-amber-950 dark:text-amber-400"/>
                ) : (
-                    <Icon className={cn("size-24 md:size-48 md:flex-1",type==="safe" && "text-emerald-950",type==="alert" && "text-red-950",type==="warning" && "text-amber-950")}/>
+                    <Icon className={cn("size-24 md:size-48 md:flex-1",type==="safe" && "text-emerald-950 dark:text-emerald-400",type==="alert" && "text-red-950 dark:text-red-400",type==="warning" && "text-amber-950 dark:text-amber-400")}/>
                )}
                <div className="flex flex-col items-center justify-center gap-2 flex-wrap md:flex-3">
                     <h1 className={
                          cn(
-                              "text-2xl sm:text-3xl md:text-4xl lg:text-5xl  leading-tight font-medium mt-2 md:mt-0 text-center w-full",
+                              "text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-tight font-medium mt-2 md:mt-0 text-center w-full",
                               definitionStatus==="outdated" ? "" : "xl:text-6xl 2xl:text-7xl"
                          )
                     }>{definitionStatus==="outdated" ? "Definitions are older than 7 days. Update immediately!" : text}</h1>

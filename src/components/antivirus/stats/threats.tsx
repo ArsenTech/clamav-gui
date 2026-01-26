@@ -7,9 +7,8 @@ import {
 } from "@/components/ui/card"
 import { ChartProps, IThreatStatusStat } from "@/lib/types"
 import { NoData } from "@/components/charts/no-data"
-import { Suspense } from "react"
-import React from "react"
-const ThreatsChart = React.lazy(()=>import("@/components/charts/threats"))
+import { Suspense, lazy } from "react"
+const ThreatsChart = lazy(()=>import("@/components/charts/threats"))
 
 export function ThreatsStats({data}: ChartProps<IThreatStatusStat[]>) {
   return (

@@ -25,7 +25,7 @@ export default function ScanMenuPage(){
      const isCustom = currScanType === "custom";
      const PathIcon = () => {
           if (!hasPath) return isFile ? <FilePlus /> : <FolderPlus />;
-          return <CheckCircle className="text-emerald-700" />;
+          return <CheckCircle className="text-emerald-700 dark:text-emerald-500" />;
      };
      const openDialog = async (type: "file" | "folder") =>{
           const currPath = await open({

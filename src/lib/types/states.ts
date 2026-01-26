@@ -25,11 +25,10 @@ export interface IScanPageState{
      threats: IThreatsData[]
 }
 export interface IUpdatePageState{
-     isUpdating: boolean,
-     isFetching: boolean
      isRequired: boolean,
      lastUpdated: Date | null,
-     log: string[]
+     log: string[],
+     exitMsg: number | null,
 }
 export interface IFinishScanState{
      currThreat: IThreatsData | null,
