@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 ## [0.3.1] - Unreleased
+### Added
+- License
 ### Fixed
 - URL redirection bug (converted `target="_blank"` into `openUrl()`)
 - Bug from Accessing Custom and File Scans directly from the overview page.

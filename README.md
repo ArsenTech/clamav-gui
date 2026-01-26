@@ -108,7 +108,9 @@ Contributions are Always Welcome! Please read both [Code of Conduct][code-of-con
 [![Star History Chart][star-history-chart]][star-history-url]
 
 ## License
-<!-- TODO: Add the license -->
+This project is licensed under the [GNU General Public License v3.0 or later][license-url].
+
+ClamAV is a trademark of Cisco Systems, Inc. This project is not affiliated with or endorsed by Cisco.
 
 ## Support And Follow
 [![YouTube][yt-shield]][yt-url]

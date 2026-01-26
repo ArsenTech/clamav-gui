@@ -4,6 +4,7 @@ version = "0.3.1"
 description = "A GUI for ClamAV Antivirus that makes the Antivirus itself look professional and work exactly like ClamAV (A Freeware CLI Antivirus)"
 authors = ["ArsenTech"]
 edition = "2021"
+license = "GPL-3.0-or-later"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
