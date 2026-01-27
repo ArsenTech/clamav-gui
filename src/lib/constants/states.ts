@@ -29,6 +29,7 @@ export const INITIAL_UPDATE_STATE: IUpdatePageState = {
      exitMsg: null,
      isRequired: false,
      lastUpdated: null,
+     isUpdating: false,
      log: [],
 }
 export const INITIAL_FINISH_SCAN_STATE: IFinishScanState = {

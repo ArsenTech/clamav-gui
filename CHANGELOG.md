@@ -7,8 +7,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [0.3.1] - Unreleased
 ### Added
 - License (GNU GPL v3)
-- Skeleton Loaders on Settings Page + Overview + Stats Page + Scan Menu Page
-- Used Code Splitting on Real-time Performance Stats
+- Skeleton Loaders on Settings Page + Nearly on every page if needed
+- Used Code Splitting on Real-time Performance Stats + on Settings Page Tabs
 - Themes Support (Dark, Light, System) inside the Appearance settings
 - 2 new colors: **Green** and **Rose**
 - Settings Page

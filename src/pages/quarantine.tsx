@@ -1,23 +1,18 @@
-import { ThreatsTable } from "@/components/data-table/tables/threats";
 import { AppLayout } from "@/components/layout";
-import { RotateCcw, RotateCw, ShieldCheck, Trash2 } from "lucide-react"
+import { ShieldCheck } from "lucide-react"
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
-import { GET_QUARANTINE_COLS } from "@/components/data-table/columns/quarantine";
-import { useEffect, useState, useTransition } from "react";
+import { lazy, Suspense, useEffect, useState, useTransition } from "react";
 import { IQuarantineData } from "@/lib/types";
 import { invoke } from "@tauri-apps/api/core";
 import { formatBytes } from "@/lib/helpers";
 import Popup from "@/components/popup";
 import { toast } from "sonner";
-import { ButtonGroup } from "@/components/ui/button-group";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { IQuarantineState } from "@/lib/types/states";
 import { INITIAL_QUARANTINE_STATE } from "@/lib/constants/states";
-import useSettings from "@/hooks/use-settings";
+import QuarantineLoader from "@/loaders/quarantine";
+const QuarantineTable = lazy(()=>import("@/contents/quarantine"))
 
 export default function QuarantinePage(){
-     const {settings} = useSettings();
      const [isRefreshing, startTransition] = useTransition();
      const [quarantineState, setQuarantineState] = useState<IQuarantineState>(INITIAL_QUARANTINE_STATE);
      const setState = (overrides: Partial<IQuarantineState>) =>
@@ -92,25 +87,14 @@ export default function QuarantinePage(){
           <AppLayout className="flex justify-center items-center gap-4 flex-col p-4">
                <h1 className="text-2xl md:text-3xl lg:text-4xl font-medium border-b pb-2 w-fit">Quarantine</h1>
                {data.length>0 ? (
-                    <>
-                    <ButtonGroup>
-                         <Button onClick={fetchData} disabled={isRefreshing}>
-                              <RotateCw className={cn(isRefreshing && "animate-spin")}/>
-                              {isRefreshing ? "Refreshing..." : "Refresh"}
-                         </Button>
-                         <Button variant="secondary" onClick={()=>setState({ bulkDelete: true })}>
-                              <Trash2/> Clear All
-                         </Button>
-                         <Button variant="secondary" onClick={()=>setState({ bulkRestore: true })}>
-                              <RotateCcw/> Restore All
-                         </Button>
-                    </ButtonGroup>
-                         <ThreatsTable
-                              columns={GET_QUARANTINE_COLS(setState,settings.developerMode)}
+                    <Suspense fallback={<QuarantineLoader/>}>
+                         <QuarantineTable
+                              isRefreshing={isRefreshing}
+                              fetchData={fetchData}
+                              setState={setState}
                               data={data}
-                              searchColumn="threat_name"
                          />
-                    </>
+                    </Suspense>
                ) : (
                     <Empty>
                          <EmptyHeader>

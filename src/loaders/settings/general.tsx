@@ -2,7 +2,7 @@ import { DATE_TIME_FORMATS, THEME_SETTINGS } from "@/lib/settings"
 
 export default function GeneralSettingsLoader(){
      return (
-          <div className="px-1 py-2 space-y-3">
+          <div className="px-1 py-2 space-y-3 w-full">
                <div className="border border-accent animate-pulse flex flex-col gap-5 rounded-xl p-6">
                     <div className="h-4 bg-accent rounded-md w-1/3"/>
                     <div className="h-4 sm:h-5 w-28 bg-accent rounded-md"/>

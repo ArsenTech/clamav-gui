@@ -76,7 +76,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - [ ] YARA Rules and YARA Scan Type
 - [ ] Notifications
 - [ ] System Tray with quick access
-- [ ] Implement Skeleton Loading
+- [X] Implement Skeleton Loading
 - [ ] Finishing touches and optimization before v1
 
 ### Built With
