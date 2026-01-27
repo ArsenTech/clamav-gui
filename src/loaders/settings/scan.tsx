@@ -31,7 +31,7 @@ export default function ScanSettingsLoader(){
                          </div>
                     </div>
                </div>
-               {Object.entries(SCAN_SETTINGS_GROUPED).filter(([key])=>key==="advanced" as ScanOptionGroup).map(([key,options])=>(
+               {Object.entries(SCAN_SETTINGS_GROUPED).filter(([key])=>key!=="advanced" as ScanOptionGroup).map(([key,options])=>(
                     <div key={key} className="border border-accent animate-pulse flex flex-col gap-5 rounded-xl p-6">
                          <div className="h-4 bg-accent rounded-md w-1/3"/>
                          <div className="h-3.5 bg-accent rounded-md w-1/2"/>
