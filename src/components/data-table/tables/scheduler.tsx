@@ -15,9 +15,10 @@ import {
 } from "@/components/ui/table"
 import { useState } from "react"
 import { DataTablePagination } from "../pagination"
-import { DataTableProps } from "@/lib/types"
+import { DataTableProps, ISchedulerData } from "@/lib/types"
+import { DataTableViewOptions } from "../col-toggle"
 
-export function SchedulerTable<TData, TValue>({columns,data}: DataTableProps<TData, TValue>) {
+export function SchedulerTable({columns,data,headerElement}: DataTableProps<ISchedulerData<"state">>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable({
     data,
@@ -32,6 +33,10 @@ export function SchedulerTable<TData, TValue>({columns,data}: DataTableProps<TDa
   })
   return (
     <>
+    <div className="flex items-center justify-between gap-4 w-full">
+      {headerElement}
+      <DataTableViewOptions table={table}/>
+    </div>
     <div className="overflow-hidden rounded-md w-full">
       <Table>
         <TableHeader>

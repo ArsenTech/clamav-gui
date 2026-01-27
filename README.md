@@ -69,15 +69,15 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 
 ### To Do List
 - [ ] Settings
-  - [ ] Themes
+  - [X] Themes
   - [ ] Custom Scan Settings
   - [ ] Real Time Protection Settings
   - [ ] Other settings based on few GUI actions
 - [ ] YARA Rules and YARA Scan Type
 - [ ] Notifications
 - [ ] System Tray with quick access
-- [ ] Finishing touches and optimization before v1
 - [ ] Implement Skeleton Loading
+- [ ] Finishing touches and optimization before v1
 
 ### Built With
 - [![Tauri][tauri-shield]][tauri-url]

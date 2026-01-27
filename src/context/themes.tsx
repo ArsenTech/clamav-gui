@@ -1,16 +1,10 @@
+import useSettings from "@/hooks/use-settings";
 import { COLORS } from "@/lib/constants/colors";
+import { Color, ResolvedTheme, Theme } from "@/lib/types/settings";
 import { createContext, useContext, useEffect, useState } from "react";
-
-type Theme = "dark" | "light" | "system";
-type ResolvedTheme = Exclude<Theme, "system">;
-type Color = keyof typeof COLORS;
 
 type ThemeProviderProps = {
      children: React.ReactNode;
-     defaultTheme?: Theme;
-     defaultColor?: Color;
-     storageThemeKey?: string;
-     storageColorKey?: string;
 };
 
 type ThemeProviderState = {
@@ -25,13 +19,8 @@ const ThemeProviderContext = createContext<ThemeProviderState | null>(null);
 
 export function ThemeProvider({
      children,
-     defaultTheme = "system",
-     defaultColor = "blue",
-     storageThemeKey = "clamav-ui-theme",
-     storageColorKey = "clamav-ui-color",
 }: ThemeProviderProps) {
-     const [theme, setTheme] = useState<Theme>(() => (localStorage.getItem(storageThemeKey) as Theme) || defaultTheme);
-     const [color, setColor] = useState<Color>(() => (localStorage.getItem(storageColorKey) as Color) || defaultColor);
+     const {settings, setSettings} = useSettings()
      const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme | null>(null);
 
      useEffect(() => {
@@ -42,25 +31,20 @@ export function ThemeProvider({
                root.classList.add(resolved);
                setResolvedTheme(resolved);
           };
-          if (theme === "system") {
-               applyTheme(media.matches ? "dark" : "light");
-          } else {
-               applyTheme(theme);
-          }
+          applyTheme(settings.theme === "system" ? media.matches ? "dark" : "light" : settings.theme);
           const handleChange = (e: MediaQueryListEvent) => {
-               if (theme === "system") {
+               if (settings.theme === "system") 
                     applyTheme(e.matches ? "dark" : "light");
-               }
           };
           media.addEventListener("change", handleChange);
           return () => media.removeEventListener("change", handleChange);
-     }, [theme]);
+     }, [settings.theme]);
 
      useEffect(() => {
           if (!resolvedTheme) return;
-          const colorDef = COLORS[color];
+          const colorDef = COLORS[settings.color];
           if (!colorDef) {
-               console.error(`Invalid color "${color}". Available: ${Object.keys(COLORS).join(", ")}`);
+               console.error(`Invalid color "${settings.color}". Available: ${Object.keys(COLORS).join(", ")}`);
                return;
           }
           const { charts, ...uiColor } = colorDef;
@@ -73,12 +57,7 @@ export function ThemeProvider({
 
           const flatEntries = {
                ...modeStyles,
-               ...Object.fromEntries(
-                    Object.entries(modeStyles.sidebar ?? {}).map(([k, v]) => [
-                         `sidebar-${k}`,
-                         v,
-                    ])
-               ),
+               ...Object.fromEntries(Object.entries(modeStyles.sidebar ?? {}).map(([k, v]) => [`sidebar-${k}`,v,])),
           };
           Object.entries(flatEntries).forEach(([key, value]) => {
                if (typeof value !== "string") return;
@@ -87,21 +66,15 @@ export function ThemeProvider({
                     value
                );
           });
-          root.dataset.themeColor = color;
-     }, [color, resolvedTheme]);
+          root.dataset.themeColor = settings.color;
+     }, [settings.color, resolvedTheme]);
 
      const value: ThemeProviderState = {
-          theme,
+          theme: settings.theme,
           resolvedTheme,
-          color,
-          setTheme: (t) => {
-               localStorage.setItem(storageThemeKey, t);
-               setTheme(t);
-          },
-          setColor: (c) => {
-               localStorage.setItem(storageColorKey, c);
-               setColor(c);
-          },
+          color: settings.color,
+          setTheme: t => setSettings({ theme: t }),
+          setColor: c => setSettings({ color: c }),
      };
 
      return (

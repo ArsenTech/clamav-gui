@@ -1,8 +1,9 @@
 import { AppLayout } from "@/components/layout";
 import LogText from "@/components/log";
 import { Button } from "@/components/ui/button";
+import useSettings from "@/hooks/use-settings";
 import { invoke } from "@tauri-apps/api/core";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, ScrollText } from "lucide-react";
 import { useEffect, useState, useTransition } from "react";
 import { Link, useParams, useSearchParams } from "react-router";
 
@@ -10,6 +11,7 @@ interface Props{
      returnUrl: string
 }
 export default function LogPage({returnUrl}: Props){
+     const {settings} = useSettings()
      const {logId} = useParams<{ logId: string }>();
      const [logs, setLogs] = useState<string[]>([]);
      const [isLoading, startTransition] = useTransition();
@@ -37,6 +39,9 @@ export default function LogPage({returnUrl}: Props){
           <AppLayout className="space-y-4 p-4">
                <div className="space-y-4">
                     <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">Log Viewer</h1>
+                    {settings.developerMode && (
+                         <p className="text-muted-foreground flex items-center gap-2"><ScrollText className="size-5"/> Log ID: {logId}</p>
+                    )}
                     <Button asChild size="sm" variant="outline">
                          <Link to={returnUrl}>
                               <ChevronLeft/> Back

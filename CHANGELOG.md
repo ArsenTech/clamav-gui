@@ -7,7 +7,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [0.3.1] - Unreleased
 ### Added
 - License (GNU GPL v3)
-- Skeleton Loaders on Settings + Overview + Stats Page + Scan Menu Page
+- Skeleton Loaders on Settings Page + Overview + Stats Page + Scan Menu Page
 - Used Code Splitting on Real-time Performance Stats
 - Themes Support (Dark, Light, System) inside the Appearance settings
 - 2 new colors: **Green** and **Rose**
@@ -15,6 +15,13 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   - General Settings
   - Scan Settings
   - Advanced Settings
+- Working Settings:
+  - Theme
+  - Color
+  - Date Format
+  - Developer Mode
+  - Scan Stop Confirmation
+- New Scroll Bar Design to replace elements with `overflow-y-auto`
 ### Fixed
 - URL redirection bug (converted `target="_blank"` into `openUrl()`)
 - Bug from Accessing Custom and File Scans directly from the overview page.

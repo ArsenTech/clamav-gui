@@ -1,7 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { LucideProps } from "lucide-react";
 import { DAYS_OF_THE_WEEK } from "../constants";
-import { CUSTOM_SCAN_OPTIONS } from "../constants/settings";
 
 export type ScanType = "" | "main" | "full" | "custom" | "file"
 export type ClamAVState = "checking" | "available" | "missing";
@@ -59,13 +58,13 @@ export interface IThreatsData{
      displayName: string,
      filePath: string,
      status: ThreatStatus,
-     detectedAt: string
+     detectedAt: Date
 }
 export interface IQuarantineData<T extends "state" | "type">{
      id: string,
      threat_name: string,
      file_path: string,
-     quarantined_at: string,
+     quarantined_at: Date,
      size: T extends "state" ? string | null : number
 }
 export type ISchedulerData<T extends "state" | "type"> = (T extends "type" ? {
@@ -75,8 +74,8 @@ export type ISchedulerData<T extends "state" | "type"> = (T extends "type" ? {
      last_run: string | null
 } : {
      scanType: ScanType,
-     lastScan: string,
-     nextScan: string
+     lastScan: Date | null,
+     nextScan: Date | null
 }) & {
      id: string,
      interval: "daily" | "weekly" | "monthly",
@@ -110,16 +109,9 @@ export type StatsResponse<T extends "state" | "type"> = (T extends "state" ? {
 export interface ChartProps<T>{
      data: T
 }
-export interface DataTableProps<TData, TValue> {
-     columns: ColumnDef<TData, TValue>[]
+export interface DataTableProps<TData> {
+     columns: ColumnDef<TData>[]
      data: TData[],
      searchColumn?: string,
      headerElement?: React.JSX.Element
 }
-export type ScanOptionKey = keyof typeof CUSTOM_SCAN_OPTIONS;
-export type ScanOption = Record<string,{
-     label: string,
-     flag: string,
-     conflictsWith: readonly ScanOptionKey[],
-     level: "basic" | "advanced"
-}>

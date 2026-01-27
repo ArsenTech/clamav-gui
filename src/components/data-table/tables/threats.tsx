@@ -24,7 +24,7 @@ import { DataTablePagination } from "../pagination"
 import { DataTableViewOptions } from "../col-toggle"
 import { DataTableProps } from "@/lib/types"
 
-export function ThreatsTable<TData, TValue>({ columns, data, searchColumn = "displayName" }: DataTableProps<TData, TValue>) {
+export function ThreatsTable<TData>({ columns, data, searchColumn = "displayName" }: DataTableProps<TData>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})

@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import { useStartupScan } from "@/context/startup-scan";
 import { exit } from "@tauri-apps/plugin-process";
 import ScanLoader from "@/loaders/scan";
+import { ScrollArea } from "@/components/ui/scroll-area";
 const ScanProcess = lazy(()=>import("@/components/antivirus/scan-process"))
 
 export default function ScanPage(){
@@ -53,7 +54,7 @@ export default function ScanPage(){
                                         displayName: infectedFile[1],
                                         filePath: filePath.slice(0,filePath.length-1),
                                         status: "detected",
-                                        detectedAt: new Date().toLocaleString()
+                                        detectedAt: new Date()
                                    }
                               ]
                          }))
@@ -78,7 +79,7 @@ export default function ScanPage(){
                          errMsg: undefined
                     });
                     startTimeRef.current = null;
-                    localStorage.setItem("last-scanned-ms",Date.now().toString())
+                    localStorage.setItem("last-scanned",Date.now().toString())
                }),
                listen<number>("clamscan:total", e =>setState({ totalFiles: e.payload })),
                listen<string>("clamscan:error", e => {
@@ -169,10 +170,12 @@ export default function ScanPage(){
                                    />
                               </Suspense>
                          </div>
-                         <div className="space-y-3 px-3 text-lg overflow-y-auto max-h-[800px]">
-                              <h2 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">Log</h2>
-                              <LogText logs={logs}/>
-                         </div>
+                         <ScrollArea className="max-h-[800px]">
+                              <div className="space-y-3 px-3 text-lg">
+                                   <h2 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">Log</h2>
+                                   <LogText logs={logs}/>
+                              </div>
+                         </ScrollArea>
                     </>
                )}
           </AppLayout>

@@ -26,7 +26,6 @@ export function DiskStats() {
   const disk = useSystemStats("disk_read_bytes", "disk_written_bytes");
   useEffect(() => {
     if (disk.disk_read_bytes == null || disk.disk_written_bytes == null) return;
-
     if (!prevRef.current) {
       prevRef.current = {
         read: disk.disk_read_bytes,
@@ -34,23 +33,19 @@ export function DiskStats() {
       };
       return;
     }
-
     const readDelta = disk.disk_read_bytes - prevRef.current.read;
     const writeDelta = disk.disk_written_bytes - prevRef.current.write;
     prevRef.current = {
       read: disk.disk_read_bytes,
       write: disk.disk_written_bytes,
     };
-
-    setData((prev) =>
-      [
-        ...prev,
-        {
-          read: Math.max(0, readDelta),
-          write: Math.max(0, writeDelta),
-        },
-      ].slice(-30)
-    );
+    setData((prev) => [
+      ...prev,
+      {
+        read: Math.max(0, readDelta),
+        write: Math.max(0, writeDelta),
+      },
+    ].slice(-30));
     setCurrStats((prev) => ({
       ...prev,
       read: Math.max(0, readDelta),

@@ -9,29 +9,28 @@ import { invoke } from "@tauri-apps/api/core";
 import { useEffect, useState } from "react";
 
 export default function AboutPage(){
-     const versionCache = JSON.parse(localStorage.getItem("versions") as string) as IVersion | null;
-     const [versions, setVersions] = useState<IVersion>(versionCache || INITIAL_VERSION_INFO);
+     const [versions, setVersions] = useState<IVersion>(()=>JSON.parse(localStorage.getItem("versions") as string) || INITIAL_VERSION_INFO);
      useEffect(()=>{
           (async()=>{
                const app = await getVersion();
                const tauri = await getTauriVersion();
                const stored = localStorage.getItem("clamav-version");
-               let clamavVersion = "";
+               let clamAvVersion = "";
                if(stored){
-                    clamavVersion = stored
+                    clamAvVersion = stored
                } else {
                     const clamAVraw = await invoke<string>("get_clamav_version");
                     const parsed = parseClamVersion(clamAVraw);
                     if(parsed){
                          const versionText = `ClamAV v${parsed.engine}, Database Version: ${parsed.dbVersion}`;
                          localStorage.setItem("clamav-version", versionText);
-                         clamavVersion = versionText;
+                         clamAvVersion = versionText;
                     }
                }
                const newVersions: IVersion = {
                     ...versions,
                     app, tauri,
-                    clamAV: clamavVersion
+                    clamAV: clamAvVersion
                }
                setVersions(newVersions);
                const {clamAV, ...newV} = newVersions;  

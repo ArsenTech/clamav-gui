@@ -2,7 +2,7 @@ import { ThreatsTable } from "@/components/data-table/tables/threats";
 import { AppLayout } from "@/components/layout";
 import { RotateCcw, RotateCw, ShieldCheck, Trash2 } from "lucide-react"
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
-import { QUARANTINE_COLS } from "@/components/data-table/columns/quarantine";
+import { GET_QUARANTINE_COLS } from "@/components/data-table/columns/quarantine";
 import { useEffect, useState, useTransition } from "react";
 import { IQuarantineData } from "@/lib/types";
 import { invoke } from "@tauri-apps/api/core";
@@ -14,8 +14,10 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { IQuarantineState } from "@/lib/types/states";
 import { INITIAL_QUARANTINE_STATE } from "@/lib/constants/states";
+import useSettings from "@/hooks/use-settings";
 
 export default function QuarantinePage(){
+     const {settings} = useSettings();
      const [isRefreshing, startTransition] = useTransition();
      const [quarantineState, setQuarantineState] = useState<IQuarantineState>(INITIAL_QUARANTINE_STATE);
      const setState = (overrides: Partial<IQuarantineState>) =>
@@ -29,7 +31,7 @@ export default function QuarantinePage(){
                     id,
                     threat_name,
                     file_path,
-                    quarantined_at: new Date(quarantined_at).toLocaleString(),
+                    quarantined_at: new Date(quarantined_at),
                     size: isNaN(size) ? null : formatBytes(size)
                }))
                setState({ data: newData });
@@ -104,7 +106,7 @@ export default function QuarantinePage(){
                          </Button>
                     </ButtonGroup>
                          <ThreatsTable
-                              columns={QUARANTINE_COLS(setState)}
+                              columns={GET_QUARANTINE_COLS(setState,settings.developerMode)}
                               data={data}
                               searchColumn="threat_name"
                          />

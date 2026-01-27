@@ -9,7 +9,8 @@ import { ClipboardClock } from "lucide-react";
 import { Input } from "../ui/input";
 import { DAYS_OF_THE_WEEK, SCAN_OPTIONS } from "@/lib/constants";
 import { ScanType } from "@/lib/types";
-import { useEffect } from "react";
+import { ISchedulerFormValues } from "@/lib/types/settings"
+import { useState } from "react";
 import { Spinner } from "../ui/spinner";
 
 interface Props{
@@ -17,6 +18,7 @@ interface Props{
      isSubmitting: boolean
 }
 export default function SchedulerForm({handleSubmit, isSubmitting}: Props){
+     const [data, setData] = useState<ISchedulerFormValues>({ interval: null, scanType: null })
      const form = useForm<SchedulerType>({
           resolver: zodResolver(SchedulerSchema),
           defaultValues:{
@@ -30,20 +32,15 @@ export default function SchedulerForm({handleSubmit, isSubmitting}: Props){
      const onSubmit = (values: SchedulerType) => {
           handleSubmit(values);
           const now = new Date();
-          const interval = localStorage.getItem("scheduler-interval") as SchedulerType["interval"] | null;
-          const scanType = localStorage.getItem("scheduler-scan-type") as ScanType | null
+          const {interval, scanType} = data
           form.reset({
                hours: now.getHours(),
                minutes: now.getMinutes(),
                days: DAYS_OF_THE_WEEK[now.getDay()],
-               interval: interval ?? "weekly",
-               scanType: scanType ?? "main",
+               interval: interval ?? values.interval,
+               scanType: scanType ?? values.scanType,
           })
      }
-     useEffect(()=>{
-          localStorage.removeItem("scheduler-interval");
-          localStorage.removeItem("scheduler-scan-type");
-     },[])
      const time = `${form.watch("hours").toString().padStart(2,'0')}:${form.watch("minutes").toString().padStart(2,'0')}`
      const interval = form.watch("interval");
      return (
@@ -60,7 +57,10 @@ export default function SchedulerForm({handleSubmit, isSubmitting}: Props){
                                         <Select
                                              onValueChange={val=>{
                                                   field.onChange(val);
-                                                  localStorage.setItem("scheduler-interval",val)
+                                                  setData(prev=>({
+                                                       ...prev,
+                                                       interval: val as SchedulerType["interval"]
+                                                  }))
                                              }}
                                              value={field.value}
                                              disabled={isSubmitting}
@@ -90,7 +90,10 @@ export default function SchedulerForm({handleSubmit, isSubmitting}: Props){
                                         <Select
                                              onValueChange={val=>{
                                                   field.onChange(val);
-                                                  localStorage.setItem("scheduler-scan-type",val)
+                                                  setData(prev=>({
+                                                       ...prev,
+                                                       scanType: val as ScanType
+                                                  }))
                                              }}
                                              value={field.value}
                                              disabled={isSubmitting}

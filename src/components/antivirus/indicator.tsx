@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { AlertCircle, CheckCircle, SearchCheck, ShieldAlert, ShieldCheck, ShieldClose } from "lucide-react"
 import { Spinner } from "../ui/spinner";
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import { formatDistanceToNow } from "date-fns";
 
 interface Props{
@@ -9,10 +9,9 @@ interface Props{
      definitionStatus: "updated" | "outdated" | "loading"
 }
 export default function SafetyIndicator({type, definitionStatus}: Props){
-     const [lastScanned, setLastScanned] = useState<Date|null>(null);
-     useEffect(()=>{
-          const stored = localStorage.getItem("last-scanned-ms");
-          setLastScanned(stored ? new Date(parseInt(stored)) : null);
+     const lastScanned = useMemo(()=>{
+          const stored = localStorage.getItem("last-scanned");
+          return stored ? new Date(parseInt(stored)) : null;
      },[])
      const Icon = type==="safe" ? ShieldCheck : type==="warning" ? ShieldAlert : ShieldClose;
      const text = type==="safe" ? "The Device is safe!" : type==="alert" ? "The Device is Vulnerable!" : "Some Protection settings are disabled.";

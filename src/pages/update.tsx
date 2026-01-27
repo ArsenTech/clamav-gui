@@ -12,13 +12,12 @@ import { Spinner } from "@/components/ui/spinner";
 import { invoke } from "@tauri-apps/api/core";
 import { getExitText, parseClamVersion } from "@/lib/helpers";
 import { toast } from "sonner";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function UpdateDefinitions(){
      const [isUpdating, startTransition] = useTransition()
      const [updateState, setUpdateState] = useState<IUpdatePageState>(INITIAL_UPDATE_STATE);
-     const [clamavVersion, setClamavVersion] = useState<string | null>(
-          localStorage.getItem("clamav-version")
-     );
+     const [clamAvVersion, setClamavVersion] = useState<string>(()=>localStorage.getItem("clamav-version") || "");
      const setState = (overrides: Partial<IUpdatePageState>) =>
           setUpdateState(prev=>({
                ...prev,
@@ -131,18 +130,20 @@ export default function UpdateDefinitions(){
                               <RotateCw className={cn(isUpdating && "animate-spin")}/>
                               {isUpdating ? "Updating..." : "Update Database"}
                          </Button>
-                         {!!clamavVersion && (
-                              <p className="text-sm text-muted-foreground" title="Virus definition database version">{clamavVersion}</p>
+                         {clamAvVersion.trim()!=="" && (
+                              <p className="text-sm text-muted-foreground" title="Virus definition database version">{clamAvVersion}</p>
                          )}
                          {exitMsg!==null && (
                               <p className="text-sm text-muted-foreground">{getExitText(exitMsg,"update")}</p>
                          )}
                     </div>
                </div>
-               <div className="space-y-3 px-3 text-lg overflow-y-auto max-h-[800px]">
-                    <h2 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">Log</h2>
-                    <LogText logs={log}/>
-               </div>
+               <ScrollArea className="max-h-[800px]">
+                    <div className="space-y-3 px-3 text-lg">
+                         <h2 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">Log</h2>
+                         <LogText logs={log}/>
+                    </div>
+               </ScrollArea>
           </AppLayout>
      )
 }

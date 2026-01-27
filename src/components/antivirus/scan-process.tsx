@@ -2,6 +2,7 @@ import Popup from "@/components/popup";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Spinner } from "@/components/ui/spinner";
+import useSettings from "@/hooks/use-settings";
 import { SCAN_TYPES } from "@/lib/constants";
 import { IScanPageState } from "@/lib/types/states";
 import { Bug, Clock, Dot, Folder, SearchCheck, ShieldAlert, ShieldCheck, Square } from "lucide-react";
@@ -13,12 +14,14 @@ interface Props{
 }
 
 export default function ScanProcess({onStop, scanState}: Props){
+     const {settings} = useSettings();
      const {scanType, threats, currLocation, totalFiles, scannedFiles, paths} = scanState
      const scanTypeName = useMemo(()=>SCAN_TYPES.find(val=>val.type===scanType)?.name,[scanType])
      const [isOpen, setIsOpen] = useState(false);
+     const {formatDate} = useSettings()
      const dateRef = useRef<Date>(new Date(Date.now()))
      const handleStopScan = () => {
-          setIsOpen(false);
+          if(settings.confirmStopScan) setIsOpen(false);
           onStop();
      }
      const percentage = useMemo(()=>totalFiles>0 ? Math.min(100,Math.floor((scannedFiles/totalFiles)*100)) : 0,[scannedFiles,totalFiles]);
@@ -63,9 +66,9 @@ export default function ScanProcess({onStop, scanState}: Props){
                     </div>
                     <div className="p-4 border bg-card text-card-foreground shadow-sm rounded-md w-full">
                          <h2 className="text-lg sm:text-xl font-semibold flex items-center gap-2.5 border-b pb-0.5 mb-2 w-fit"><Clock className="text-primary"/> Start Time</h2>
-                         <code className="min-h-6">{dateRef.current.toLocaleString()}</code>
+                         <code className="min-h-6">{formatDate(dateRef.current)}</code>
                     </div>
-                    <Button className="flex-1" onClick={()=>setIsOpen(true)}><Square/> Stop the Scan</Button>
+                    <Button className="flex-1" onClick={()=>settings.confirmStopScan ? setIsOpen(true) : handleStopScan()}><Square/> Stop the Scan</Button>
                </div>
                <Popup
                     open={isOpen}

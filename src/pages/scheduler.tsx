@@ -93,8 +93,8 @@ export default function SchedulerPage(){
                               id,
                               interval,
                               scanType: scan_type,
-                              lastScan: last_run ?? "Never",
-                              nextScan: nextScan.toLocaleString(),
+                              lastScan: last_run ? new Date(last_run) : null,
+                              nextScan,
                               log_id
                          })
                     })
@@ -120,8 +120,8 @@ export default function SchedulerPage(){
                               id: payload.id,
                               interval: payload.interval,
                               scanType: payload.scan_type,
-                              lastScan: payload.last_run ?? "Never",
-                              nextScan: nextScan.toLocaleString(),
+                              lastScan: payload.last_run ? new Date(payload.last_run) : null,
+                              nextScan,
                               log_id: payload.log_id
                          }];
                          return {
@@ -140,17 +140,19 @@ export default function SchedulerPage(){
      return (
           <AppLayout className="flex justify-center items-center gap-4 flex-col p-4">
                <h1 className="text-2xl md:text-3xl lg:text-4xl font-medium border-b pb-2 w-fit">Scheduler</h1>
-               <ButtonGroup>
-                    <Button disabled={isPending || isSubmitting} onClick={refresh}>
-                         <RotateCw className={cn(isPending && "animate-spin")}/>
-                         {isPending ? "Please wait..." : "Refresh"}
-                    </Button>
-                    <Button variant="outline" disabled={isPending || !data.length || isSubmitting} onClick={()=>setState({isOpenClear: true})}>
-                         <Trash2/>
-                         Clear Jobs
-                    </Button>
-               </ButtonGroup>
                <SchedulerTable
+                    headerElement={(
+                         <ButtonGroup>
+                              <Button disabled={isPending || isSubmitting} onClick={refresh}>
+                                   <RotateCw className={cn(isPending && "animate-spin")}/>
+                                   {isPending ? "Please wait..." : "Refresh"}
+                              </Button>
+                              <Button variant="outline" disabled={isPending || !data.length || isSubmitting} onClick={()=>setState({isOpenClear: true})}>
+                                   <Trash2/>
+                                   Clear Jobs
+                              </Button>
+                         </ButtonGroup>
+                    )}
                     columns={GET_SCHEDULER_COLS(setState)}
                     data={data}
                />

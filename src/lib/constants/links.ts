@@ -51,74 +51,60 @@ export const SIDEBAR_FOOTER_LINKS = [
      }
 ]
 export const QUICK_ACCESS_LINKS: IQuickAccessItem[] = [
-  {
-    name: "Main Scan",
-    desc: "Check common locations now",
-    href: "/scan/main",
-    Icon: Search,
-    openDialogType: "none"
-  },
-  {
-    name: "Full Scan",
-    desc: "Scan everything (might take a while)",
-    href: "/scan/full",
-    Icon: SearchCheck,
-    openDialogType: "none"
-  },
-  {
-    name: "Custom Scan",
-    desc: "Choose a folder to scan",
-    href: "/scan/custom",
-    Icon: FolderSearch,
-    openDialogType: "folder"
-  },
-  {
-    name: "File Scan",
-    desc: "Choose a file to scan",
-    href: "/scan/file",
-    Icon: FileSearch,
-    openDialogType: "file"
-  },
-  {
-    name: "Quarantine",
-    desc: "View isolated malicious files",
-    href: "/quarantine",
-    Icon: BugOff,
-    openDialogType: "none"
-  },
-  {
-    name: "Update",
-    desc: "Update Virus Definitions from the ClamAV database",
-    href: "/update",
-    Icon: RotateCcw,
-    openDialogType: "none"
-  },
-  {
-    name: "History",
-    desc: "View the ClamAV GUI Actions history",
-    href: "/history",
-    Icon: History,
-    openDialogType: "none"
-  },
-  {
-    name: "Real-Time Protection",
-    desc: "Scans newly created files in real time",
-    href: "/",
-    Icon: ShieldCheck,
-    openDialogType: "none"
-  },
-  {
-    name: "Scheduler",
-    desc: "Schedule a scan",
-    href: "/scheduler",
-    Icon: ClipboardClock,
-    openDialogType: "none"
-  },
-  {
-    name: "Statistics",
-    desc: "View ClamAV GUI's stats including the System stats",
-    href: "/stats",
-    Icon: ChartNoAxesCombined,
-    openDialogType: "none"
-  },
+     {
+          name: "Main Scan",
+          desc: "Check common locations now",
+          href: "/scan/main",
+          Icon: Search,
+          openDialogType: "none"
+     },
+     {
+          name: "Full Scan",
+          desc: "Scan everything (might take a while)",
+          href: "/scan/full",
+          Icon: SearchCheck,
+          openDialogType: "none"
+     },
+     {
+          name: "Custom Scan",
+          desc: "Choose a folder to scan",
+          href: "/scan/custom",
+          Icon: FolderSearch,
+          openDialogType: "folder"
+     },
+     {
+          name: "File Scan",
+          desc: "Choose a file to scan",
+          href: "/scan/file",
+          Icon: FileSearch,
+          openDialogType: "file"
+     },
+     {
+          name: "Quarantine",
+          desc: "View isolated malicious files",
+          href: "/quarantine",
+          Icon: BugOff,
+          openDialogType: "none"
+     },
+     {
+          name: "Update",
+          desc: "Update Virus Definitions from the ClamAV database",
+          href: "/update",
+          Icon: RotateCcw,
+          openDialogType: "none"
+     },
+     {
+          name: "History",
+          desc: "View the ClamAV GUI Actions history",
+          href: "/history",
+          Icon: History,
+          openDialogType: "none"
+     },
+     {
+          name: "Real-Time Protection",
+          desc: "Scans newly created files in real time",
+          href: "/",
+          Icon: ShieldCheck,
+          openDialogType: "none"
+     },
 ]

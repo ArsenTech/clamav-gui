@@ -10,13 +10,14 @@ import { invoke } from "@tauri-apps/api/core";
 import { toast } from "sonner";
 import { Link } from "react-router";
 import { ISchedulerState } from "@/lib/types/states";
+import useSettings from "@/hooks/use-settings";
 
 export const GET_SCHEDULER_COLS = (
-     setState:  (overrides: Partial<ISchedulerState>) => void
+     setState:  (overrides: Partial<ISchedulerState>) => void,
 ): ColumnDef<ISchedulerData<"state">>[] => [
      {
           accessorKey: "id",
-          header: "Job ID"
+          header: "Job Name",
      },
      {
           accessorKey: "interval",
@@ -51,7 +52,11 @@ export const GET_SCHEDULER_COLS = (
                          {column.getIsSorted()==="asc" ? <ArrowUp className="h-4 w-4" /> : column.getIsSorted()==="desc" ? <ArrowDown className="h-4 w-4" /> : <ArrowUpDown className="h-4 w-4" />}
                     </Button>
                </div>
-          )
+          ),
+          cell: ({getValue}) => {
+               const {formatDate} = useSettings();
+               return formatDate(new Date(getValue() as string))
+          }
      },
      {
           accessorKey: "nextScan",
@@ -62,7 +67,11 @@ export const GET_SCHEDULER_COLS = (
                          {column.getIsSorted()==="asc" ? <ArrowUp className="h-4 w-4" /> : column.getIsSorted()==="desc" ? <ArrowDown className="h-4 w-4" /> : <ArrowUpDown className="h-4 w-4" />}
                     </Button>
                </div>
-          )
+          ),
+          cell: ({getValue}) => {
+               const {formatDate} = useSettings();
+               return formatDate(new Date(getValue() as string))
+          }
      },
      {
           id: "actions",

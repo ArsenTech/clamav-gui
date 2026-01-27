@@ -19,13 +19,13 @@ import {
 } from "@/components/ui/table"
 import { useState } from "react"
 import { DataTablePagination } from "../pagination"
-import { DataTableProps, HistoryStatus } from "@/lib/types"
+import { DataTableProps, HistoryStatus, IHistoryData } from "@/lib/types"
 import { DataTableViewOptions } from "../col-toggle"
 import { ButtonGroup } from "@/components/ui/button-group"
 import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { CheckCircle, CircleAlert, Eye, Shield, TriangleAlert } from "lucide-react"
 
-export function HistoryTable<TData, TValue>({columns,data,headerElement}: DataTableProps<TData, TValue>) {
+export function HistoryTable({columns,data,headerElement}: DataTableProps<IHistoryData<"state">>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})

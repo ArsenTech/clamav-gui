@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils"
 import { useRef } from "react"
+import { ScrollArea } from "./ui/scroll-area";
 
 interface Props{
      logs: string[],
@@ -8,7 +9,7 @@ interface Props{
 export default function LogText({logs, isLoading}: Props){
      const logRef = useRef<HTMLPreElement>(null);
      return (
-          <div className="min-h-[calc(100vh-200px)] overflow-y-auto">
+          <ScrollArea className="min-h-[calc(100vh-200px)]">
                <pre className="whitespace-pre-wrap text-sm" ref={logRef}>{isLoading ? (
                     <code className="inline-block w-full break-all">Loading...</code>
                ) : logs.map((val,i)=>(
@@ -19,6 +20,6 @@ export default function LogText({logs, isLoading}: Props){
                          (val.includes("FOUND") || val.includes("ERROR")) && "text-destructive"
                     )}>{val}</code>
                ))}</pre>
-          </div>
+          </ScrollArea>
      )
 }

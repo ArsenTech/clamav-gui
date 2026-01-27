@@ -17,8 +17,10 @@ import Popup from "@/components/popup";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { IHistoryPageState } from "@/lib/types/states";
 import { INITIAL_HISTORY_STATE } from "@/lib/constants/states";
+import useSettings from "@/hooks/use-settings";
 
 export default function HistoryPage(){
+     const {settings} = useSettings();
      const [isRefreshing, startTransition] = useTransition();
      const [isClearing, startClearTransition] = useTransition();
      const [historyState, setHistoryState] = useState<IHistoryPageState>(INITIAL_HISTORY_STATE)
@@ -89,7 +91,7 @@ export default function HistoryPage(){
                <div className="space-y-4">
                     <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">History</h1>
                     <HistoryTable
-                         columns={GET_HISTORY_COLS(setHistoryState)}
+                         columns={GET_HISTORY_COLS(setHistoryState,settings.developerMode)}
                          data={data}
                          headerElement={(
                               <ButtonGroup>

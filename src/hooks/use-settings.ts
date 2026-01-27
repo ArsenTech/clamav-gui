@@ -1,0 +1,27 @@
+import { DEFAULT_SETTINGS } from "@/lib/settings";
+import { ISettings } from "@/lib/types/settings";
+import { format } from "date-fns";
+import { useState } from "react";
+
+export default function useSettings(){
+     const [settings, setSettings] = useState<ISettings>(()=>{
+          const stored = localStorage.getItem("clamav-settings")
+          return stored ? JSON.parse(stored) : DEFAULT_SETTINGS
+     });
+     const formatDate = (date?: Date) => {
+          if(!date) return "Never"
+          return format(date,settings.dateFormat)
+     }
+     return {
+          settings,
+          setSettings: (overrides: Partial<ISettings>) => {
+               const newValues: ISettings = {
+                    ...settings,
+                    ...overrides
+               };
+               localStorage.setItem("clamav-settings",JSON.stringify(newValues))
+               setSettings(newValues)
+          },
+          formatDate
+     }
+}
