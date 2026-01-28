@@ -1,6 +1,6 @@
 import { ThreatsTable } from "@/components/data-table/tables/threats";
 import { Button } from "@/components/ui/button";
-import { BugOff, EyeOff, LogOut, ShieldAlert, ShieldCheck, ShieldX, Timer, Trash } from "lucide-react";
+import { BugOff, LogOut, ShieldAlert, ShieldCheck, ShieldX, Timer, Trash } from "lucide-react";
 import { useNavigate } from "react-router";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -86,14 +86,6 @@ export default function ScanFinishResult({setScanState, isStartup, scanState}: P
                } 
           })
      }
-     const handleBulkMarkSafe = () => {
-          setScanState(prev=>({
-               ...prev,
-               threats: prev.threats.map(t =>t.status === "detected" ? { ...t, status: "safe" } : t)
-          }))
-          toast.success("All threats marked as safe!")
-          // TODO: Exclude the Threat
-     }
      const handlePrimaryAction = async () => {
           if (isStartup) {
                await exit(0);
@@ -102,7 +94,7 @@ export default function ScanFinishResult({setScanState, isStartup, scanState}: P
           }
      };
      const {errMsg, exitCode, threats, duration} = scanState;
-     const isResolved = useMemo(() =>threats.every(t =>["quarantined", "deleted", "safe"].includes(t.status)),[threats]);
+     const isResolved = useMemo(() =>threats.some(t =>["quarantined", "deleted"].includes(t.status)),[threats]);
      const {isOpenDelete, bulkDelete} = finishScanState
      return (errMsg && errMsg.trim()!=="") ? (
           <>
@@ -147,9 +139,6 @@ export default function ScanFinishResult({setScanState, isStartup, scanState}: P
                          <DropdownMenuContent align="end">
                               <DropdownMenuItem onClick={handleBulkQuarantine}>
                                    <BugOff/> Quarantine All
-                              </DropdownMenuItem>
-                              <DropdownMenuItem onClick={handleBulkMarkSafe}>
-                                   <EyeOff/> Mark All Safe
                               </DropdownMenuItem>
                               <DropdownMenuItem className="text-destructive" onClick={()=>setState({bulkDelete: true})}>
                                    <Trash className="text-destructive"/> Delete All

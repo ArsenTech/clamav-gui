@@ -4,6 +4,8 @@ import GeneralSettingsLoader from "./general";
 export {default as GeneralSettingsLoader} from "./general";
 export {default as ScanSettingsLoader} from "./scan";
 export {default as AdvancedSettingsLoader} from "./advanced"
+export {default as ProtectionSettingsLoader} from "./protection"
+export {default as SchedulerSettingsLoader} from "./scheduler"
 
 export default function SettingsLoader(){
      return (

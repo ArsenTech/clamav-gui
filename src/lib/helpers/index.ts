@@ -55,7 +55,6 @@ export const capitalizeText = (cellValue: string) => `${cellValue.toUpperCase()[
 
 export function getThreatStatusBadges(cellValue: ThreatStatus) {
   return cellValue ==="deleted" ? "default" :
-    cellValue ==="safe" ? "secondary" :
     cellValue === "detected" ? "destructive" : "outline"
 }
 

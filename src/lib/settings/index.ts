@@ -1,33 +1,33 @@
-import { Files, Folder, Monitor, Moon, Sun, Gauge, ChevronsLeftRightEllipsis, ShieldCheck, SearchCode } from "lucide-react";
+import { Files, Folder, Monitor, Moon, Sun, Gauge, ChevronsLeftRightEllipsis, ShieldCheck, SearchCode, LucideProps } from "lucide-react";
 import { IDateFormatSettings, ISettings, IThemeSettings, ScanOptionGroup } from "../types/settings";
 
 export const SCAN_OPTION_TITLE: Record<ScanOptionGroup,{
      title: string,
-     icon: React.JSX.Element
+     Icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>
 }> = {
      detection: {
           title: "Detection",
-          icon: <ShieldCheck className="size-5"/>
+          Icon: ShieldCheck
      },
      "file-types": {
           title: "File Types",
-          icon: <Files className="size-5"/>
+          Icon: Files
      },
      filesystem: {
           title: "Filesystem",
-          icon: <Folder className="size-5"/>
+          Icon: Folder
      },
      "limits-performance": {
           title: "Limits and Performance",
-          icon: <Gauge className="size-5"/>
+          Icon: Gauge
      },
      output: {
           title: "Output",
-          icon: <ChevronsLeftRightEllipsis className="size-5"/>
+          Icon: ChevronsLeftRightEllipsis
      },
      advanced: {
           title: "Advanced Scan Options",
-          icon: <SearchCode className="size-5"/>
+          Icon: SearchCode
      },
 }
 export const DEFAULT_SETTINGS: ISettings = {
@@ -35,8 +35,11 @@ export const DEFAULT_SETTINGS: ISettings = {
      color: "blue",
      dateFormat: "dd/MM/yyyy HH:mm:ss",
      developerMode: false,
-     confirmStopScan: true
+     confirmStopScan: true,
+     autoScrollText: true,
+     maxLogLines: 500
 }
+export const MAX_LONG_LINES_CHOICES = [100, 500, 1000, 1500] as const
 export const THEME_SETTINGS: IThemeSettings = {
      theme: [
           {
@@ -87,13 +90,16 @@ export const DATE_TIME_FORMATS: IDateFormatSettings[] = [
           format: "yyyy-MM-dd HH:mm:ss"
      }
 ]
-/* TODO: Finish the settings page according to this route ([UI] - Completed, [X] - Works)
+/* TODO: Finish the settings page according to this route ([UI] - Completed, [X] - Works, [Soon] - Coming soon)
 Settings
 ├── General (uses LocalStorage)
 │   ├── Theme [X]
 │   ├── Color [X]
-│   ├── Language
-│   └── Date format [X]
+│   ├── Language [Soon]
+│   ├── Date format [X]
+│   └── Logs & UI
+│       ├── Auto-scroll [X]
+│       └── Max log lines [X]
 │
 ├── Scan
 │   ├── Auto startup scan [UI] (uses @tauri-apps/plugin-store)
@@ -104,20 +110,16 @@ Settings
 │       └── Options with Input Boxes [UI] 
 │
 ├── Scheduler
-│   ├── Enable Scheduler UI
+│   ├── Enable Scheduler UI [UI]
 │   └── Notifications
-│       ├── On scan start
-│       ├── On scan finish
-│       └── On detection
-│
-├── Logs & UI
-│   ├── Auto-scroll
-│   └── Max log lines
+│       ├── On scan start [UI]
+│       ├── On scan finish [UI]
+│       └── On detection [UI]
 │
 ├── Protection (uses @tauri-apps/plugin-store)
-│   ├── Real-Time Protection
-│   ├── Exclusions => --exclude-dir=REGEX Exclusions (perfect in Protection settings), --exclude-pua=CATEGORY Exclude a specific PUA category
-│   └── ClamD status
+│   ├── Real-Time Protection [Soon]
+│   ├── Exclusions [UI]
+│   └── ClamD status [UI]
 │
 └── Advanced
     ├── Custom Scan Options (uses @tauri-apps/plugin-store)
@@ -125,5 +127,5 @@ Settings
     │   └── Options with Input Boxes [UI]
     │
     ├── Developer Mode (Shows ID on Tables) [X]
-    └── Behavior
+    └── Behavior [Soon]
 */

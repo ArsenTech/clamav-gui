@@ -51,5 +51,7 @@ export interface ISettings{
      color: Color,
      dateFormat: DateFormat,
      developerMode: boolean,
-     confirmStopScan: boolean
+     confirmStopScan: boolean,
+     autoScrollText: boolean,
+     maxLogLines: number
 }

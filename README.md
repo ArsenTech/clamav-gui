@@ -65,6 +65,9 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - **Real-Time Performance Stats** - CPU, RAM Usage, and Disk Usage Stats all without leaving the GUI
 - **Flags** - Launch **Full Scan** and **Main Scan** Directly if needed
 - **Scheduler** - Schedule some scans if needed + manage other scheduled scan jobs
+
+### Other Features
+- **Skeleton Loader** - A separate Skeleton loading on some pages for clean UX
 <!-- TODO: Write the Features list -->
 
 ### To Do List
@@ -76,7 +79,6 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - [ ] YARA Rules and YARA Scan Type
 - [ ] Notifications
 - [ ] System Tray with quick access
-- [X] Implement Skeleton Loading
 - [ ] Finishing touches and optimization before v1
 
 ### Built With

@@ -4,7 +4,7 @@ import { DAYS_OF_THE_WEEK } from "../constants";
 
 export type ScanType = "" | "main" | "full" | "custom" | "file"
 export type ClamAVState = "checking" | "available" | "missing";
-export type ThreatStatus = "quarantined" | "deleted" | "safe" | "detected";
+export type ThreatStatus = "quarantined" | "deleted" | "detected";
 export type HistoryStatus = "success" | "warning" | "error" | "acknowledged";
 export type ThreatStatusStat = Exclude<ThreatStatus,"detected"|"safe"> | "unresolved";
 export type ComputerVirusType = "trojan" | "ransomware" | "spyware" | "rootkit" | "other";
@@ -114,4 +114,11 @@ export interface DataTableProps<TData> {
      data: TData[],
      searchColumn?: string,
      headerElement?: React.JSX.Element
+}
+export interface ISettingsTab{
+     page: "general" | "advanced" | "scan" | "protection" | "scheduler",
+     name: string,
+     Icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>,
+     Loader: React.FC,
+     LazyComponent: React.LazyExoticComponent<React.FC>
 }

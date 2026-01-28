@@ -12,8 +12,10 @@ import { invoke } from "@tauri-apps/api/core";
 import { getExitText, parseClamVersion } from "@/lib/helpers";
 import { toast } from "sonner";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import useSettings from "@/hooks/use-settings";
 
 export default function UpdateContent(){
+     const {settings} = useSettings()
      const [updateState, setUpdateState] = useState<IUpdatePageState>(INITIAL_UPDATE_STATE);
      const [clamAvVersion, setClamavVersion] = useState<string>(()=>localStorage.getItem("clamav-version") || "");
      const setState = (overrides: Partial<IUpdatePageState>) =>
@@ -62,7 +64,7 @@ export default function UpdateContent(){
                     setUpdateState(prev=>({
                          ...prev,
                          log: [
-                              ...prev.log,
+                              ...prev.log.slice(-settings.maxLogLines),
                               e.payload
                          ],
                     }))
@@ -71,7 +73,7 @@ export default function UpdateContent(){
                     setUpdateState(prev=>({
                          ...prev,
                          log: [
-                              ...prev.log,
+                              ...prev.log.slice(-settings.maxLogLines),
                               `ERROR: ${e.payload}`
                          ],
                          isRequired: true,

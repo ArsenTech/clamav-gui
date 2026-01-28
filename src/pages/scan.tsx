@@ -14,9 +14,11 @@ import { useStartupScan } from "@/context/startup-scan";
 import { exit } from "@tauri-apps/plugin-process";
 import ScanLoader from "@/loaders/scan";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import useSettings from "@/hooks/use-settings";
 const ScanProcess = lazy(()=>import("@/components/antivirus/scan-process"))
 
 export default function ScanPage(){
+     const {settings} = useSettings();
      const [searchParams] = useSearchParams();
      const navigate = useNavigate();
      const {type} = useParams<{type: ScanType}>();
@@ -40,7 +42,7 @@ export default function ScanPage(){
                     if (!scanActiveRef.current) return;
                     setScanState(prev=>({
                          ...prev,
-                         logs: [...prev.logs.slice(-500), e.payload],
+                         logs: [...prev.logs.slice(-settings.maxLogLines), e.payload],
                     }))
                     if(e.payload.endsWith("FOUND")){
                          const infectedFile = e.payload.split(" ");

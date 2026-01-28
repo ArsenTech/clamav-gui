@@ -7,21 +7,24 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [0.3.1] - Unreleased
 ### Added
 - License (GNU GPL v3)
-- Skeleton Loaders on Settings Page + Nearly on every page if needed
+- Skeleton Loaders on nearly every page if needed
 - Used Code Splitting on Real-time Performance Stats + on Settings Page Tabs
-- Themes Support (Dark, Light, System) inside the Appearance settings
-- 2 new colors: **Green** and **Rose**
-- Settings Page
-  - General Settings
-  - Scan Settings
-  - Advanced Settings
+- Settings Page UI with every tab:
+  - General
+  - Scan
+  - Scheduler
+  - Protection
+  - Advanced
 - Working Settings:
-  - Theme
-  - Color
+  - Theme (Dark, Light, System)
+  - Color (Blue, Green, Rose)
   - Date Format
   - Developer Mode
   - Scan Stop Confirmation
+  - Max Log Lines
+  - Auto-scroll text
 - New Scroll Bar Design to replace elements with `overflow-y-auto`
+- An Auto-scroll support for logs
 ### Fixed
 - URL redirection bug (converted `target="_blank"` into `openUrl()`)
 - Bug from Accessing Custom and File Scans directly from the overview page.
@@ -29,6 +32,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Changed
 - Expanded the Credits Section with more credits
 - Replaced the "Last Scan" Placeholder into an actual data
+- Manual Code Splitting of the Rust Backend by moving helpers into a separate `.rs` file
 
 ## [0.3.0] - 2026-01-25
 ### Added

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ArrowDown, ArrowUp, ArrowUpDown, BugOff, EyeOff, FolderOpen, MoreHorizontal, Trash } from "lucide-react";
+import { ArrowDown, ArrowUp, ArrowUpDown, BugOff, FolderOpen, MoreHorizontal, Trash } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { IThreatsData, ThreatStatus } from "@/lib/types";
@@ -71,15 +71,6 @@ export const GET_THREATS_COLS = (
                               console.error(e);
                          }
                     }
-                    const handleMarkAsSafe = () => {
-                         const {filePath, displayName} = threat
-                         setScanState(prev=>({
-                              ...prev,
-                              threats: prev.threats.map(val => val.filePath === filePath && val.displayName === displayName ? { ...val, status: "safe" } : val)
-                         }))
-                         toast.success("Threat marked as safe!")
-                         // TODO: Exclude the Threat
-                    }
                     const handleRevealPath = async() => {
                          const folder = await dirname(threat.filePath);
                          await openPath(folder);
@@ -98,9 +89,6 @@ export const GET_THREATS_COLS = (
                                    <DropdownMenuSeparator/>
                                    <DropdownMenuItem disabled={isResolved} onClick={handleQuarantine}>
                                         <BugOff/> Quarantine
-                                   </DropdownMenuItem>
-                                   <DropdownMenuItem disabled={isResolved} onClick={handleMarkAsSafe}>
-                                        <EyeOff/> Mark as safe
                                    </DropdownMenuItem>
                                    <DropdownMenuItem className="text-destructive" onClick={()=>setState({
                                         isOpenDelete: true,
