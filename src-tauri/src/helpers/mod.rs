@@ -4,6 +4,7 @@ pub mod log;
 pub mod quarantine;
 pub mod scan;
 pub mod scheduler;
+pub mod stats;
 
 use std::path::PathBuf;
 use std::process::Command;

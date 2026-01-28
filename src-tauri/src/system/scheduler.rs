@@ -5,7 +5,7 @@ use tauri::{command, Manager};
 use crate::{
     helpers::{
         resolve_command,
-        scheduler::{get_last_run_time_windows, load_scheduler_file, save_scheduler_file},
+        scheduler::{load_scheduler_file, save_scheduler_file},
         silent_command,
     },
     types::{
@@ -58,8 +58,8 @@ pub fn schedule_task(
 
     #[cfg(windows)]
     {
-        use crate::helpers::scheduler::schedule_scan_windows;
-        schedule_scan_windows(
+        use crate::helpers::scheduler::windows::schedule_scan;
+        schedule_scan(
             &app,
             task_name,
             time,
@@ -84,8 +84,8 @@ pub fn remove_scheduled_task(app: tauri::AppHandle, task_name: String) -> Result
 
     #[cfg(windows)]
     {
-        use crate::helpers::scheduler::remove_job_windows;
-        remove_job_windows(&app, task_name)
+        use crate::helpers::scheduler::windows::remove_job;
+        remove_job(&app, task_name)
     }
     #[cfg(not(windows))]
     {
@@ -96,6 +96,12 @@ pub fn remove_scheduled_task(app: tauri::AppHandle, task_name: String) -> Result
 #[command]
 #[specta(result)]
 pub fn list_scheduler(app: tauri::AppHandle) -> Result<Vec<SchedulerEvent>, String> {
+    #[cfg(not(windows))]
+    {
+        Err("Scheduler not supported on this platform yet".into())
+    }
+    use crate::helpers::scheduler::windows::get_last_run_time;
+
     let config_dir = app.path().app_config_dir().map_err(|e| e.to_string())?;
 
     let file_path = config_dir.join("scheduler.json");
@@ -108,8 +114,8 @@ pub fn list_scheduler(app: tauri::AppHandle) -> Result<Vec<SchedulerEvent>, Stri
         .into_iter()
         .map(|entry| {
             let last_run = match entry.last_run {
-                Some(time) => get_last_run_time_windows(&entry.id).unwrap_or(Some(time)),
-                None => get_last_run_time_windows(&entry.id).unwrap_or(None),
+                Some(time) => get_last_run_time(&entry.id).unwrap_or(Some(time)),
+                None => get_last_run_time(&entry.id).unwrap_or(None),
             };
 
             SchedulerEvent {
@@ -123,7 +129,6 @@ pub fn list_scheduler(app: tauri::AppHandle) -> Result<Vec<SchedulerEvent>, Stri
             }
         })
         .collect();
-
     Ok(items)
 }
 
@@ -135,8 +140,8 @@ pub fn run_job_now(app: tauri::AppHandle, task_name: String) -> Result<(), Strin
     }
     #[cfg(windows)]
     {
-        use crate::helpers::scheduler::run_job_now_windows;
-        run_job_now_windows(&app, task_name)
+        use crate::helpers::scheduler::windows::run_job_now;
+        run_job_now(&app, task_name)
     }
     #[cfg(not(windows))]
     {
