@@ -96,10 +96,7 @@ pub fn remove_scheduled_task(app: tauri::AppHandle, task_name: String) -> Result
 #[command]
 #[specta(result)]
 pub fn list_scheduler(app: tauri::AppHandle) -> Result<Vec<SchedulerEvent>, String> {
-    #[cfg(not(windows))]
-    {
-        Err("Scheduler not supported on this platform yet".into())
-    }
+    // TODO: Limit helpers::scheduler::windows::get_last_run_time only for Windows Users
     use crate::helpers::scheduler::windows::get_last_run_time;
 
     let config_dir = app.path().app_config_dir().map_err(|e| e.to_string())?;
