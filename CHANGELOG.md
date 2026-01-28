@@ -4,7 +4,7 @@ All notable changes of ArsenTech's ClamAV GUI will be documented here.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
-## [0.3.1] - Unreleased
+## [0.3.1] - 2026-01-28
 ### Added
 - License (GNU GPL v3)
 - Skeleton Loaders on nearly every page if needed
