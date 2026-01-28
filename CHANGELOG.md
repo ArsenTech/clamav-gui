@@ -35,6 +35,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Expanded the Credits Section with more credits
 - Replaced the "Last Scan" Placeholder into an actual data
 - Manual Code Splitting of the Rust Backend by moving helpers into a separate `.rs` file
+### Removed
+- Some Buttons that has only a frontend functionality, but not the backend also (Mostly "Mark as safe" buttons)
 
 ## [0.3.0] - 2026-01-25
 ### Added

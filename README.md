@@ -57,7 +57,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - **State-gated UI** - Detects the ClamAV installation path before launching the software
 - **Main and Full Scan** - Scan the entire device for malicious files and malware
 - **Custom and File Scan** - Scan the mentioned folder / file for malware
-- **Resolving infected files after scan** - It includes **Quarantine**, **Delete**, and **Mark as safe**
+- **Resolving infected files after scan** - It includes actions like **Quarantine** and **Delete**
 - **Definitions Updater** - Update the definitions database directly from the GUI
 - **Quarantine** - Manage infected threats after scanning
 - **History** - View the entire GUI actions history and manage it + view or reveal logs
