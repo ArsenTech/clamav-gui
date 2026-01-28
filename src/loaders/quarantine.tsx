@@ -1,8 +1,9 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import TableLoader from "./table";
 import useSettings from "@/hooks/use-settings";
+import { TableLoaderProps } from "@/lib/types";
 
-export default function QuarantineLoader(){
+export default function QuarantineLoader({rows}: TableLoaderProps){
      const {settings} = useSettings()
      return (
           <>
@@ -12,7 +13,7 @@ export default function QuarantineLoader(){
                <Skeleton className="w-[512px] h-9"/>
                <Skeleton className="w-20 h-9"/>
           </div>
-          <TableLoader cols={settings.developerMode ? 5 : 4} actionsAtEnd rows={10}/>
+          <TableLoader cols={settings.developerMode ? 5 : 4} actionsAtEnd rows={rows}/>
           </>
      )
 }

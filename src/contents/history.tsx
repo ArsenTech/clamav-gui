@@ -23,11 +23,7 @@ export default function HistoryContent(){
      const [isRefreshing, startTransition] = useTransition();
      const [isClearing, startClearTransition] = useTransition();
      const [historyState, setHistoryState] = useState<IHistoryPageState>(INITIAL_HISTORY_STATE)
-     const setState = (overrides: Partial<IHistoryPageState>) =>
-          setHistoryState(prev=>({
-               ...prev,
-               ...overrides
-          }))
+     const setState = (overrides: Partial<IHistoryPageState>) => setHistoryState(prev=>({ ...prev, ...overrides }))
      const fetchData = () => {
           startTransition(async()=>{
                try {

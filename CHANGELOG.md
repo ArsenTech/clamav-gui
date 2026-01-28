@@ -5,6 +5,14 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 ## [0.3.2] - Unreleased
+### Added
+- Skeleton Loaders on Scan Finished State Components
+- Feature that returns to the recent setting (instead of **General** Settings)
+### Improved
+- Scan Page (Performance)
+- Quarantine Page (Mergin 2 bulk action functions into 1)
+### Fixed
+- Real Time Protection Redirect Issue (Replaced `"/"` with `"/settings?tab=protection"`)
 
 ## [0.3.1] - 2026-01-28
 ### Added

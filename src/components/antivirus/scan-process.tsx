@@ -5,24 +5,40 @@ import { Spinner } from "@/components/ui/spinner";
 import useSettings from "@/hooks/use-settings";
 import { SCAN_TYPES } from "@/lib/constants";
 import { IScanPageState } from "@/lib/types/states";
+import { invoke } from "@tauri-apps/api/core";
+import { exit } from "@tauri-apps/plugin-process";
 import { Bug, Clock, Dot, Folder, SearchCheck, ShieldAlert, ShieldCheck, Square } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
+import { useNavigate } from "react-router";
+import { toast } from "sonner";
 
 interface Props{
-     onStop: () => void,
-     scanState: IScanPageState
+     scanState: IScanPageState,
+     handleReset: () => void,
+     isStartup: boolean
 }
-
-export default function ScanProcess({onStop, scanState}: Props){
+export default function ScanProcess({scanState, handleReset, isStartup}: Props){
+     const navigate = useNavigate();
      const {settings} = useSettings();
      const {scanType, threats, currLocation, totalFiles, scannedFiles, paths} = scanState
      const scanTypeName = useMemo(()=>SCAN_TYPES.find(val=>val.type===scanType)?.name,[scanType])
      const [isOpen, setIsOpen] = useState(false);
      const {formatDate} = useSettings()
      const dateRef = useRef<Date>(new Date(Date.now()))
-     const handleStopScan = () => {
+     const handleStopScan = async () => {
           if(settings.confirmStopScan) setIsOpen(false);
-          onStop();
+          handleReset();
+          try {
+               await invoke("stop_scan");
+               if (isStartup){
+                    await exit(0);
+               } else {
+                    navigate("/scan");
+               }
+          } catch (e){
+               toast.error("Failed to stop the scan");
+               console.error(e)
+          }
      }
      const percentage = useMemo(()=>totalFiles>0 ? Math.min(100,Math.floor((scannedFiles/totalFiles)*100)) : 0,[scannedFiles,totalFiles]);
      return (

@@ -18,11 +18,7 @@ export default function UpdateContent(){
      const {settings} = useSettings()
      const [updateState, setUpdateState] = useState<IUpdatePageState>(INITIAL_UPDATE_STATE);
      const [clamAvVersion, setClamavVersion] = useState<string>(()=>localStorage.getItem("clamav-version") || "");
-     const setState = (overrides: Partial<IUpdatePageState>) =>
-          setUpdateState(prev=>({
-               ...prev,
-               ...overrides
-          }))
+     const setState = (overrides: Partial<IUpdatePageState>) => setUpdateState(prev=>({ ...prev, ...overrides }))
      const handleUpdate = async()=>{
           if (updateState.isUpdating) return;
           await invoke("update_definitions")

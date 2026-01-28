@@ -4,7 +4,6 @@ import { lazy, Suspense } from "react";
 const HistoryContent = lazy(()=>import("@/contents/history"))
 
 export default function HistoryPage(){
-     
      return (
           <AppLayout className="space-y-4 p-4">
                <Suspense fallback={<HistoryLoader/>}>

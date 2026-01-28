@@ -1,5 +1,5 @@
 import { AppLayout } from "@/components/layout";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import ScanFinishResult from "@/components/antivirus/finish-scan";
 import LogText from "@/components/log";
 import { GET_INITIAL_SCAN_STATE } from "@/lib/constants/states";
@@ -11,20 +11,20 @@ import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 import { toast } from "sonner";
 import { useStartupScan } from "@/context/startup-scan";
-import { exit } from "@tauri-apps/plugin-process";
-import ScanLoader from "@/loaders/scan";
+import ScanLoader from "@/loaders/scan/index";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import useSettings from "@/hooks/use-settings";
-const ScanProcess = lazy(()=>import("@/components/antivirus/scan-process"))
 
+const ScanProcess = lazy(()=>import("@/components/antivirus/scan-process"))
 export default function ScanPage(){
-     const {settings} = useSettings();
-     const [searchParams] = useSearchParams();
-     const navigate = useNavigate();
      const {type} = useParams<{type: ScanType}>();
+     const [searchParams] = useSearchParams();
      const path = searchParams.getAll("path");
      const [scanState, setScanState] = useState<IScanPageState>(GET_INITIAL_SCAN_STATE(type || "",path));
      const setState = (overrides: Partial<IScanPageState>) => setScanState(prev=>({ ...prev, ...overrides }))
+     const {isStartup} = useStartupScan();
+     const {settings} = useSettings();
+     
      const startTimeRef = useRef<number | null>(null);
      const scanActiveRef = useRef(false);
      const scanStartedRef = useRef(false);
@@ -101,7 +101,6 @@ export default function ScanPage(){
                Promise.all(unsubs).then(fns=>fns.forEach(fn=>fn()));
           }
      },[]);
-     const {isStartup} = useStartupScan();
      useEffect(() => {
           if (scanStoppedRef.current) return;
           if (!scanState.scanType) return;
@@ -123,29 +122,13 @@ export default function ScanPage(){
           }
           setState({ duration: 0, exitCode: 0, errMsg: undefined });
      }, [scanState.scanType, scanState.paths, isStartup]);
-     const handleStop = async() => {
-          scanStoppedRef.current = true;
-          reset();
-          try {
-               await invoke("stop_scan");
-               if (isStartup){
-                    await exit(0);
-               } else {
-                    navigate("/scan");
-               }
-          } catch (e){
-               toast.error("Failed to stop the scan");
-               console.error(e)
-          }
-     }
      const reset = (overrides?: Partial<IScanPageState>) => {
           scanStartedRef.current = false;
           scanActiveRef.current = false; 
           startTimeRef.current = null;
           setState({
                ...GET_INITIAL_SCAN_STATE(type || "",path),
-               scanType: "",
-               exitCode: 0,
+               scanType: "", exitCode: 0,
                ...overrides
           })
      }
@@ -167,7 +150,11 @@ export default function ScanPage(){
                               <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">Scan</h1>
                               <Suspense fallback={<ScanLoader type={scanType}/>}>
                                    <ScanProcess
-                                        onStop={handleStop}
+                                        handleReset={()=>{
+                                             scanStoppedRef.current = true;
+                                             reset();
+                                        }}
+                                        isStartup={isStartup}
                                         scanState={scanState}
                                    />
                               </Suspense>

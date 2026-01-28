@@ -20,11 +20,7 @@ export default function SchedulerContent(){
      const [isPending, startTransition] = useTransition();
      const [isSubmitting, startSubmitTransition] = useTransition();
      const [schedulerState, setSchedulerState] = useState<ISchedulerState>(INITIAL_SCHEDULER_STATE);
-     const setState = (overrides: Partial<ISchedulerState>) =>
-          setSchedulerState(prev=>({
-               ...prev,
-               ...overrides
-          }))
+     const setState = (overrides: Partial<ISchedulerState>) => setSchedulerState(prev=>({ ...prev, ...overrides }))
      const handleSchedule = (values: SchedulerType) => {
           startSubmitTransition(async()=>{
                try{

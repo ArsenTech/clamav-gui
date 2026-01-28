@@ -115,10 +115,14 @@ export interface DataTableProps<TData> {
      searchColumn?: string,
      headerElement?: React.JSX.Element
 }
+export type SettingsTab = "general" | "advanced" | "scan" | "protection" | "scheduler"
 export interface ISettingsTab{
-     page: "general" | "advanced" | "scan" | "protection" | "scheduler",
+     page: SettingsTab,
      name: string,
      Icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>,
      Loader: React.FC,
      LazyComponent: React.LazyExoticComponent<React.FC>
+}
+export interface TableLoaderProps{
+     rows: number
 }

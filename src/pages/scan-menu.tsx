@@ -1,6 +1,6 @@
 import { AppLayout } from "@/components/layout";
 import { lazy, Suspense } from "react";
-import ScanMenuLoader from "@/loaders/scan-menu";
+import ScanMenuLoader from "@/loaders/scan/menu";
 const ScanMenuContent = lazy(()=>import("@/contents/scan-menu"))
 
 export default function ScanMenuPage(){
