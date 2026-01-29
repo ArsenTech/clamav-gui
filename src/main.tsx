@@ -5,6 +5,7 @@ import { RouterProvider } from "react-router/dom";
 import "./App.css";
 import StartupScanProvider from "./context/startup-scan";
 import { ThemeProvider } from "./context/themes";
+import "@/i18n"
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
      <React.StrictMode>

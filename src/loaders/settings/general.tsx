@@ -18,18 +18,12 @@ export default function GeneralSettingsLoader(){
                          ))}
                     </div>
                </div>
-               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div className="border border-accent animate-pulse flex flex-col gap-5 rounded-xl p-6">
-                         <div className="h-4 bg-accent rounded-md w-1/3"/>
-                         <div className="space-y-2 w-full">
-                              {DATE_TIME_FORMATS.map(({name,format})=>(
-                                   <div key={`${name}-${format}`} className="h-[78px] bg-accent rounded-md w-full"/>
-                              ))}
-                         </div>
-                    </div>
-                    <div className="border border-accent animate-pulse flex flex-col gap-5 rounded-xl p-6">
-                         <div className="h-4 bg-accent rounded-md w-1/3"/>
-                         {/* TODO: Add a Skeleton Loader for Language Settings */}
+               <div className="border border-accent animate-pulse flex flex-col gap-5 rounded-xl p-6">
+                    <div className="h-4 bg-accent rounded-md w-1/3"/>
+                    <div className="space-y-2 w-full">
+                         {DATE_TIME_FORMATS.map(({name,format})=>(
+                              <div key={`${name}-${format}`} className="h-[78px] bg-accent rounded-md w-full"/>
+                         ))}
                     </div>
                </div>
                <div className="border border-accent animate-pulse flex flex-col gap-5 rounded-xl p-6">
@@ -48,6 +42,13 @@ export default function GeneralSettingsLoader(){
                                    <div className="h-3.5 bg-accent rounded-md w-1/4"/>
                               </div>
                               <div className="w-[105px] h-9 bg-accent rounded-md"/>
+                         </div>
+                         <div className="flex flex-row items-center justify-between w-full">
+                              <div className="space-y-1 w-full">
+                                   <div className="h-3.5 bg-accent rounded-md w-2/5"/>
+                                   <div className="h-3.5 bg-accent rounded-md w-1/4"/>
+                              </div>
+                              <div className="w-32 h-9 bg-accent rounded-md"/>
                          </div>
                     </div>
                </div>

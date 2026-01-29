@@ -1,6 +1,8 @@
 import SettingsItem from "@/components/settings-item";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 import { ArrowDownUp, CheckCircle, CirclePower, Plus, Power, Shield, ShieldOff, Square, Terminal, Trash2, XCircle } from "lucide-react";
 
@@ -19,8 +21,15 @@ export default function ProtectionSettings(){
                <SettingsItem
                     Icon={Shield}
                     title="Real Time Protection Settings"
+                    className="space-y-4"
                >
-                    TODO: Make Real-time Protection Settings UI
+                    <div className="flex flex-row items-center justify-between">
+                         <div className="space-y-1">
+                              <Label>Real-Time Protection</Label>
+                              <p className="text-muted-foreground text-sm">Scans the new file once it appeared</p>
+                         </div>
+                         <Switch/>
+                    </div>
                </SettingsItem>
                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <SettingsItem
@@ -87,7 +96,7 @@ export default function ProtectionSettings(){
                          <Button className="w-full"><Terminal/> Show Supported Commands</Button>
                          <ButtonGroup className="w-full">
                               <Button className="flex-1"><ArrowDownUp/> Ping</Button>
-                              <Button className="flex-1" variant="destructive"><CirclePower/> Shutdown</Button>
+                              <Button className="flex-1" variant="secondary"><CirclePower/> Shutdown</Button>
                          </ButtonGroup>
                     </div>
                     <div className="flex flex-col items-center justify-center gap-2">

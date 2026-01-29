@@ -5,7 +5,7 @@ import useSettings from "@/hooks/use-settings";
 import { DEFAULT_SETTINGS, SCAN_OPTION_TITLE } from "@/lib/settings";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Braces } from "lucide-react";
+import { Braces, FlaskConical, Scale, ShieldAlert, ShieldCheck } from "lucide-react";
 import SettingsItem from "@/components/settings-item";
 
 export default function AdvancedSettings(){
@@ -16,6 +16,7 @@ export default function AdvancedSettings(){
                     Icon={Braces}
                     title="Advanced GUI Options"
                     className="space-y-4"
+                    description="It may break some features and reduce detection accuracy"
                >
                     <div className="flex flex-row items-center justify-between">
                          <div className="space-y-1">
@@ -27,6 +28,23 @@ export default function AdvancedSettings(){
                               checked={settings.developerMode}
                               onCheckedChange={checked=>setSettings({developerMode: checked})}
                          />
+                    </div>
+                    <div className="flex flex-row items-center justify-between">
+                         <div className="space-y-1">
+                              <Label>Behavior</Label>
+                              <p className="text-muted-foreground text-sm">How the ClamAV GUI act in other cases?</p>
+                         </div>
+                         <Select>
+                              <SelectTrigger>
+                                   <SelectValue placeholder="ClamAV Behavior"/>
+                              </SelectTrigger>
+                              <SelectContent>
+                                   <SelectItem value="balanced"><Scale/> Balanced</SelectItem>
+                                   <SelectItem value="safe"><ShieldCheck/> Safe</SelectItem>
+                                   <SelectItem value="strict"><ShieldAlert/> Strict</SelectItem>
+                                   <SelectItem value="expert"><FlaskConical/> Expert</SelectItem>
+                              </SelectContent>
+                         </Select>
                     </div>
                </SettingsItem>
                <SettingsItem

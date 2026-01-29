@@ -91,16 +91,18 @@ export const DATE_TIME_FORMATS: IDateFormatSettings[] = [
      }
 ]
 /* TODO: Finish the settings page according to this route ([UI] - Completed, [X] - Works, [Soon] - Coming soon)
+Completed:
 Settings
-├── General (uses LocalStorage)
-│   ├── Theme [X]
-│   ├── Color [X]
-│   ├── Language [Soon]
-│   ├── Date format [X]
-│   └── Logs & UI
-│       ├── Auto-scroll [X]
-│       └── Max log lines [X]
-│
+└── General (uses LocalStorage)
+    ├── Theme [X]
+    ├── Color [X]
+    ├── Date format [X]
+    └── Logs & UI
+        ├── Auto-scroll [X]
+        ├── Max log lines [X]
+        └── Language [X]
+
+Settings
 ├── Scan
 │   ├── Auto startup scan [UI] (uses @tauri-apps/plugin-store)
 │   ├── Confirm stop [X]
@@ -117,7 +119,7 @@ Settings
 │       └── On detection [UI]
 │
 ├── Protection (uses @tauri-apps/plugin-store)
-│   ├── Real-Time Protection [Soon]
+│   ├── Real-Time Protection [UI]
 │   ├── Exclusions [UI]
 │   └── ClamD status [UI]
 │
@@ -127,5 +129,5 @@ Settings
     │   └── Options with Input Boxes [UI]
     │
     ├── Developer Mode (Shows ID on Tables) [X]
-    └── Behavior [Soon]
+    └── Behavior [UI]
 */

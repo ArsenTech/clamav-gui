@@ -5,8 +5,13 @@ import { useState } from "react";
 
 export default function useSettings(){
      const [settings, setSettings] = useState<ISettings>(()=>{
-          const stored = localStorage.getItem("clamav-settings")
-          return stored ? JSON.parse(stored) : DEFAULT_SETTINGS
+          try {
+               const raw = localStorage.getItem("clamav-settings")
+               if (!raw) return DEFAULT_SETTINGS
+               return { ...DEFAULT_SETTINGS, ...JSON.parse(raw) }
+          } catch {
+               return DEFAULT_SETTINGS
+          }
      });
      const formatDate = (date?: Date) => {
           if(!date) return "Never"

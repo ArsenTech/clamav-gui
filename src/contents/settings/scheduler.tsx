@@ -1,5 +1,4 @@
 import SettingsItem from "@/components/settings-item";
-import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@/components/ui/item";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Bell, ClipboardClock, Search, SearchCheck, ShieldCheck } from "lucide-react";
@@ -22,35 +21,29 @@ export default function SchedulerSettings(){
                <SettingsItem
                     Icon={Bell}
                     title="Notifications"
-                    className="space-y-3"
+                    className="space-y-4"
                >
-                    <Item variant="outline">
-                         <ItemMedia variant="icon">
-                              <Search/>
-                         </ItemMedia>
-                         <ItemContent>
-                              <ItemTitle>On Scan Start</ItemTitle>
-                              <ItemDescription>Notifies once the scan has been started</ItemDescription>
-                         </ItemContent>
-                    </Item>
-                    <Item variant="outline">
-                         <ItemMedia variant="icon">
-                              <SearchCheck/>
-                         </ItemMedia>
-                         <ItemContent>
-                              <ItemTitle>On Scan Finish</ItemTitle>
-                              <ItemDescription>Notifies once the scan has been finished</ItemDescription>
-                         </ItemContent>
-                    </Item>
-                    <Item variant="outline">
-                         <ItemMedia variant="icon">
-                              <ShieldCheck/>
-                         </ItemMedia>
-                         <ItemContent>
-                              <ItemTitle>On Detection</ItemTitle>
-                              <ItemDescription>Notifies once the new file has been detected with a malware</ItemDescription>
-                         </ItemContent>
-                    </Item>
+                    <div className="flex flex-row items-center justify-between">
+                         <div className="space-y-1">
+                              <Label className="flex items-center gap-2"><Search className="size-4"/> On Scan Start</Label>
+                              <p className="text-muted-foreground text-sm">Notifies once the scan has been started</p>
+                         </div>
+                         <Switch />
+                    </div>
+                    <div className="flex flex-row items-center justify-between">
+                         <div className="space-y-1">
+                              <Label className="flex items-center gap-2"><SearchCheck className="size-4"/> On Scan Finish</Label>
+                              <p className="text-muted-foreground text-sm">Notifies once the scan has been finished</p>
+                         </div>
+                         <Switch />
+                    </div>
+                    <div className="flex flex-row items-center justify-between">
+                         <div className="space-y-1">
+                              <Label className="flex items-center gap-2"><ShieldCheck className="size-4"/> On Detection</Label>
+                              <p className="text-muted-foreground text-sm">Notifies once the new file has been detected with a malware</p>
+                         </div>
+                         <Switch />
+                    </div>
                </SettingsItem>
           </div>
      )

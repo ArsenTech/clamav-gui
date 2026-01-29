@@ -4,15 +4,21 @@ import useSettings from "@/hooks/use-settings";
 import { DATE_TIME_FORMATS, DEFAULT_SETTINGS, MAX_LONG_LINES_CHOICES, THEME_SETTINGS } from "@/lib/settings";
 import { capitalizeText } from "@/lib/helpers";
 import { cn } from "@/lib/utils";
-import { Calendar, Languages, Palette, ScrollText } from "lucide-react";
+import { Calendar, Palette, ScrollText } from "lucide-react";
 import SettingsItem from "@/components/settings-item";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useTranslation } from "react-i18next";
+import { lazy, Suspense } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
+
+const LanguageSelector = lazy(()=>import("@/i18n/languages"))
 
 export default function GeneralSettings(){
      const {setTheme, theme: currTheme, setColor, color: currColor} = useTheme();
      const {setSettings, settings} = useSettings()
+     const {t} = useTranslation("translation");
      return (
           <div className="px-1 py-2 space-y-3">
                <SettingsItem
@@ -39,32 +45,24 @@ export default function GeneralSettings(){
                          ))}
                     </div>
                </SettingsItem>
-               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <SettingsItem
-                         Icon={Calendar}
-                         title="Date Format"
-                         className="space-y-2"
-                    >
-                         {DATE_TIME_FORMATS.map(({format,name})=>(
-                              <Item
-                                   key={`${name}-${format}`}
-                                   variant={settings.dateFormat===format ? "muted" : "outline"}
-                                   onClick={()=>setSettings({dateFormat: format})}
-                              >
-                                   <ItemContent>
-                                        <ItemTitle>{name}</ItemTitle>
-                                        <ItemDescription>{format}</ItemDescription>
-                                   </ItemContent>
-                              </Item>
-                         ))}
-                    </SettingsItem>
-                    <SettingsItem
-                         Icon={Languages}
-                         title="Language"
-                    >
-                         TODO: Implement i18n support
-                    </SettingsItem>
-               </div>
+               <SettingsItem
+                    Icon={Calendar}
+                    title="Date Format"
+                    className="space-y-2"
+               >
+                    {DATE_TIME_FORMATS.map(({format,name})=>(
+                         <Item
+                              key={`${name}-${format}`}
+                              variant={settings.dateFormat===format ? "muted" : "outline"}
+                              onClick={()=>setSettings({dateFormat: format})}
+                         >
+                              <ItemContent>
+                                   <ItemTitle>{name}</ItemTitle>
+                                   <ItemDescription>{format}</ItemDescription>
+                              </ItemContent>
+                         </Item>
+                    ))}
+               </SettingsItem>
                <SettingsItem
                     Icon={ScrollText}
                     title="Logs and UI"
@@ -99,6 +97,15 @@ export default function GeneralSettings(){
                                    ))}
                               </SelectContent>
                          </Select>
+                    </div>
+                    <div className="flex flex-row items-center justify-between">
+                         <div className="space-y-1">
+                              <Label>Language</Label>
+                              <p className="text-muted-foreground text-sm">The Language of the ClamAV GUI. Text: {t("greeting")}</p>
+                         </div>
+                         <Suspense fallback={<Skeleton className="h-9 w-32"/>}>
+                              <LanguageSelector/>
+                         </Suspense>
                     </div>
                </SettingsItem>
           </div>
