@@ -8,7 +8,7 @@ export type ScanOptionGroup = "detection" | "file-types" | "filesystem" | "limit
 
 type ScanOptionValue =
   | { kind: "yes-no"; default?: boolean }
-  | { kind: "input"; inputType: "number" | "path" | "string"; min?: number; max?: number }
+  | { kind: "input"; inputType: "number" | "path" | "string"; min?: number; max?: number, default?: string | number }
   | { kind: "choice"; choices: readonly { label: string; value: string | number }[]; default?: string | number };
 
 export interface IScanOption{
@@ -54,4 +54,31 @@ export interface ISettings{
      confirmStopScan: boolean,
      autoScrollText: boolean,
      maxLogLines: number
+}
+export type BehaviorMode = "balanced" | "safe" | "strict" | "expert"
+export type BackendSettings = {
+     scan: {
+          autoStartupScan: boolean,
+          silentScheduledScans: boolean,
+     },
+     scanProfiles: {
+          main: {},
+          custom: {},
+          file: {}
+     }
+     scheduler: {
+          enableSchedulerUI: boolean,
+          notifOnScanStart: boolean,
+          notifOnScanFinish: boolean,
+          notifOnDetection: boolean
+     },
+     protection: {
+          realTime: boolean,
+          dirExclusions: string[],
+          puaExclusions: string[],
+          clamdEnabled: boolean
+     },
+     advanced: {
+          behavior: BehaviorMode
+     }
 }

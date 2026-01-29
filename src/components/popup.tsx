@@ -12,8 +12,9 @@ interface Props{
      submitEvent?: () => void,
      children?: React.ReactNode,
      closeText?: string
+     hideButtons?: boolean
 }
-export default function Popup({open, onOpen, title, description, submitTxt = "Submit", submitEvent, children, closeText = "Close"}: Props){
+export default function Popup({open, onOpen, title, description, submitTxt = "Submit", submitEvent, children, closeText = "Close", hideButtons=false}: Props){
      const isMobile = useIsMobile();
      return isMobile ? (
           <Drawer open={open} onOpenChange={onOpen}>
@@ -25,12 +26,14 @@ export default function Popup({open, onOpen, title, description, submitTxt = "Su
                          )}
                     </DrawerHeader>
                     {children}
-                    <DrawerFooter>
-                         <Button type="button" onClick={submitEvent}>{submitTxt}</Button>
-                         <DrawerClose asChild>
-                              <Button variant="outline">{closeText}</Button>
-                         </DrawerClose>
-                    </DrawerFooter>
+                    {!hideButtons &&(
+                         <DrawerFooter>
+                              <Button type="button" onClick={submitEvent}>{submitTxt}</Button>
+                              <DrawerClose asChild>
+                                   <Button variant="outline" type="button">{closeText}</Button>
+                              </DrawerClose>
+                         </DrawerFooter>
+                    )}
                </DrawerContent>
           </Drawer>
      ) : (
@@ -43,12 +46,14 @@ export default function Popup({open, onOpen, title, description, submitTxt = "Su
                          )}
                     </DialogHeader>
                     {children}
-                    <DialogFooter>
-                         <Button variant={["delete","clear","remove"].some(val=>submitTxt.toLowerCase().includes(val)) ? "destructive" : "default"} type="button" onClick={submitEvent}>{submitTxt}</Button>
-                         <DialogClose asChild>
-                              <Button variant="outline">{closeText}</Button>
-                         </DialogClose>
-                    </DialogFooter>
+                    {!hideButtons && (
+                         <DialogFooter>
+                              <Button variant={["delete","clear","remove"].some(val=>submitTxt.toLowerCase().includes(val)) ? "destructive" : "default"} type="button" onClick={submitEvent}>{submitTxt}</Button>
+                              <DialogClose asChild>
+                                   <Button variant="outline" type="button">{closeText}</Button>
+                              </DialogClose>
+                         </DialogFooter>
+                    )}
                </DialogContent>
           </Dialog>
      )

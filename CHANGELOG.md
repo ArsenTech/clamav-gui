@@ -15,6 +15,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Settings UI
 ### Fixed
 - Real Time Protection Redirect Issue (Replaced `"/"` with `"/settings?tab=protection"`)
+### Changed
+- Implemented settings functionalities (except the ClamD status and Custom Scan Options)
 
 ## [0.3.1] - 2026-01-28
 ### Added

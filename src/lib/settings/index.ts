@@ -1,5 +1,5 @@
 import { Files, Folder, Monitor, Moon, Sun, Gauge, ChevronsLeftRightEllipsis, ShieldCheck, SearchCode, LucideProps } from "lucide-react";
-import { IDateFormatSettings, ISettings, IThemeSettings, ScanOptionGroup } from "../types/settings";
+import { BackendSettings, IDateFormatSettings, ISettings, IThemeSettings, ScanOptionGroup } from "../types/settings";
 
 export const SCAN_OPTION_TITLE: Record<ScanOptionGroup,{
      title: string,
@@ -39,6 +39,40 @@ export const DEFAULT_SETTINGS: ISettings = {
      autoScrollText: true,
      maxLogLines: 500
 }
+export const DEFAULT_BACKEND_SETTINGS: BackendSettings = {
+     scan: {
+          autoStartupScan: false,
+          silentScheduledScans: false,
+     },
+     scanProfiles: {
+          main: {},
+          custom: {},
+          file: {}
+     },
+     scheduler: {
+          enableSchedulerUI: true,
+          notifOnScanStart: false,
+          notifOnScanFinish: true,
+          notifOnDetection: true
+     },
+     protection: {
+          realTime: true,
+          dirExclusions: [],
+          puaExclusions: [],
+          clamdEnabled: false
+     },
+     advanced: {
+          behavior: "balanced"
+     }
+}
+export const FILE_SCAN_WHITELIST =  [
+     "algorithmicDetection",
+     "heuristicAlerts",
+     "detectPUA",
+     "scanArchive",
+     "scanPDF",
+     "scanHTML",
+];
 export const MAX_LONG_LINES_CHOICES = [100, 500, 1000, 1500] as const
 export const THEME_SETTINGS: IThemeSettings = {
      theme: [
@@ -90,7 +124,7 @@ export const DATE_TIME_FORMATS: IDateFormatSettings[] = [
           format: "yyyy-MM-dd HH:mm:ss"
      }
 ]
-/* TODO: Finish the settings page according to this route ([UI] - Completed, [X] - Works, [Soon] - Coming soon)
+/* TODO: Finish the settings page according to this route ([UI] - Completed, [X] - Works, [Impl] - Currently Implemented)
 Completed:
 Settings
 └── General (uses LocalStorage)
@@ -104,23 +138,23 @@ Settings
 
 Settings
 ├── Scan
-│   ├── Auto startup scan [UI] (uses @tauri-apps/plugin-store)
+│   ├── Auto startup scan [Impl]
 │   ├── Confirm stop [X]
-│   ├── Silent scheduled scans [UI] (uses @tauri-apps/plugin-store)
+│   ├── Silent scheduled scans [Impl]
 │   └── Custom Scan Options (uses @tauri-apps/plugin-store)
 │       ├── Options with Switch Togglers [UI] 
 │       └── Options with Input Boxes [UI] 
 │
 ├── Scheduler
-│   ├── Enable Scheduler UI [UI]
+│   ├── Enable Scheduler UI [Impl]
 │   └── Notifications
-│       ├── On scan start [UI]
-│       ├── On scan finish [UI]
-│       └── On detection [UI]
+│       ├── On scan start [Impl]
+│       ├── On scan finish [Impl]
+│       └── On detection [Impl]
 │
 ├── Protection (uses @tauri-apps/plugin-store)
-│   ├── Real-Time Protection [UI]
-│   ├── Exclusions [UI]
+│   ├── Real-Time Protection [Impl]
+│   ├── Exclusions [Impl]
 │   └── ClamD status [UI]
 │
 └── Advanced
@@ -129,5 +163,5 @@ Settings
     │   └── Options with Input Boxes [UI]
     │
     ├── Developer Mode (Shows ID on Tables) [X]
-    └── Behavior [UI]
+    └── Behavior [Impl]
 */

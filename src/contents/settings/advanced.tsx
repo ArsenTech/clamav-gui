@@ -2,14 +2,35 @@ import { SCAN_SETTINGS } from "@/lib/settings/custom-scan-options";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label"
 import useSettings from "@/hooks/use-settings";
-import { DEFAULT_SETTINGS, SCAN_OPTION_TITLE } from "@/lib/settings";
+import { DEFAULT_BACKEND_SETTINGS, DEFAULT_SETTINGS, SCAN_OPTION_TITLE } from "@/lib/settings";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Braces, FlaskConical, Scale, ShieldAlert, ShieldCheck } from "lucide-react";
 import SettingsItem from "@/components/settings-item";
+import { BackendSettings, BehaviorMode } from "@/lib/types/settings";
+import { useTransition, useState, useEffect } from "react";
+import { toast } from "sonner";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function AdvancedSettings(){
-     const {settings, setSettings} = useSettings();
+     const {settings, setSettings, fetchBackendSettings, setBackendSettings} = useSettings();
+     const [isFetching, startTransition] = useTransition()
+     const [advancedSettings, setAdvancedSettings] = useState<BackendSettings["advanced"]>(DEFAULT_BACKEND_SETTINGS.advanced)
+     useEffect(()=>{
+          startTransition(async()=>{
+               try {
+                    const settings = await fetchBackendSettings("advanced")
+                    setAdvancedSettings(val=>!settings ? val : settings)
+               } catch (err){
+                    toast.error("Failed to fetch existing advanced settings");
+                    console.error(err)
+               }
+          })
+     },[])
+     const updateAdvancedSettings = async <K extends keyof BackendSettings["advanced"]>(key: K, value: BackendSettings["advanced"][K]) => {
+          await setBackendSettings("advanced",key,value);
+          setAdvancedSettings(prev=>({...prev, [key]: value}))
+     }
      return (
           <div className="px-1 py-2 space-y-3">
                <SettingsItem
@@ -34,17 +55,25 @@ export default function AdvancedSettings(){
                               <Label>Behavior</Label>
                               <p className="text-muted-foreground text-sm">How the ClamAV GUI act in other cases?</p>
                          </div>
-                         <Select>
-                              <SelectTrigger>
-                                   <SelectValue placeholder="ClamAV Behavior"/>
-                              </SelectTrigger>
-                              <SelectContent>
-                                   <SelectItem value="balanced"><Scale/> Balanced</SelectItem>
-                                   <SelectItem value="safe"><ShieldCheck/> Safe</SelectItem>
-                                   <SelectItem value="strict"><ShieldAlert/> Strict</SelectItem>
-                                   <SelectItem value="expert"><FlaskConical/> Expert</SelectItem>
-                              </SelectContent>
-                         </Select>
+                         {isFetching ? (
+                              <Skeleton className="w-32 h-9"/>
+                         ) : (
+                              <Select
+                                   defaultValue={advancedSettings.behavior || DEFAULT_BACKEND_SETTINGS.advanced.behavior}
+                                   value={advancedSettings.behavior}
+                                   onValueChange={value=>updateAdvancedSettings("behavior",value as BehaviorMode)}
+                              >
+                                   <SelectTrigger>
+                                        <SelectValue placeholder="ClamAV Behavior"/>
+                                   </SelectTrigger>
+                                   <SelectContent>
+                                        <SelectItem value="balanced"><Scale/> Balanced</SelectItem>
+                                        <SelectItem value="safe"><ShieldCheck/> Safe</SelectItem>
+                                        <SelectItem value="strict"><ShieldAlert/> Strict</SelectItem>
+                                        <SelectItem value="expert"><FlaskConical/> Expert</SelectItem>
+                                   </SelectContent>
+                              </Select>
+                         )}
                     </div>
                </SettingsItem>
                <SettingsItem

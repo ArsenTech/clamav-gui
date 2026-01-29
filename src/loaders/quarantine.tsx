@@ -1,5 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import TableLoader from "./table";
+import TableLoader from "./components/table";
 import useSettings from "@/hooks/use-settings";
 import { TableLoaderProps } from "@/lib/types";
 

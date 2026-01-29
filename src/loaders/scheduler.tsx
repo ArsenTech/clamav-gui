@@ -1,5 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import TableLoader from "./table";
+import TableLoader from "./components/table";
 
 export default function SchedulerLoader(){
      return (

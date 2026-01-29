@@ -7,6 +7,5 @@ import { languageOptions } from "./languages";
 i18next.use(LanguageDetector).use(initReactI18next).use(Backend).init({
      returnObjects: true,
      fallbackLng: "en",
-     debug: true,
      supportedLngs: languageOptions.map(val=>val.code)
 });

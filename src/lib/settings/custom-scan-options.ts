@@ -118,7 +118,7 @@ export const SCAN_SETTINGS: ScanOption = {
     group: "advanced",
     conflictsWith: [],
     dependsOn: [],
-    value: { kind: "yes-no", default: false },
+    value: { kind: "yes-no", default: true },
   },
   heuristicPrecedence: {
     label: "Heuristic scan precedence",
@@ -250,7 +250,7 @@ export const SCAN_SETTINGS: ScanOption = {
     group: "limits-performance",
     conflictsWith: [],
     dependsOn: [],
-    value: { kind: "input", inputType: "number", min: 64, max: 1024 * 1024 },
+    value: { kind: "input", inputType: "number", min: 64, max: 1024 * 1024, default: 100_000 },
   },
   maxScanSize: {
     label: "Max scan size (KB)",
@@ -258,7 +258,15 @@ export const SCAN_SETTINGS: ScanOption = {
     group: "limits-performance",
     conflictsWith: [],
     dependsOn: [],
-    value: { kind: "input", inputType: "number", min: 64, max: 1024 * 1024 },
+    value: { kind: "input", inputType: "number", min: 64, max: 1024 * 1024, default: 400_000 },
+  },
+  alertEncrypted: {
+    label: "Alert on encrypted archives or documents",
+    flag: "--alert-encrypted",
+    group: "output",
+    conflictsWith: [],
+    dependsOn: [],
+    value: {kind: "yes-no", default: true}
   },
   maxFiles: {
     label: "Max extracted files",

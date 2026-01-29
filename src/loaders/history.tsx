@@ -1,5 +1,5 @@
 import useSettings from "@/hooks/use-settings";
-import TableLoader from "./table";
+import TableLoader from "./components/table";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function HistoryLoader(){

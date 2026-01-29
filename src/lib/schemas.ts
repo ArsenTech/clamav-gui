@@ -8,3 +8,9 @@ export const SchedulerSchema = z.object({
      hours: z.int().min(0).max(23),
      minutes: z.int().min(0).max(59)
 })
+export const DirExclusionsSchema = z.object({
+     path: z.string().min(0).max(300)
+})
+export const PuaExclusionsSchema = z.object({
+     category: z.string().min(0).max(300)
+})
