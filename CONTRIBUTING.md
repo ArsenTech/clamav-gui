@@ -20,6 +20,7 @@ This guide explains how you can get involved.
 You don’t need to write code to make a valuable contribution! Here are some great ways:
 - **Development** – Fix bugs, add features, or refactor code.
 - **Testing & Bug Reports** – Try the app on different devices and report any issues.
+- **Translations** – Help make the project available in more languages.
 - **Design & UI Feedback** – Suggest layout, accessibility, or UX improvements.
 - **Feature Requests** – Share your ideas for improvements by opening a feature request.
 - **Community Support** – Answer questions in issues and help others get started.
@@ -89,6 +90,29 @@ Before submitting a PR:
 - Ensure existing features (like main scan, quarantine page, firewall), new features, and improvements work correctly.
 - Make sure there are **no console errors** and **no linting issues**.
 
+## 🌍 Translating
+> [!NOTE]
+> - All translations are stored in the `public/locales/` folder.
+> - Each language has its own JSON file (e.g. `public/locales/hy/translation.json` for Armenian).
+> - Keep placeholders like %s, %d intact.
+> - If unsure about a term, open a draft PR. Maintainers will help!
+
+### Steps
+1. Download base language files from [here][link-to-base-lang]
+2. Translate all strings with your preferred tool.
+3. Save it as `[lang-code]/[ns].json` (e.g. `fr/translations.json`, `el/scan.json`).
+4. Add your files to the `public/locales/` folder.
+5. Add the language entry in `src/i18n/config.ts`.
+      ```ts
+      export const languageOptions: languageOption[] = [
+            // All Existing Languages +
+            { language: "<native-name> (example: Español)", code: "<lang-code> (example: es)", countryCode: "<country-code> (example: mx)"},
+            // ^ This will be your contribution :-)
+      ];
+      ```
+6. Test by switching to your new language.
+7. Submit a PR for review!
+
 ## 💡 Feedback & Feature Requests
 We love new ideas! If you have a suggestion:
 1. Check [existing issues][issues-url]
@@ -132,3 +156,4 @@ Thanks for making ArsenTech's ClamAV GUI better!
 [patreon-url]:https://www.patreon.com/ArsenTech
 [github-url]: https://github.com/ArsenTech
 [website-url]: https://arsentech.github.io
+[link-to-base-lang]: https://github.com/ArsenTech/clamav-gui/tree/main/public/locales/en
