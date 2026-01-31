@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils"
 import { useEffect, useRef } from "react"
 import { ScrollArea } from "./ui/scroll-area";
-import useSettings from "@/hooks/use-settings";
+import { useSettings } from "@/hooks/use-settings";
 
 interface Props{
      logs: string[],

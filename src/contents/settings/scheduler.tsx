@@ -2,7 +2,7 @@ import SettingsItem from "@/components/settings-item";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
-import useSettings from "@/hooks/use-settings";
+import { useBackendSettings } from "@/hooks/use-settings";
 import { DEFAULT_BACKEND_SETTINGS } from "@/lib/settings";
 import { BackendSettings } from "@/lib/types/settings";
 import { Bell, ClipboardClock, Search, SearchCheck, ShieldCheck } from "lucide-react";
@@ -11,7 +11,7 @@ import { toast } from "sonner";
 
 export default function SchedulerSettings(){
      const [isFetching, startTransition] = useTransition()
-     const {fetchBackendSettings, setBackendSettings} = useSettings();
+     const {fetchBackendSettings, setBackendSettings} = useBackendSettings()
      const [schedulerSettings, setSchedulerSettings] = useState<BackendSettings["scheduler"]>(DEFAULT_BACKEND_SETTINGS.scheduler);
      useEffect(()=>{
           startTransition(async()=>{

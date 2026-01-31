@@ -5,7 +5,7 @@ import { format } from "date-fns";
 import { useState } from "react";
 import { toast } from "sonner";
 
-export default function useSettings(){
+export function useSettings(){
      const [settings, setSettings] = useState<ISettings>(()=>{
           try {
                const raw = localStorage.getItem("clamav-settings")
@@ -15,6 +15,25 @@ export default function useSettings(){
                return DEFAULT_SETTINGS
           }
      });
+     const formatDate = (date?: Date) => {
+          if(!date) return "Never"
+          return format(date,settings.dateFormat)
+     }
+     return {
+          settings,
+          setSettings: (overrides: Partial<ISettings>) => {
+               const newValues: ISettings = {
+                    ...settings,
+                    ...overrides
+               };
+               localStorage.setItem("clamav-settings",JSON.stringify(newValues))
+               setSettings(newValues)
+          },
+          formatDate
+     }
+}
+
+export function useBackendSettings(){
      async function getBackendSettings<
           S extends keyof BackendSettings,
           K extends keyof BackendSettings[S]
@@ -48,23 +67,9 @@ export default function useSettings(){
                console.error(e)
           }
      }
-     const formatDate = (date?: Date) => {
-          if(!date) return "Never"
-          return format(date,settings.dateFormat)
-     }
      return {
-          settings,
           getBackendSettings,
           setBackendSettings,
           fetchBackendSettings,
-          setSettings: (overrides: Partial<ISettings>) => {
-               const newValues: ISettings = {
-                    ...settings,
-                    ...overrides
-               };
-               localStorage.setItem("clamav-settings",JSON.stringify(newValues))
-               setSettings(newValues)
-          },
-          formatDate
      }
 }

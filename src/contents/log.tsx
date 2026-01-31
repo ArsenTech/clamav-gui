@@ -1,6 +1,6 @@
 import LogText from "@/components/log";
 import { Button } from "@/components/ui/button";
-import useSettings from "@/hooks/use-settings";
+import { useSettings } from "@/hooks/use-settings";
 import { invoke } from "@tauri-apps/api/core";
 import { ChevronLeft, ScrollText } from "lucide-react";
 import { useEffect, useState, useTransition } from "react";

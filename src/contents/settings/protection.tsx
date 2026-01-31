@@ -6,7 +6,7 @@ import { ButtonGroup } from "@/components/ui/button-group";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
-import useSettings from "@/hooks/use-settings";
+import { useBackendSettings } from "@/hooks/use-settings";
 import { DEFAULT_BACKEND_SETTINGS } from "@/lib/settings";
 import { BackendSettings } from "@/lib/types/settings";
 import { cn } from "@/lib/utils";
@@ -17,7 +17,7 @@ import { toast } from "sonner";
 
 export default function ProtectionSettings(){
      const [isFetching, startTransition] = useTransition()
-     const {fetchBackendSettings,setBackendSettings} = useSettings();
+     const {fetchBackendSettings, setBackendSettings} = useBackendSettings()
      const [protectionSettings, setProtectionSettings] = useState<BackendSettings["protection"]>(DEFAULT_BACKEND_SETTINGS.protection)
      useEffect(()=>{
           startTransition(async()=>{

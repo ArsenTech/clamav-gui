@@ -1,4 +1,4 @@
-import useSettings from "@/hooks/use-settings";
+import { useSettings } from "@/hooks/use-settings";
 import { COLORS } from "@/lib/constants/colors";
 import { Color, ResolvedTheme, Theme } from "@/lib/types/settings";
 import { createContext, useContext, useEffect, useState } from "react";

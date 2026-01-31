@@ -2,7 +2,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import useSettings from "@/hooks/use-settings";
+import { useSettings, useBackendSettings } from "@/hooks/use-settings";
 import { DEFAULT_BACKEND_SETTINGS, DEFAULT_SETTINGS, SCAN_OPTION_TITLE } from "@/lib/settings";
 import { SCAN_SETTINGS_GROUPED } from "@/lib/settings/custom-scan-options";
 import { BackendSettings, ScanOptionGroup } from "@/lib/types/settings";
@@ -14,7 +14,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ScanSettings(){
      const [isFetching, startTransition] = useTransition()
-     const {settings, setSettings, fetchBackendSettings,setBackendSettings} = useSettings();
+     const {settings, setSettings} = useSettings();
+     const {fetchBackendSettings, setBackendSettings} = useBackendSettings()
      const [scanSettings, setScanSettings] = useState<BackendSettings["scan"]>(DEFAULT_BACKEND_SETTINGS.scan)
      useEffect(()=>{
           startTransition(async()=>{

@@ -11,7 +11,7 @@ import { useMemo } from "react";
 import { capitalizeText, getThreatStatusBadges } from "@/lib/helpers";
 import { Badge } from "@/components/ui/badge";
 import { IFinishScanState, IScanPageState } from "@/lib/types/states";
-import useSettings from "@/hooks/use-settings";
+import { useSettings } from "@/hooks/use-settings";
 
 export const GET_THREATS_COLS = (
      setScanState: React.Dispatch<React.SetStateAction<IScanPageState>>,

@@ -10,7 +10,7 @@ import { INITIAL_QUARANTINE_STATE } from "@/lib/constants/states";
 import QuarantineLoader from "@/loaders/quarantine";
 import { IQuarantineData } from "@/lib/types";
 import { formatBytes } from "@/lib/helpers";
-import useSettings from "@/hooks/use-settings";
+import { useSettings } from "@/hooks/use-settings";
 import { GET_QUARANTINE_COLS } from "@/components/data-table/columns/quarantine";
 const QuarantineTable = lazy(()=>import("@/contents/quarantine"))
 

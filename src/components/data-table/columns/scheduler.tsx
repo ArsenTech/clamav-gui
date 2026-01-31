@@ -10,7 +10,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { toast } from "sonner";
 import { Link } from "react-router";
 import { ISchedulerState } from "@/lib/types/states";
-import useSettings from "@/hooks/use-settings";
+import { useSettings } from "@/hooks/use-settings";
 
 export const GET_SCHEDULER_COLS = (
      setState:  (overrides: Partial<ISchedulerState>) => void,

@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Link } from "react-router";
 import { IHistoryPageState } from "@/lib/types/states";
-import useSettings from "@/hooks/use-settings";
+import { useSettings } from "@/hooks/use-settings";
 
 export const GET_HISTORY_COLS = (
      setHistoryState: React.Dispatch<React.SetStateAction<IHistoryPageState>>,

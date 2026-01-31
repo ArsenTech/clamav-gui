@@ -4,7 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { IQuarantineData } from "@/lib/types";
 import { IQuarantineState } from "@/lib/types/states";
-import useSettings from "@/hooks/use-settings";
+import { useSettings } from "@/hooks/use-settings";
 
 export const GET_QUARANTINE_COLS = (
      setState: (overrides: Partial<IQuarantineState>) => void,

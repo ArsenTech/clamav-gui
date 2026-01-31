@@ -16,7 +16,7 @@ import Popup from "@/components/popup";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { IHistoryPageState } from "@/lib/types/states";
 import { INITIAL_HISTORY_STATE } from "@/lib/constants/states";
-import useSettings from "@/hooks/use-settings";
+import { useSettings } from "@/hooks/use-settings";
 
 export default function HistoryContent(){
      const {settings} = useSettings();
