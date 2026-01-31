@@ -11,6 +11,11 @@ type ScanOptionValue =
   | { kind: "input"; inputType: "number" | "path" | "string"; min?: number; max?: number, default?: string | number }
   | { kind: "choice"; choices: readonly { label: string; value: string | number }[]; default?: string | number };
 
+export type ScanProfileValues = {
+     [K in keyof typeof SCAN_SETTINGS]?: string | number | boolean;
+};
+export type ScanProfileId = "main" | "custom" | "file";
+
 export interface IScanOption{
      label: string;
      description?: string;
@@ -53,7 +58,8 @@ export interface ISettings{
      developerMode: boolean,
      confirmStopScan: boolean,
      autoScrollText: boolean,
-     maxLogLines: number
+     maxLogLines: number,
+     currScanProfile: ScanProfileId
 }
 export type BehaviorMode = "balanced" | "safe" | "strict" | "expert"
 export type BackendSettings = {
@@ -62,9 +68,9 @@ export type BackendSettings = {
           silentScheduledScans: boolean,
      },
      scanProfiles: {
-          main: {},
-          custom: {},
-          file: {}
+          main: ScanProfileValues,
+          custom: ScanProfileValues,
+          file: ScanProfileValues
      }
      scheduler: {
           enableSchedulerUI: boolean,

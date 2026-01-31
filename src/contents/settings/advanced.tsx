@@ -11,11 +11,13 @@ import { BackendSettings, BehaviorMode } from "@/lib/types/settings";
 import { useTransition, useState, useEffect } from "react";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useScanProfile } from "@/hooks/use-scan-profile";
 
 export default function AdvancedSettings(){
      const {settings, setSettings} = useSettings();
      const [isFetching, startTransition] = useTransition();
      const {fetchBackendSettings, setBackendSettings} = useBackendSettings()
+     const { values, setValue, isLoading } = useScanProfile(settings.currScanProfile);
      const [advancedSettings, setAdvancedSettings] = useState<BackendSettings["advanced"]>(DEFAULT_BACKEND_SETTINGS.advanced)
      useEffect(()=>{
           startTransition(async()=>{
@@ -90,26 +92,42 @@ export default function AdvancedSettings(){
                                    <p className="text-muted-foreground text-sm">{option.flag}</p>
                               </div>
                               {option.value.kind==="yes-no" ? (
-                                   <Switch
-                                        defaultChecked={option.value.default}
-                                   />
+                                   isLoading ? (
+                                        <Skeleton className="w-8 h-[18px]"/>
+                                   ): (
+                                        <Switch
+                                             checked={(values[key] ?? option.value.default) as boolean}
+                                             onCheckedChange={checked => setValue(key, checked)}
+                                        />
+                                   )
                               ) : option.value.kind==="choice" ? (
-                                   <Select defaultValue={typeof option.value.default === "string" ? option.value.default : option.value.default?.toString()}>
-                                        <SelectTrigger>
-                                             <SelectValue placeholder={option.label}/>
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                             {option.value.choices.map(choice=>(
-                                                  <SelectItem value={typeof choice.value==="string" ? choice.value : choice.value.toString()}>{choice.label}</SelectItem>
-                                             ))}
-                                        </SelectContent>
-                                   </Select>
+                                   isLoading ? (
+                                        <Skeleton className="h-9 w-32"/>
+                                   ) : (
+                                        <Select
+                                             value={String(values[key] ?? option.value.default)}
+                                             onValueChange={val=>setValue(key, typeof option.value.default === "number" ? Number(val) : val)}
+                                        >
+                                             <SelectTrigger>
+                                                  <SelectValue placeholder={option.label}/>
+                                             </SelectTrigger>
+                                             <SelectContent>
+                                                  {option.value.choices.map(choice=>(
+                                                       <SelectItem value={typeof choice.value==="string" ? choice.value : choice.value.toString()}>{choice.label}</SelectItem>
+                                                  ))}
+                                             </SelectContent>
+                                        </Select>
+                                   )
+                              ) : isLoading ? (
+                                   <Skeleton className="w-1/3 h-9"/>
                               ) : (
                                    <Input
                                         type={option.value.inputType==="number" ? "number" : "text"}
                                         min={option.value.min}
                                         max={option.value.max}
                                         className="max-w-1/3"
+                                        value={(values[key] ?? option.value.default ?? "") as number}
+                                        onChange={e =>setValue(key, Number(e.target.value))}
                                    />
                               )}
                          </div>

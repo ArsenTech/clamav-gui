@@ -37,7 +37,8 @@ export const DEFAULT_SETTINGS: ISettings = {
      developerMode: false,
      confirmStopScan: true,
      autoScrollText: true,
-     maxLogLines: 500
+     maxLogLines: 500,
+     currScanProfile: "custom"
 }
 export const DEFAULT_BACKEND_SETTINGS: BackendSettings = {
      scan: {
@@ -141,9 +142,7 @@ Settings
 │   ├── Auto startup scan [Impl]
 │   ├── Confirm stop [X]
 │   ├── Silent scheduled scans [Impl]
-│   └── Custom Scan Options (uses @tauri-apps/plugin-store)
-│       ├── Options with Switch Togglers [UI] 
-│       └── Options with Input Boxes [UI] 
+│   └── Custom Scan Options [Impl]
 │
 ├── Scheduler
 │   ├── Enable Scheduler UI [Impl]
@@ -158,10 +157,7 @@ Settings
 │   └── ClamD status [UI]
 │
 └── Advanced
-    ├── Custom Scan Options (uses @tauri-apps/plugin-store)
-    │   ├── Options with Switch Togglers [UI]
-    │   └── Options with Input Boxes [UI]
-    │
+    ├── Custom Scan Options [Impl]
     ├── Developer Mode (Shows ID on Tables) [X]
     └── Behavior [Impl]
 */
