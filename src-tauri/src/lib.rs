@@ -17,7 +17,9 @@ use crate::{
         scan::{get_startup_scan, start_custom_scan, start_full_scan, start_main_scan, stop_scan},
         stats::get_stats,
         update::{get_clamav_version, update_definitions},
-        clamd::{clamd_ping,clamd_shutdown,clamd_start}
+        clamd::{clamd_ping,clamd_shutdown,clamd_start},
+        start_real_time_scan,
+        stop_real_time_scan
     },
     helpers::{flags::parse_startup_flags, scan::run_headless_scan},
     system::{
@@ -74,7 +76,9 @@ pub fn run() {
         clear_scheduled_jobs,
         clamd_ping,
         clamd_shutdown,
-        clamd_start
+        clamd_start,
+        start_real_time_scan,
+        stop_real_time_scan
     ]);
 
     tauri::Builder::default()

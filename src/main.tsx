@@ -6,13 +6,16 @@ import "./App.css";
 import StartupScanProvider from "./context/startup-scan";
 import { ThemeProvider } from "./context/themes";
 import "@/i18n"
+import { RealtimeProvider } from "./context/real-time";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
      <React.StrictMode>
-          <ThemeProvider>
-               <StartupScanProvider>
-                    <RouterProvider router={router}/>
-               </StartupScanProvider>
-          </ThemeProvider>
+          <RealtimeProvider>
+               <ThemeProvider>
+                    <StartupScanProvider>
+                         <RouterProvider router={router}/>
+                    </StartupScanProvider>
+               </ThemeProvider>
+          </RealtimeProvider>
      </React.StrictMode>,
 );

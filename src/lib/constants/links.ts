@@ -101,7 +101,7 @@ export const QUICK_ACCESS_LINKS: IQuickAccessItem[] = [
           openDialogType: "none"
      },
      {
-          name: "Real-Time Protection",
+          name: "Real-Time Scan",
           desc: "Scans newly created files in real time",
           href: "/settings?tab=protection",
           Icon: ShieldCheck,

@@ -38,7 +38,8 @@ export const DEFAULT_SETTINGS: ISettings = {
      confirmStopScan: true,
      autoScrollText: true,
      maxLogLines: 500,
-     currScanProfile: "custom"
+     currScanProfile: "custom",
+     realTime: true
 }
 export const DEFAULT_BACKEND_SETTINGS: BackendSettings = {
      scan: {
@@ -56,11 +57,9 @@ export const DEFAULT_BACKEND_SETTINGS: BackendSettings = {
           notifOnScanFinish: true,
           notifOnDetection: true
      },
-     protection: {
-          realTime: true,
-          dirExclusions: [],
-          puaExclusions: [],
-          clamdEnabled: false
+     exclusions: {
+          directory: [],
+          puaCategory: [],
      },
      advanced: {
           behavior: "balanced"
@@ -152,7 +151,7 @@ Settings
 │       └── On detection [Impl]
 │
 ├── Protection (uses @tauri-apps/plugin-store)
-│   ├── Real-Time Protection [Impl]
+│   ├── Real-Time Scan [Impl]
 │   ├── Exclusions [Impl]
 │   └── ClamD status [Impl]
 │

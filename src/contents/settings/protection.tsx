@@ -1,12 +1,12 @@
 import SettingsItem from "@/components/settings-item";
 import DirExclusionsItem from "@/components/settings-item/dir-exclusions";
 import PuaExclusionsItem from "@/components/settings-item/pua-exclusions";
+import { RealTimeToggle } from "@/components/settings-item/real-time-toggler";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Spinner } from "@/components/ui/spinner";
-import { Switch } from "@/components/ui/switch";
 import useClamd from "@/hooks/use-clamd";
 import { useBackendSettings } from "@/hooks/use-settings";
 import { DEFAULT_BACKEND_SETTINGS } from "@/lib/settings";
@@ -21,64 +21,56 @@ import { toast } from "sonner";
 export default function ProtectionSettings(){
      const [isFetching, startTransition] = useTransition()
      const {fetchBackendSettings, setBackendSettings} = useBackendSettings()
-     const [protectionSettings, setProtectionSettings] = useState<BackendSettings["protection"]>(DEFAULT_BACKEND_SETTINGS.protection);
+     const [exclusions, setExclusions] = useState<BackendSettings["exclusions"]>(DEFAULT_BACKEND_SETTINGS.exclusions);
      const { isActive, isBusy, start, shutdown, ping} = useClamd();
      useEffect(()=>{
           startTransition(async()=>{
                try {
-                    const settings = await fetchBackendSettings("protection")
-                    setProtectionSettings(val=>!settings ? val : settings)
+                    const settings = await fetchBackendSettings("exclusions")
+                    setExclusions(val=>!settings ? val : settings)
                } catch (err){
                     toast.error("Failed to fetch existing protection settings");
                     console.error(err)
                }
           })
      },[])
-     const updateProtectionSettings = async <K extends keyof BackendSettings["protection"]>(key: K, value: BackendSettings["protection"][K]) => {
-          await setBackendSettings("protection",key,value);
-          setProtectionSettings(prev=>({...prev, [key]: value}))
+     const updateExclusions = async <K extends keyof BackendSettings["exclusions"]>(key: K, value: BackendSettings["exclusions"][K]) => {
+          await setBackendSettings("exclusions",key,value);
+          setExclusions(prev=>({...prev, [key]: value}))
      }
-     const handleExclusionAction = async(value: string, key: "dirExclusions" | "puaExclusions", action: "exclude" | "remove") => {
+     const dirExclusions = useMemo(()=>!exclusions.directory ? DEFAULT_BACKEND_SETTINGS.exclusions.directory : exclusions.directory,[exclusions.directory]);
+     const puaExclusions = useMemo(()=>!exclusions.puaCategory ? DEFAULT_BACKEND_SETTINGS.exclusions.puaCategory : exclusions.puaCategory,[exclusions.puaCategory]);
+     const isWindows = platform()==="windows"
+     const handleExclusionAction = async  <K extends keyof BackendSettings["exclusions"]>(value: string, key: K, action: "exclude" | "remove") => {
           let newArr: string[] = []
-          if(key === "dirExclusions") {
-               const {dirExclusions} = protectionSettings
-               const mainArr = !dirExclusions ? DEFAULT_BACKEND_SETTINGS.protection.dirExclusions : dirExclusions
+          if(key === "directory") {
+               const {directory} = exclusions
+               const mainArr = !directory ? DEFAULT_BACKEND_SETTINGS.exclusions.directory : directory
                newArr = action==="exclude" ? [...mainArr,value] : mainArr.filter(val=>val!==value)
           } else {
-               const {puaExclusions} = protectionSettings
-               const mainArr = !puaExclusions ? DEFAULT_BACKEND_SETTINGS.protection.puaExclusions : puaExclusions
+               const {puaCategory} = exclusions
+               const mainArr = !puaCategory ? DEFAULT_BACKEND_SETTINGS.exclusions.puaCategory : puaCategory
                newArr = action==="exclude" ? [...mainArr,value] : mainArr.filter(val=>val!==value)
           }
-          await updateProtectionSettings(key,newArr);
-          setProtectionSettings(prev=>({
+          await updateExclusions(key,newArr);
+          setExclusions(prev=>({
                ...prev,
                [key]: newArr
           }))
      }
-     const dirExclusions = useMemo(()=>!protectionSettings.dirExclusions ? DEFAULT_BACKEND_SETTINGS.protection.dirExclusions : protectionSettings.dirExclusions,[protectionSettings.dirExclusions]);
-     const puaExclusions = useMemo(()=>!protectionSettings.puaExclusions ? DEFAULT_BACKEND_SETTINGS.protection.puaExclusions : protectionSettings.puaExclusions,[protectionSettings.puaExclusions]);
-     const isWindows = platform()==="windows"
      return (
           <div className="px-1 py-2 space-y-3">
                <SettingsItem
                     Icon={Shield}
-                    title="Real Time Protection Settings"
+                    title="Real Time Scan Settings"
                     className="space-y-4"
                >
                     <div className="flex flex-row items-center justify-between">
                          <div className="space-y-1">
-                              <Label>Real-Time Protection</Label>
+                              <Label>Real-Time Scan</Label>
                               <p className="text-muted-foreground text-sm">Scans the new file once it appeared</p>
                          </div>
-                         {isFetching ? (
-                              <Skeleton className="w-8 h-[18px]"/>
-                         ) : (
-                              <Switch
-                                   defaultChecked={protectionSettings.realTime || DEFAULT_BACKEND_SETTINGS.protection.realTime}
-                                   checked={protectionSettings.realTime}
-                                   onCheckedChange={checked=>updateProtectionSettings("realTime",checked)}
-                              />
-                         )}
+                         <RealTimeToggle/>
                     </div>
                     {isWindows && (
                          <p className="text-sm text-muted-foreground">ClamD is not available on Windows. File protection will use on-demand scanning instead.</p>
@@ -122,8 +114,8 @@ export default function ProtectionSettings(){
                     ) : (
                          <DirExclusionsItem
                               data={dirExclusions}
-                              onSubmit={values=>handleExclusionAction(values.path,"dirExclusions","exclude")}
-                              onDelete={path=>handleExclusionAction(path,"dirExclusions","remove")}
+                              onSubmit={values=>handleExclusionAction(values.path,"directory","exclude")}
+                              onDelete={path=>handleExclusionAction(path,"directory","remove")}
                          />
                     )}
                     {isFetching ? (
@@ -131,8 +123,8 @@ export default function ProtectionSettings(){
                     ) : (
                          <PuaExclusionsItem
                               data={puaExclusions}
-                              onSubmit={values=>handleExclusionAction(values.category,"puaExclusions","exclude")}
-                              onDelete={category=>handleExclusionAction(category,"puaExclusions","remove")}
+                              onSubmit={values=>handleExclusionAction(values.category,"puaCategory","exclude")}
+                              onDelete={category=>handleExclusionAction(category,"puaCategory","remove")}
                          />
                     )}
                </div>

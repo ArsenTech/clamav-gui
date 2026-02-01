@@ -5,9 +5,11 @@ import { open } from "@tauri-apps/plugin-dialog";
 import { useEffect, useState } from "react";
 import { normalizePaths, parseClamVersion } from "@/lib/helpers";
 import { invoke } from "@tauri-apps/api/core";
+import { useSettings } from "@/hooks/use-settings";
 
 export default function OverviewContent(){
      const navigate = useNavigate();
+     const {settings} = useSettings();
      const [definitionStatus, setDefinitionStatus] = useState<"updated" | "outdated" | "loading">("loading")
      const openCustomScan = async(href: string, type: "file" | "folder") => {
           const currPath = await open({
@@ -37,7 +39,7 @@ export default function OverviewContent(){
           <>
                <SafetyIndicator
                     definitionStatus={definitionStatus}
-                    type="safe"
+                    type={settings.realTime ? "safe" : "alert"}
                />
                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 w-full p-4 gap-4">
                     {QUICK_ACCESS_LINKS.map(({name,desc,href,Icon,openDialogType},i)=>(

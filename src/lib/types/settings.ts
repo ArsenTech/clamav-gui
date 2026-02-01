@@ -59,7 +59,8 @@ export interface ISettings{
      confirmStopScan: boolean,
      autoScrollText: boolean,
      maxLogLines: number,
-     currScanProfile: ScanProfileId
+     currScanProfile: ScanProfileId,
+     realTime: boolean,
 }
 export type BehaviorMode = "balanced" | "safe" | "strict" | "expert"
 export type BackendSettings = {
@@ -78,12 +79,10 @@ export type BackendSettings = {
           notifOnScanFinish: boolean,
           notifOnDetection: boolean
      },
-     protection: {
-          realTime: boolean,
-          dirExclusions: string[],
-          puaExclusions: string[],
-          clamdEnabled: boolean
-     },
+     exclusions: {
+          directory: string[],
+          puaCategory: string[]
+     }
      advanced: {
           behavior: BehaviorMode
      }

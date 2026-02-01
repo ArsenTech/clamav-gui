@@ -10,12 +10,13 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Feature that returns to the recent setting (instead of **General** Settings)
 - The I18n (Internationalization) support
 - Active Profile Changer inside settings
+- Real-Time Scan Support
 ### Improved
 - Scan Page (Performance)
 - Quarantine Page (Mergin 2 bulk action functions into 1)
 - Settings UI + Skeleton Loaders
 ### Fixed
-- Real Time Protection Redirect Issue (Replaced `"/"` with `"/settings?tab=protection"`)
+- Real Time Scan Redirect Issue (Replaced `"/"` with `"/settings?tab=protection"`)
 ### Changed
 - Implemented settings functionalities
 
