@@ -14,6 +14,9 @@ import { useStartupScan } from "@/context/startup-scan";
 import ScanLoader from "@/loaders/scan/index";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useSettings } from "@/hooks/use-settings";
+import { fetchPaths } from "@/lib/helpers/fs";
+import { sendNotification } from "@tauri-apps/plugin-notification";
+import { capitalizeText } from "@/lib/helpers";
 
 const ScanProcess = lazy(()=>import("@/components/antivirus/scan-process"))
 export default function ScanPage(){
@@ -24,7 +27,6 @@ export default function ScanPage(){
      const setState = (overrides: Partial<IScanPageState>) => setScanState(prev=>({ ...prev, ...overrides }))
      const {isStartup} = useStartupScan();
      const {settings} = useSettings();
-     
      const startTimeRef = useRef<number | null>(null);
      const scanActiveRef = useRef(false);
      const scanStartedRef = useRef(false);
@@ -101,6 +103,15 @@ export default function ScanPage(){
                Promise.all(unsubs).then(fns=>fns.forEach(fn=>fn()));
           }
      },[]);
+     useEffect(()=>{
+          if(!scanState.isFinished) return;
+          if(settings.notifOnScanFinish){
+               sendNotification({
+                    title: "Scan Finished",
+                    body: !scanState.errMsg ? `${scanState.threats.length<=0 ? "No": scanState.threats.length} threat${scanState.threats.length===1 ? "" : "s"} were found.` : "Scan Finished with Errors"
+               })
+          }
+     },[scanState.isFinished,settings.notifOnScanFinish,scanState.errMsg,scanState.threats])
      useEffect(() => {
           if (scanStoppedRef.current) return;
           if (!scanState.scanType) return;
@@ -109,8 +120,14 @@ export default function ScanPage(){
           scanStartedRef.current = true;
           scanActiveRef.current = true;
           startTimeRef.current = Date.now();
-          if (scanState.scanType === "main" || scanState.scanType === "full") {
-               invoke(`start_${scanState.scanType}_scan`).catch(() => {
+          if(scanState.scanType==="main"){
+               fetchPaths().then(paths=>invoke("start_main_scan",{paths}).catch(() => {
+                    toast.error("Scan command not found");
+               })).catch(() => {
+                    toast.error("Failed to fetch Paths");
+               })
+          } else if (scanState.scanType === "full") {
+               invoke("start_full_scan").catch(() => {
                     toast.error("Scan command not found");
                });
           } else {
@@ -121,6 +138,12 @@ export default function ScanPage(){
                });
           }
           setState({ duration: 0, exitCode: 0, errMsg: undefined });
+          if(settings.notifOnScanStart){
+               sendNotification({
+                    title: "Scan Started!",
+                    body: `The ${capitalizeText(scanType)} Scan has been started`
+               });
+          }
      }, [scanState.scanType, scanState.paths, isStartup]);
      const reset = (overrides?: Partial<IScanPageState>) => {
           scanStartedRef.current = false;

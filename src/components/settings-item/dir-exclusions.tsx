@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, ShieldOff, Trash2, X } from "lucide-react";
+import { Folder, Plus, Trash2, X } from "lucide-react";
 import Popup from "@/components/popup";
 import SettingsItem from ".";
 import { Button } from "../ui/button";
@@ -41,8 +41,8 @@ export default function DirExclusionsItem({data, onSubmit, onDelete}: Props){
      return (
           <>
           <SettingsItem
-               Icon={ShieldOff}
-               title="Exclusions"
+               Icon={Folder}
+               title="Directory Exclusions"
                description="--exclude-dir"
                className="space-y-2.5"
                button={(

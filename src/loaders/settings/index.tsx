@@ -3,13 +3,13 @@ import GeneralSettingsLoader from "./general";
 import { SettingsTab } from "@/lib/types";
 import ScanSettingsLoader from "./scan";
 import SchedulerSettingsLoader from "./scheduler";
-import ProtectionSettingsLoader from "./protection";
+import ExclusionsSettingsLoader from "./exclusions";
 import AdvancedSettingsLoader from "./advanced";
 
 export {default as GeneralSettingsLoader} from "./general";
 export {default as ScanSettingsLoader} from "./scan";
 export {default as AdvancedSettingsLoader} from "./advanced"
-export {default as ProtectionSettingsLoader} from "./protection"
+export {default as ExclusionsSettingsLoader} from "./exclusions"
 export {default as SchedulerSettingsLoader} from "./scheduler"
 
 interface Props{
@@ -32,8 +32,8 @@ export default function SettingsLoader({currPage}: Props){
                <ScanSettingsLoader/>
           ) : currPage==="scheduler" ? (
                <SchedulerSettingsLoader/>
-          ) : currPage==="protection" ? (
-               <ProtectionSettingsLoader/>
+          ) : currPage==="exclusions" ? (
+               <ExclusionsSettingsLoader/>
           ) : (
                <AdvancedSettingsLoader/>
           )}

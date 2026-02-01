@@ -74,10 +74,10 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - [ ] Settings
   - [X] Themes
   - [ ] Custom Scan Settings
-  - [ ] Real Time Scan Settings
-  - [ ] Other settings based on few GUI actions
+  - [X] Real Time Scan Settings
+  - [X] Other settings based on few GUI actions
 - [ ] YARA Rules and YARA Scan Type + YARA Real-Time Scan Type
-- [ ] Notifications
+- [X] Notifications
 - [X] System Tray with quick access (Initialized)
 - [ ] Finishing touches and optimization before v1
 - [ ] Translate the GUI into mentioned languages

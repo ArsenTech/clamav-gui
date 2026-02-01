@@ -1,40 +1,22 @@
 import { SCAN_SETTINGS } from "@/lib/settings/custom-scan-options";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label"
-import { useSettings, useBackendSettings } from "@/hooks/use-settings";
-import { DEFAULT_BACKEND_SETTINGS, DEFAULT_SETTINGS, FILE_SCAN_WHITELIST, SCAN_OPTION_TITLE } from "@/lib/settings";
+import { useSettings } from "@/hooks/use-settings";
+import { DEFAULT_SETTINGS, FILE_SCAN_WHITELIST, SCAN_OPTION_TITLE } from "@/lib/settings";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Braces, FlaskConical, Scale, ShieldAlert, ShieldCheck } from "lucide-react";
 import SettingsItem from "@/components/settings-item";
-import { BackendSettings, BehaviorMode } from "@/lib/types/settings";
-import { useTransition, useState, useEffect, useMemo } from "react";
-import { toast } from "sonner";
+import { BehaviorMode } from "@/lib/types/settings";
+import { useMemo } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useScanProfile } from "@/hooks/use-scan-profile";
 import { SettingsProps } from "@/lib/types";
+import { RealTimeToggle } from "@/components/settings-item/real-time-toggler";
 
 export default function AdvancedSettings({scanProfile}: SettingsProps){
      const {settings, setSettings} = useSettings();
-     const [isFetching, startTransition] = useTransition();
-     const {fetchBackendSettings, setBackendSettings} = useBackendSettings()
      const { values, setValue, isLoading } = useScanProfile(scanProfile);
-     const [advancedSettings, setAdvancedSettings] = useState<BackendSettings["advanced"]>(DEFAULT_BACKEND_SETTINGS.advanced)
-     useEffect(()=>{
-          startTransition(async()=>{
-               try {
-                    const settings = await fetchBackendSettings("advanced")
-                    setAdvancedSettings(val=>!settings ? val : settings)
-               } catch (err){
-                    toast.error("Failed to fetch existing advanced settings");
-                    console.error(err)
-               }
-          })
-     },[])
-     const updateAdvancedSettings = async <K extends keyof BackendSettings["advanced"]>(key: K, value: BackendSettings["advanced"][K]) => {
-          await setBackendSettings("advanced",key,value);
-          setAdvancedSettings(prev=>({...prev, [key]: value}))
-     }
      const visibleOptions = useMemo(()=>{
           const options = Object.entries(SCAN_SETTINGS).filter(([__dirname,option])=>option.group==="advanced")
           return scanProfile === "file" ? options.filter(([k]) =>FILE_SCAN_WHITELIST.includes(k)) : options;
@@ -60,28 +42,31 @@ export default function AdvancedSettings({scanProfile}: SettingsProps){
                     </div>
                     <div className="flex flex-row items-center justify-between">
                          <div className="space-y-1">
+                              <Label>Real-Time Scan</Label>
+                              <p className="text-muted-foreground text-sm">Automatically scans files when they are created or modified.</p>
+                         </div>
+                         <RealTimeToggle/>
+                    </div>
+                    <div className="flex flex-row items-center justify-between">
+                         <div className="space-y-1">
                               <Label>Behavior</Label>
                               <p className="text-muted-foreground text-sm">How the ClamAV GUI act in other cases?</p>
                          </div>
-                         {isFetching ? (
-                              <Skeleton className="w-32 h-9"/>
-                         ) : (
-                              <Select
-                                   defaultValue={advancedSettings.behavior || DEFAULT_BACKEND_SETTINGS.advanced.behavior}
-                                   value={advancedSettings.behavior}
-                                   onValueChange={value=>updateAdvancedSettings("behavior",value as BehaviorMode)}
-                              >
-                                   <SelectTrigger>
-                                        <SelectValue placeholder="ClamAV Behavior"/>
-                                   </SelectTrigger>
-                                   <SelectContent>
-                                        <SelectItem value="balanced"><Scale/> Balanced</SelectItem>
-                                        <SelectItem value="safe"><ShieldCheck/> Safe</SelectItem>
-                                        <SelectItem value="strict"><ShieldAlert/> Strict</SelectItem>
-                                        <SelectItem value="expert"><FlaskConical/> Expert</SelectItem>
-                                   </SelectContent>
-                              </Select>
-                         )}
+                         <Select
+                              defaultValue={settings.behavior || DEFAULT_SETTINGS.behavior}
+                              value={settings.behavior}
+                              onValueChange={value=>setSettings({behavior: value as BehaviorMode})}
+                         >
+                              <SelectTrigger>
+                                   <SelectValue placeholder="ClamAV Behavior"/>
+                              </SelectTrigger>
+                              <SelectContent>
+                                   <SelectItem value="balanced"><Scale/> Balanced</SelectItem>
+                                   <SelectItem value="safe"><ShieldCheck/> Safe</SelectItem>
+                                   <SelectItem value="strict"><ShieldAlert/> Strict</SelectItem>
+                                   <SelectItem value="expert"><FlaskConical/> Expert</SelectItem>
+                              </SelectContent>
+                         </Select>
                     </div>
                </SettingsItem>
                <SettingsItem

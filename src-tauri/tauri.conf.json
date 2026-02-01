@@ -30,6 +30,10 @@
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
-    ]
+    ],
+    "resources": {
+      "assets/icon-variants/*.png": "resources/icons/",
+      "assets/sounds/*.wav": "resources/sounds/"
+    }
   }
 }

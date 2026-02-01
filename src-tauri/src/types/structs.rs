@@ -124,3 +124,10 @@ pub struct SchedulerEntry {
     pub created_at: String,
     pub log_id: Option<String>,
 }
+
+#[derive(Debug, Serialize, Type)]
+pub struct BehaviorConfig {
+    pub scan_extensions: Vec<&'static str>,
+    pub auto_quarantine: bool,
+    pub rescan_on_modify: bool,
+}

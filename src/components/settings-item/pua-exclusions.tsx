@@ -1,4 +1,4 @@
-import { Plus, ShieldOff, Trash2, X } from "lucide-react";
+import { AppWindow, AppWindowMac, Plus, Trash2, X } from "lucide-react";
 import Popup from "@/components/popup";
 import SettingsItem from ".";
 import { Button } from "../ui/button";
@@ -10,6 +10,7 @@ import { PuaExclusionsSchema } from "@/lib/schemas";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
 import { ButtonGroup } from "../ui/button-group";
+import { platform } from "@tauri-apps/plugin-os";
 
 interface Props{
      data: string[],
@@ -29,10 +30,11 @@ export default function PuaExclusionsItem({data, onSubmit, onDelete}: Props){
           onSubmit(values)
           form.reset()
      }
+     const currentPlatform = platform();
      return (
           <>
           <SettingsItem
-               Icon={ShieldOff}
+               Icon={currentPlatform==="macos" ? AppWindowMac : AppWindow}
                title="PUA Exclusions"
                description="--exclude-pua"
                className="space-y-2.5"

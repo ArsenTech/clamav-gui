@@ -1,12 +1,12 @@
-import { ScanSettingsLoader, GeneralSettingsLoader, AdvancedSettingsLoader, ProtectionSettingsLoader, SchedulerSettingsLoader } from "@/loaders/settings";
-import { Braces, ClipboardClock, Cog, Search, Shield } from "lucide-react";
+import { ScanSettingsLoader, GeneralSettingsLoader, AdvancedSettingsLoader, ExclusionsSettingsLoader, SchedulerSettingsLoader } from "@/loaders/settings";
+import { Braces, ClipboardClock, Cog, Search, ShieldOff } from "lucide-react";
 import { lazy } from "react";
 import { ISettingsTab } from "../types";
 
 const GeneralSettings = lazy(()=>import("@/contents/settings/general"));
 const AdvancedSettings = lazy(()=>import("@/contents/settings/advanced"));
 const ScanSettings = lazy(()=>import("@/contents/settings/scan"));
-const ProtectionSettings = lazy(()=>import("@/contents/settings/protection"))
+const ExclusionsSettings = lazy(()=>import("@/contents/settings/exclusions"))
 const SchedulerSettings = lazy(()=>import("@/contents/settings/scheduler"))
 
 export const SETTINGS_TABS: ISettingsTab[] = [
@@ -32,11 +32,11 @@ export const SETTINGS_TABS: ISettingsTab[] = [
           LazyComponent: SchedulerSettings
      },
      {
-          page: "protection",
-          name: "Protection",
-          Icon: Shield,
-          Loader: ProtectionSettingsLoader,
-          LazyComponent: ProtectionSettings
+          page: "exclusions",
+          name: "Exclusions",
+          Icon: ShieldOff,
+          Loader: ExclusionsSettingsLoader,
+          LazyComponent: ExclusionsSettings
      },
      {
           page: "advanced",

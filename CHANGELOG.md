@@ -4,22 +4,33 @@ All notable changes of ArsenTech's ClamAV GUI will be documented here.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
-## [0.3.2] - Unreleased
+## [0.3.2] - 2026-02-01 (February Pre-Release)
 ### Added
 - Skeleton Loaders on Scan Finished State Components
 - Feature that returns to the recent setting (instead of **General** Settings)
 - The I18n (Internationalization) support
 - Active Profile Changer inside settings
-- Real-Time Scan Support
-- System Tray
+- Real-Time Scan (Soft Real-Time Protection)
+- System Tray with Notifications
+- Resources for the app (Icons and Sounds)
+- **Working Settings**
+  - Notifications Settings
+  - Real-time Protection Settings with behavior type
+  - Other Functionalities
 ### Improved
 - Scan Page (Performance)
 - Quarantine Page (Mergin 2 bulk action functions into 1)
-- Settings UI + Skeleton Loaders
+- Settings UI with Pages + Skeleton Loaders
+- Main Scan (More Paths)
 ### Fixed
-- Real Time Scan Redirect Issue (Replaced `"/"` with `"/settings?tab=protection"`)
+- Real Time Scan Redirect Issue (Replaced `"/"` with `"/settings?tab=advanced"`)
+### Removed
+- The `notifOnDetection` option inside settings
+- ClamD Settings in favor of Real-Time Scan
 ### Changed
-- Implemented settings functionalities
+- Moved Real-time Scan Settings into Advanced Settings
+- Renamed Protection Settings into Exclusion Settings
+- Exclusion Settings Icons
 
 ## [0.3.1] - 2026-01-28
 ### Added

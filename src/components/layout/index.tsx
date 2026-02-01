@@ -8,6 +8,8 @@ import { ClamAVState } from "@/lib/types";
 import { Toaster } from "../ui/sonner";
 import { useNavigate } from "react-router";
 import { useStartupScan } from "@/context/startup-scan";
+import { useSettings } from "@/hooks/use-settings";
+import { isPermissionGranted, requestPermission, } from '@tauri-apps/plugin-notification';
 
 const NoClamAVPage = lazy(()=>import("./no-clamav"));
 
@@ -20,6 +22,7 @@ export function AppLayout({children, className}: Props){
      const [status, setStatus] = useState<ClamAVState>(cached || "checking");
      const navigate = useNavigate();
      const [isLoading, startTransition] = useTransition();
+     const {setSettings} = useSettings()
      const startupScan = useStartupScan()
      const handleCheck = () => {
           startTransition(async() => {
@@ -36,6 +39,14 @@ export function AppLayout({children, className}: Props){
      }
      useEffect(() => {
           handleCheck();
+          (async()=>{
+               let permissionGranted = await isPermissionGranted();
+               if(!permissionGranted){
+                    const permission = await requestPermission();
+                    permissionGranted = permission === 'granted';
+               }
+               setSettings({notifPermitted: permissionGranted})
+          })()
      }, []);
      useEffect(() => {
           if (!startupScan) return;

@@ -39,31 +39,25 @@ export const DEFAULT_SETTINGS: ISettings = {
      autoScrollText: true,
      maxLogLines: 500,
      currScanProfile: "custom",
-     realTime: true
+     realTime: true,
+     enableSchedulerUI: true,
+     notifOnScanStart: false,
+     notifOnScanFinish: true,
+     notifPermitted: false,
+     behavior: "balanced",
+     autoStartupScan: false,
+     silentScheduledScans: false,
 }
 export const DEFAULT_BACKEND_SETTINGS: BackendSettings = {
-     scan: {
-          autoStartupScan: false,
-          silentScheduledScans: false,
-     },
      scanProfiles: {
           main: {},
           custom: {},
           file: {}
      },
-     scheduler: {
-          enableSchedulerUI: true,
-          notifOnScanStart: false,
-          notifOnScanFinish: true,
-          notifOnDetection: true
-     },
      exclusions: {
           directory: [],
           puaCategory: [],
      },
-     advanced: {
-          behavior: "balanced"
-     }
 }
 export const FILE_SCAN_WHITELIST =  [
      "algorithmicDetection",
@@ -124,7 +118,11 @@ export const DATE_TIME_FORMATS: IDateFormatSettings[] = [
           format: "yyyy-MM-dd HH:mm:ss"
      }
 ]
-/* TODO: Finish the settings page according to this route ([UI] - Completed, [X] - Works, [Impl] - Currently Implemented)
+/* TODO: Finish the settings page according to this route ([X] - Works, [Impl] - Currently Implemented) + Reorganize Settings
+
+Real-Time Scan monitors file activity and scans files when they change.
+It does not install kernel drivers.
+
 Completed:
 Settings
 └── General (uses LocalStorage)
@@ -146,17 +144,32 @@ Settings
 ├── Scheduler
 │   ├── Enable Scheduler UI [Impl]
 │   └── Notifications
-│       ├── On scan start [Impl]
-│       ├── On scan finish [Impl]
-│       └── On detection [Impl]
+│       ├── On scan start [X]
+│       └── On scan finish [X]
 │
-├── Protection
-│   ├── Real-Time Scan [X]
-│   ├── Exclusions [Impl] (uses @tauri-apps/plugin-store)
-│   └── ClamD status [X for Linux Users]
+├── Exclusions [Impl] (uses @tauri-apps/plugin-store)
+│   ├── Directory
+│   └── PUA
 │
 └── Advanced
     ├── Custom Scan Options [Impl]
     ├── Developer Mode (Shows ID on Tables) [X]
-    └── Behavior [Impl]
+    ├── Real-Time Scan [X]
+    └── Behavior [X]
+
+---
+Advanced Settings
+├─ Real-Time Scan
+│  ├─ Enable Real-Time Scan        [toggle]
+│  ├─ Behavior Mode               [Safe | Balanced | Strict | Expert]
+│  ├─ Scan Interval / Debounce    [optional, later]
+│  └─ Auto-quarantine             [only visible in Strict/Expert]
+│
+├─ Logging
+│  ├─ Max log lines
+│  ├─ Auto-scroll
+│
+├─ Scheduler
+│  ├─ Enable Scheduler UI
+│  ├─ Silent scheduled scans
 */

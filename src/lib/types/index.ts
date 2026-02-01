@@ -116,7 +116,7 @@ export interface DataTableProps<TData> {
      searchColumn?: string,
      headerElement?: React.JSX.Element
 }
-export type SettingsTab = "general" | "advanced" | "scan" | "protection" | "scheduler"
+export type SettingsTab = "general" | "advanced" | "scan" | "exclusions" | "scheduler"
 export interface SettingsProps{
      scanProfile: ScanProfileId
 }

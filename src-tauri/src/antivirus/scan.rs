@@ -7,7 +7,7 @@ use crate::{
         history::append_scan_history,
         log::{initialize_log_with_id, log_err},
         new_id, resolve_command,
-        scan::{estimate_total_files, get_main_scan_paths, get_root_path, run_scan, SCAN_PROCESS},
+        scan::{estimate_total_files, get_root_path, run_scan, SCAN_PROCESS},
         silent_command,
     },
     types::{
@@ -24,7 +24,7 @@ pub fn get_startup_scan(state: tauri::State<StartupScan>) -> StartupScan {
 
 #[command]
 #[specta(result)]
-pub fn start_main_scan(app: tauri::AppHandle) -> Result<(), String> {
+pub fn start_main_scan(app: tauri::AppHandle, paths: Vec<PathBuf>) -> Result<(), String> {
     let log_id = new_id();
     let log =
         initialize_log_with_id(&app, LogCategory::Scan, &log_id).map_err(|e| e.to_string())?;
@@ -47,7 +47,6 @@ pub fn start_main_scan(app: tauri::AppHandle) -> Result<(), String> {
     );
 
     std::thread::spawn(move || {
-        let paths = get_main_scan_paths();
         let clamscan = match resolve_command("clamscan") {
             Ok(cmd) => cmd,
             Err(e) => return Err(format!("Failed to resolve command: {}", e)),

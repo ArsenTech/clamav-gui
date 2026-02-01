@@ -108,3 +108,12 @@ pub enum ClearHistoryMode {
     All,
     Acknowledged,
 }
+
+#[derive(Serialize, Deserialize, Type, Debug, PartialEq, Eq, Hash, Copy, Clone)]
+#[serde(rename_all = "lowercase")]
+pub enum BehaviorMode {
+    Balanced,
+    Safe,
+    Strict,
+    Expert,
+}

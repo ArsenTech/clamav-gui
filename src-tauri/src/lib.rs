@@ -12,7 +12,6 @@ use tauri_specta::{collect_commands, Builder};
 use crate::{
     antivirus::{
         bulk_actions::{clear_quarantine, delete_all, quarantine_all, restore_all},
-        clamd::{clamd_ping, clamd_shutdown, clamd_start},
         history::{clear_history, load_history, mark_as_acknowledged},
         quarantine::{delete_quarantine, list_quarantine, quarantine_file, restore_quarantine},
         scan::{get_startup_scan, start_custom_scan, start_full_scan, start_main_scan, stop_scan},
@@ -74,9 +73,6 @@ pub fn run() {
         remove_scheduled_task,
         run_job_now,
         clear_scheduled_jobs,
-        clamd_ping,
-        clamd_shutdown,
-        clamd_start,
         start_real_time_scan,
         stop_real_time_scan
     ]);

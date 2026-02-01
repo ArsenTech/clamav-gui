@@ -179,7 +179,13 @@ pub fn get_root_path() -> &'static str {
     }
 }
 
-pub fn get_main_scan_paths() -> Vec<PathBuf> {
+pub fn run_headless_scan(startup: StartupScan) -> Result<(), String> {
+    let scan_type = match startup.scan_type {
+        Some(s) => s,
+        None => return Ok(()),
+    };
+    let clamscan = resolve_command("clamscan")?;
+    let mut cmd = silent_command(clamscan.to_str().unwrap());
     let mut paths = Vec::new();
     if let Some(home) = std::env::var_os(if cfg!(windows) { "USERPROFILE" } else { "HOME" }) {
         let home = PathBuf::from(home);
@@ -189,17 +195,6 @@ pub fn get_main_scan_paths() -> Vec<PathBuf> {
             home.join("Documents"),
         ]);
     }
-    paths
-}
-
-pub fn run_headless_scan(startup: StartupScan) -> Result<(), String> {
-    let scan_type = match startup.scan_type {
-        Some(s) => s,
-        None => return Ok(()),
-    };
-    let clamscan = resolve_command("clamscan")?;
-    let mut cmd = silent_command(clamscan.to_str().unwrap());
-
     match scan_type {
         ScanType::Main => {
             cmd.args([
@@ -209,7 +204,7 @@ pub fn run_headless_scan(startup: StartupScan) -> Result<(), String> {
                 "--max-filesize=100M",
                 "--max-scansize=400M",
             ]);
-            for path in get_main_scan_paths() {
+            for path in paths {
                 cmd.arg(path);
             }
         }

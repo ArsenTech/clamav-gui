@@ -4,6 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { Spinner } from "@/components/ui/spinner";
 import { useSettings } from "@/hooks/use-settings";
 import { SCAN_TYPES } from "@/lib/constants";
+import { formatNumber } from "@/lib/helpers";
 import { IScanPageState } from "@/lib/types/states";
 import { invoke } from "@tauri-apps/api/core";
 import { exit } from "@tauri-apps/plugin-process";
@@ -47,7 +48,7 @@ export default function ScanProcess({scanState, handleReset, isStartup}: Props){
                {scanType!=="full" ? (
                     <>
                     <Progress value={percentage}/>
-                    <p className="text-2xl font-semibold text-center flex justify-center items-center gap-3"><Spinner className="size-9 text-muted-foreground"/> {scannedFiles<=0 ? "Preparing Scan..." : `${percentage}% - ${scannedFiles}/${totalFiles} files scanned`}</p>
+                    <p className="text-2xl font-semibold text-center flex justify-center items-center gap-3"><Spinner className="size-9 text-muted-foreground"/> {scannedFiles<=0 ? "Preparing Scan..." : `${percentage}% - ${formatNumber(scannedFiles)}/${formatNumber(totalFiles)} files scanned`}</p>
                     </>
                ) : (
                     <>

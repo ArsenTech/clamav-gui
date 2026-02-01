@@ -61,29 +61,23 @@ export interface ISettings{
      maxLogLines: number,
      currScanProfile: ScanProfileId,
      realTime: boolean,
+     enableSchedulerUI: boolean,
+     notifOnScanStart: boolean,
+     notifOnScanFinish: boolean,
+     notifPermitted: boolean,
+     behavior: BehaviorMode,
+     autoStartupScan: boolean,
+     silentScheduledScans: boolean,
 }
 export type BehaviorMode = "balanced" | "safe" | "strict" | "expert"
 export type BackendSettings = {
-     scan: {
-          autoStartupScan: boolean,
-          silentScheduledScans: boolean,
-     },
      scanProfiles: {
           main: ScanProfileValues,
           custom: ScanProfileValues,
           file: ScanProfileValues
      }
-     scheduler: {
-          enableSchedulerUI: boolean,
-          notifOnScanStart: boolean,
-          notifOnScanFinish: boolean,
-          notifOnDetection: boolean
-     },
      exclusions: {
           directory: string[],
           puaCategory: string[]
-     }
-     advanced: {
-          behavior: BehaviorMode
      }
 }
