@@ -1,6 +1,8 @@
 import { UPDATE_EXIT_CODE_MSG } from "../constants";
 import { SCAN_EXIT_CODE_MSG } from "../constants";
+import { SCAN_SETTINGS } from "../settings/custom-scan-options";
 import { HistoryStatus, ThreatStatus } from "../types";
+import { ScanProfileValues } from "../types/settings";
 
 export function formatBytes(bytes: number) {
   const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
@@ -47,7 +49,7 @@ export function parseClamVersion(raw: string) {
     engine: match[1],
     dbVersion: match[2],
     dbDate,
-    isOutdated: ageDays > 3,
+    isOutdated: ageDays > 7,
   };
 }
 
@@ -68,4 +70,14 @@ export const getExitText = (exitCode: number, type: "scan" | "update") => {
   const fallbackMsg = type==="scan" ? "Scan failed due to an internal error" : "Update Failed"
   const msg = exitMsgs[exitCode] ?? fallbackMsg
   return `${msg} (Exit Code: ${exitCode})`
+}
+export function hydrateProfile(profile: ScanProfileValues) {
+  const result: ScanProfileValues = {};
+  for (const key in SCAN_SETTINGS) {
+    const opt = SCAN_SETTINGS[key];
+    if (opt.value.default !== undefined) {
+      result[key] = opt.value.default;
+    }
+  }
+  return { ...result, ...profile };
 }

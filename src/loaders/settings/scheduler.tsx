@@ -1,6 +1,6 @@
 export default function SchedulerSettingsLoader(){
      return (
-          <div className="px-1 py-2 space-y-3">
+          <div className="px-1 py-2 space-y-3 w-full">
                <div className="border border-accent animate-pulse flex flex-col gap-4 rounded-xl p-6">
                     <div className="h-4 bg-accent rounded-md w-1/3"/>
                     <div className="flex flex-row items-center justify-between w-full">

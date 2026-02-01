@@ -161,18 +161,3 @@ Settings
     ├── Developer Mode (Shows ID on Tables) [X]
     └── Behavior [Impl]
 */
-/*
-TODO: Implement These:
-const visibleOptions = activeProfile === "file" ? options.filter(o =>FILE_SCAN_WHITELIST.includes(o.optionKey)) : options;
-
-function hydrateProfile(profile: ScanProfileValues) {
-  const result: ScanProfileValues = {};
-  for (const key in SCAN_SETTINGS) {
-    const opt = SCAN_SETTINGS[key];
-    if (opt.value.default !== undefined) {
-      result[key] = opt.value.default;
-    }
-  }
-  return { ...result, ...profile };
-}
-*/

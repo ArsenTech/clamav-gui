@@ -1,6 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { LucideProps } from "lucide-react";
 import { DAYS_OF_THE_WEEK } from "../constants";
+import { ScanProfileId } from "./settings";
 
 export type ScanType = "" | "main" | "full" | "custom" | "file"
 export type ClamAVState = "checking" | "available" | "missing";
@@ -116,12 +117,15 @@ export interface DataTableProps<TData> {
      headerElement?: React.JSX.Element
 }
 export type SettingsTab = "general" | "advanced" | "scan" | "protection" | "scheduler"
+export interface SettingsProps{
+     scanProfile: ScanProfileId
+}
 export interface ISettingsTab{
      page: SettingsTab,
      name: string,
      Icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>,
      Loader: React.FC,
-     LazyComponent: React.LazyExoticComponent<React.FC>
+     LazyComponent: React.LazyExoticComponent<React.FC<SettingsProps>>
 }
 export interface TableLoaderProps{
      rows: number

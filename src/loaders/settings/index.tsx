@@ -1,5 +1,10 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import GeneralSettingsLoader from "./general";
+import { SettingsTab } from "@/lib/types";
+import ScanSettingsLoader from "./scan";
+import SchedulerSettingsLoader from "./scheduler";
+import ProtectionSettingsLoader from "./protection";
+import AdvancedSettingsLoader from "./advanced";
 
 export {default as GeneralSettingsLoader} from "./general";
 export {default as ScanSettingsLoader} from "./scan";
@@ -7,12 +12,31 @@ export {default as AdvancedSettingsLoader} from "./advanced"
 export {default as ProtectionSettingsLoader} from "./protection"
 export {default as SchedulerSettingsLoader} from "./scheduler"
 
-export default function SettingsLoader(){
+interface Props{
+     currPage: SettingsTab
+}
+export default function SettingsLoader({currPage}: Props){
      return (
           <>
-          <Skeleton className="h-6 md:h-[30px] lg:h-9 w-1/6"/>
+          <div className="flex justify-between items-center gap-2 w-full">
+               <Skeleton className="h-6 md:h-[30px] lg:h-9 w-1/6"/>
+               <div className="flex items-center gap-3">
+                    <Skeleton className="w-[117px] h-3.5"/>
+                    <Skeleton className="w-48 h-9"/>
+               </div>
+          </div>
           <Skeleton className="h-9 w-full"/>
-          <GeneralSettingsLoader/>
+          {currPage==="general" ? (
+               <GeneralSettingsLoader/>
+          ) : currPage==="scan" ? (
+               <ScanSettingsLoader/>
+          ) : currPage==="scheduler" ? (
+               <SchedulerSettingsLoader/>
+          ) : currPage==="protection" ? (
+               <ProtectionSettingsLoader/>
+          ) : (
+               <AdvancedSettingsLoader/>
+          )}
           </>
      )
 }

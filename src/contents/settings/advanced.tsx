@@ -2,22 +2,23 @@ import { SCAN_SETTINGS } from "@/lib/settings/custom-scan-options";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label"
 import { useSettings, useBackendSettings } from "@/hooks/use-settings";
-import { DEFAULT_BACKEND_SETTINGS, DEFAULT_SETTINGS, SCAN_OPTION_TITLE } from "@/lib/settings";
+import { DEFAULT_BACKEND_SETTINGS, DEFAULT_SETTINGS, FILE_SCAN_WHITELIST, SCAN_OPTION_TITLE } from "@/lib/settings";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Braces, FlaskConical, Scale, ShieldAlert, ShieldCheck } from "lucide-react";
 import SettingsItem from "@/components/settings-item";
 import { BackendSettings, BehaviorMode } from "@/lib/types/settings";
-import { useTransition, useState, useEffect } from "react";
+import { useTransition, useState, useEffect, useMemo } from "react";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useScanProfile } from "@/hooks/use-scan-profile";
+import { SettingsProps } from "@/lib/types";
 
-export default function AdvancedSettings(){
+export default function AdvancedSettings({scanProfile}: SettingsProps){
      const {settings, setSettings} = useSettings();
      const [isFetching, startTransition] = useTransition();
      const {fetchBackendSettings, setBackendSettings} = useBackendSettings()
-     const { values, setValue, isLoading } = useScanProfile(settings.currScanProfile);
+     const { values, setValue, isLoading } = useScanProfile(scanProfile);
      const [advancedSettings, setAdvancedSettings] = useState<BackendSettings["advanced"]>(DEFAULT_BACKEND_SETTINGS.advanced)
      useEffect(()=>{
           startTransition(async()=>{
@@ -34,6 +35,10 @@ export default function AdvancedSettings(){
           await setBackendSettings("advanced",key,value);
           setAdvancedSettings(prev=>({...prev, [key]: value}))
      }
+     const visibleOptions = useMemo(()=>{
+          const options = Object.entries(SCAN_SETTINGS).filter(([__dirname,option])=>option.group==="advanced")
+          return scanProfile === "file" ? options.filter(([k]) =>FILE_SCAN_WHITELIST.includes(k)) : options;
+     },[scanProfile])
      return (
           <div className="px-1 py-2 space-y-3">
                <SettingsItem
@@ -85,7 +90,7 @@ export default function AdvancedSettings(){
                     className="space-y-4"
                     description="Advanced options for the Custom Scan. It may reduce detection accuracy"
                >
-                    {Object.entries(SCAN_SETTINGS).filter(([__dirname,option])=>option.group==="advanced").map(([key,option])=>(
+                    {visibleOptions.map(([key,option])=>(
                          <div key={key} className="flex flex-row items-center justify-between">
                               <div className="space-y-1">
                                    <Label>{option.label}</Label>

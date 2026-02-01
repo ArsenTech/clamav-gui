@@ -2,6 +2,7 @@ import { DEFAULT_BACKEND_SETTINGS } from "@/lib/settings";
 import { BackendSettings, ScanProfileValues } from "@/lib/types/settings";
 import { useState, useEffect } from "react";
 import { useBackendSettings } from "./use-settings";
+import { hydrateProfile } from "@/lib/helpers";
 
 export function useScanProfile(profile: keyof BackendSettings["scanProfiles"]) {
      const { fetchBackendSettings, setBackendSettings } = useBackendSettings();
@@ -31,5 +32,5 @@ export function useScanProfile(profile: keyof BackendSettings["scanProfiles"]) {
           });
      };
 
-     return { values, setValue, isLoading };
+     return { values: hydrateProfile(values), setValue, isLoading };
 }
