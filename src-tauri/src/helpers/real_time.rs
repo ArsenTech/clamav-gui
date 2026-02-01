@@ -1,21 +1,21 @@
+use notify::{RecursiveMode, Watcher};
 use once_cell::sync::Lazy;
 use std::{
     collections::HashSet,
     path::{Path, PathBuf},
     sync::{
-        Arc, Mutex,
         atomic::{AtomicBool, Ordering},
+        Arc, Mutex,
     },
     thread,
     time::Duration,
 };
-use notify::{RecursiveMode, Watcher};
 
 static REALTIME_ENABLED: AtomicBool = AtomicBool::new(false);
 static SCAN_QUEUE: Lazy<Arc<Mutex<HashSet<PathBuf>>>> =
     Lazy::new(|| Arc::new(Mutex::new(HashSet::new())));
-    
-use crate::helpers::{resolve_command,silent_command};
+
+use crate::helpers::{resolve_command, silent_command};
 
 fn start_watcher(paths: Vec<String>) {
     let queue = SCAN_QUEUE.clone();
@@ -25,7 +25,9 @@ fn start_watcher(paths: Vec<String>) {
         let mut watcher = notify::recommended_watcher(tx).unwrap();
 
         for path in paths {
-            watcher.watch(path.as_ref(), RecursiveMode::Recursive).unwrap();
+            watcher
+                .watch(path.as_ref(), RecursiveMode::Recursive)
+                .unwrap();
         }
         while REALTIME_ENABLED.load(Ordering::Relaxed) {
             if let Ok(Ok(event)) = rx.recv() {
@@ -63,7 +65,6 @@ fn start_scan_worker() {
         }
     });
 }
-
 
 fn should_scan(path: &Path) -> bool {
     if !path.is_file() {

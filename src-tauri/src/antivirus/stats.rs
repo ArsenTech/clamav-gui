@@ -1,16 +1,13 @@
 use crate::{
     antivirus::history::load_history,
-    types::structs::StatsResponse,
     helpers::stats::{
-        aggregate_activity,
-        aggregate_curr_quarantine_virus_types,
-        aggregate_scan_types,
-        aggregate_threat_status,
-        read_quarantine_items
-    }
+        aggregate_activity, aggregate_curr_quarantine_virus_types, aggregate_scan_types,
+        aggregate_threat_status, read_quarantine_items,
+    },
+    types::structs::StatsResponse,
 };
-use tauri::command;
 use specta::specta;
+use tauri::command;
 
 #[command]
 #[specta(result)]

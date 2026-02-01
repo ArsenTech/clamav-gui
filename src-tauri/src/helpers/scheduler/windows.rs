@@ -4,8 +4,9 @@ use crate::{
     helpers::{
         history::append_scheduler_history,
         log::{initialize_log, log_err, log_info},
-        new_id, resolve_command, silent_command,
-        scheduler::{load_scheduler_file,save_scheduler_file}
+        new_id, resolve_command,
+        scheduler::{load_scheduler_file, save_scheduler_file},
+        silent_command,
     },
     types::{
         enums::{DayOfTheWeek, HistoryStatus, LogCategory, ScanType, SchedulerInterval},

@@ -33,6 +33,7 @@
     },
     "fs:allow-write-text-file",
     "process:default",
-    "store:default"
+    "store:default",
+    "notification:default"
   ]
 }

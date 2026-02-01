@@ -2,14 +2,14 @@ pub mod flags;
 pub mod history;
 pub mod log;
 pub mod quarantine;
+pub mod real_time;
 pub mod scan;
 pub mod scheduler;
 pub mod stats;
-pub mod real_time;
 
 use std::{
     path::PathBuf,
-    process::{Command,Stdio},
+    process::{Command, Stdio},
 };
 
 #[cfg(windows)]

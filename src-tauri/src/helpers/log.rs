@@ -1,6 +1,6 @@
 use std::{
-    io::Write,
     fs::{File, OpenOptions},
+    io::Write,
     path::PathBuf,
     sync::{Arc, Mutex},
 };

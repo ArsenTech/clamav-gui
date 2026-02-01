@@ -1,6 +1,6 @@
 use std::{
     io,
-    path::{Path, PathBuf}
+    path::{Path, PathBuf},
 };
 use tauri::Manager;
 

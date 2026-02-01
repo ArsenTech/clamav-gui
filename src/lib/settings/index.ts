@@ -150,10 +150,10 @@ Settings
 │       ├── On scan finish [Impl]
 │       └── On detection [Impl]
 │
-├── Protection (uses @tauri-apps/plugin-store)
-│   ├── Real-Time Scan [Impl]
-│   ├── Exclusions [Impl]
-│   └── ClamD status [Impl]
+├── Protection
+│   ├── Real-Time Scan [X]
+│   ├── Exclusions [Impl] (uses @tauri-apps/plugin-store)
+│   └── ClamD status [X for Linux Users]
 │
 └── Advanced
     ├── Custom Scan Options [Impl]

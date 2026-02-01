@@ -12,14 +12,14 @@ use tauri_specta::{collect_commands, Builder};
 use crate::{
     antivirus::{
         bulk_actions::{clear_quarantine, delete_all, quarantine_all, restore_all},
+        clamd::{clamd_ping, clamd_shutdown, clamd_start},
         history::{clear_history, load_history, mark_as_acknowledged},
         quarantine::{delete_quarantine, list_quarantine, quarantine_file, restore_quarantine},
         scan::{get_startup_scan, start_custom_scan, start_full_scan, start_main_scan, stop_scan},
-        stats::get_stats,
-        update::{get_clamav_version, update_definitions},
-        clamd::{clamd_ping,clamd_shutdown,clamd_start},
         start_real_time_scan,
-        stop_real_time_scan
+        stats::get_stats,
+        stop_real_time_scan,
+        update::{get_clamav_version, update_definitions},
     },
     helpers::{flags::parse_startup_flags, scan::run_headless_scan},
     system::{
@@ -82,6 +82,33 @@ pub fn run() {
     ]);
 
     tauri::Builder::default()
+        .setup(|app| {
+            use tauri::{
+                menu::{Menu, MenuItem},
+                tray::TrayIconBuilder,
+            };
+
+            let quit_i = MenuItem::with_id(app, "quit", "Quit", true, None::<&str>)?;
+            let menu = Menu::with_items(app, &[&quit_i])?;
+
+            let tray = TrayIconBuilder::new()
+                .icon(app.default_window_icon().unwrap().clone())
+                .menu(&menu)
+                .show_menu_on_left_click(true)
+                .build(app)?;
+
+            tray.on_menu_event(|app, event| match event.id.as_ref() {
+                "quit" => {
+                    println!("quit menu item was clicked");
+                    app.exit(0);
+                }
+                _ => {
+                    println!("menu item {:?} not handled", event.id);
+                }
+            });
+            Ok(())
+        })
+        .plugin(tauri_plugin_notification::init())
         .plugin(tauri_plugin_store::Builder::new().build())
         .plugin(tauri_plugin_process::init())
         .manage(scan_flag.clone())

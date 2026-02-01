@@ -3,9 +3,9 @@ use std::{
     path::PathBuf,
     process::{Command, Stdio},
     sync::{
+        atomic::{AtomicUsize, Ordering},
         Arc, Mutex,
-        atomic::{AtomicUsize, Ordering}
-    }
+    },
 };
 use tauri::Emitter;
 use walkdir::WalkDir;
@@ -225,9 +225,7 @@ pub fn run_headless_scan(startup: StartupScan) -> Result<(), String> {
         _ => return Ok(()),
     }
 
-    let status = cmd
-        .status()
-        .map_err(|e| e.to_string())?;
+    let status = cmd.status().map_err(|e| e.to_string())?;
     match status.code() {
         Some(0) | Some(1) => Ok(()),
         Some(2) => Err("ClamAV scan error".into()),
