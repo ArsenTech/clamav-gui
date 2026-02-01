@@ -1,5 +1,4 @@
 use specta::specta;
-use std::process::Stdio;
 use tauri::{command, Manager};
 
 use crate::{
@@ -165,7 +164,6 @@ pub fn clear_scheduled_jobs(app: tauri::AppHandle) -> Result<(), String> {
         for entry in &scheduler_file.schedulers {
             let result = silent_command(schtasks.to_str().unwrap())
                 .args(["/delete", "/tn", &entry.id, "/f"])
-                .stdin(Stdio::null())
                 .status();
 
             if let Err(e) = result {

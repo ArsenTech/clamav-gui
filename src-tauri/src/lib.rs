@@ -17,6 +17,7 @@ use crate::{
         scan::{get_startup_scan, start_custom_scan, start_full_scan, start_main_scan, stop_scan},
         stats::get_stats,
         update::{get_clamav_version, update_definitions},
+        clamd::{clamd_ping,clamd_shutdown,clamd_start}
     },
     helpers::{flags::parse_startup_flags, scan::run_headless_scan},
     system::{
@@ -70,7 +71,10 @@ pub fn run() {
         list_scheduler,
         remove_scheduled_task,
         run_job_now,
-        clear_scheduled_jobs
+        clear_scheduled_jobs,
+        clamd_ping,
+        clamd_shutdown,
+        clamd_start
     ]);
 
     tauri::Builder::default()

@@ -1,6 +1,8 @@
+import { platform } from "@tauri-apps/plugin-os";
 import ExclusionsLoader from "../components/exclusions";
 
 export default function ProtectionSettingsLoader(){
+     const isWindows = platform()==="windows"
      return (
           <div className="px-1 py-2 space-y-3 w-full">
                <div className="border border-accent animate-pulse flex flex-col gap-4 rounded-xl p-6">
@@ -13,22 +15,26 @@ export default function ProtectionSettingsLoader(){
                               </div>
                               <div className="w-8 h-[18px] bg-accent rounded-md"/>
                          </div>
+                         {isWindows && (
+                              <div className="bg-accent rounded-md h-3.5 w-full"/>
+                         )}
                     </div>
                </div>
-               <div className="border border-accent animate-pulse flex flex-col gap-4 rounded-xl p-6">
-                    <div className="h-4 bg-accent rounded-md w-1/3"/>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                         <div className="flex flex-col flex-wrap justify-center items-center gap-3">
-                              <div className="bg-accent rounded-md h-9 w-full"/>
-                              <div className="bg-accent rounded-md h-9 w-full"/>
-                              <div className="bg-accent rounded-md h-9 w-full"/>
-                         </div>
-                         <div className="flex flex-col items-center justify-center gap-2">
-                              <div className="bg-accent rounded-md h-10 w-3/4"/>
-                              <div className="bg-accent rounded-md h-3.5 w-1/2"/>
+               {!isWindows && (
+                    <div className="border border-accent animate-pulse flex flex-col gap-4 rounded-xl p-6">
+                         <div className="h-4 bg-accent rounded-md w-1/3"/>
+                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                              <div className="flex flex-col flex-wrap justify-center items-center gap-3">
+                                   <div className="bg-accent rounded-md h-9 w-full"/>
+                                   <div className="bg-accent rounded-md h-9 w-full"/>
+                              </div>
+                              <div className="flex flex-col items-center justify-center gap-2">
+                                   <div className="bg-accent rounded-md h-10 w-3/4"/>
+                                   <div className="bg-accent rounded-md h-3.5 w-1/2"/>
+                              </div>
                          </div>
                     </div>
-               </div>
+               )}
                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <ExclusionsLoader/>
                     <ExclusionsLoader/>

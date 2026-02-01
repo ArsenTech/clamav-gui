@@ -1,5 +1,3 @@
-use std::process::Stdio;
-
 use specta::specta;
 use tauri::{command, Emitter};
 
@@ -44,7 +42,6 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
 
         let output = silent_command(freshclam.to_str().unwrap())
             .arg("--stdout")
-            .stdin(Stdio::null())
             .output();
         match output {
             Ok(out) => {
@@ -137,7 +134,6 @@ pub fn get_clamav_version() -> Result<String, String> {
     let freshclam = resolve_command("freshclam")?;
     let output = silent_command(freshclam.to_str().unwrap())
         .arg("--version")
-        .stdin(Stdio::null())
         .output()
         .map_err(|e| e.to_string())?;
 

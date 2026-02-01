@@ -1,6 +1,5 @@
 use specta::specta;
 use std::path::PathBuf;
-use std::process::Stdio;
 use tauri::{command, Emitter};
 
 use crate::{
@@ -220,7 +219,6 @@ pub fn stop_scan() -> Result<(), String> {
             let cmd = resolve_command("taskkill")?;
             silent_command(cmd.to_str().unwrap())
                 .args(["/PID", &pid.to_string(), "/F"])
-                .stdin(Stdio::null())
                 .spawn()
                 .map_err(|e| e.to_string())?;
         }
@@ -230,7 +228,6 @@ pub fn stop_scan() -> Result<(), String> {
             silent_command(cmd.to_str().unwrap())
                 .arg("-9")
                 .arg(pid.to_string())
-                .stdin(Stdio::null())
                 .spawn()
                 .map_err(|e| e.to_string())?;
         }

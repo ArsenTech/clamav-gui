@@ -154,7 +154,7 @@ Settings
 ├── Protection (uses @tauri-apps/plugin-store)
 │   ├── Real-Time Protection [Impl]
 │   ├── Exclusions [Impl]
-│   └── ClamD status [UI]
+│   └── ClamD status [Impl]
 │
 └── Advanced
     ├── Custom Scan Options [Impl]

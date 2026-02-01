@@ -4,3 +4,4 @@ pub mod quarantine;
 pub mod scan;
 pub mod stats;
 pub mod update;
+pub mod clamd;

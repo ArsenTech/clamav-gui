@@ -7,7 +7,7 @@ pub mod scheduler;
 pub mod stats;
 
 use std::path::PathBuf;
-use std::process::Command;
+use std::process::{Command,Stdio};
 
 #[cfg(windows)]
 use std::os::windows::process::CommandExt;
@@ -20,6 +20,7 @@ pub fn silent_command(program: &str) -> Command {
     {
         cmd.creation_flags(CREATE_NO_WINDOW);
     }
+    cmd.stdin(Stdio::null());
     cmd
 }
 

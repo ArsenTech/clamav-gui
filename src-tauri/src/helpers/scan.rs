@@ -222,7 +222,6 @@ pub fn run_headless_scan(startup: StartupScan) -> Result<(), String> {
     }
 
     let status = cmd
-        .stdin(Stdio::null())
         .status()
         .map_err(|e| e.to_string())?;
     match status.code() {

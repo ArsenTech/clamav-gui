@@ -17,7 +17,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Fixed
 - Real Time Protection Redirect Issue (Replaced `"/"` with `"/settings?tab=protection"`)
 ### Changed
-- Implemented settings functionalities (except the ClamD status)
+- Implemented settings functionalities
 
 ## [0.3.1] - 2026-01-28
 ### Added
