@@ -5,9 +5,12 @@ pub mod quarantine;
 pub mod scan;
 pub mod scheduler;
 pub mod stats;
+pub mod real_time;
 
-use std::path::PathBuf;
-use std::process::{Command,Stdio};
+use std::{
+    path::PathBuf,
+    process::{Command,Stdio},
+};
 
 #[cfg(windows)]
 use std::os::windows::process::CommandExt;

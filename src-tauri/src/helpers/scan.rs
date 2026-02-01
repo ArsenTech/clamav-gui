@@ -1,8 +1,12 @@
-use std::io::{BufRead as _, BufReader};
-use std::path::PathBuf;
-use std::process::{Command, Stdio};
-use std::sync::atomic::{AtomicUsize, Ordering};
-use std::sync::{Arc, Mutex};
+use std::{
+    io::{BufRead as _, BufReader},
+    path::PathBuf,
+    process::{Command, Stdio},
+    sync::{
+        Arc, Mutex,
+        atomic::{AtomicUsize, Ordering}
+    }
+};
 use tauri::Emitter;
 use walkdir::WalkDir;
 

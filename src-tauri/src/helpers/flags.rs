@@ -1,4 +1,5 @@
 use crate::types::{enums::ScanType, structs::StartupScan};
+
 pub fn parse_startup_flags() -> StartupScan {
     let mut scan_type = None;
     let mut is_scheduled = false;

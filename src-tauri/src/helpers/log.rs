@@ -1,5 +1,5 @@
-use std::io::Write;
 use std::{
+    io::Write,
     fs::{File, OpenOptions},
     path::PathBuf,
     sync::{Arc, Mutex},

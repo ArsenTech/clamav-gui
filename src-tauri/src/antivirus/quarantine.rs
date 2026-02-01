@@ -1,6 +1,8 @@
 use specta::specta;
-use std::collections::HashMap;
-use std::path::PathBuf;
+use std::{
+    collections::HashMap,
+    path::PathBuf
+};
 use tauri::command;
 
 use crate::{
