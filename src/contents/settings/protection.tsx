@@ -57,7 +57,7 @@ export default function ProtectionSettings(){
      }
      const dirExclusions = useMemo(()=>!protectionSettings.dirExclusions ? DEFAULT_BACKEND_SETTINGS.protection.dirExclusions : protectionSettings.dirExclusions,[protectionSettings.dirExclusions]);
      const puaExclusions = useMemo(()=>!protectionSettings.puaExclusions ? DEFAULT_BACKEND_SETTINGS.protection.puaExclusions : protectionSettings.puaExclusions,[protectionSettings.puaExclusions]);
-     const isWindows = platform()!=="windows"
+     const isWindows = platform()==="windows"
      return (
           <div className="px-1 py-2 space-y-3">
                <SettingsItem
