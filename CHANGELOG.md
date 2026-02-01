@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - The I18n (Internationalization) support
 - Active Profile Changer inside settings
 - Real-Time Scan Support
+- System Tray
 ### Improved
 - Scan Page (Performance)
 - Quarantine Page (Mergin 2 bulk action functions into 1)
