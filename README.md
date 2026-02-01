@@ -65,22 +65,26 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - **Real-Time Performance Stats** - CPU, RAM Usage, and Disk Usage Stats all without leaving the GUI
 - **Flags** - Launch **Full Scan** and **Main Scan** Directly if needed
 - **Scheduler** - Schedule some scans if needed + manage other scheduled scan jobs
+- **Real-Time Scan** - Monitors file activity and scans files when they change. It doesn't install kernel drivers.
+- **Settings** - Tweak some options on ClamAV GUI if needed (Such as Scan Options, Appearance, and others)
 
 ### Other Features
 - **Skeleton Loader** - A separate Skeleton loading on some pages for clean UX
+- **Notifications** - Be informed when the scan is started or finished, or a new threat has been detected
 <!-- TODO: Write the Features list -->
 
-### To Do List
+### Coming Soon
 - [ ] Settings
   - [X] Themes
   - [ ] Custom Scan Settings
   - [X] Real Time Scan Settings
   - [X] Other settings based on few GUI actions
-- [ ] YARA Rules and YARA Scan Type + YARA Real-Time Scan Type
-- [X] Notifications
 - [X] System Tray with quick access (Initialized)
 - [ ] Finishing touches and optimization before v1
 - [ ] Translate the GUI into mentioned languages
+
+### To Do List
+- [ ] YARA Rules and YARA Scan Type + YARA Real-Time Scan Type
 
 ### Built With
 - [![Tauri][tauri-shield]][tauri-url]
