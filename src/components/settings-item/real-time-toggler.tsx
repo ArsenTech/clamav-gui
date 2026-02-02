@@ -1,4 +1,4 @@
-import { useSettings } from "@/hooks/use-settings";
+import { useSettings } from "@/context/settings";
 import { Switch } from "../ui/switch";
 import { DEFAULT_SETTINGS } from "@/lib/settings";
 import { useRealtimeScan } from "@/context/real-time";

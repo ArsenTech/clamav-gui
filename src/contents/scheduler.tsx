@@ -15,13 +15,16 @@ import Popup from "@/components/popup";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { ISchedulerState } from "@/lib/types/states";
 import { INITIAL_SCHEDULER_STATE } from "@/lib/constants/states";
+import { useSettings } from "@/context/settings";
 
 export default function SchedulerContent(){
+     const {settings} = useSettings();
      const [isPending, startTransition] = useTransition();
      const [isSubmitting, startSubmitTransition] = useTransition();
      const [schedulerState, setSchedulerState] = useState<ISchedulerState>(INITIAL_SCHEDULER_STATE);
      const setState = (overrides: Partial<ISchedulerState>) => setSchedulerState(prev=>({ ...prev, ...overrides }))
      const handleSchedule = (values: SchedulerType) => {
+          if(!settings.enableSchedulerUI) return;
           startSubmitTransition(async()=>{
                try{
                     const currDay = new Date().getDay();
@@ -36,6 +39,7 @@ export default function SchedulerContent(){
           })
      }
      const handleRemoveJob = () => {
+          if(!settings.enableSchedulerUI) return;
           setState({isOpenDelete: false})
           startTransition(async()=>{
                if(!schedulerState.job_id) return;
@@ -56,6 +60,7 @@ export default function SchedulerContent(){
           })
      }
      const handleClear = () => {
+          if(!settings.enableSchedulerUI) return;
           setState({isOpenClear: false});
           startTransition(async() => {
                try {
@@ -69,6 +74,7 @@ export default function SchedulerContent(){
           })
      }
      const refresh = () => {
+          if(!settings.enableSchedulerUI) return;
           startTransition(async()=>{
                try{
                     const data = await invoke<ISchedulerData<"type">[]>("list_scheduler");
@@ -102,6 +108,7 @@ export default function SchedulerContent(){
           })
      }
      useEffect(()=>{
+          if(!settings.enableSchedulerUI) return;
           const unsubs: Promise<UnlistenFn>[] = [
                listen<ISchedulerData<"type">>("scheduler:created",e=>{
                     const {payload} = e;
@@ -132,7 +139,7 @@ export default function SchedulerContent(){
           }
      },[])
      const {data,isOpenClear,isOpenDelete} = schedulerState
-     return (
+     return !settings.enableSchedulerUI ? null : (
           <>
           <h1 className="text-2xl md:text-3xl lg:text-4xl font-medium border-b pb-2 w-fit">Scheduler</h1>
           <SchedulerTable

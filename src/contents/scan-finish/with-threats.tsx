@@ -12,7 +12,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { formatDuration, getExitText } from "@/lib/helpers";
 import { IFinishScanState, IScanPageState } from "@/lib/types/states";
 import { INITIAL_FINISH_SCAN_STATE } from "@/lib/constants/states";
-import { useSettings } from "@/hooks/use-settings";
+import { useSettings } from "@/context/settings";
 
 interface Props{
      setScanState: React.Dispatch<React.SetStateAction<IScanPageState>>,

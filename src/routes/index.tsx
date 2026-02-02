@@ -1,6 +1,7 @@
 import {lazy} from "react";
 import { createBrowserRouter, Outlet } from "react-router";
 import LazyLayout from "./layout";
+import SchedulerRoute from "./guarded-route";
 
 // Core pages
 const App = lazy(() => import("@/pages/main-page"));
@@ -38,7 +39,11 @@ export const router = createBrowserRouter([
                { path: "/stats", element: <StatsPage /> },
                {
                     path: "/scheduler",
-                    element: <Outlet/>,
+                    element: (
+                         <SchedulerRoute>
+                              <Outlet/>
+                         </SchedulerRoute>
+                    ),
                     children: [
                          {index: true, element: <SchedulerPage />},
                          { path: ":logId", element: <LogPage returnUrl="/scheduler"/> }

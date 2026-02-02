@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ScanProfileId } from "@/lib/types/settings";
 import { Search, FolderSearch, FileSearch } from "lucide-react";
-import { useSettings } from "@/hooks/use-settings";
+import { useSettings } from "@/context/settings";
 
 export default function SettingsContent(){
      const [searchParams] = useSearchParams();

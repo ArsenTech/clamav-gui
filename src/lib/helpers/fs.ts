@@ -1,6 +1,6 @@
 import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { IHistoryData } from "../types";
-import {audioDir, cacheDir, configDir, dataDir, desktopDir, documentDir, downloadDir, homeDir, localDataDir, pictureDir, publicDir, tempDir, videoDir} from "@tauri-apps/api/path"
+import {audioDir, cacheDir, desktopDir, documentDir, downloadDir, homeDir, localDataDir, pictureDir, publicDir, tempDir, videoDir} from "@tauri-apps/api/path"
 
 export const exportJSON = async (path: string, historyData: IHistoryData<"state">[]) => {
      const jsonData = JSON.stringify(historyData,null,2);
@@ -26,8 +26,6 @@ export const fetchPaths = async (): Promise<string[]> => {
      const paths = await Promise.all([
           audioDir(),
           cacheDir(),
-          configDir(),
-          dataDir(),
           desktopDir(),
           documentDir(),
           downloadDir(),

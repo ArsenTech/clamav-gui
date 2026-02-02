@@ -2,7 +2,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { useSettings } from "@/hooks/use-settings";
+import { useSettings } from "@/context/settings";
 import { DEFAULT_SETTINGS, FILE_SCAN_WHITELIST, SCAN_OPTION_TITLE } from "@/lib/settings";
 import { SCAN_SETTINGS_GROUPED } from "@/lib/settings/custom-scan-options";
 import { ScanOptionGroup } from "@/lib/types/settings";

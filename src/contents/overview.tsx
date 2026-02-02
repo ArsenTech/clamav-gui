@@ -5,7 +5,7 @@ import { open } from "@tauri-apps/plugin-dialog";
 import { useEffect, useState } from "react";
 import { normalizePaths, parseClamVersion } from "@/lib/helpers";
 import { invoke } from "@tauri-apps/api/core";
-import { useSettings } from "@/hooks/use-settings";
+import { useSettings } from "@/context/settings";
 
 export default function OverviewContent(){
      const navigate = useNavigate();

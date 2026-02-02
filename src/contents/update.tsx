@@ -12,7 +12,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { getExitText, parseClamVersion } from "@/lib/helpers";
 import { toast } from "sonner";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useSettings } from "@/hooks/use-settings";
+import { useSettings } from "@/context/settings";
 
 export default function UpdateContent(){
      const {settings} = useSettings()

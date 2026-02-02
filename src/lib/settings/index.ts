@@ -125,14 +125,20 @@ It does not install kernel drivers.
 
 Completed:
 Settings
-└── General (uses LocalStorage)
-    ├── Theme [X]
-    ├── Color [X]
-    ├── Date format [X]
-    └── Logs & UI
-        ├── Auto-scroll [X]
-        ├── Max log lines [X]
-        └── Language [X]
+├── General (uses LocalStorage)
+│   ├── Theme [X]
+│   ├── Color [X]
+│   ├── Date format [X]
+│   └── Logs & UI
+│       ├── Auto-scroll [X]
+│       ├── Max log lines [X]
+│       └── Language [X]
+│
+├── Scheduler
+│   ├── Enable Scheduler UI [X]
+│   └── Notifications
+│       ├── On scan start [X]
+│       └── On scan finish [X]
 
 Settings
 ├── Scan
@@ -140,12 +146,6 @@ Settings
 │   ├── Confirm stop [X]
 │   ├── Silent scheduled scans [Impl]
 │   └── Custom Scan Options [Impl]
-│
-├── Scheduler
-│   ├── Enable Scheduler UI [Impl]
-│   └── Notifications
-│       ├── On scan start [X]
-│       └── On scan finish [X]
 │
 ├── Exclusions [Impl] (uses @tauri-apps/plugin-store)
 │   ├── Directory
@@ -156,20 +156,4 @@ Settings
     ├── Developer Mode (Shows ID on Tables) [X]
     ├── Real-Time Scan [X]
     └── Behavior [X]
-
----
-Advanced Settings
-├─ Real-Time Scan
-│  ├─ Enable Real-Time Scan        [toggle]
-│  ├─ Behavior Mode               [Safe | Balanced | Strict | Expert]
-│  ├─ Scan Interval / Debounce    [optional, later]
-│  └─ Auto-quarantine             [only visible in Strict/Expert]
-│
-├─ Logging
-│  ├─ Max log lines
-│  ├─ Auto-scroll
-│
-├─ Scheduler
-│  ├─ Enable Scheduler UI
-│  ├─ Silent scheduled scans
 */

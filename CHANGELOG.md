@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 ## [0.3.3] - Unreleased
+### Added
+- **Working Settings**
+  - Enable Scheduler UI
+### Improved
+- The `useSettings` hook
 
 ## [0.3.2] - 2026-02-01 (February Pre-Release)
 ### Added

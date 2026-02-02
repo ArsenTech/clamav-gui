@@ -1,7 +1,7 @@
 import SettingsItem from "@/components/settings-item";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { useSettings } from "@/hooks/use-settings";
+import { useSettings } from "@/context/settings";
 import { DEFAULT_SETTINGS } from "@/lib/settings";
 import { Bell, ClipboardClock, Search, SearchCheck } from "lucide-react";
 

@@ -13,7 +13,7 @@ import { toast } from "sonner";
 import { useStartupScan } from "@/context/startup-scan";
 import ScanLoader from "@/loaders/scan/index";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useSettings } from "@/hooks/use-settings";
+import { useSettings } from "@/context/settings";
 import { fetchPaths } from "@/lib/helpers/fs";
 import { sendNotification } from "@tauri-apps/plugin-notification";
 import { capitalizeText } from "@/lib/helpers";

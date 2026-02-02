@@ -1,6 +1,6 @@
 import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
 import { useTheme } from "@/context/themes";
-import { useSettings } from "@/hooks/use-settings";
+import { useSettings } from "@/context/settings";
 import { DATE_TIME_FORMATS, DEFAULT_SETTINGS, MAX_LONG_LINES_CHOICES, THEME_SETTINGS } from "@/lib/settings";
 import { capitalizeText } from "@/lib/helpers";
 import { cn } from "@/lib/utils";

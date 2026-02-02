@@ -1,7 +1,7 @@
 import { SCAN_SETTINGS } from "@/lib/settings/custom-scan-options";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label"
-import { useSettings } from "@/hooks/use-settings";
+import { useSettings } from "@/context/settings";
 import { DEFAULT_SETTINGS, FILE_SCAN_WHITELIST, SCAN_OPTION_TITLE } from "@/lib/settings";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";

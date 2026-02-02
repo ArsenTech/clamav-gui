@@ -1,5 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import { useSettings } from "@/hooks/use-settings";
+import { useSettings } from "@/context/settings";
 
 export default function LogLoader(){
      const {settings} = useSettings()

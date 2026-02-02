@@ -11,9 +11,13 @@ import {
 import { SIDEBAR_FOOTER_LINKS, SIDEBAR_LINKS } from "@/lib/constants/links";
 import { Link, useLocation } from "react-router"
 import Logo from "./logo";
+import { useMemo } from "react";
+import { useSettings } from "@/context/settings";
 
 export default function MainSidebar(){
      const location = useLocation();
+     const {settings} = useSettings();
+     const sidebarLinks = useMemo(()=>!settings.enableSchedulerUI ? SIDEBAR_LINKS.filter(val=>val.href!=="/scheduler") : SIDEBAR_LINKS,[settings.enableSchedulerUI])
      return (
           <Sidebar>
                <SidebarHeader>
@@ -22,7 +26,7 @@ export default function MainSidebar(){
                <SidebarContent>
                     <SidebarGroup>
                          <SidebarMenu>
-                              {SIDEBAR_LINKS.map(({Icon,name,href},i)=>(
+                              {sidebarLinks.map(({Icon,name,href},i)=>(
                                    <SidebarMenuItem key={`${name}-${i}`}>
                                         <SidebarMenuButton isActive={location.pathname===href} asChild>
                                              <Link to={href} className="text-muted-foreground"><Icon className="text-primary dark:text-accent-foreground"/> {name}</Link>

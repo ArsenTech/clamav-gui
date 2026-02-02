@@ -8,7 +8,7 @@ import { ClamAVState } from "@/lib/types";
 import { Toaster } from "../ui/sonner";
 import { useNavigate } from "react-router";
 import { useStartupScan } from "@/context/startup-scan";
-import { useSettings } from "@/hooks/use-settings";
+import { useSettings } from "@/context/settings";
 import { isPermissionGranted, requestPermission, } from '@tauri-apps/plugin-notification';
 
 const NoClamAVPage = lazy(()=>import("./no-clamav"));

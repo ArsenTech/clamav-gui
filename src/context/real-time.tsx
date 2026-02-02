@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { useSettings } from "@/hooks/use-settings";
+import { useSettings } from "@/context/settings";
 import { invoke } from "@tauri-apps/api/core";
 import { fetchPaths } from "@/lib/helpers/fs";
 

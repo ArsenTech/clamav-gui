@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import TableLoader from "./components/table";
-import { useSettings } from "@/hooks/use-settings";
+import { useSettings } from "@/context/settings";
 import { TableLoaderProps } from "@/lib/types";
 
 export default function QuarantineLoader({rows}: TableLoaderProps){
