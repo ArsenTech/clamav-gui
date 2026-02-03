@@ -7,6 +7,7 @@ mod helpers;
 mod system;
 mod types;
 
+use std::sync::atomic::Ordering;
 use tauri_specta::{collect_commands, Builder};
 
 use crate::{
@@ -20,7 +21,11 @@ use crate::{
         stop_real_time_scan,
         update::{get_clamav_version, update_definitions},
     },
-    helpers::{flags::parse_startup_flags, scan::run_headless_scan},
+    helpers::{
+        flags::parse_startup_flags,
+        scan::run_headless_scan,
+        sys_tray::{generate_system_tray,SHOULD_QUIT}
+    },
     system::{
         check_availability,
         logs::{read_log, reveal_log},
@@ -79,29 +84,18 @@ pub fn run() {
 
     tauri::Builder::default()
         .setup(|app| {
-            use tauri::{
-                menu::{Menu, MenuItem},
-                tray::TrayIconBuilder,
-            };
-
-            let quit_i = MenuItem::with_id(app, "quit", "Quit", true, None::<&str>)?;
-            let menu = Menu::with_items(app, &[&quit_i])?;
-
-            let tray = TrayIconBuilder::new()
-                .icon(app.default_window_icon().unwrap().clone())
-                .menu(&menu)
-                .show_menu_on_left_click(true)
-                .build(app)?;
-
-            tray.on_menu_event(|app, event| match event.id.as_ref() {
-                "quit" => {
-                    println!("quit menu item was clicked");
-                    app.exit(0);
-                }
-                _ => {
-                    println!("menu item {:?} not handled", event.id);
-                }
-            });
+            use tauri::{Manager, WindowEvent};
+            if let Some(window) = app.get_webview_window("main") {
+                window.clone().on_window_event(move |event| {
+                    if let WindowEvent::CloseRequested { api, .. } = event {
+                        if !SHOULD_QUIT.load(Ordering::Relaxed) {
+                            api.prevent_close();
+                            let _ = window.hide();
+                        }
+                    }
+                });
+            }
+            generate_system_tray(app)?;
             Ok(())
         })
         .plugin(tauri_plugin_notification::init())

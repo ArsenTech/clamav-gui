@@ -71,6 +71,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 ### Other Features
 - **Skeleton Loader** - A separate Skeleton loading on some pages for clean UX
 - **Notifications** - Be informed when the scan is started or finished, or a new threat has been detected
+- **System Tray** - Quick Access through some actions all by using a system tray
 <!-- TODO: Write the Features list -->
 
 ### Coming Soon

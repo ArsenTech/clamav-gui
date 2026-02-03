@@ -45,8 +45,8 @@ export default function AboutPage(){
                     <Logo width={500} height={130}/>
                     <h2 className="text-2xl md:text-3xl text-center font-medium">Version {versions.app} {versions.versionType.trim()!=="" ? `- ${versions.versionType}` : null}</h2>
                     <p>A minimal, open-source interface for file scanning and threat detection that makes the Antivirus itself look professional and work exactly like ClamAV (A FOSS CLI Antivirus).</p>
-                    <p>Built with Tauri, React, and modern desktop and web tools. This software is provided as-is. No data is collected or transmitted. This GUI uses ClamAV's <code className="text-muted-foreground font-medium">clamscan</code> and <code className="text-muted-foreground font-medium">freshclam</code> engines.
-Scan types are presets that define which locations and which limits are used.</p>
+                    <p>Built with Tauri, React, and modern desktop and web tools. This software is provided as-is. No data is collected or transmitted. This GUI uses ClamAV's <code className="text-muted-foreground font-medium">clamscan</code> and <code className="text-muted-foreground font-medium">freshclam</code> engines. Scan types are presets that define which locations and which limits are used.</p>
+                    <p>ClamAV is a trademark of Cisco Systems, Inc. This project is an independent, open-source GUI and is not affiliated with or endorsed by Cisco.</p>
                     <ul className="text-sm text-muted-foreground">
                          <li title="Virus definition database version">{versions.clamAV}</li>
                          <li>Tauri v{versions.tauri}</li>

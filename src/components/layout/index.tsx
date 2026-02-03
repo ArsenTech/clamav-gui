@@ -10,6 +10,7 @@ import { useNavigate } from "react-router";
 import { useStartupScan } from "@/context/startup-scan";
 import { useSettings } from "@/context/settings";
 import { isPermissionGranted, requestPermission, } from '@tauri-apps/plugin-notification';
+import { listen, UnlistenFn } from "@tauri-apps/api/event";
 
 const NoClamAVPage = lazy(()=>import("./no-clamav"));
 
@@ -53,6 +54,14 @@ export function AppLayout({children, className}: Props){
           if (startupScan.isStartup && startupScan.scanType)
                navigate(`/scan/${startupScan.scanType}`, { replace: true });
      }, [startupScan]);
+     useEffect(()=>{
+          const listeners: Promise<UnlistenFn>[] = [
+               listen<string>("systray:move",e=>navigate(encodeURI(e.payload)))
+          ]
+          return () => {
+               Promise.all(listeners).then(fns=>fns.forEach(fn=>fn()))
+          }
+     },[])
      return (
           <>
                {status==="checking" ? (

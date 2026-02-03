@@ -6,6 +6,7 @@ pub mod real_time;
 pub mod scan;
 pub mod scheduler;
 pub mod stats;
+pub mod sys_tray;
 
 use std::{
     path::PathBuf,
