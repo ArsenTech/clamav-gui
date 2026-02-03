@@ -7,7 +7,7 @@ use std::{
         Arc, Mutex,
     },
 };
-use tauri::Emitter;
+use tauri::{Emitter, Wry, path::PathResolver};
 use walkdir::WalkDir;
 
 use crate::{
@@ -179,6 +179,30 @@ pub fn get_root_path() -> &'static str {
     }
 }
 
+pub fn get_main_paths(resolver: &PathResolver<Wry>) -> Vec<PathBuf> {
+    let mut paths: Vec<PathBuf> = [
+        resolver.audio_dir(),
+        resolver.desktop_dir(),
+        resolver.document_dir(),
+        resolver.download_dir(),
+        resolver.home_dir(),
+        resolver.local_data_dir(),
+        resolver.picture_dir(),
+        resolver.public_dir(),
+        resolver.temp_dir(),
+        resolver.video_dir(),
+    ]
+    .into_iter()
+    .flatten() // remove None
+    .collect();
+    paths.retain(|p| p.exists());
+    #[cfg(debug_assertions)]
+    for p in &paths {
+        println!("Main scan path: {}", p.display());
+    }
+    paths
+}
+
 pub fn run_headless_scan(startup: StartupScan) -> Result<(), String> {
     let scan_type = match startup.scan_type {
         Some(s) => s,
@@ -189,11 +213,17 @@ pub fn run_headless_scan(startup: StartupScan) -> Result<(), String> {
     let mut paths = Vec::new();
     if let Some(home) = std::env::var_os(if cfg!(windows) { "USERPROFILE" } else { "HOME" }) {
         let home = PathBuf::from(home);
-        paths.extend([
-            home.join("Downloads"),
-            home.join("Desktop"),
-            home.join("Documents"),
-        ]);
+
+        paths.push(home.join("Desktop"));
+        paths.push(home.join("Documents"));
+        paths.push(home.join("Downloads"));
+    }
+    if cfg!(windows) {
+        paths.push(PathBuf::from("C:\\Program Files"));
+        paths.push(PathBuf::from("C:\\Program Files (x86)"));
+    } else {
+        paths.push(PathBuf::from("/usr"));
+        paths.push(PathBuf::from("/home"));
     }
     match scan_type {
         ScanType::Main => {
@@ -204,7 +234,11 @@ pub fn run_headless_scan(startup: StartupScan) -> Result<(), String> {
                 "--max-filesize=100M",
                 "--max-scansize=400M",
             ]);
-            for path in paths {
+            #[cfg(debug_assertions)]
+            for p in &paths {
+                println!("Headless scan path: {}", p.display());
+            }
+            for path in paths{
                 cmd.arg(path);
             }
         }

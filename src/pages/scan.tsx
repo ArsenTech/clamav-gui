@@ -14,7 +14,6 @@ import { useStartupScan } from "@/context/startup-scan";
 import ScanLoader from "@/loaders/scan/index";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useSettings } from "@/context/settings";
-import { fetchPaths } from "@/lib/helpers/fs";
 import { sendNotification } from "@tauri-apps/plugin-notification";
 import { capitalizeText } from "@/lib/helpers";
 
@@ -120,23 +119,16 @@ export default function ScanPage(){
           scanStartedRef.current = true;
           scanActiveRef.current = true;
           startTimeRef.current = Date.now();
-          if(scanState.scanType==="main"){
-               fetchPaths().then(paths=>invoke("start_main_scan",{paths}).catch(() => {
-                    toast.error("Scan command not found");
-               })).catch(() => {
-                    toast.error("Failed to fetch Paths");
-               })
-          } else if (scanState.scanType === "full") {
-               invoke("start_full_scan").catch(() => {
-                    toast.error("Scan command not found");
-               });
-          } else {
-               invoke("start_custom_scan", {
-                    paths: Array.isArray(scanState.paths)
-                    ? scanState.paths
-                    : [scanState.paths],
-               });
-          }
+          const isMainOrFull = scanState.scanType==="main" || scanState.scanType === "full";
+          const scanCommand = `start_${isMainOrFull ? scanState.scanType : "custom"}_scan`;
+          const payload = !isMainOrFull ? {
+               paths: Array.isArray(scanState.paths)
+               ? scanState.paths
+               : [scanState.paths],
+          } : undefined
+          invoke(scanCommand,payload).catch(() => {
+               toast.error("Scan command not found");
+          })
           setState({ duration: 0, exitCode: 0, errMsg: undefined });
           if(settings.notifOnScanStart){
                sendNotification({
