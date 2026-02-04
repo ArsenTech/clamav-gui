@@ -80,7 +80,6 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
   - [ ] Custom Scan Settings
   - [X] Real Time Scan Settings
   - [X] Other settings based on few GUI actions
-- [X] System Tray with quick access (Initialized)
 - [ ] Finishing touches and optimization before v1
 - [ ] Translate the GUI into mentioned languages
 
