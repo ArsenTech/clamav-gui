@@ -1,5 +1,6 @@
 import { UPDATE_EXIT_CODE_MSG } from "../constants";
 import { SCAN_EXIT_CODE_MSG } from "../constants";
+import { FILE_SCAN_WHITELIST } from "../settings";
 import { SCAN_SETTINGS } from "../settings/custom-scan-options";
 import { HistoryStatus, ThreatStatus } from "../types";
 import { ScanProfileValues } from "../types/settings";
@@ -71,9 +72,11 @@ export const getExitText = (exitCode: number, type: "scan" | "update") => {
   const msg = exitMsgs[exitCode] ?? fallbackMsg
   return `${msg} (Exit Code: ${exitCode})`
 }
-export function hydrateProfile(profile: ScanProfileValues) {
+export function hydrateProfile(profile: ScanProfileValues, isFile: boolean) {
+  const whitelist = new Set(FILE_SCAN_WHITELIST)
   const result: ScanProfileValues = {};
   for (const key in SCAN_SETTINGS) {
+    if(!whitelist.has(key) && isFile) continue;
     const opt = SCAN_SETTINGS[key];
     if (opt.value.default !== undefined) {
       result[key] = opt.value.default;

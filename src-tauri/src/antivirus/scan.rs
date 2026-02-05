@@ -7,7 +7,7 @@ use crate::{
         history::append_scan_history,
         log::{initialize_log_with_id, log_err},
         new_id, resolve_command,
-        scan::{SCAN_PROCESS, estimate_total_files, get_main_paths, get_root_path, run_scan},
+        scan::{SCAN_PROCESS, estimate_total_files, fetch_custom_scan_args, get_main_paths, get_root_path, run_scan},
         silent_command,
     },
     types::{
@@ -24,10 +24,9 @@ pub fn get_startup_scan(state: tauri::State<StartupScan>) -> StartupScan {
 
 #[command]
 #[specta(result)]
-pub fn start_main_scan(app: tauri::AppHandle) -> Result<(), String> {
+pub fn start_main_scan(app: tauri::AppHandle, args: Option<Vec<String>>) -> Result<(), String> {
     let log_id = new_id();
-    let log =
-        initialize_log_with_id(&app, LogCategory::Scan, &log_id).map_err(|e| e.to_string())?;
+    let log = initialize_log_with_id(&app, LogCategory::Scan, &log_id).map_err(|e| e.to_string())?;
     let log_file = log.file;
     let paths = get_main_paths(app.path());
     append_scan_history(
@@ -46,22 +45,32 @@ pub fn start_main_scan(app: tauri::AppHandle) -> Result<(), String> {
         },
         &log_file,
     );
-
+    #[cfg(debug_assertions)]
+    if let Some(scan_args) = args.clone(){
+        for arg in scan_args {
+            println!("Main scan argument: {}", arg);
+        }
+    }
+    let scan_args: Vec<String> = if let Some(args) = args {
+        args
+    } else {
+        vec![
+            "--recursive".to_string(),
+            "--heuristic-alerts".to_string(),
+            "--alert-encrypted".to_string(),
+            "--max-filesize=100M".to_string(),
+            "--max-scansize=400M".to_string(),
+            "--verbose".to_string(),
+            "--no-summary".to_string(),
+        ]
+    };
     std::thread::spawn(move || {
         let clamscan = match resolve_command("clamscan") {
             Ok(cmd) => cmd,
             Err(e) => return Err(format!("Failed to resolve command: {}", e)),
         };
         let mut cmd = silent_command(clamscan.to_str().unwrap());
-        cmd.args([
-            "--recursive",
-            "--heuristic-alerts",
-            "--alert-encrypted",
-            "--max-filesize=100M",
-            "--max-scansize=400M",
-            "--verbose",
-            "--no-summary",
-        ]);
+        cmd.args(&scan_args);
         let total_files = estimate_total_files(&paths);
         app.emit("clamscan:total", total_files)
             .map_err(|e| e.to_string())?;
@@ -85,8 +94,7 @@ pub fn start_main_scan(app: tauri::AppHandle) -> Result<(), String> {
 #[specta(result)]
 pub fn start_full_scan(app: tauri::AppHandle) -> Result<(), String> {
     let log_id = new_id();
-    let log =
-        initialize_log_with_id(&app, LogCategory::Scan, &log_id).map_err(|e| e.to_string())?;
+    let log = initialize_log_with_id(&app, LogCategory::Scan, &log_id).map_err(|e| e.to_string())?;
     let log_file = log.file;
     append_scan_history(
         &app,
@@ -134,13 +142,12 @@ pub fn start_full_scan(app: tauri::AppHandle) -> Result<(), String> {
 
 #[command]
 #[specta(result)]
-pub fn start_custom_scan(app: tauri::AppHandle, paths: Vec<String>) -> Result<(), String> {
+pub fn start_custom_scan(app: tauri::AppHandle, paths: Vec<String>, args: Option<Vec<String>>) -> Result<(), String> {
     if paths.is_empty() {
         return Err("No scan targets provided".into());
     }
     let log_id = new_id();
-    let log =
-        initialize_log_with_id(&app, LogCategory::Scan, &log_id).map_err(|e| e.to_string())?;
+    let log = initialize_log_with_id(&app, LogCategory::Scan, &log_id).map_err(|e| e.to_string())?;
     let log_file = log.file;
     let resolved_paths: Vec<PathBuf> = paths.iter().map(PathBuf::from).collect();
     for path in &resolved_paths {
@@ -176,19 +183,17 @@ pub fn start_custom_scan(app: tauri::AppHandle, paths: Vec<String>) -> Result<()
     );
     let clamscan = resolve_command("clamscan")?;
     let app_clone = app.clone();
+    let scan_args: Vec<String> = fetch_custom_scan_args(args, has_directory);
+    #[cfg(debug_assertions)]
+    for arg in &scan_args {
+        println!("{} scan argument: {}", if has_directory {"Custom"} else {"File"}, arg);
+    }
     std::thread::spawn(move || {
         let mut cmd = silent_command(clamscan.to_str().unwrap());
         if has_directory {
             cmd.arg("--recursive");
         }
-        cmd.args([
-            "--heuristic-alerts",
-            "--alert-encrypted",
-            "--max-filesize=100M",
-            "--max-scansize=400M",
-            "--verbose",
-            "--no-summary",
-        ]);
+        cmd.args(&scan_args);
         for path in &resolved_paths {
             cmd.arg(path);
         }

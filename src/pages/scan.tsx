@@ -15,7 +15,11 @@ import ScanLoader from "@/loaders/scan/index";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useSettings } from "@/context/settings";
 import { sendNotification } from "@tauri-apps/plugin-notification";
-import { capitalizeText } from "@/lib/helpers";
+import { capitalizeText, hydrateProfile } from "@/lib/helpers";
+import { resolveResource } from "@tauri-apps/api/path";
+import { useBackendSettings } from "@/hooks/use-settings";
+import { ScanProfileId, ScanProfileValues } from "@/lib/types/settings";
+import { mapScanSettingsToArgs, validateScanSettings } from "@/lib/helpers/scan";
 
 const ScanProcess = lazy(()=>import("@/components/antivirus/scan-process"))
 export default function ScanPage(){
@@ -30,6 +34,34 @@ export default function ScanPage(){
      const scanActiveRef = useRef(false);
      const scanStartedRef = useRef(false);
      const scanStoppedRef = useRef(false);
+     const {getBackendSettings} = useBackendSettings();
+     const handleStartScan = async() => {
+          try{
+               let scanOptions: ScanProfileValues | null = null;
+               const isMainOrFull = scanState.scanType==="main" || scanState.scanType === "full";
+               const scanCommand = `start_${isMainOrFull ? scanState.scanType : "custom"}_scan`;
+               const scanProfile: ScanProfileId | null = scanState.scanType==="main" ? "main" : scanState.scanType==="custom" ? "custom" : scanType==="file" ? "file" : null;
+               if(scanProfile){
+                    const availableOptions = await getBackendSettings("scanProfiles",scanProfile);
+                    if(availableOptions) scanOptions = hydrateProfile(availableOptions,scanProfile==="file");
+                    console.log(availableOptions,scanProfile)
+               }
+               const payload = !isMainOrFull ? {
+                    paths: Array.isArray(scanState.paths)
+                         ? scanState.paths
+                         : [scanState.paths],
+               } : undefined;
+               await invoke(scanCommand,{
+                    ...payload,
+                    args: scanOptions ? mapScanSettingsToArgs(validateScanSettings(scanOptions)): null
+               }).catch(() => {
+                    throw new Error("Scan command not found");
+               })
+          } catch (e){
+               toast.error("Failed to start the scan");
+               console.error(e)
+          }
+     }
      useEffect(() => {
           setState({
                scanType: type,
@@ -105,6 +137,11 @@ export default function ScanPage(){
      useEffect(()=>{
           if(!scanState.isFinished) return;
           if(settings.notifOnScanFinish){
+               resolveResource("resources/sounds/scan-finish.wav").then(path=>new Audio(path).play())
+               .catch((err)=>{
+                    toast.error("Failed to play a sound");
+                    console.error(err)
+               })
                sendNotification({
                     title: "Scan Finished",
                     body: !scanState.errMsg ? `${scanState.threats.length<=0 ? "No": scanState.threats.length} threat${scanState.threats.length===1 ? "" : "s"} were found.` : "Scan Finished with Errors"
@@ -119,18 +156,14 @@ export default function ScanPage(){
           scanStartedRef.current = true;
           scanActiveRef.current = true;
           startTimeRef.current = Date.now();
-          const isMainOrFull = scanState.scanType==="main" || scanState.scanType === "full";
-          const scanCommand = `start_${isMainOrFull ? scanState.scanType : "custom"}_scan`;
-          const payload = !isMainOrFull ? {
-               paths: Array.isArray(scanState.paths)
-               ? scanState.paths
-               : [scanState.paths],
-          } : undefined
-          invoke(scanCommand,payload).catch(() => {
-               toast.error("Scan command not found");
-          })
+          handleStartScan()
           setState({ duration: 0, exitCode: 0, errMsg: undefined });
           if(settings.notifOnScanStart){
+               resolveResource("resources/sounds/scan-start.wav").then(path=>new Audio(path).play())
+               .catch((err)=>{
+                    toast.error("Failed to play a sound");
+                    console.error(err)
+               })
                sendNotification({
                     title: "Scan Started!",
                     body: `The ${capitalizeText(scanType)} Scan has been started`

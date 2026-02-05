@@ -261,3 +261,22 @@ pub fn run_headless_scan(startup: StartupScan) -> Result<(), String> {
         _ => Err("Scan failed".into()),
     }
 }
+
+pub fn fetch_custom_scan_args(args: Option<Vec<String>>, has_directory: bool) -> Vec<String> {
+    let mut default_args = vec![
+        "--heuristic-alerts".to_string(),
+        "--alert-encrypted".to_string(),
+        "--max-filesize=100M".to_string(),
+        "--max-scansize=400M".to_string(),
+        "--verbose".to_string(),
+        "--no-summary".to_string(),
+    ];
+    if has_directory {
+        default_args.push("--recursive".to_string());
+    }
+    if let Some(args) = args {
+        args
+    } else {
+        default_args
+    }
+}

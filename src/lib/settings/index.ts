@@ -118,7 +118,7 @@ export const DATE_TIME_FORMATS: IDateFormatSettings[] = [
           format: "yyyy-MM-dd HH:mm:ss"
      }
 ]
-/* TODO: Finish the settings page according to this route ([X] - Works, [Impl] - Currently Implemented) + Reorganize Settings
+/* TODO: Finish the settings page according to this route ([X] - Finished, [Impl] - Currently Implemented) + Reorganize Settings
 
 Real-Time Scan monitors file activity and scans files when they change.
 It does not install kernel drivers.
@@ -145,14 +145,14 @@ Settings
 │   ├── Auto startup scan [Impl]
 │   ├── Confirm stop [X]
 │   ├── Silent scheduled scans [Impl]
-│   └── Custom Scan Options [Impl]
+│   └── Custom Scan Options [X]
 │
 ├── Exclusions [Impl] (uses @tauri-apps/plugin-store)
 │   ├── Directory
 │   └── PUA
 │
 └── Advanced
-    ├── Custom Scan Options [Impl]
+    ├── Custom Scan Options [X]
     ├── Developer Mode (Shows ID on Tables) [X]
     ├── Real-Time Scan [X]
     └── Behavior [X]
