@@ -42,3 +42,23 @@ export function useBackendSettings(){
           fetchBackendSettings,
      }
 }
+
+export function useExclusions(){
+     async function getExclusions(): Promise<BackendSettings["exclusions"] | undefined> {
+          const data = await store.get<BackendSettings["exclusions"]>("exclusions");
+          return data
+     }
+     async function setExclusions(value: BackendSettings["exclusions"]) {
+          try{
+               const current = (await store.get<BackendSettings["exclusions"]>("exclusions")) ?? [];
+               await store.set("exclusions",!value ? current : value);
+          } catch(e){
+               toast.error("Failed to save settings");
+               console.error(e)
+          }
+     }
+     return {
+          getExclusions,
+          setExclusions
+     }
+}

@@ -54,10 +54,7 @@ export const DEFAULT_BACKEND_SETTINGS: BackendSettings = {
           custom: {},
           file: {}
      },
-     exclusions: {
-          directory: [],
-          puaCategory: [],
-     },
+     exclusions: [],
 }
 export const FILE_SCAN_WHITELIST =  [
      "algorithmicDetection",
@@ -139,6 +136,13 @@ Settings
 │   └── Notifications
 │       ├── On scan start [X]
 │       └── On scan finish [X]
+│ 
+├── Exclusions [X]
+└── Advanced
+    ├── Custom Scan Options [X]
+    ├── Developer Mode (Shows ID on Tables) [X]
+    ├── Real-Time Scan [X]
+    └── Behavior [X]
 
 Settings
 ├── Scan
@@ -146,14 +150,4 @@ Settings
 │   ├── Confirm stop [X]
 │   ├── Silent scheduled scans [Impl]
 │   └── Custom Scan Options [X]
-│
-├── Exclusions [Impl] (uses @tauri-apps/plugin-store)
-│   ├── Directory
-│   └── PUA
-│
-└── Advanced
-    ├── Custom Scan Options [X]
-    ├── Developer Mode (Shows ID on Tables) [X]
-    ├── Real-Time Scan [X]
-    └── Behavior [X]
 */

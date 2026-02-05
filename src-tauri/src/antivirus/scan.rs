@@ -8,12 +8,13 @@ use crate::{
         log::{initialize_log_with_id, log_err},
         new_id, resolve_command,
         scan::{SCAN_PROCESS, estimate_total_files, fetch_custom_scan_args, get_main_paths, get_root_path, run_scan},
+        matcher::apply_exclusions,
         silent_command,
     },
     types::{
         enums::{HistoryStatus, LogCategory, ScanType},
         structs::{HistoryItem, StartupScan},
-    },
+    }
 };
 
 #[command]
@@ -45,13 +46,7 @@ pub fn start_main_scan(app: tauri::AppHandle, args: Option<Vec<String>>) -> Resu
         },
         &log_file,
     );
-    #[cfg(debug_assertions)]
-    if let Some(scan_args) = args.clone(){
-        for arg in scan_args {
-            println!("Main scan argument: {}", arg);
-        }
-    }
-    let scan_args: Vec<String> = if let Some(args) = args {
+    let mut scan_args: Vec<String> = if let Some(args) = args {
         args
     } else {
         vec![
@@ -64,6 +59,11 @@ pub fn start_main_scan(app: tauri::AppHandle, args: Option<Vec<String>>) -> Resu
             "--no-summary".to_string(),
         ]
     };
+    apply_exclusions(&app, &mut scan_args)?;
+    #[cfg(debug_assertions)]
+    for arg in scan_args.clone() {
+        println!("Main scan argument: {}", arg);
+    }
     std::thread::spawn(move || {
         let clamscan = match resolve_command("clamscan") {
             Ok(cmd) => cmd,
@@ -112,6 +112,14 @@ pub fn start_full_scan(app: tauri::AppHandle) -> Result<(), String> {
         },
         &log_file,
     );
+    let mut args: Vec<String> = vec![
+        "--recursive".to_string(),
+        "--cross-fs=yes".to_string(),
+        "--heuristic-alerts".to_string(),
+        "--alert-encrypted".to_string(),
+        "--no-summary".to_string(),
+    ];
+    apply_exclusions(&app, &mut args)?;
     std::thread::spawn(move || {
         let root = get_root_path();
         let clamscan = match resolve_command("clamscan") {
@@ -119,14 +127,7 @@ pub fn start_full_scan(app: tauri::AppHandle) -> Result<(), String> {
             Err(e) => return Err(format!("Failed to resolve command: {}", e)),
         };
         let mut cmd = silent_command(clamscan.to_str().unwrap());
-        cmd.args([
-            "--recursive",
-            "--cross-fs=yes",
-            "--heuristic-alerts",
-            "--alert-encrypted",
-            "--no-summary",
-            root,
-        ]);
+        cmd.args(&args).arg(root);
         if let Err(e) = run_scan(app.clone(), log_id, cmd, ScanType::Full) {
             app.emit("clamscan:error", &e.to_string())
                 .map_err(|e| e.to_string())?;
@@ -183,8 +184,8 @@ pub fn start_custom_scan(app: tauri::AppHandle, paths: Vec<String>, args: Option
     );
     let clamscan = resolve_command("clamscan")?;
     let app_clone = app.clone();
-    let scan_args: Vec<String> = fetch_custom_scan_args(args, has_directory);
-    #[cfg(debug_assertions)]
+    let mut scan_args: Vec<String> = fetch_custom_scan_args(args, has_directory);
+    apply_exclusions(&app, &mut scan_args)?;
     for arg in &scan_args {
         println!("{} scan argument: {}", if has_directory {"Custom"} else {"File"}, arg);
     }

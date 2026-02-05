@@ -7,11 +7,14 @@ pub mod scan;
 pub mod scheduler;
 pub mod stats;
 pub mod sys_tray;
+pub mod path;
+pub mod matcher;
 
 use std::{
     path::PathBuf,
     process::{Command, Stdio},
 };
+use tauri_plugin_store::StoreExt;
 
 #[cfg(windows)]
 use std::os::windows::process::CommandExt;
@@ -60,4 +63,15 @@ pub fn resolve_command(command: &str) -> Result<PathBuf, String> {
         }
     }
     Ok(path)
+}
+
+pub fn get_exclusions(app: &tauri::AppHandle) -> Result<Vec<String>,String>{
+    let store = app
+        .store("settings.json")
+        .map_err(|e| e.to_string())?;
+    let value = store
+        .get("exclusions")
+        .ok_or("Exclusions not found")?;
+    serde_json::from_value::<Vec<String>>(value.clone())
+        .map_err(|e| e.to_string())
 }

@@ -77,7 +77,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 ### Coming Soon
 - [ ] Settings
   - [X] Themes
-  - [ ] Custom Scan Settings
+  - [X] Custom Scan Settings
   - [X] Real Time Scan Settings
   - [X] Other settings based on few GUI actions
 - [ ] Finishing touches and optimization before v1

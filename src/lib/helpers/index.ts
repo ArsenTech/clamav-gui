@@ -72,7 +72,7 @@ export const getExitText = (exitCode: number, type: "scan" | "update") => {
   const msg = exitMsgs[exitCode] ?? fallbackMsg
   return `${msg} (Exit Code: ${exitCode})`
 }
-export function hydrateProfile(profile: ScanProfileValues, isFile: boolean) {
+export function hydrateProfile(profile: ScanProfileValues, isFile = false) {
   const whitelist = new Set(FILE_SCAN_WHITELIST)
   const result: ScanProfileValues = {};
   for (const key in SCAN_SETTINGS) {

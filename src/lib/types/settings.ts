@@ -76,8 +76,5 @@ export type BackendSettings = {
           custom: ScanProfileValues,
           file: ScanProfileValues
      }
-     exclusions: {
-          directory: string[],
-          puaCategory: string[]
-     }
+     exclusions: string[],
 }

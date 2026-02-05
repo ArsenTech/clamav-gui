@@ -10,7 +10,7 @@ use tauri::command;
 
 use crate::{
     helpers::{
-        history::append_history,
+        history::append_realtime_history,
         log::{initialize_log, log_err, log_info},
         new_id,
         real_time::{start_realtime_scan, stop_realtime_scan},
@@ -20,19 +20,6 @@ use crate::{
         structs::HistoryItem,
     },
 };
-
-fn append_realtime_history(
-    app: &tauri::AppHandle,
-    item: HistoryItem,
-    log_file: &std::sync::Arc<std::sync::Mutex<std::fs::File>>,
-) {
-    if let Err(e) = append_history(app, item) {
-        log_err(
-            log_file,
-            &format!("Failed to append real-time scan history: {}", e),
-        );
-    }
-}
 
 #[command]
 #[specta(result)]

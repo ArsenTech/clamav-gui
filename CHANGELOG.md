@@ -9,12 +9,15 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - **Working Settings**
   - Enable Scheduler UI
   - All Custom Scan Options
+  - Directory Exclusions
 - System Tray
 ### Improved
 - The `useSettings` hook
 - The Scan Start Logic
-### Changes
+### Changed
 - Moved the paths fetch logic for the main scan into the backend
+### Removed
+- PUA Exclusions
 
 ## [0.3.2] - 2026-02-01 (February Pre-Release)
 ### Added

@@ -21,8 +21,13 @@ static BEHAVIOR: Lazy<Arc<Mutex<BehaviorConfig>>> =
 
 use crate::{
     antivirus::quarantine::quarantine_file,
-    helpers::{resolve_command, silent_command},
-    types::{enums::BehaviorMode, structs::BehaviorConfig}
+    helpers::{
+        get_exclusions,
+        path::path_to_regex,
+        resolve_command,
+        silent_command,
+        matcher::{EXCLUSIONS, ExclusionMatcher}
+    }, types::{enums::BehaviorMode, structs::BehaviorConfig}
 };
 
 fn behavior_config(mode: BehaviorMode) -> BehaviorConfig {
@@ -84,8 +89,14 @@ fn start_watcher(paths: Vec<String>) -> Result<(), String> {
                 Ok(Ok(event)) => {
                     let behavior = behavior.lock().unwrap();
                     let mut q = queue.lock().unwrap();
+                    let exclusions = EXCLUSIONS.lock().unwrap();
 
                     for path in event.paths {
+                        if let Some(ref matcher) = *exclusions {
+                            if matcher.is_excluded(&path) {
+                                continue;
+                            }
+                        }
                         if should_scan(&path, &behavior) {
                             q.insert(path);
                         }
@@ -186,6 +197,12 @@ fn should_scan(path: &Path, behavior: &BehaviorConfig) -> bool {
 }
 
 fn scan_file(path: &Path) -> Result<Option<String>, String> {
+    let exclusions = EXCLUSIONS.lock().unwrap();
+    if let Some(ref matcher) = *exclusions {
+        if matcher.is_excluded(path) {
+            return Ok(None);
+        }
+    }
     if !path.exists() {
         return Err("File no longer exists".into());
     }
@@ -222,6 +239,19 @@ pub fn start_realtime_scan(
     mode: BehaviorMode,
     log_id: String,
 ) -> Result<(), String> {
+    {
+        let exclusions = get_exclusions(&app)?; // Vec<ExclusionsItem>
+
+        let patterns: Vec<String> = exclusions
+            .into_iter()
+            .map(|e| path_to_regex(&e)) // or convert path → regex here
+            .collect();
+
+        let matcher = ExclusionMatcher::new(patterns)
+            .map_err(|e| e.to_string())?;
+
+        *EXCLUSIONS.lock().unwrap() = Some(matcher);
+    }
     if paths.is_empty() {
         return Err("No paths provided for real-time scanning".into());
     }
@@ -259,6 +289,7 @@ pub fn start_realtime_scan(
 
 pub fn stop_realtime_scan() {
     REALTIME_ENABLED.store(false, Ordering::Relaxed);
+    *EXCLUSIONS.lock().unwrap() = None;
     thread::sleep(Duration::from_millis(100));
     SCAN_QUEUE.lock().unwrap().clear();
     NOTIFIED.lock().unwrap().clear();

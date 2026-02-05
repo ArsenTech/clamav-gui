@@ -59,3 +59,16 @@ pub fn append_scheduler_history(
         log_err(log_file, &format!("Failed to append history: {}", e));
     }
 }
+
+pub fn append_realtime_history(
+    app: &tauri::AppHandle,
+    item: HistoryItem,
+    log_file: &std::sync::Arc<std::sync::Mutex<std::fs::File>>,
+) {
+    if let Err(e) = append_history(app, item) {
+        log_err(
+            log_file,
+            &format!("Failed to append real-time scan history: {}", e),
+        );
+    }
+}

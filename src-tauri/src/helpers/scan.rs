@@ -15,19 +15,26 @@ use crate::{
         history::append_scan_history,
         log::{log_err, log_info, log_path},
         new_id, resolve_command, silent_command,
-    },
-    types::{
+        matcher::EXCLUSIONS
+    }, types::{
         enums::{HistoryStatus, LogCategory, ScanResult, ScanType},
         structs::{HistoryItem, StartupScan},
-    },
+    }
 };
 
 pub fn estimate_total_files(paths: &[PathBuf]) -> u64 {
+    let exclusions = EXCLUSIONS.lock().unwrap();
     paths
         .iter()
         .flat_map(|p| WalkDir::new(p).max_depth(10).into_iter())
         .filter_map(Result::ok)
         .filter(|e| e.file_type().is_file())
+        .filter(|e| {
+            exclusions
+                .as_ref()
+                .map(|m| !m.is_excluded(e.path()))
+                .unwrap_or(true)
+        })
         .count() as u64
 }
 
@@ -213,7 +220,6 @@ pub fn run_headless_scan(startup: StartupScan) -> Result<(), String> {
     let mut paths = Vec::new();
     if let Some(home) = std::env::var_os(if cfg!(windows) { "USERPROFILE" } else { "HOME" }) {
         let home = PathBuf::from(home);
-
         paths.push(home.join("Desktop"));
         paths.push(home.join("Documents"));
         paths.push(home.join("Downloads"));
@@ -225,6 +231,13 @@ pub fn run_headless_scan(startup: StartupScan) -> Result<(), String> {
         paths.push(PathBuf::from("/usr"));
         paths.push(PathBuf::from("/home"));
     }
+    let exclusions = EXCLUSIONS.lock().unwrap();
+    paths.retain(|p| {
+        exclusions
+            .as_ref()
+            .map(|m| !m.is_excluded(p))
+            .unwrap_or(true)
+    });
     match scan_type {
         ScanType::Main => {
             cmd.args([
