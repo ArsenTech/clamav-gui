@@ -7,6 +7,7 @@ import SchedulerRoute from "./guarded-route";
 const App = lazy(() => import("@/pages/main-page"));
 const AboutPage = lazy(() => import("@/pages/about"));
 const SettingsPage = lazy(() => import("@/pages/settings"));
+const SchedulerPage = lazy(() => import("@/pages/scheduler"));
 
 // Scan-related bundle
 const ScanMenu = lazy(() => import("@/pages/scan-menu"));
@@ -17,10 +18,6 @@ const StatsPage = lazy(() => import("@/pages/stats"));
 // History bundle
 const HistoryPage = lazy(() => import("@/pages/history"));
 const LogPage = lazy(() => import("@/pages/log-page"));
-
-// Tools bundle
-const SchedulerPage = lazy(() => import("@/pages/scheduler"));
-const UpdateDefinitions = lazy(() => import("@/pages/update"));
 
 export const router = createBrowserRouter([
      {
@@ -51,7 +48,6 @@ export const router = createBrowserRouter([
                },
                { path: "/about", element: <AboutPage /> },
                { path: "/settings", element: <SettingsPage /> },
-               { path: "/update", element: <UpdateDefinitions /> },
                {
                     path: "/history",
                     element: <Outlet />,

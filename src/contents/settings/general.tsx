@@ -1,14 +1,13 @@
 import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
 import { useTheme } from "@/context/themes";
 import { useSettings } from "@/context/settings";
-import { DATE_TIME_FORMATS, DEFAULT_SETTINGS, MAX_LONG_LINES_CHOICES, THEME_SETTINGS } from "@/lib/settings";
+import { DATE_TIME_FORMATS, DEFAULT_SETTINGS, THEME_SETTINGS } from "@/lib/settings";
 import { capitalizeText } from "@/lib/helpers";
 import { cn } from "@/lib/utils";
-import { Calendar, Palette, ScrollText } from "lucide-react";
+import { AppWindow, Calendar, Palette, Bell, Search, SearchCheck } from "lucide-react";
 import SettingsItem from "@/components/settings-item";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useTranslation } from "react-i18next";
 import { lazy, Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -64,39 +63,20 @@ export default function GeneralSettings(){
                     ))}
                </SettingsItem>
                <SettingsItem
-                    Icon={ScrollText}
-                    title="Logs and UI"
+                    Icon={AppWindow}
+                    title="User Interface"
                     className="space-y-4"
                >
                     <div className="flex flex-row items-center justify-between">
                          <div className="space-y-1">
-                              <Label>Auto-scroll text</Label>
-                              <p className="text-muted-foreground text-sm">Scrolls the log automatically once the new log is added</p>
+                              <Label>Enable Scheduler UI</Label>
+                              <p className="text-muted-foreground text-sm">Gives you an access to the Scheduler page</p>
                          </div>
                          <Switch
-                              defaultChecked={settings.autoScrollText || DEFAULT_SETTINGS.autoScrollText}
-                              checked={settings.autoScrollText}
-                              onCheckedChange={autoScrollText=>setSettings({autoScrollText})}
+                              defaultChecked={settings.enableSchedulerUI || DEFAULT_SETTINGS.enableSchedulerUI}
+                              checked={settings.enableSchedulerUI}
+                              onCheckedChange={checked=>setSettings({enableSchedulerUI: checked})}
                          />
-                    </div>
-                    <div className="flex flex-row items-center justify-between">
-                         <div className="space-y-1">
-                              <Label>Max Log Lines</Label>
-                              <p className="text-muted-foreground text-sm">Shows the log up to the mentioned maximum line count</p>
-                         </div>
-                         <Select
-                              defaultValue={String(settings.maxLogLines || DEFAULT_SETTINGS.maxLogLines)}
-                              onValueChange={lines=>setSettings({maxLogLines: parseInt(lines)})}
-                         >
-                              <SelectTrigger>
-                                   <SelectValue placeholder="Select a max line count"/>
-                              </SelectTrigger>
-                              <SelectContent>
-                                   {MAX_LONG_LINES_CHOICES.map(choice=>(
-                                        <SelectItem key={choice} value={choice.toString()}>{choice} lines</SelectItem>
-                                   ))}
-                              </SelectContent>
-                         </Select>
                     </div>
                     <div className="flex flex-row items-center justify-between">
                          <div className="space-y-1">
@@ -106,6 +86,36 @@ export default function GeneralSettings(){
                          <Suspense fallback={<Skeleton className="h-9 w-32"/>}>
                               <LanguageSelector/>
                          </Suspense>
+                    </div>
+               </SettingsItem>
+               <SettingsItem
+                    Icon={Bell}
+                    title="Notifications"
+                    className="space-y-4"
+               >
+                    <div className="flex flex-row items-center justify-between">
+                         <div className="space-y-1">
+                              <Label className="flex items-center gap-2"><Search className="size-4"/> On Scan Start</Label>
+                              <p className="text-muted-foreground text-sm">Notifies once the scan has been started</p>
+                         </div>
+                         <Switch
+                              disabled={!settings.notifPermitted}
+                              defaultChecked={settings.notifOnScanStart || DEFAULT_SETTINGS.notifOnScanStart}
+                              checked={settings.notifOnScanStart}
+                              onCheckedChange={checked=>setSettings({notifOnScanStart: checked})}
+                         />
+                    </div>
+                    <div className="flex flex-row items-center justify-between">
+                         <div className="space-y-1">
+                              <Label className="flex items-center gap-2"><SearchCheck className="size-4"/> On Scan Finish</Label>
+                              <p className="text-muted-foreground text-sm">Notifies once the scan has been finished</p>
+                         </div>
+                         <Switch
+                              disabled={!settings.notifPermitted}
+                              defaultChecked={settings.notifOnScanFinish || DEFAULT_SETTINGS.notifOnScanFinish}
+                              checked={settings.notifOnScanFinish}
+                              onCheckedChange={checked=>setSettings({notifOnScanFinish: checked})}
+                         />
                     </div>
                </SettingsItem>
           </div>

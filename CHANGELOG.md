@@ -4,7 +4,10 @@ All notable changes of ArsenTech's ClamAV GUI will be documented here.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
-## [1.0.0-1] - Unreleased
+## [1.0.0-1] - Unreleased (v1 Beta)
+### Changes
+- Reorganized the Settings Page
+- Moved Definitions Updater into the Update tab of settings
 
 ## [0.3.3] - 2026-02-06
 > [!NOTE]

@@ -28,7 +28,6 @@ export interface IUpdatePageState{
      isRequired: boolean,
      isUpdating: boolean,
      lastUpdated: Date | null,
-     log: string[],
      exitMsg: number | null,
 }
 export interface IFinishScanState{

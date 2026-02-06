@@ -2,15 +2,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 import GeneralSettingsLoader from "./general";
 import { SettingsTab } from "@/lib/types";
 import ScanSettingsLoader from "./scan";
-import SchedulerSettingsLoader from "./scheduler";
-import ExclusionsSettingsLoader from "./exclusions";
 import AdvancedSettingsLoader from "./advanced";
+import UpdateSettingsLoader from "./update";
 
 export {default as GeneralSettingsLoader} from "./general";
 export {default as ScanSettingsLoader} from "./scan";
 export {default as AdvancedSettingsLoader} from "./advanced"
-export {default as ExclusionsSettingsLoader} from "./exclusions"
-export {default as SchedulerSettingsLoader} from "./scheduler"
+export {default as UpdateSettingsLoader} from "./update"
 
 interface Props{
      currPage: SettingsTab
@@ -30,10 +28,8 @@ export default function SettingsLoader({currPage}: Props){
                <GeneralSettingsLoader/>
           ) : currPage==="scan" ? (
                <ScanSettingsLoader/>
-          ) : currPage==="scheduler" ? (
-               <SchedulerSettingsLoader/>
-          ) : currPage==="exclusions" ? (
-               <ExclusionsSettingsLoader/>
+          ) : currPage==="update" ? (
+               <UpdateSettingsLoader/>
           ) : (
                <AdvancedSettingsLoader/>
           )}

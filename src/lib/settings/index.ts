@@ -113,8 +113,3 @@ export const DATE_TIME_FORMATS: IDateFormatSettings[] = [
           format: "yyyy-MM-dd HH:mm:ss"
      }
 ]
-/* TODO: Reorganize Settings
-
-Real-Time Scan monitors file activity and scans files when they change.
-It does not install kernel drivers.
-*/

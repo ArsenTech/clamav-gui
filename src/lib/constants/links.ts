@@ -40,11 +40,6 @@ export const SIDEBAR_FOOTER_LINKS = [
           Icon: Cog
      },
      {
-          name: "Definition Updater",
-          href: "/update",
-          Icon: RotateCcw
-     },
-     {
           name: "About ClamAV GUI",
           href: "/about",
           Icon: Info
@@ -89,7 +84,7 @@ export const QUICK_ACCESS_LINKS: IQuickAccessItem[] = [
      {
           name: "Update",
           desc: "Update Virus Definitions from the ClamAV database",
-          href: "/update",
+          href: "/settings?tab=update",
           Icon: RotateCcw,
           openDialogType: "none"
      },

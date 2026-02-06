@@ -9,7 +9,7 @@ export const INITIAL_DEIVCE_INFO: IDeviceInfo = {
 export const INITIAL_VERSION_INFO: IVersion = {
      app: "0.0.0",
      tauri: "0.0.0",
-     versionType: "",
+     versionType: "Beta",
      clamAV: ""
 }
 export const GET_INITIAL_SCAN_STATE = (type: ScanType, path: string[] | null): IScanPageState => ({
@@ -30,7 +30,6 @@ export const INITIAL_UPDATE_STATE: IUpdatePageState = {
      isRequired: false,
      lastUpdated: null,
      isUpdating: false,
-     log: [],
 }
 export const INITIAL_FINISH_SCAN_STATE: IFinishScanState = {
      currThreat: null,

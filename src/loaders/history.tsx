@@ -1,5 +1,5 @@
 import { useSettings } from "@/context/settings";
-import TableLoader from "./components/table";
+import TableLoader from "../components/loaders/table";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function HistoryLoader(){

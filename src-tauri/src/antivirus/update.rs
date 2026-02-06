@@ -51,9 +51,6 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
 
                 if !stdout.is_empty() {
                     let stdout_str = stdout.to_string();
-                    let _ = app
-                        .emit("freshclam:output", &stdout_str)
-                        .map_err(|e| e.to_string());
                     log_info(&log_file, &stdout_str);
                 }
                 if !stderr.is_empty() {

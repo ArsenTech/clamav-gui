@@ -12,29 +12,19 @@ pub fn generate_system_tray(app: &mut App) -> Result<TrayIcon,tauri::Error>{
      let about = MenuItem::with_id(app, "about", "About ClamAV GUI", true, None::<&str>)?;
      let open_ui = MenuItem::with_id(app, "open-ui", "Open the GUI",true,None::<&str>)?;
      let settings = MenuItem::with_id(app, "settings", "GUI Settings", true, None::<&str>)?;
+     let update = MenuItem::with_id(app, "update", "Update",true,None::<&str>)?;
 
      let main_scan = MenuItem::with_id(app, "main-scan", "Start Main Scan", true, None::<&str>)?;
      let full_scan = MenuItem::with_id(app, "full-scan", "Start Full Scan", true, None::<&str>)?;
      let custom_scan = MenuItem::with_id(app, "custom-scan", "Start Custom Scan", true, None::<&str>)?;
      let file_scan = MenuItem::with_id(app, "file-scan", "Start File Scan", true, None::<&str>)?;
 
-     let update_definitions = MenuItem::with_id(app, "update-definitions", "Definitions",true,None::<&str>)?;
-     // TODO: Implement Updater
-     let update_app = MenuItem::with_id(app, "update-app", "Application",true,None::<&str>)?;
-     
      let scan = SubmenuBuilder::new(app, "Scan")
           .items(&[
                &main_scan,
                &full_scan,
                &custom_scan,
                &file_scan
-          ])
-          .build()?;
-
-     let update = SubmenuBuilder::new(app,"Update")
-          .items(&[
-               &update_definitions,
-               &update_app
           ])
           .build()?;
 
@@ -83,8 +73,8 @@ pub fn generate_system_tray(app: &mut App) -> Result<TrayIcon,tauri::Error>{
                     app_handle.emit("systray:move", format!("/scan/file?path={}",path.to_string())).ok();
                }
           },
-          "update-definitions" => {
-               app_handle.emit("systray:move", "/update").ok();
+          "update" => {
+               app_handle.emit("systray:move", "/settings?tab=update").ok();
           },
           "open-ui" => {
                if let Some(window) = app_handle.get_webview_window("main") {

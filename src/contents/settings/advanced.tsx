@@ -2,10 +2,10 @@ import { SCAN_SETTINGS } from "@/lib/settings/custom-scan-options";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label"
 import { useSettings } from "@/context/settings";
-import { DEFAULT_SETTINGS, FILE_SCAN_WHITELIST, SCAN_OPTION_TITLE } from "@/lib/settings";
+import { DEFAULT_SETTINGS, FILE_SCAN_WHITELIST, MAX_LONG_LINES_CHOICES, SCAN_OPTION_TITLE } from "@/lib/settings";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Braces, FlaskConical, Scale, ShieldAlert, ShieldCheck } from "lucide-react";
+import { Braces, FlaskConical, Scale, ScrollText, ShieldAlert, ShieldCheck } from "lucide-react";
 import SettingsItem from "@/components/settings-item";
 import { BehaviorMode } from "@/lib/types/settings";
 import { useMemo } from "react";
@@ -65,6 +65,42 @@ export default function AdvancedSettings({scanProfile}: SettingsProps){
                                    <SelectItem value="safe"><ShieldCheck/> Safe</SelectItem>
                                    <SelectItem value="strict"><ShieldAlert/> Strict</SelectItem>
                                    <SelectItem value="expert"><FlaskConical/> Expert</SelectItem>
+                              </SelectContent>
+                         </Select>
+                    </div>
+               </SettingsItem>
+               <SettingsItem
+                    Icon={ScrollText}
+                    title="Logs"
+                    className="space-y-4"
+               >
+                    <div className="flex flex-row items-center justify-between">
+                         <div className="space-y-1">
+                              <Label>Auto-scroll text</Label>
+                              <p className="text-muted-foreground text-sm">Scrolls the log automatically once the new log is added</p>
+                         </div>
+                         <Switch
+                              defaultChecked={settings.autoScrollText || DEFAULT_SETTINGS.autoScrollText}
+                              checked={settings.autoScrollText}
+                              onCheckedChange={autoScrollText=>setSettings({autoScrollText})}
+                         />
+                    </div>
+                    <div className="flex flex-row items-center justify-between">
+                         <div className="space-y-1">
+                              <Label>Max Log Lines</Label>
+                              <p className="text-muted-foreground text-sm">Shows the log up to the mentioned maximum line count</p>
+                         </div>
+                         <Select
+                              defaultValue={String(settings.maxLogLines || DEFAULT_SETTINGS.maxLogLines)}
+                              onValueChange={lines=>setSettings({maxLogLines: parseInt(lines)})}
+                         >
+                              <SelectTrigger>
+                                   <SelectValue placeholder="Select a max line count"/>
+                              </SelectTrigger>
+                              <SelectContent>
+                                   {MAX_LONG_LINES_CHOICES.map(choice=>(
+                                        <SelectItem key={choice} value={choice.toString()}>{choice} lines</SelectItem>
+                                   ))}
                               </SelectContent>
                          </Select>
                     </div>
