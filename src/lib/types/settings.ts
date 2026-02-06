@@ -73,10 +73,6 @@ export type BackendSettings = {
           main: ScanProfileValues,
           custom: ScanProfileValues,
           file: ScanProfileValues
-     },
-     scanSettings: {
-          autoStartupScan: boolean,
-          silentScheduledScans: boolean,
      }
      exclusions: string[],
 }

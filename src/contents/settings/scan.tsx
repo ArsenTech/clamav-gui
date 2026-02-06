@@ -3,45 +3,18 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { useSettings } from "@/context/settings";
-import { DEFAULT_BACKEND_SETTINGS, DEFAULT_SETTINGS, FILE_SCAN_WHITELIST, SCAN_OPTION_TITLE } from "@/lib/settings";
+import { DEFAULT_SETTINGS, FILE_SCAN_WHITELIST, SCAN_OPTION_TITLE } from "@/lib/settings";
 import { SCAN_SETTINGS_GROUPED } from "@/lib/settings/custom-scan-options";
-import { BackendSettings, ScanOptionGroup } from "@/lib/types/settings";
+import { ScanOptionGroup } from "@/lib/types/settings";
 import { Search } from "lucide-react";
 import SettingsItem from "@/components/settings-item";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useScanProfile } from "@/hooks/use-scan-profile";
 import { SettingsProps } from "@/lib/types";
-import { useBackendSettings } from "@/hooks/use-settings";
-import { useEffect, useState, useTransition } from "react";
-import { toast } from "sonner";
 
 export default function ScanSettings({scanProfile}: SettingsProps){
      const {settings, setSettings} = useSettings();
      const { values, setValue, isLoading } = useScanProfile(scanProfile);
-     const {fetchSettingsbySection, setSettingsbySection} = useBackendSettings();
-     const [isFetching, startTransition] = useTransition();
-     const [currSettings, setCurrSettings] = useState(DEFAULT_BACKEND_SETTINGS.scanSettings);
-     useEffect(()=>{
-          startTransition(async()=>{
-               try{
-                    const stored = await fetchSettingsbySection("scanSettings");
-                    setCurrSettings(prev => !stored ? prev : ({
-                         ...prev,
-                         ...stored
-                    }))
-               } catch (e){
-                    toast.error("Failed to fetch settings from backend");
-                    console.error(e)
-               }
-          })
-     },[])
-     const updateState = async<K extends keyof BackendSettings["scanSettings"]>(key: K, value: BackendSettings["scanSettings"][K]) => {
-          await setSettingsbySection("scanSettings",key,value);
-          setCurrSettings(prev=>({
-               ...prev,
-               [key]: value
-          }))
-     }
      return (
           <div className="px-1 py-2 space-y-3">
                <SettingsItem
@@ -60,34 +33,6 @@ export default function ScanSettings({scanProfile}: SettingsProps){
                               checked={settings.confirmStopScan}
                               onCheckedChange={checked=>setSettings({confirmStopScan: checked})}
                          />
-                    </div>
-                    <div className="flex flex-row items-center justify-between">
-                         <div className="space-y-1">
-                              <Label>Auto startup scan</Label>
-                              <p className="text-muted-foreground text-sm">Scans files with a full scan on startup</p>
-                         </div>
-                         {isFetching ? (
-                              <Skeleton className="w-8 h-[18px]"/>
-                         ) : (
-                              <Switch
-                                   checked={currSettings.autoStartupScan}
-                                   onCheckedChange={checked=>updateState("autoStartupScan",checked)}
-                              />
-                         )}
-                    </div>
-                    <div className="flex flex-row items-center justify-between">
-                         <div className="space-y-1">
-                              <Label>Silent Scheduled Scans</Label>
-                              <p className="text-muted-foreground text-sm">Starts the headless scheduled scan if checked</p>
-                         </div>
-                         {isFetching ? (
-                              <Skeleton className="w-8 h-[18px]"/>
-                         ) : (
-                              <Switch
-                                   checked={currSettings.silentScheduledScans}
-                                   onCheckedChange={checked=>updateState("silentScheduledScans",checked)}
-                              />
-                         )}
                     </div>
                </SettingsItem>
                {Object.entries(SCAN_SETTINGS_GROUPED).filter(([key])=>key!=="advanced" as ScanOptionGroup).map(([key,options])=>{

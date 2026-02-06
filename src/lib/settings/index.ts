@@ -52,10 +52,6 @@ export const DEFAULT_BACKEND_SETTINGS: BackendSettings = {
           custom: {},
           file: {}
      },
-     scanSettings: {
-          autoStartupScan: false,
-          silentScheduledScans: false,
-     },
      exclusions: [],
 }
 export const FILE_SCAN_WHITELIST =  [
@@ -117,39 +113,8 @@ export const DATE_TIME_FORMATS: IDateFormatSettings[] = [
           format: "yyyy-MM-dd HH:mm:ss"
      }
 ]
-/* TODO: Finish the settings page according to this route ([X] - Finished, [Impl] - Currently Implemented) + Reorganize Settings
+/* TODO: Reorganize Settings
 
 Real-Time Scan monitors file activity and scans files when they change.
 It does not install kernel drivers.
-
-Completed:
-Settings
-├── General (uses LocalStorage)
-│   ├── Theme [X]
-│   ├── Color [X]
-│   ├── Date format [X]
-│   └── Logs & UI
-│       ├── Auto-scroll [X]
-│       ├── Max log lines [X]
-│       └── Language [X]
-│
-├── Scheduler
-│   ├── Enable Scheduler UI [X]
-│   └── Notifications
-│       ├── On scan start [X]
-│       └── On scan finish [X]
-│ 
-├── Exclusions [X]
-└── Advanced
-    ├── Custom Scan Options [X]
-    ├── Developer Mode (Shows ID on Tables) [X]
-    ├── Real-Time Scan [X]
-    └── Behavior [X]
-
-Settings
-├── Scan
-│   ├── Auto startup scan [Impl]
-│   ├── Confirm stop [X]
-│   ├── Silent scheduled scans [Impl]
-│   └── Custom Scan Options [X]
 */

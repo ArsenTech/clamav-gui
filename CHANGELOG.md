@@ -4,7 +4,9 @@ All notable changes of ArsenTech's ClamAV GUI will be documented here.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
-## [0.3.3] - Unreleased
+## [0.3.3] - 2026-02-06
+> [!NOTE]
+> Some of these removed features may return in a future release once a more robust implementation is available.
 ### Added
 - **Working Settings**
   - Enable Scheduler UI
@@ -18,6 +20,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Moved the paths fetch logic for the main scan into the backend
 ### Removed
 - PUA Exclusions
+- Settings:
+  - Auto Startup Scan (UI lifecycle conflicts)
+  - Silent Scheduled Scans (headless behavior is already default)
 
 ## [0.3.2] - 2026-02-01 (February Pre-Release)
 ### Added
