@@ -29,6 +29,7 @@
                <a href="#about">About</a>
                <ul>
                     <li><a href="#features">Features</a></li>
+                    <li><a href="#other-features">Other Features</a></li>
                     <li><a href="#built-with">Built With</a></li>
                     <li><a href="#download">Download</a></li>
                </ul>
@@ -45,9 +46,6 @@
           <li><a href="#license">License</a></li>
      </ol>
 </details>
-
-> [!IMPORTANT]
-> Some parts of this pre-release won't work, and the UI will be laggy and unresponsive sometimes. The ClamAV GUI is still in the development and improvement...
 
 ## About
 **ArsenTech's ClamAV GUI** is a minimal, open-source interface for file scanning and threat detection that makes the Antivirus itself look professional and work exactly like ClamAV (A FOSS CLI Antivirus).
@@ -72,14 +70,8 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - **Skeleton Loader** - A separate Skeleton loading on some pages for clean UX
 - **Notifications** - Be informed when the scan is started or finished, or a new threat has been detected
 - **System Tray** - Quick Access through some actions all by using a system tray
-<!-- TODO: Write the Features list -->
 
 ### Coming Soon
-- [ ] Settings
-  - [X] Themes
-  - [X] Custom Scan Settings
-  - [X] Real Time Scan Settings
-  - [X] Other settings based on few GUI actions
 - [ ] Finishing touches and optimization before v1
 - [ ] Translate the GUI into mentioned languages
 

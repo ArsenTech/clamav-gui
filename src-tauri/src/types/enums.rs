@@ -20,19 +20,6 @@ pub enum ScanType {
     Realtime,
     Scheduled,
 }
-impl ScanType{
-    pub fn from_str(val: &str) -> Result<ScanType,String>{
-        match val{
-            "main" => Ok(ScanType::Main),
-            "full" => Ok(ScanType::Full),
-            "custom" => Ok(ScanType::Custom),
-            "file" => Ok(ScanType::File),
-            "realtime" => Ok(ScanType::Realtime),
-            "scheduled" => Ok(ScanType::Scheduled),
-            &_ => Err("Unknown Scan Type".into())
-        }
-    }
-}
 
 #[derive(Serialize, Deserialize, Type, Debug, PartialEq, Eq, Hash)]
 #[serde(rename_all = "lowercase")]
