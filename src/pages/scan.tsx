@@ -34,7 +34,7 @@ export default function ScanPage(){
      const scanActiveRef = useRef(false);
      const scanStartedRef = useRef(false);
      const scanStoppedRef = useRef(false);
-     const {getBackendSettings} = useBackendSettings();
+     const {getSettingsBySection} = useBackendSettings();
      const handleStartScan = async() => {
           try{
                let scanOptions: ScanProfileValues | null = null;
@@ -42,7 +42,7 @@ export default function ScanPage(){
                const scanCommand = `start_${isMainOrFull ? scanState.scanType : "custom"}_scan`;
                const scanProfile: ScanProfileId | null = scanState.scanType==="main" ? "main" : scanState.scanType==="custom" ? "custom" : scanType==="file" ? "file" : null;
                if(scanProfile){
-                    const availableOptions = await getBackendSettings("scanProfiles",scanProfile);
+                    const availableOptions = await getSettingsBySection("scanProfiles",scanProfile);
                     if(availableOptions) scanOptions = hydrateProfile(availableOptions,scanProfile==="file");
                     console.log(availableOptions,scanProfile)
                }

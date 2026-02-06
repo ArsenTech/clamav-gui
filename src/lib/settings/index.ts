@@ -45,14 +45,16 @@ export const DEFAULT_SETTINGS: ISettings = {
      notifOnScanFinish: true,
      notifPermitted: false,
      behavior: "balanced",
-     autoStartupScan: false,
-     silentScheduledScans: false,
 }
 export const DEFAULT_BACKEND_SETTINGS: BackendSettings = {
      scanProfiles: {
           main: {},
           custom: {},
           file: {}
+     },
+     scanSettings: {
+          autoStartupScan: false,
+          silentScheduledScans: false,
      },
      exclusions: [],
 }

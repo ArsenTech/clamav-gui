@@ -66,8 +66,6 @@ export interface ISettings{
      notifOnScanFinish: boolean,
      notifPermitted: boolean,
      behavior: BehaviorMode,
-     autoStartupScan: boolean,
-     silentScheduledScans: boolean,
 }
 export type BehaviorMode = "balanced" | "safe" | "strict" | "expert"
 export type BackendSettings = {
@@ -75,6 +73,10 @@ export type BackendSettings = {
           main: ScanProfileValues,
           custom: ScanProfileValues,
           file: ScanProfileValues
+     },
+     scanSettings: {
+          autoStartupScan: boolean,
+          silentScheduledScans: boolean,
      }
      exclusions: string[],
 }

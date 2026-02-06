@@ -3,7 +3,7 @@ import { BackendSettings } from "@/lib/types/settings";
 import { toast } from "sonner";
 
 export function useBackendSettings(){
-     async function getBackendSettings<
+     async function getSettingsBySection<
           S extends keyof BackendSettings,
           K extends keyof BackendSettings[S]
      >(
@@ -13,11 +13,11 @@ export function useBackendSettings(){
           const data = await store.get<BackendSettings[S]>(section);
           return data?.[key];
      }
-     async function fetchBackendSettings<S extends keyof BackendSettings>(section: S): Promise<BackendSettings[S] | undefined> {
+     async function fetchSettingsbySection<S extends keyof BackendSettings>(section: S): Promise<BackendSettings[S] | undefined> {
           const data = await store.get<BackendSettings[S]>(section);
           return data;
      }
-     async function setBackendSettings<
+     async function setSettingsbySection<
           S extends keyof BackendSettings,
           K extends keyof BackendSettings[S]
      >(
@@ -36,29 +36,24 @@ export function useBackendSettings(){
                console.error(e)
           }
      }
-     return {
-          getBackendSettings,
-          setBackendSettings,
-          fetchBackendSettings,
+     async function getSettingsByKey<K extends keyof BackendSettings>(key: K): Promise<BackendSettings[K] | undefined> {
+          const data = await store.get<BackendSettings[K]>(key);
+          return data;
      }
-}
-
-export function useExclusions(){
-     async function getExclusions(): Promise<BackendSettings["exclusions"] | undefined> {
-          const data = await store.get<BackendSettings["exclusions"]>("exclusions");
-          return data
-     }
-     async function setExclusions(value: BackendSettings["exclusions"]) {
+     async function setSettingsbyKey<K extends keyof BackendSettings>(key: K,value: BackendSettings[K]) {
           try{
-               const current = (await store.get<BackendSettings["exclusions"]>("exclusions")) ?? [];
-               await store.set("exclusions",!value ? current : value);
+               const current = await store.get<BackendSettings[K]>(key)
+               await store.set(key,!value ? current : value);
           } catch(e){
                toast.error("Failed to save settings");
                console.error(e)
           }
      }
      return {
-          getExclusions,
-          setExclusions
+          getSettingsBySection,
+          getSettingsByKey,
+          setSettingsbySection,
+          setSettingsbyKey,
+          fetchSettingsbySection
      }
 }
