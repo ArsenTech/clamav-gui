@@ -35,7 +35,16 @@
       "assets/icon-variants/*.png": "resources/icons/",
       "assets/sounds/*.wav": "resources/sounds/"
     },
-    "createUpdaterArtifacts": true
+    "createUpdaterArtifacts": true,
+    "windows": {
+      "nsis": {
+        "compression": "zlib",
+        "installMode": "both",
+        "sidebarImage": "assets/sidebar-image.bmp",
+        "headerImage": "assets/header-image.bmp",
+        "installerIcon": "assets/installer.ico"
+      }
+    }
   },
   "plugins": {
     "updater": {
