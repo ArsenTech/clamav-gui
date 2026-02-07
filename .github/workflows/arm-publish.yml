@@ -95,5 +95,5 @@ jobs:
       - name: Upload updater fragment
         uses: actions/upload-artifact@v4
         with:
-          name: updater-fragments-linux-arm
+          name: updater-fragments-linux-aarch64
           path: updater/platforms.json

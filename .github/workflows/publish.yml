@@ -97,7 +97,13 @@ jobs:
 
           PLATFORMS=()
 
-          for f in src-tauri/target/release/bundle/**/*; do
+          for f in \
+            src-tauri/target/release/bundle/msi/*.msi \
+            src-tauri/target/release/bundle/appimage/*.AppImage \
+            src-tauri/target/release/bundle/macos/*.app.tar.gz
+          do
+            [ -f "$f" ] || continue
+
             case "$f" in
               *.msi)
                 PLATFORMS+=("$(add_platform windows-x86_64 "$f")")
@@ -113,20 +119,21 @@ jobs:
                 ;;
             esac
           done
+          sleep 5
 
           jq -s 'add' <<<"${PLATFORMS[@]}" > updater/platforms.json
 
       - name: Upload updater fragment
         uses: actions/upload-artifact@v4
         with:
-          name: updater-fragments
+          name: updater-fragments-${{ matrix.platform }}
           path: updater/platforms.json
 
       - name: Download updater fragments
         if: matrix.platform == 'windows-latest'
         uses: actions/download-artifact@v4
         with:
-          name: updater-fragments
+          pattern: updater-fragments-*
           path: fragments
           
       - name: Assemble latest.json
