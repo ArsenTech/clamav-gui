@@ -2,7 +2,10 @@ use specta::specta;
 use tauri::command;
 
 use crate::{
-    helpers::history::history_dir,
+    helpers::history::{
+        history_dir,
+        clear_by_status
+    },
     types::{
         enums::{ClearHistoryMode, HistoryStatus},
         structs::HistoryItem,
@@ -12,7 +15,15 @@ use crate::{
 #[command]
 #[specta(result)]
 pub fn load_history(app: tauri::AppHandle, days: u32) -> Result<Vec<HistoryItem>, String> {
+    if days == 0 {
+        return Err("Days must be greater than 0".into());
+    }
+    if days > 365 {
+        return Err("Days cannot exceed 365".into());
+    }
+
     let dir = history_dir(&app);
+    
     let mut all = Vec::with_capacity((days as usize) * 10);
 
     for i in 0..days {
@@ -25,12 +36,12 @@ pub fn load_history(app: tauri::AppHandle, days: u32) -> Result<Vec<HistoryItem>
 
         let content = std::fs::read_to_string(&path)
             .map_err(|e| format!("Failed to read history file {:?}: {}", path, e))?;
+            
         let mut items: Vec<HistoryItem> = serde_json::from_str(&content)
             .map_err(|e| format!("Failed to parse history file {:?}: {}", path, e))?;
 
         all.append(&mut items);
     }
-
     all.sort_unstable_by(|a, b| b.timestamp.cmp(&a.timestamp));
     Ok(all)
 }
@@ -47,14 +58,15 @@ pub fn mark_as_acknowledged(app: tauri::AppHandle, id: String, date: String) -> 
 
     let dir = history_dir(&app);
     let file_path = dir.join(format!("{}.json", date));
+    
     if !file_path.try_exists().unwrap_or(false) {
         return Err("History date file not found".into());
     }
 
     let content = std::fs::read_to_string(&file_path).map_err(|e| e.to_string())?;
     let mut items: Vec<HistoryItem> = serde_json::from_str(&content).map_err(|e| e.to_string())?;
+    
     let mut found = false;
-
     for item in &mut items {
         if item.id == id {
             if item.status != HistoryStatus::Acknowledged {
@@ -64,7 +76,6 @@ pub fn mark_as_acknowledged(app: tauri::AppHandle, id: String, date: String) -> 
             break;
         }
     }
-
     if !found {
         return Err("History item not found".into());
     }
@@ -73,17 +84,12 @@ pub fn mark_as_acknowledged(app: tauri::AppHandle, id: String, date: String) -> 
         serde_json::to_string_pretty(&items).map_err(|e| e.to_string())?,
     )
     .map_err(|e| e.to_string())?;
-
     Ok(())
 }
 
 #[command]
 #[specta(result)]
 pub fn clear_history(app: tauri::AppHandle, mode: ClearHistoryMode) -> Result<(), String> {
-    if mode != ClearHistoryMode::All && mode != ClearHistoryMode::Acknowledged {
-        return Err("Invalid clear history mode. Use 'all' or 'acknowledged'".into());
-    }
-
     let dir = history_dir(&app);
     if !dir.try_exists().unwrap_or(false) {
         return Ok(());
@@ -93,27 +99,15 @@ pub fn clear_history(app: tauri::AppHandle, mode: ClearHistoryMode) -> Result<()
         if path.extension().and_then(|e| e.to_str()) != Some("json") {
             continue;
         }
-
         match mode {
             ClearHistoryMode::All => {
                 std::fs::remove_file(&path).map_err(|e| e.to_string())?;
             }
             ClearHistoryMode::Acknowledged => {
-                let content = std::fs::read_to_string(&path).map_err(|e| e.to_string())?;
-                let mut items: Vec<HistoryItem> =
-                    serde_json::from_str(&content).map_err(|e| e.to_string())?;
-
-                items.retain(|i| i.status != HistoryStatus::Acknowledged);
-
-                if items.is_empty() {
-                    std::fs::remove_file(&path).map_err(|e| e.to_string())?;
-                } else {
-                    std::fs::write(
-                        &path,
-                        serde_json::to_string_pretty(&items).map_err(|e| e.to_string())?,
-                    )
-                    .map_err(|e| e.to_string())?;
-                }
+                clear_by_status(&path, |i| i.status != HistoryStatus::Acknowledged)?;
+            }
+            ClearHistoryMode::Error => {
+                clear_by_status(&path, |i| i.status != HistoryStatus::Error)?;
             }
         }
     }

@@ -72,3 +72,25 @@ pub fn append_realtime_history(
         );
     }
 }
+
+pub fn clear_by_status(
+    path: &std::path::PathBuf,
+    retain_predicate: impl Fn(&HistoryItem) -> bool,
+) -> Result<(), String> {
+    let content = std::fs::read_to_string(path).map_err(|e| e.to_string())?;
+    let mut items: Vec<HistoryItem> = serde_json::from_str(&content).map_err(|e| e.to_string())?;
+
+    items.retain(retain_predicate);
+
+    if items.is_empty() {
+        std::fs::remove_file(path).map_err(|e| e.to_string())?;
+    } else {
+        std::fs::write(
+            path,
+            serde_json::to_string_pretty(&items).map_err(|e| e.to_string())?,
+        )
+        .map_err(|e| e.to_string())?;
+    }
+
+    Ok(())
+}

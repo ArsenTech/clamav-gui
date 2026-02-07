@@ -15,6 +15,14 @@ export default function UpdateSettingsLoader(){
                          <div className="bg-accent rounded-md h-3.5 w-64"/>
                     </div>
                </div>
+               <div className="border border-accent animate-pulse flex flex-col gap-5 rounded-xl p-6">
+                    <div className="h-4 bg-accent rounded-md w-1/3"/>
+                    <div className="flex justify-center items-center gap-2 flex-col">
+                         <div className="bg-accent rounded-md h-5 md:h-6 lg:h-[30px] w-2/5"/>
+                         <div className="bg-accent rounded-md h-4 w-1/3"/>
+                         <div className="bg-accent rounded-md h-9 w-48"/>
+                    </div>
+               </div>
           </div>
      )
 }

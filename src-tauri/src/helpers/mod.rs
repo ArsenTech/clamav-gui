@@ -67,6 +67,20 @@ pub fn resolve_command(command: &str) -> Result<PathBuf, String> {
 
 pub fn get_exclusions(app: &tauri::AppHandle) -> Result<Vec<String>, String> {
     let store = app.store("settings.json").map_err(|e| e.to_string())?;
-    let value = store.get("exclusions").ok_or("Exclusions not found")?;
-    serde_json::from_value::<Vec<String>>(value.clone()).map_err(|e| e.to_string())
+    let value = match store.get("exclusions") {
+        Some(v) => v,
+        None => return Ok(vec![]),
+    };
+    match value {
+        serde_json::Value::Array(arr) => {
+            Ok(arr.into_iter()
+                .filter_map(|v| v.as_str().map(|s| s.to_string()))
+                .collect::<Vec<_>>()
+                .into())
+        }
+        _ => {
+            eprintln!("Invalid exclusions format, expected array");
+            Ok(vec![])
+        }
+    }
 }

@@ -25,7 +25,11 @@ export default function Popup({open, onOpen, title, description, submitTxt = "Su
                               <DrawerDescription>{description}</DrawerDescription>
                          )}
                     </DrawerHeader>
-                    {children}
+                    {!!children && (
+                         <div className="p-6">
+                              {children}
+                         </div>
+                    )}
                     {!hideButtons &&(
                          <DrawerFooter>
                               <Button type="button" onClick={submitEvent}>{submitTxt}</Button>

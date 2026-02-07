@@ -26,7 +26,7 @@ export interface IScanPageState{
 }
 export interface IUpdatePageState{
      isRequired: boolean,
-     isUpdating: boolean,
+     isUpdatingDefs: boolean,
      lastUpdated: Date | null,
      exitMsg: number | null,
 }
@@ -38,6 +38,7 @@ export interface IFinishScanState{
 export interface IHistoryPageState{
      clearAll: boolean,
      clearAcknowledged: boolean,
+     clearErrors: boolean
      data: IHistoryData<"state">[]
 }
 export interface IQuarantineState{

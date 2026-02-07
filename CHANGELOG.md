@@ -6,10 +6,15 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ---
 ## [1.0.0-1] - Unreleased (v1 Beta)
 ### Added
-- App Updater Logic
-### Changes
+- App Updater
+- **Clear All Errors** Option inside the history page
+### Changed
 - Reorganized the Settings Page
 - Moved Definitions Updater into the Update tab of settings
+### Improved
+- Popup UI
+### Fixed
+- Exclusions fetch bug
 
 ## [0.3.3] - 2026-02-06
 > [!NOTE]

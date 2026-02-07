@@ -11,6 +11,8 @@ export type ThreatStatusStat = Exclude<ThreatStatus,"detected"|"safe"> | "unreso
 export type ComputerVirusType = "trojan" | "ransomware" | "spyware" | "rootkit" | "other";
 export type ScanTypeStat = Exclude<ScanType,""> | "realtime";
 export type LogCategory = "scan" | "update" | "quarantine" | "realtime" | "scheduler";
+export type HistoryClearType = "all" | "acknowledged" | "error";
+export type GUIUpdaterStatus = "checking" | "updating" | "needs-update" | "updated" | "failed-check" | "completed" | "failed-update"
 
 export interface IScanMenuItem{
      type: ScanType,

@@ -107,6 +107,7 @@ impl DayOfTheWeek {
 pub enum ClearHistoryMode {
     All,
     Acknowledged,
+    Error
 }
 
 #[derive(Serialize, Deserialize, Type, Debug, PartialEq, Eq, Hash, Copy, Clone)]

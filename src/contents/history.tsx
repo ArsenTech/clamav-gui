@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { GET_HISTORY_COLS } from "@/components/data-table/columns/history";
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { invoke } from "@tauri-apps/api/core";
-import { IHistoryData } from "@/lib/types";
+import { HistoryClearType, IHistoryData } from "@/lib/types";
 import { Download, Trash2 } from "lucide-react"
 import { ButtonGroup } from "@/components/ui/button-group"
 import { cn } from "@/lib/utils";
@@ -17,6 +17,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { IHistoryPageState } from "@/lib/types/states";
 import { INITIAL_HISTORY_STATE } from "@/lib/constants/states";
 import { useSettings } from "@/context/settings";
+import { HISTORY_CLEAR_MSGS } from "@/lib/constants/links";
 
 export default function HistoryContent(){
      const {settings} = useSettings();
@@ -40,19 +41,20 @@ export default function HistoryContent(){
                }
           })
      }
-     const clearHistory = (mode: "all" | "acknowledged" = "all") => {
+     const clearHistory = (mode: HistoryClearType = "all") => {
           setState({
                clearAll: false,
-               clearAcknowledged: false
+               clearAcknowledged: false,
+               clearErrors: false
           })
           startClearTransition(async()=>{
                try {
                     await invoke("clear_history",{mode});
                     setHistoryState(prev=>({
                          ...prev,
-                         data: mode==="all" ? [] : prev.data.filter(val=>val.status!=="acknowledged")
+                         data: mode==="all" ? [] : prev.data.filter(val=>val.status!==mode)
                     }))
-                    toast.success(mode==="all" ? "History Cleared!" : "Acknowledged Entries Cleared!")
+                    toast.success(HISTORY_CLEAR_MSGS[mode])
                } catch (error){
                     toast.error("Failed to clear history")
                     console.error(error);
@@ -79,7 +81,7 @@ export default function HistoryContent(){
      useEffect(()=>{
           fetchData()
      },[])
-     const {data, clearAcknowledged, clearAll} = historyState
+     const {data, clearAcknowledged, clearAll, clearErrors} = historyState
      const isEmpty = useMemo(()=>data.length<=0,[data])
      return (
           <>
@@ -108,6 +110,9 @@ export default function HistoryContent(){
                                         <DropdownMenuItem onClick={()=>setState({clearAcknowledged: true})} disabled={isEmpty}>
                                              Clear acknowledged only
                                         </DropdownMenuItem>
+                                        <DropdownMenuItem onClick={()=>setState({clearErrors: true})} disabled={isEmpty}>
+                                             Clear all errors
+                                        </DropdownMenuItem>
                                    </DropdownMenuContent>
                               </DropdownMenu>
                               <Button variant="outline" onClick={exportDataAs} disabled={isEmpty}>
@@ -134,6 +139,15 @@ export default function HistoryContent(){
                submitTxt="Clear"
                closeText="Cancel"
                submitEvent={()=>clearHistory("acknowledged")}
+          />
+          <Popup
+               open={clearErrors}
+               onOpen={clearErrors=>setState({clearErrors})}
+               title="Clear all errors?"
+               description="This will remove all errors in the history table. Rest of these events will remain."
+               submitTxt="Clear"
+               closeText="Cancel"
+               submitEvent={()=>clearHistory("error")}
           />
           </>
      )

@@ -29,7 +29,7 @@ export const INITIAL_UPDATE_STATE: IUpdatePageState = {
      exitMsg: null,
      isRequired: false,
      lastUpdated: null,
-     isUpdating: false,
+     isUpdatingDefs: false,
 }
 export const INITIAL_FINISH_SCAN_STATE: IFinishScanState = {
      currThreat: null,
@@ -39,6 +39,7 @@ export const INITIAL_FINISH_SCAN_STATE: IFinishScanState = {
 export const INITIAL_HISTORY_STATE: IHistoryPageState = {
      clearAll: false,
      clearAcknowledged: false,
+     clearErrors: false,
      data: []
 }
 export const INITIAL_QUARANTINE_STATE: IQuarantineState = {
