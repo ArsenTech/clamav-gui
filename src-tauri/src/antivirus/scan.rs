@@ -1,20 +1,23 @@
 use specta::specta;
 use std::path::PathBuf;
-use tauri::{Emitter, Manager, command};
+use tauri::{command, Emitter, Manager};
 
 use crate::{
     helpers::{
         history::append_scan_history,
         log::{initialize_log_with_id, log_err},
-        new_id, resolve_command,
-        scan::{SCAN_PROCESS, estimate_total_files, fetch_custom_scan_args, get_main_paths, get_root_path, run_scan},
         matcher::apply_exclusions,
+        new_id, resolve_command,
+        scan::{
+            estimate_total_files, fetch_custom_scan_args, get_main_paths, get_root_path, run_scan,
+            SCAN_PROCESS,
+        },
         silent_command,
     },
     types::{
         enums::{HistoryStatus, LogCategory, ScanType},
         structs::{HistoryItem, StartupScan},
-    }
+    },
 };
 
 #[command]
@@ -27,7 +30,8 @@ pub fn get_startup_scan(state: tauri::State<StartupScan>) -> StartupScan {
 #[specta(result)]
 pub fn start_main_scan(app: tauri::AppHandle, args: Option<Vec<String>>) -> Result<(), String> {
     let log_id = new_id();
-    let log = initialize_log_with_id(&app, LogCategory::Scan, &log_id).map_err(|e| e.to_string())?;
+    let log =
+        initialize_log_with_id(&app, LogCategory::Scan, &log_id).map_err(|e| e.to_string())?;
     let log_file = log.file;
     let paths = get_main_paths(app.path());
     append_scan_history(
@@ -94,7 +98,8 @@ pub fn start_main_scan(app: tauri::AppHandle, args: Option<Vec<String>>) -> Resu
 #[specta(result)]
 pub fn start_full_scan(app: tauri::AppHandle) -> Result<(), String> {
     let log_id = new_id();
-    let log = initialize_log_with_id(&app, LogCategory::Scan, &log_id).map_err(|e| e.to_string())?;
+    let log =
+        initialize_log_with_id(&app, LogCategory::Scan, &log_id).map_err(|e| e.to_string())?;
     let log_file = log.file;
     append_scan_history(
         &app,
@@ -143,12 +148,17 @@ pub fn start_full_scan(app: tauri::AppHandle) -> Result<(), String> {
 
 #[command]
 #[specta(result)]
-pub fn start_custom_scan(app: tauri::AppHandle, paths: Vec<String>, args: Option<Vec<String>>) -> Result<(), String> {
+pub fn start_custom_scan(
+    app: tauri::AppHandle,
+    paths: Vec<String>,
+    args: Option<Vec<String>>,
+) -> Result<(), String> {
     if paths.is_empty() {
         return Err("No scan targets provided".into());
     }
     let log_id = new_id();
-    let log = initialize_log_with_id(&app, LogCategory::Scan, &log_id).map_err(|e| e.to_string())?;
+    let log =
+        initialize_log_with_id(&app, LogCategory::Scan, &log_id).map_err(|e| e.to_string())?;
     let log_file = log.file;
     let resolved_paths: Vec<PathBuf> = paths.iter().map(PathBuf::from).collect();
     for path in &resolved_paths {
@@ -187,7 +197,11 @@ pub fn start_custom_scan(app: tauri::AppHandle, paths: Vec<String>, args: Option
     let mut scan_args: Vec<String> = fetch_custom_scan_args(args, has_directory);
     apply_exclusions(&app, &mut scan_args)?;
     for arg in &scan_args {
-        println!("{} scan argument: {}", if has_directory {"Custom"} else {"File"}, arg);
+        println!(
+            "{} scan argument: {}",
+            if has_directory { "Custom" } else { "File" },
+            arg
+        );
     }
     std::thread::spawn(move || {
         let mut cmd = silent_command(clamscan.to_str().unwrap());

@@ -68,3 +68,88 @@ jobs:
           releaseDraft: true
           prerelease: false
           args: ${{ matrix.args }}
+
+      - name: Generate updater fragment
+        shell: bash
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          REPO="${{ github.repository }}"
+          mkdir -p updater
+
+          add_platform () {
+            KEY="$1"
+            FILE="$2"
+
+            SIG="$FILE.sig"
+            if [ ! -f "$SIG" ]; then
+              echo "Missing signature for $FILE"
+              exit 1
+            fi
+
+            jq -n \
+              --arg key "$KEY" \
+              --arg url "https://github.com/$REPO/releases/download/v$VERSION/$(basename "$FILE")" \
+              --arg sig "$(tr -d '\n' < "$SIG")" \
+              '{ ($key): { url: $url, signature: $sig } }'
+          }
+
+          PLATFORMS=()
+
+          for f in src-tauri/target/release/bundle/**/*; do
+            case "$f" in
+              *.msi)
+                PLATFORMS+=("$(add_platform windows-x86_64 "$f")")
+                ;;
+              *.AppImage)
+                PLATFORMS+=("$(add_platform linux-x86_64 "$f")")
+                ;;
+              *x64.app.tar.gz)
+                PLATFORMS+=("$(add_platform darwin-x86_64 "$f")")
+                ;;
+              *aarch64.app.tar.gz)
+                PLATFORMS+=("$(add_platform darwin-aarch64 "$f")")
+                ;;
+            esac
+          done
+
+          jq -s 'add' <<<"${PLATFORMS[@]}" > updater/platforms.json
+
+      - name: Upload updater fragment
+        uses: actions/upload-artifact@v4
+        with:
+          name: updater-fragments
+          path: updater/platforms.json
+
+      - name: Download updater fragments
+        if: matrix.platform == 'windows-latest'
+        uses: actions/download-artifact@v4
+        with:
+          name: updater-fragments
+          path: fragments
+          
+      - name: Assemble latest.json
+        if: matrix.platform == 'windows-latest'
+        shell: bash
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+
+          jq -s 'add' fragments/**/platforms.json > platforms.json
+
+          jq -n \
+            --arg version "$VERSION" \
+            --arg date "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            --slurpfile platforms platforms.json \
+            '{
+              version: $version,
+              notes: "See GitHub release notes.",
+              pub_date: $date,
+              platforms: $platforms[0]
+            }' > latest.json
+            
+      - name: Upload latest.json
+        if: matrix.platform == 'windows-latest'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: latest.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

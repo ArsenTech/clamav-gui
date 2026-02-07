@@ -24,7 +24,7 @@ use crate::{
     helpers::{
         flags::parse_startup_flags,
         scan::run_headless_scan,
-        sys_tray::{generate_system_tray,SHOULD_QUIT}
+        sys_tray::{generate_system_tray, SHOULD_QUIT},
     },
     system::{
         check_availability,
@@ -83,6 +83,7 @@ pub fn run() {
     ]);
 
     tauri::Builder::default()
+        .plugin(tauri_plugin_updater::Builder::new().build())
         .setup(|app| {
             use tauri::{Manager, WindowEvent};
             if let Some(window) = app.get_webview_window("main") {

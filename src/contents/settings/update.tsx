@@ -11,6 +11,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { getExitText, parseClamVersion } from "@/lib/helpers";
 import { toast } from "sonner";
 import SettingsItem from "@/components/settings-item";
+import { WindowIcon } from "@/components/app-icon";
 
 export default function UpdateSettings(){
      const [updateState, setUpdateState] = useState<IUpdatePageState>(INITIAL_UPDATE_STATE);
@@ -118,6 +119,12 @@ export default function UpdateSettings(){
                     {exitMsg!==null && (
                          <p className="text-sm text-muted-foreground">{getExitText(exitMsg,"update")}</p>
                     )}
+               </SettingsItem>
+               <SettingsItem
+                    Icon={WindowIcon}
+                    title="GUI Updates"
+               >
+                    TODO: Add the updater GUI
                </SettingsItem>
           </div>
      )

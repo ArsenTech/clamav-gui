@@ -1,6 +1,5 @@
 use notify::{RecursiveMode, Watcher};
 use once_cell::sync::Lazy;
-use tauri_plugin_notification::NotificationExt;
 use std::{
     collections::HashSet,
     path::{Path, PathBuf},
@@ -11,6 +10,7 @@ use std::{
     thread,
     time::Duration,
 };
+use tauri_plugin_notification::NotificationExt;
 
 static NOTIFIED: Lazy<Mutex<HashSet<PathBuf>>> = Lazy::new(|| Mutex::new(HashSet::new()));
 static REALTIME_ENABLED: AtomicBool = AtomicBool::new(false);
@@ -23,11 +23,11 @@ use crate::{
     antivirus::quarantine::quarantine_file,
     helpers::{
         get_exclusions,
+        matcher::{ExclusionMatcher, EXCLUSIONS},
         path::path_to_regex,
-        resolve_command,
-        silent_command,
-        matcher::{EXCLUSIONS, ExclusionMatcher}
-    }, types::{enums::BehaviorMode, structs::BehaviorConfig}
+        resolve_command, silent_command,
+    },
+    types::{enums::BehaviorMode, structs::BehaviorConfig},
 };
 
 fn behavior_config(mode: BehaviorMode) -> BehaviorConfig {
@@ -43,7 +43,9 @@ fn behavior_config(mode: BehaviorMode) -> BehaviorConfig {
             rescan_on_modify: false,
         },
         BehaviorMode::Strict => BehaviorConfig {
-            scan_extensions: vec!["exe", "dll", "js", "vbs", "bat", "ps1", "pdf", "zip", "com", "txt"],
+            scan_extensions: vec![
+                "exe", "dll", "js", "vbs", "bat", "ps1", "pdf", "zip", "com", "txt",
+            ],
             auto_quarantine: true,
             rescan_on_modify: true,
         },
@@ -143,14 +145,12 @@ fn start_scan_worker(app: tauri::AppHandle, log_id: String) {
                         } else {
                             "Threat detected"
                         };
-                        
-                        let notification_body = format!(
-                            "Threat: {}\nFile:\n{}",
-                            threat_name,
-                            path.display()
-                        );
 
-                        if let Err(e) = app.notification()
+                        let notification_body =
+                            format!("Threat: {}\nFile:\n{}", threat_name, path.display());
+
+                        if let Err(e) = app
+                            .notification()
                             .builder()
                             .title(notification_title)
                             .body(&notification_body)
@@ -190,7 +190,10 @@ fn should_scan(path: &Path, behavior: &BehaviorConfig) -> bool {
     match path.extension().and_then(|e| e.to_str()) {
         Some(ext) => {
             let ext_lower = ext.to_lowercase();
-            behavior.scan_extensions.iter().any(|e| e.eq_ignore_ascii_case(&ext_lower))
+            behavior
+                .scan_extensions
+                .iter()
+                .any(|e| e.eq_ignore_ascii_case(&ext_lower))
         }
         None => false,
     }
@@ -224,7 +227,7 @@ fn scan_file(path: &Path) -> Result<Option<String>, String> {
         }
         return Ok(Some("Unknown.Threat".into()));
     }
-    
+
     if let Some(code) = output.status.code() {
         if code != 0 {
             eprintln!("Clamscan exited with code {} for {:?}", code, path);
@@ -247,8 +250,7 @@ pub fn start_realtime_scan(
             .map(|e| path_to_regex(&e)) // or convert path → regex here
             .collect();
 
-        let matcher = ExclusionMatcher::new(patterns)
-            .map_err(|e| e.to_string())?;
+        let matcher = ExclusionMatcher::new(patterns).map_err(|e| e.to_string())?;
 
         *EXCLUSIONS.lock().unwrap() = Some(matcher);
     }
@@ -275,15 +277,15 @@ pub fn start_realtime_scan(
     if REALTIME_ENABLED.swap(true, Ordering::Relaxed) {
         REALTIME_ENABLED.store(false, Ordering::Relaxed);
         thread::sleep(Duration::from_millis(200));
-        
+
         SCAN_QUEUE.lock().unwrap().clear();
         NOTIFIED.lock().unwrap().clear();
-        
+
         REALTIME_ENABLED.store(true, Ordering::Relaxed);
     }
     start_watcher(paths)?;
     start_scan_worker(app, log_id);
-    
+
     Ok(())
 }
 

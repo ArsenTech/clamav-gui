@@ -7,19 +7,20 @@ use std::{
         Arc, Mutex,
     },
 };
-use tauri::{Emitter, Wry, path::PathResolver};
+use tauri::{path::PathResolver, Emitter, Wry};
 use walkdir::WalkDir;
 
 use crate::{
     helpers::{
         history::append_scan_history,
         log::{log_err, log_info, log_path},
+        matcher::EXCLUSIONS,
         new_id, resolve_command, silent_command,
-        matcher::EXCLUSIONS
-    }, types::{
+    },
+    types::{
         enums::{HistoryStatus, LogCategory, ScanResult, ScanType},
         structs::{HistoryItem, StartupScan},
-    }
+    },
 };
 
 pub fn estimate_total_files(paths: &[PathBuf]) -> u64 {
@@ -251,7 +252,7 @@ pub fn run_headless_scan(startup: StartupScan) -> Result<(), String> {
             for p in &paths {
                 println!("Headless scan path: {}", p.display());
             }
-            for path in paths{
+            for path in paths {
                 cmd.arg(path);
             }
         }

@@ -4,13 +4,14 @@ import { useSettings } from "@/context/settings";
 import { DATE_TIME_FORMATS, DEFAULT_SETTINGS, THEME_SETTINGS } from "@/lib/settings";
 import { capitalizeText } from "@/lib/helpers";
 import { cn } from "@/lib/utils";
-import { AppWindow, Calendar, Palette, Bell, Search, SearchCheck } from "lucide-react";
+import { Calendar, Palette, Bell, Search, SearchCheck } from "lucide-react";
 import SettingsItem from "@/components/settings-item";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { useTranslation } from "react-i18next";
 import { lazy, Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import {WindowIcon} from "@/components/app-icon";
 
 const LanguageSelector = lazy(()=>import("@/i18n/languages"))
 
@@ -63,7 +64,7 @@ export default function GeneralSettings(){
                     ))}
                </SettingsItem>
                <SettingsItem
-                    Icon={AppWindow}
+                    Icon={WindowIcon}
                     title="User Interface"
                     className="space-y-4"
                >

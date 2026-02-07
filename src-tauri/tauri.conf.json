@@ -34,6 +34,19 @@
     "resources": {
       "assets/icon-variants/*.png": "resources/icons/",
       "assets/sounds/*.wav": "resources/sounds/"
+    },
+    "createUpdaterArtifacts": true
+  },
+  "plugins": {
+    "updater": {
+      "active": true,
+      "endpoints": [
+        "https://github.com/ArsenTech/clamav-gui/releases/latest/download/latest.json"
+      ],
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEFENjg4OENDNEE2NjQ5RTAKUldUZ1NXWkt6SWhvcmU5QytwaTJYMkdTTnpNaWhTWWhPdFk3SWFZcjFXdmJ2QVcxVHRpMkVja0oK",
+      "windows": {
+        "installMode": "passive"
+      }
     }
   }
 }

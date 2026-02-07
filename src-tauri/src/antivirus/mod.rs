@@ -65,7 +65,6 @@ pub fn start_real_time_scan(
         &log_file,
         &format!("Real-time scan started, monitoring {} path(s)", paths.len()),
     );
-
     append_realtime_history(
         &app,
         HistoryItem {
