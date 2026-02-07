@@ -17,12 +17,16 @@ jobs:
         include:
           - platform: 'macos-latest'
             args: '--target aarch64-apple-darwin'
+            id: macos-arm64
           - platform: 'macos-latest'
             args: '--target x86_64-apple-darwin'
+            id: macos-x64
           - platform: 'ubuntu-22.04'
             args: ''
+            id: ubuntu
           - platform: 'windows-latest'
             args: ''
+            id: windows
 
     runs-on: ${{ matrix.platform }}
     steps:
@@ -126,7 +130,7 @@ jobs:
       - name: Upload updater fragment
         uses: actions/upload-artifact@v4
         with:
-          name: updater-fragments-${{ matrix.platform }}-${{ matrix.args }}
+          name: updater-fragments-${{ matrix.id }}
           path: updater/platforms.json
 
       - name: Download updater fragments
@@ -156,9 +160,10 @@ jobs:
             }' > latest.json
             
       - name: Upload latest.json
-        if: matrix.platform == 'windows-latest'
+        if: matrix.platform == 'windows-latest' && startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ github.ref_name }}
           files: latest.json
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
