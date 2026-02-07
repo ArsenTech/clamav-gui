@@ -1,7 +1,7 @@
 import { ScanSettingsLoader, GeneralSettingsLoader, AdvancedSettingsLoader, UpdateSettingsLoader } from "@/loaders/settings";
 import { Braces, Cog, RotateCcw, Search } from "lucide-react";
 import { lazy } from "react";
-import { ISettingsTab } from "../types";
+import { ISettingsTab } from "@/lib/types";
 
 const GeneralSettings = lazy(()=>import("@/contents/settings/general"));
 const AdvancedSettings = lazy(()=>import("@/contents/settings/advanced"));

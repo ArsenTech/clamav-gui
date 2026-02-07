@@ -1,8 +1,8 @@
-import { DEFAULT_BACKEND_SETTINGS } from "@/lib/settings";
+import { DEFAULT_BACKEND_SETTINGS } from "@/lib/constants/settings";
 import { BackendSettings, ScanProfileValues } from "@/lib/types/settings";
 import { useState, useEffect } from "react";
 import { useBackendSettings } from "./use-settings";
-import { hydrateProfile } from "@/lib/helpers";
+import { hydrateProfile } from "@/lib/helpers/scan";
 
 export function useScanProfile(profile: keyof BackendSettings["scanProfiles"]) {
      const { fetchSettingsbySection, setSettingsbySection } = useBackendSettings();
@@ -22,9 +22,7 @@ export function useScanProfile(profile: keyof BackendSettings["scanProfiles"]) {
           value: ScanProfileValues[K]
      ) => {
           setValues(prev => ({ ...prev, [key]: value }));
-
-          const profiles =
-               (await fetchSettingsbySection("scanProfiles")) ?? DEFAULT_BACKEND_SETTINGS.scanProfiles;
+          const profiles = (await fetchSettingsbySection("scanProfiles")) ?? DEFAULT_BACKEND_SETTINGS.scanProfiles;
 
           await setSettingsbySection("scanProfiles", profile, {
                ...profiles[profile],

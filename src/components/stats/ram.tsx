@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Suspense, useEffect, useState, lazy } from "react";
 import { useSystemStats } from "@/hooks/use-stats";
-import { formatBytes } from "@/lib/helpers";
+import { formatBytes } from "@/lib/helpers/formating";
 import { NoData } from "@/components/charts/no-data";
 const RAMChart = lazy(()=>import("@/components/charts/ram"))
 

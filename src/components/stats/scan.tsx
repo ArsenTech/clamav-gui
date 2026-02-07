@@ -5,7 +5,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { ChartProps, IScanTypeStat } from "@/lib/types"
+import { IScanTypeStat } from "@/lib/types/stats"
+import { ChartProps } from "@/lib/types/props"
 import { NoData } from "@/components/charts/no-data"
 import { Suspense, lazy } from "react"
 const ScanChart = lazy(()=>import("@/components/charts/scan"))

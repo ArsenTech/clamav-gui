@@ -8,10 +8,11 @@ import { toast } from "sonner";
 import { IQuarantineState } from "@/lib/types/states";
 import { INITIAL_QUARANTINE_STATE } from "@/lib/constants/states";
 import QuarantineLoader from "@/loaders/quarantine";
-import { IQuarantineData } from "@/lib/types";
-import { formatBytes } from "@/lib/helpers";
+import { IQuarantineData } from "@/lib/types/data";
+import { formatBytes } from "@/lib/helpers/formating";
 import { useSettings } from "@/context/settings";
 import { GET_QUARANTINE_COLS } from "@/components/data-table/columns/quarantine";
+import { QuarantineAction } from "@/lib/types";
 const QuarantineTable = lazy(()=>import("@/contents/quarantine"))
 
 export default function QuarantinePage(){
@@ -32,7 +33,7 @@ export default function QuarantinePage(){
      }
      useEffect(()=>fetchData(),[])
      const setState = (overrides: Partial<IQuarantineState>) => setQuarantineState(prev=>({ ...prev, ...overrides }))
-     const quarantineAction = async(type: "restore" | "delete") => {
+     const quarantineAction = async(type: QuarantineAction) => {
           const commandName = `${type}_quarantine`
           const message = type==="restore" ? "File restored from quarantine!" : "The file has been deleted permanently";
           const errorMessage = type==="restore" ? "Failed to restore file from quarantine" : "Failed to delete file from quarantine"
@@ -55,7 +56,7 @@ export default function QuarantinePage(){
                })
           }
      }
-     const bulkAction = async(type: "restore" | "delete") => {
+     const bulkAction = async(type: QuarantineAction) => {
           const key = type==="restore" ? "bulkRestore" : "bulkDelete"
           setState({ [key]: false })
           try{

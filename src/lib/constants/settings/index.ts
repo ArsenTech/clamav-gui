@@ -1,5 +1,5 @@
 import { Files, Folder, Monitor, Moon, Sun, Gauge, ChevronsLeftRightEllipsis, ShieldCheck, SearchCode, LucideProps } from "lucide-react";
-import { BackendSettings, IDateFormatSettings, ISettings, IThemeSettings, ScanOptionGroup } from "../types/settings";
+import { BackendSettings, IDateFormatSettings, ISettings, IThemeSettings, ScanOptionGroup } from "@/lib/types/settings";
 
 export const SCAN_OPTION_TITLE: Record<ScanOptionGroup,{
      title: string,

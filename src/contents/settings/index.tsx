@@ -1,7 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Suspense, useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { SETTINGS_TABS } from "@/lib/settings/tabs";
+import { SETTINGS_TABS } from "@/lib/constants/settings/tabs";
 import { useSearchParams } from "react-router";
 import { SettingsTab } from "@/lib/types";
 import { Label } from "@/components/ui/label";

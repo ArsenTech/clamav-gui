@@ -1,4 +1,5 @@
-import { IHistoryData, IQuarantineData, ISchedulerData, IThreatsData, ScanType } from ".";
+import { GUIUpdaterStatus, ScanType } from ".";
+import { IHistoryData, IQuarantineData, ISchedulerData, IThreatsData } from "./data"
 
 export interface IDeviceInfo {
      sys_name: string;
@@ -24,7 +25,7 @@ export interface IScanPageState{
      errMsg?: string,
      threats: IThreatsData[]
 }
-export interface IUpdatePageState{
+export interface IDefsUpdaterState{
      isRequired: boolean,
      isUpdatingDefs: boolean,
      lastUpdated: Date | null,
@@ -54,4 +55,13 @@ export interface ISchedulerState{
      isOpenClear: boolean,
      job_id: string,
      data: ISchedulerData<"state">[]
+}
+export interface IUpdaterState{
+     status: GUIUpdaterStatus,
+     notes: string | null,
+     newVersion: string | null,
+     patchDate: Date | null,
+     isOpenNotes: boolean,
+     downloaded: number,
+     total: number
 }

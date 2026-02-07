@@ -35,12 +35,3 @@ export const SCAN_OPTIONS = SCAN_TYPES.filter(val=>val.type!=="" && val.type!=="
      content: val.name,
      icon: val.Icon
 }))
-export const SCAN_EXIT_CODE_MSG: Record<number, string> = {
-     0: "Scan completed successfully",
-     1: "Threats were detected",
-     2: "Some files could not be scanned due to access restrictions",
-}
-export const UPDATE_EXIT_CODE_MSG: Record<number, string> = {
-     0: "Definitions are updated successfully",
-     1: "Some update sources may not have been reachable",
-}

@@ -1,7 +1,8 @@
 import { ArrowDown, ArrowUp, ArrowUpDown, CheckCircle, Ellipsis, FileText, ScrollText } from "lucide-react";
-import { HistoryStatus, IHistoryData } from "@/lib/types";
+import { IHistoryData, HistoryStatus } from "@/lib/types/data";
 import { Badge } from "@/components/ui/badge";
-import { capitalizeText, getHistoryStatusBadges } from "@/lib/helpers";
+import { getHistoryStatusBadges } from "@/lib/helpers";
+import { capitalizeText } from "@/lib/helpers/formating";
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { invoke } from "@tauri-apps/api/core";

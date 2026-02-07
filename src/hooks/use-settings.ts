@@ -1,4 +1,4 @@
-import { store } from "@/lib/settings/store";
+import { store } from "@/lib/store";
 import { BackendSettings } from "@/lib/types/settings";
 import { toast } from "sonner";
 

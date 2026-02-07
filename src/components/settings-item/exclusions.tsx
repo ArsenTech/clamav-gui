@@ -4,9 +4,9 @@ import Popup from "@/components/popup";
 import SettingsItem from ".";
 import { Button } from "../ui/button";
 import { useForm } from "react-hook-form";
-import { DirExclusionsType } from "@/lib/types/schema";
+import { ExclusionsType } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DirExclusionsSchema } from "@/lib/schemas";
+import { ExclusionsSchema } from "@/lib/schemas";
 import { ButtonGroup } from "../ui/button-group";
 import { Input } from "../ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
@@ -14,18 +14,18 @@ import { open } from "@tauri-apps/plugin-dialog";
 
 interface Props{
      data: string[];
-     onSubmit: (values: DirExclusionsType) => void
+     onSubmit: (values: ExclusionsType) => void
      onDelete: (path: string) => void
 }
 export default function DirExclusionsItem({data, onSubmit, onDelete}: Props){
      const [isOpen, setIsOpen] = useState(false);
      const [isOpenDelete, setIsOpenDelete] = useState(false)
      const [currPath, setCurrPath] = useState("")
-     const form = useForm<DirExclusionsType>({
-          resolver: zodResolver(DirExclusionsSchema),
+     const form = useForm<ExclusionsType>({
+          resolver: zodResolver(ExclusionsSchema),
           defaultValues: {path: ""}
      })
-     const handleSubmit = (values: DirExclusionsType) => {
+     const handleSubmit = (values: ExclusionsType) => {
           setIsOpen(false);
           onSubmit(values)
           form.reset()

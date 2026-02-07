@@ -1,4 +1,5 @@
-import { SCAN_SETTINGS } from "../settings/custom-scan-options";
+import { FILE_SCAN_WHITELIST } from "../constants/settings";
+import { SCAN_SETTINGS } from "../constants/settings/scan-options";
 import { ScanProfileValues } from "../types/settings";
 
 export function mapScanSettingsToArgs(
@@ -33,16 +34,24 @@ export function validateScanSettings(
   for (const [key] of Object.entries(settings)) {
     const opt = schema[key as keyof typeof schema];
     if (!opt) continue;
-    for (const dep of opt.dependsOn) {
-      if (!settings[dep]) {
+    for (const dep of opt.dependsOn) 
+      if (!settings[dep]) 
         delete settings[key];
-      }
-    }
-    for (const conflict of opt.conflictsWith) {
-      if (settings[conflict]) {
+    for (const conflict of opt.conflictsWith) 
+      if (settings[conflict]) 
         delete settings[key];
-      }
-    }
   }
   return settings;
+}
+
+export function hydrateProfile(profile: ScanProfileValues, isFile = false) {
+  const whitelist = new Set(FILE_SCAN_WHITELIST)
+  const result: ScanProfileValues = {};
+  for (const key in SCAN_SETTINGS) {
+    if(!whitelist.has(key) && isFile) continue;
+    const opt = SCAN_SETTINGS[key];
+    if (opt.value.default !== undefined)
+      result[key] = opt.value.default;
+  }
+  return { ...result, ...profile };
 }

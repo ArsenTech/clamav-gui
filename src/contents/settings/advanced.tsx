@@ -1,8 +1,8 @@
-import { SCAN_SETTINGS } from "@/lib/settings/custom-scan-options";
+import { SCAN_SETTINGS } from "@/lib/constants/settings/scan-options";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label"
 import { useSettings } from "@/context/settings";
-import { DEFAULT_SETTINGS, FILE_SCAN_WHITELIST, MAX_LONG_LINES_CHOICES, SCAN_OPTION_TITLE } from "@/lib/settings";
+import { DEFAULT_SETTINGS, FILE_SCAN_WHITELIST, MAX_LONG_LINES_CHOICES, SCAN_OPTION_TITLE } from "@/lib/constants/settings";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Braces, FlaskConical, Scale, ScrollText, ShieldAlert, ShieldCheck } from "lucide-react";
@@ -11,7 +11,7 @@ import { BehaviorMode } from "@/lib/types/settings";
 import { useMemo } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useScanProfile } from "@/hooks/use-scan-profile";
-import { SettingsProps } from "@/lib/types";
+import { SettingsProps } from "@/lib/types/props";
 import { RealTimeToggle } from "@/components/settings-item/real-time-toggler";
 
 export default function AdvancedSettings({scanProfile}: SettingsProps){

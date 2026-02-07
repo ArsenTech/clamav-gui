@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { GET_HISTORY_COLS } from "@/components/data-table/columns/history";
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { invoke } from "@tauri-apps/api/core";
-import { HistoryClearType, IHistoryData } from "@/lib/types";
+import { HistoryClearType, IHistoryData } from "@/lib/types/data";
 import { Download, Trash2 } from "lucide-react"
 import { ButtonGroup } from "@/components/ui/button-group"
 import { cn } from "@/lib/utils";
@@ -17,7 +17,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { IHistoryPageState } from "@/lib/types/states";
 import { INITIAL_HISTORY_STATE } from "@/lib/constants/states";
 import { useSettings } from "@/context/settings";
-import { HISTORY_CLEAR_MSGS } from "@/lib/constants/links";
+import { HISTORY_CLEAR_MSGS } from "@/lib/constants/maps"
 
 export default function HistoryContent(){
      const {settings} = useSettings();

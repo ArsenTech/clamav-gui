@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { getExitText, formatDuration } from "@/lib/helpers";
+import { getExitText } from "@/lib/helpers";
+import { formatDuration } from "@/lib/helpers/formating";
 import { IScanPageState } from "@/lib/types/states";
 import { ShieldX, Timer, LogOut, ShieldCheck } from "lucide-react";
 import { useMemo } from "react";

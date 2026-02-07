@@ -1,4 +1,4 @@
-import { DEFAULT_SETTINGS } from "@/lib/settings";
+import { DEFAULT_SETTINGS } from "@/lib/constants/settings";
 import { ISettings } from "@/lib/types/settings";
 import { format } from "date-fns";
 import { createContext, useContext, useState } from "react";

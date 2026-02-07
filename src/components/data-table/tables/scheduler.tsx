@@ -15,7 +15,8 @@ import {
 } from "@/components/ui/table"
 import { useState } from "react"
 import { DataTablePagination } from "../pagination"
-import { DataTableProps, ISchedulerData } from "@/lib/types"
+import { ISchedulerData } from "@/lib/types/data"
+import { DataTableProps } from "@/lib/types/props"
 import { DataTableViewOptions } from "../col-toggle"
 
 export function SchedulerTable({columns,data,headerElement}: DataTableProps<ISchedulerData<"state">>) {

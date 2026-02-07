@@ -1,0 +1,51 @@
+import { ScanType } from "."
+import { DAYS_OF_THE_WEEK } from "../constants"
+
+export type ThreatStatus = "quarantined" | "deleted" | "detected";
+export type HistoryStatus = "success" | "warning" | "error" | "acknowledged";
+export type HistoryClearType = "all" | "acknowledged" | "error";
+type LogCategory = "scan" | "update" | "quarantine" | "realtime" | "scheduler";
+
+interface HistoryDataBase{
+     id: string,
+     timestamp: string,
+     action: string,
+     details: string
+     status: HistoryStatus,
+     category: LogCategory | null
+}
+export type IHistoryData<T extends "state" | "type"> =
+     T extends "type" ? HistoryDataBase & {
+          log_id?: string
+     }
+     : HistoryDataBase & {
+          logId?: string
+     }
+export interface IThreatsData{
+     id: string,
+     displayName: string,
+     filePath: string,
+     status: ThreatStatus,
+     detectedAt: Date
+}
+export interface IQuarantineData<T extends "state" | "type">{
+     id: string,
+     threat_name: string,
+     file_path: string,
+     quarantined_at: Date,
+     size: T extends "state" ? string | null : number
+}
+export type ISchedulerData<T extends "state" | "type"> = (T extends "type" ? {
+     scan_type: ScanType,
+     days: typeof DAYS_OF_THE_WEEK[number],
+     time: string
+     last_run: string | null
+} : {
+     scanType: ScanType,
+     lastScan: Date | null,
+     nextScan: Date | null
+}) & {
+     id: string,
+     interval: "daily" | "weekly" | "monthly",
+     log_id?: string
+}

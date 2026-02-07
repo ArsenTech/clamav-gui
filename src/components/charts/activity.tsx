@@ -7,7 +7,8 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 import { ACTIVITY_STATS_CONFIG } from "@/lib/constants/chart"
-import { ChartProps, IActivityStat } from "@/lib/types"
+import { IActivityStat } from "@/lib/types/stats"
+import { ChartProps } from "@/lib/types/props"
 import { useMemo } from "react"
 import { NoData } from "./no-data"
 

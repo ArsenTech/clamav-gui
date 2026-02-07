@@ -1,6 +1,6 @@
 import { useSettings } from "@/context/settings";
 import { Switch } from "../ui/switch";
-import { DEFAULT_SETTINGS } from "@/lib/settings";
+import { DEFAULT_SETTINGS } from "@/lib/constants/settings";
 import { useRealtimeScan } from "@/context/real-time";
 
 export function RealTimeToggle(){

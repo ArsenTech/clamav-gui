@@ -1,5 +1,5 @@
 import { ScanType } from "../types";
-import { IDeviceInfo, IFinishScanState, IHistoryPageState, IQuarantineState, IScanPageState, ISchedulerState, IUpdatePageState, IVersion } from "../types/states";
+import { IDeviceInfo, IFinishScanState, IHistoryPageState, IQuarantineState, IScanPageState, ISchedulerState, IDefsUpdaterState, IUpdaterState, IVersion } from "../types/states";
 
 export const INITIAL_DEIVCE_INFO: IDeviceInfo = {
      sys_os: "",
@@ -25,7 +25,7 @@ export const GET_INITIAL_SCAN_STATE = (type: ScanType, path: string[] | null): I
      errMsg: undefined,
      threats: []
 })
-export const INITIAL_UPDATE_STATE: IUpdatePageState = {
+export const INITIAL_DEF_UPDATE_STATE: IDefsUpdaterState = {
      exitMsg: null,
      isRequired: false,
      lastUpdated: null,
@@ -55,4 +55,13 @@ export const INITIAL_SCHEDULER_STATE: ISchedulerState = {
      isOpenClear: false,
      job_id: "",
      data: []
+}
+export const INITIAL_UPDATER_STATE: IUpdaterState = {
+     status: "checking",
+     notes: null,
+     newVersion: null,
+     patchDate: null,
+     isOpenNotes: false,
+     downloaded: 0,
+     total: 0
 }

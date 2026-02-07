@@ -1,5 +1,5 @@
 import { SCAN_TYPES } from "@/lib/constants";
-import { ScanType } from "@/lib/types";
+import { FsOption, ScanType } from "@/lib/types";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
@@ -14,7 +14,7 @@ export default function ScanMenuContent(){
      const [currScanType, setCurrScanType] = useState<ScanType>("");
      const [path, setPath] = useState<{
           paths: string[],
-          scanType: "file" | "custom" | ""
+          scanType: Exclude<ScanType,"main"|"full">
      }>({
           paths: [],
           scanType: ""
@@ -26,7 +26,7 @@ export default function ScanMenuContent(){
           if (!hasPath) return isFile ? <FilePlus /> : <FolderPlus />;
           return <CheckCircle className="text-emerald-700 dark:text-emerald-500" />;
      };
-     const openDialog = async (type: "file" | "folder") =>{
+     const openDialog = async (type: FsOption) =>{
           const currPath = await open({
                multiple: type==="folder",
                directory: type==='folder',

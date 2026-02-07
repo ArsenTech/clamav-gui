@@ -1,5 +1,5 @@
 import { pickKeys } from "@/lib/helpers";
-import { HookReturnType, StatsResponse, SystemStats } from "@/lib/types";
+import { HookReturnType, StatsResponse, SystemStats } from "@/lib/types/stats";
 import { invoke } from "@tauri-apps/api/core";
 import { useEffect, useState } from "react";
 

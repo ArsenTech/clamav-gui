@@ -6,12 +6,13 @@ import { useEffect, useState } from "react";
 import { normalizePaths, parseClamVersion } from "@/lib/helpers";
 import { invoke } from "@tauri-apps/api/core";
 import { useSettings } from "@/context/settings";
+import { FsOption } from "@/lib/types";
 
 export default function OverviewContent(){
      const navigate = useNavigate();
      const {settings} = useSettings();
      const [definitionStatus, setDefinitionStatus] = useState<"updated" | "outdated" | "loading">("loading")
-     const openCustomScan = async(href: string, type: "file" | "folder") => {
+     const openCustomScan = async(href: string, type: FsOption) => {
           const currPath = await open({
                multiple: type==="folder",
                directory: type==="folder",

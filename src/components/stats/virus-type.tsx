@@ -5,7 +5,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { ChartProps, IVirusTypeStat } from "@/lib/types"
+import { IVirusTypeStat } from "@/lib/types/stats"
+import { ChartProps } from "@/lib/types/props"
 import { NoData } from "@/components/charts/no-data"
 import { Suspense, lazy } from "react"
 const VirusTypesChart = lazy(()=>import("@/components/charts/virus-type"))

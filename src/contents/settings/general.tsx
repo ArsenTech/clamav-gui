@@ -1,8 +1,8 @@
 import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
 import { useTheme } from "@/context/themes";
 import { useSettings } from "@/context/settings";
-import { DATE_TIME_FORMATS, DEFAULT_SETTINGS, THEME_SETTINGS } from "@/lib/settings";
-import { capitalizeText } from "@/lib/helpers";
+import { DATE_TIME_FORMATS, DEFAULT_SETTINGS, THEME_SETTINGS } from "@/lib/constants/settings";
+import { capitalizeText } from "@/lib/helpers/formating";
 import { cn } from "@/lib/utils";
 import { Calendar, Palette, Bell, Search, SearchCheck } from "lucide-react";
 import SettingsItem from "@/components/settings-item";

@@ -5,7 +5,8 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 import { SCAN_TYPE_CONFIG } from "@/lib/constants/chart"
-import { ChartProps, IScanTypeStat } from "@/lib/types"
+import { IScanTypeStat } from "@/lib/types/stats"
+import { ChartProps } from "@/lib/types/props"
 import { NoData } from "./no-data"
 
 export default function ScanChart({data}: ChartProps<IScanTypeStat[]>) {

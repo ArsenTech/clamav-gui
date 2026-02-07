@@ -6,7 +6,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { ChartProps, IActivityStat } from "@/lib/types"
+import { IActivityStat } from "@/lib/types/stats"
+import { ChartProps } from "@/lib/types/props"
 import { NoData } from "@/components/charts/no-data"
 import { Suspense, lazy  } from "react"
 const ActivityChart = lazy(()=>import("@/components/charts/activity"))

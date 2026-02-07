@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowDown, ArrowUp, ArrowUpDown, MoreHorizontal, RotateCcw, Trash } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { IQuarantineData } from "@/lib/types";
+import { IQuarantineData } from "@/lib/types/data";
 import { IQuarantineState } from "@/lib/types/states";
 import { useSettings } from "@/context/settings";
 

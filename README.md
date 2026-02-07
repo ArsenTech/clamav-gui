@@ -72,7 +72,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - **System Tray** - Quick Access through some actions all by using a system tray
 
 ### Coming Soon
-- [ ] Finishing touches and optimization before v1
+- [X] Finishing touches and optimization before v1
 - [ ] Translate the GUI into mentioned languages
 
 ### To Do List

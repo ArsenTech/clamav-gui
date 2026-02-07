@@ -4,7 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { Spinner } from "@/components/ui/spinner";
 import { useSettings } from "@/context/settings";
 import { SCAN_TYPES } from "@/lib/constants";
-import { formatNumber } from "@/lib/helpers";
+import { formatNumber } from "@/lib/helpers/formating";
 import { IScanPageState } from "@/lib/types/states";
 import { invoke } from "@tauri-apps/api/core";
 import { exit } from "@tauri-apps/plugin-process";

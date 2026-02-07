@@ -6,7 +6,8 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 import { THREAT_STATUS_CONFIG } from "@/lib/constants/chart"
-import { ChartProps, IThreatStatusStat } from "@/lib/types"
+import { IThreatStatusStat } from "@/lib/types/stats"
+import { ChartProps } from "@/lib/types/props"
 import { NoData } from "./no-data"
 
 export default function ThreatsChart({data}: ChartProps<IThreatStatusStat[]>) {

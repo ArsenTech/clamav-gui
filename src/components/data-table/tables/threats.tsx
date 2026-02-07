@@ -18,11 +18,11 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { useState } from "react"
-import { InputGroup, InputGroupAddon, InputGroupInput } from "../../ui/input-group"
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
 import { SearchIcon } from "lucide-react"
 import { DataTablePagination } from "../pagination"
 import { DataTableViewOptions } from "../col-toggle"
-import { DataTableProps } from "@/lib/types"
+import { DataTableProps } from "@/lib/types/props"
 
 export function ThreatsTable<TData>({ columns, data, searchColumn = "displayName" }: DataTableProps<TData>) {
   const [sorting, setSorting] = useState<SortingState>([]);

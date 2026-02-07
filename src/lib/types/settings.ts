@@ -1,16 +1,17 @@
 import { LucideProps } from "lucide-react";
-import { ScanType } from ".";
+import { ScanType, SchedulerType } from ".";
 import { COLORS } from "../constants/colors";
-import { SCAN_SETTINGS } from "../settings/custom-scan-options";
-import { SchedulerType } from "./schema";
+import { SCAN_SETTINGS } from "../constants/settings/scan-options";
 
 export type ScanOptionGroup = "detection" | "file-types" | "filesystem" | "limits-performance" | "output" | "advanced"
+export type DateFormat = "dd/MM/yyyy HH:mm:ss" | "MM/dd/yyyy HH:mm:ss" | "yyyy-MM-dd HH:mm:ss"
+export type Theme = "dark" | "light" | "system";
+export type BehaviorMode = "balanced" | "safe" | "strict" | "expert"
 
 type ScanOptionValue =
   | { kind: "yes-no"; default?: boolean }
   | { kind: "input"; inputType: "number" | "path" | "string"; min?: number; max?: number, default?: string | number }
   | { kind: "choice"; choices: readonly { label: string; value: string | number }[]; default?: string | number };
-
 export type ScanProfileValues = {
      [K in keyof typeof SCAN_SETTINGS]?: string | number | boolean;
 };
@@ -25,14 +26,11 @@ export interface IScanOption{
      value: ScanOptionValue;
      dependsOn: readonly (keyof typeof SCAN_SETTINGS)[];
 }
-
 export type ScanOption = Record<string,IScanOption>;
 export interface ISchedulerFormValues{
      interval: SchedulerType["interval"] | null,
      scanType: ScanType | null
 }
-export type DateFormat = "dd/MM/yyyy HH:mm:ss" | "MM/dd/yyyy HH:mm:ss" | "yyyy-MM-dd HH:mm:ss"
-export type Theme = "dark" | "light" | "system";
 export type ResolvedTheme = Exclude<Theme, "system">;
 export type Color = keyof typeof COLORS;
 export interface IThemeSettings{
@@ -67,7 +65,6 @@ export interface ISettings{
      notifPermitted: boolean,
      behavior: BehaviorMode,
 }
-export type BehaviorMode = "balanced" | "safe" | "strict" | "expert"
 export type BackendSettings = {
      scanProfiles: {
           main: ScanProfileValues,

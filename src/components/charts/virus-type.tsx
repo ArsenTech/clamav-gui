@@ -5,7 +5,8 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 import { VIRUS_TYPE_CONFIG } from "@/lib/constants/chart"
-import { ChartProps, IVirusTypeStat } from "@/lib/types"
+import { IVirusTypeStat } from "@/lib/types/stats"
+import { ChartProps } from "@/lib/types/props"
 import { NoData } from "./no-data"
 
 export default function VirusTypesChart({data}: ChartProps<IVirusTypeStat[]>) {

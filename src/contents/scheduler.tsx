@@ -1,8 +1,8 @@
 import { SchedulerTable } from "@/components/data-table/tables/scheduler";
 import SchedulerForm from "@/components/antivirus/scheduler-form";
-import { SchedulerType } from "@/lib/types/schema";
+import { SchedulerType } from "@/lib/types";
 import { useEffect, useState, useTransition } from "react";
-import { ISchedulerData } from "@/lib/types";
+import { ISchedulerData } from "@/lib/types/data";
 import { GET_SCHEDULER_COLS } from "@/components/data-table/columns/scheduler";
 import { DAYS_OF_THE_WEEK } from "@/lib/constants";
 import { invoke } from "@tauri-apps/api/core";

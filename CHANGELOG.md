@@ -4,13 +4,14 @@ All notable changes of ArsenTech's ClamAV GUI will be documented here.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
-## [1.0.0-1] - Unreleased (v1 Beta)
+## [1.0.0-1] - 2026-02-07 (v1 Beta)
 ### Added
 - App Updater
 - **Clear All Errors** Option inside the history page
 ### Changed
 - Reorganized the Settings Page
 - Moved Definitions Updater into the Update tab of settings
+- Organized some files and Updated Imports
 ### Improved
 - Popup UI
 ### Fixed
