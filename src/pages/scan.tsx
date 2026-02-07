@@ -45,7 +45,6 @@ export default function ScanPage(){
                if(scanProfile){
                     const availableOptions = await getSettingsBySection("scanProfiles",scanProfile);
                     if(availableOptions) scanOptions = hydrateProfile(availableOptions,scanProfile==="file");
-                    console.log(availableOptions,scanProfile)
                }
                const payload = !isMainOrFull ? {
                     paths: Array.isArray(scanState.paths)
