@@ -1,5 +1,5 @@
 <p align="center">
-     <img src=".github/readme-logo.png" alt="ClamAV GUI" width="150" height="150">
+     <img src=".github/readme-logo.png" style="object-fit: contain;" alt="ClamAV GUI" width="150" height="150">
 </p>
 <h1 align="center">ArsenTech's <a href="https://www.clamav.net/">ClamAV</a> GUI</h3>
 <p align="center">A minimal, open-source GUI for <a href="https://www.clamav.net/">ClamAV Antivirus</a> that makes the Antivirus itself look professional and work exactly like ClamAV (A FOSS CLI Antivirus)</p>
