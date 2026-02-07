@@ -4,6 +4,11 @@ All notable changes of ArsenTech's ClamAV GUI will be documented here.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [1.0.0] - Unreleased
+### Changed
+- Organized some files and Updated Imports
+- Optimized some parts of the Frontend
+
 ## [1.0.0-1] - 2026-02-07 (v1 Beta)
 ### Added
 - App Updater
@@ -11,7 +16,6 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Changed
 - Reorganized the Settings Page
 - Moved Definitions Updater into the Update tab of settings
-- Organized some files and Updated Imports
 ### Improved
 - Popup UI
 ### Fixed
@@ -112,7 +116,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Separated Scan Menu page from Scan Page to make it work
 - Implemented Code Splitting on every single chart inside the Statistics page
 
-## [0.3.0 (Preview 1)] - 2026-01-23
+## [0.3.0-1] - 2026-01-23 (Preview 1)
 ### Highlights
 This Preview is focused more on optimization + code splitting.
 ### Fixed
@@ -179,12 +183,13 @@ This is the first pre-release of the ClamAV GUI. The backend functionality will 
 - The About Page
 - State-gated Layout (It'll show "Oops, No ClamAV found" if ClamAV isn't installed)
 
+[1.0.0]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.0
 [1.0.0-1]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.0-1
 [0.3.3]: https://github.com/ArsenTech/clamav-gui/releases/tag/v0.3.3
 [0.3.2]: https://github.com/ArsenTech/clamav-gui/releases/tag/v0.3.2
 [0.3.1]: https://github.com/ArsenTech/clamav-gui/releases/tag/v0.3.1
 [0.3.0]: https://github.com/ArsenTech/clamav-gui/releases/tag/v0.3.0
-[0.3.0 Preview 1]: https://github.com/ArsenTech/clamav-gui/releases/tag/v0.3.0-1
+[0.3.0-1]: https://github.com/ArsenTech/clamav-gui/releases/tag/v0.3.0-1
 [0.2.1]: https://github.com/ArsenTech/clamav-gui/releases/tag/v0.2.1
 [0.2.0]: https://github.com/ArsenTech/clamav-gui/releases/tag/v0.2.0
 [0.1.0]: https://github.com/ArsenTech/clamav-gui/releases/tag/v0.1.0
