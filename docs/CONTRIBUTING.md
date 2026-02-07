@@ -1,8 +1,8 @@
 <p align="center">
      <picture>
-          <source media="(prefers-color-scheme: dark)" style="object-fit: contain;" srcset="../.github/logo-mark-dark.png" />
-          <source media="(prefers-color-scheme: light)" style="object-fit: contain;" srcset="../.github/logo-mark.png" />
-          <img alt="ClamAV GUI" width="500" height="130" style="object-fit: contain;" src="../.github/logo-mark.png" />
+          <source media="(prefers-color-scheme: dark)" style="object-fit: contain;" srcset="https://raw.githubusercontent.com/ArsenTech/clamav-gui/refs/heads/main/.github/logo-mark-dark.png" />
+          <source media="(prefers-color-scheme: light)" style="object-fit: contain;" srcset="https://raw.githubusercontent.com/ArsenTech/clamav-gui/refs/heads/main/.github/logo-mark.png" />
+          <img alt="ClamAV GUI" width="500" height="130" style="object-fit: contain;" src="https://raw.githubusercontent.com/ArsenTech/clamav-gui/refs/heads/main/.github/logo-mark.png" />
      </picture>
 </p>
 
