@@ -35,7 +35,15 @@ When submitting a PR:
 2. Keep commits small and meaningful.
 3. Ensure the app builds and passes linting/tests.
 4. Update docs (README, CHANGELOG) if you changed behavior or added features.
-5. Open the PR and describe what you changed and why..
+5. Open the PR and describe what you changed and why.
+
+If your PR affects:
+- user-visible behavior
+- updater logic
+- security, scanning, or quarantine
+- translations or UI text
+
+Please mention whether it should be included in the next release. Small improvements and cleanup PRs are welcome, perfection is not required!
 
 ### PR Checklist
 - [ ] My changes work locally (`npm run dev`).
@@ -90,6 +98,8 @@ Before submitting a PR:
 - Ensure existing features (like main scan, quarantine page, firewall), new features, and improvements work correctly.
 - Make sure there are **no console errors** and **no linting issues**.
 
+If your changes affect the updater, release notes, or update flow, please test update checking locally and mention it in the PR.
+
 ## 🌍 Translating
 > [!NOTE]
 > - All translations are stored in the `public/locales/` folder.
@@ -117,7 +127,7 @@ Before submitting a PR:
 We love new ideas! If you have a suggestion:
 1. Check [existing issues][issues-url]
 2. If it’s new, open a [feature request][new-feature-request-url].
-3. Explain the motivation and the desired implementation. (the Feature request template says it all ☺️)
+3. Explain the motivation and the desired implementation. (The Feature request template says it all ☺️)
 
 ## 🌱 Community Guidelines
 We aim to keep this space **welcoming and peaceful**:
