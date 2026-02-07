@@ -126,7 +126,7 @@ jobs:
       - name: Upload updater fragment
         uses: actions/upload-artifact@v4
         with:
-          name: updater-fragments-${{ matrix.platform }}
+          name: updater-fragments-${{ matrix.platform }}-${{ matrix.args }}
           path: updater/platforms.json
 
       - name: Download updater fragments

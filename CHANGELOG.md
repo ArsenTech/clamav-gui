@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 ## [1.0.0-1] - Unreleased (v1 Beta)
+### Added
+- App Updater Logic
 ### Changes
 - Reorganized the Settings Page
 - Moved Definitions Updater into the Update tab of settings
