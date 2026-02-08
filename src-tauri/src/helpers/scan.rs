@@ -142,10 +142,15 @@ pub fn run_scan(
                 if found == 1 { "" } else { "s" }
             ),
         ),
-        2 => (
+        2 if found > 0 => (
             HistoryStatus::Warning,
             ScanResult::Partial,
-            "Some files could not be scanned due to access restrictions".to_string(),
+            "Scan completed with errors; some files may not have been scanned".to_string(),
+        ),
+        2 => (
+            HistoryStatus::Error,
+            ScanResult::Failed,
+            "Scan failed due to a ClamAV error".to_string(),
         ),
         _ => (
             HistoryStatus::Error,
