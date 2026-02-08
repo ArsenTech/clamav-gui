@@ -4,7 +4,7 @@ All notable changes of ArsenTech's ClamAV GUI will be documented here.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
-## [1.0.0-2] - Unreleased (v1 Beta #2)
+## [1.0.0-2] - 2026-02-08 (v1 Beta #2)
 ### Added
 - Danger Zone Settings
 ### Changed
