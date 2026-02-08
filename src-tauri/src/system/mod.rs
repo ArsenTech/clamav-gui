@@ -3,14 +3,11 @@ pub mod scheduler;
 pub mod sysinfo;
 
 use specta::specta;
-use std::process::Stdio;
 use tauri::command;
 
 use crate::{
     helpers::{
-        history::append_history,
-        log::{initialize_log_with_id, log_err, log_info},
-        new_id, silent_command,
+        history::append_history, log::{initialize_log_with_id, log_err, log_info}, new_id, path::get_clamav_path,
     },
     types::{
         enums::{HistoryStatus, LogCategory},
@@ -87,12 +84,5 @@ pub fn remove_file(
 #[command]
 #[specta]
 pub fn check_availability() -> bool {
-    let command = if cfg!(windows) { "where" } else { "which" };
-    silent_command(command)
-        .arg("clamscan")
-        .stdout(Stdio::null())
-        .stderr(Stdio::null())
-        .status()
-        .map(|s| s.success())
-        .unwrap_or(false)
+    get_clamav_path().is_ok()
 }
