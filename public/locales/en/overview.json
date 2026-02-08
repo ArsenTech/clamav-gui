@@ -1,0 +1,48 @@
+{
+     "main-scan": {
+          "name": "Main Scan",
+          "desc": "Check common locations now"
+     },
+     "full-scan": {
+          "name": "Full Scan",
+          "desc": "Scan everything (might take a while)"
+     },
+     "custom-scan": {
+          "name": "Custom Scan",
+          "desc": "Choose a folder to scan"
+     },
+     "file-scan": {
+          "name": "File Scan",
+          "desc": "Choose a file to scan"
+     },
+     "quarantine": {
+          "name": "Quarantine",
+          "desc": "View isolated malicious files"
+     },
+     "update": {
+          "name": "Update",
+          "desc": "Update Virus Definitions from the ClamAV database"
+     },
+     "history": {
+          "name": "History",
+          "desc": "View the ClamAV GUI Actions history"
+     },
+     "real-time": {
+          "name": "Real-Time Scan",
+          "desc": "Scans newly created files in real time"
+     },
+     "indicator": {
+          "safe": "The Device is safe!",
+          "alert": "The Device is Vulnerable!",
+          "warning": "Some Protection settings are disabled.",
+          "outdated": "Definitions are older than 7 days. Update immediately!",
+          "last-scan": "Last Scan:",
+          "never-scanned": "Never Scanned"
+     },
+     "definition": {
+          "title": "Definitions:",
+          "updated": "Up to Date",
+          "outdated": "Outdated",
+          "loading": "Loading..."
+     }
+}

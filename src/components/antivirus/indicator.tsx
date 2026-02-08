@@ -3,18 +3,22 @@ import { AlertCircle, CheckCircle, SearchCheck, ShieldAlert, ShieldCheck, Shield
 import { Spinner } from "../ui/spinner";
 import { useMemo } from "react";
 import { formatDistanceToNow } from "date-fns";
+import { useTranslation } from "react-i18next";
+import { useLocale } from "@/i18n/locale";
+import { DefinitionStatus, Indicator } from "@/lib/types/enums";
 
 interface Props{
-     type: "safe" | "warning" | "alert" | "outdated",
-     definitionStatus: "updated" | "outdated" | "loading"
+     type: Indicator
+     definitionStatus: DefinitionStatus
 }
 export default function SafetyIndicator({type, definitionStatus}: Props){
      const lastScanned = useMemo(()=>{
           const stored = localStorage.getItem("last-scanned");
           return stored ? new Date(parseInt(stored)) : null;
-     },[])
+     },[]);
+     const {t} = useTranslation("overview");
+     const {dateFns} = useLocale()
      const Icon = type==="safe" ? ShieldCheck : type==="warning" ? ShieldAlert : ShieldClose;
-     const text = type==="safe" ? "The Device is safe!" : type==="alert" ? "The Device is Vulnerable!" : "Some Protection settings are disabled.";
      return (
           <div className={cn(
                "h-72 bg-linear-to-b from-transparent w-full rounded-bl-[128px] flex justify-center md:justify-between items-center px-10 flex-col md:flex-row",
@@ -33,15 +37,24 @@ export default function SafetyIndicator({type, definitionStatus}: Props){
                               "text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-tight font-medium mt-2 md:mt-0 text-center w-full",
                               definitionStatus==="outdated" ? "" : "xl:text-6xl 2xl:text-7xl"
                          )
-                    }>{definitionStatus==="outdated" ? "Definitions are older than 7 days. Update immediately!" : text}</h1>
+                    }>{t(`indicator.${definitionStatus==="outdated" ? "outdated" : type}`)}</h1>
                     <ul className="flex justify-center items-center gap-4 flex-wrap flex-col lg:flex-row w-full md:w-3/4">
-                         <li className="flex items-center gap-2 text-base md:text-lg flex-1 md:flex-none!"><SearchCheck className="size-5 md:size-6"/> Last Scan: {lastScanned ? formatDistanceToNow(lastScanned,{
-                              includeSeconds: true,
-                              addSuffix: true
-                         }) : "Never"}</li>
+                         <li className="flex items-center gap-2 text-base md:text-lg flex-1 md:flex-none!">
+                              <SearchCheck className="size-5 md:size-6"/>
+                              {lastScanned ? (
+                                   <span>
+                                        {t("indicator.last-scan")}{" "}
+                                        {formatDistanceToNow(lastScanned,{
+                                             includeSeconds: true,
+                                             addSuffix: true,
+                                             locale: dateFns
+                                        })}
+                                   </span>
+                              ) : t("indicator.never-scanned")}
+                         </li>
                          <li className="flex items-center gap-2 text-base md:text-lg flex-1 md:flex-none!">
                               {definitionStatus==="loading" ? <Spinner className="size-5 md:size-6"/> : definitionStatus==="outdated" ? <AlertCircle className="size-5 md:size-6"/> : <CheckCircle className="size-5 md:size-6"/>}
-                              Definitions: {definitionStatus==="loading" ? "Loading..." : definitionStatus==="outdated" ? "Outdated" : "Up to date"}
+                              {t("definition.title")} {t(`definition.${definitionStatus}`)}
                          </li>
                     </ul>
                </div>

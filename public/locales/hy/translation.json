@@ -1,3 +1,12 @@
 {
-     "greeting": "Բարև Բոլորին"
+     "sidebar": {
+          "overview": "Գլխավոր",
+          "scan": "Սկանավորում",
+          "quarantine": "Կարանտին",
+          "history": "Պատմություն",
+          "stats": "Վիճակագրություն",
+          "scheduler": "Ժամանակացույց",
+          "settings": "Կարգավորումներ",
+          "about": "ClamAV GUI-ի մասին"
+     }
 }

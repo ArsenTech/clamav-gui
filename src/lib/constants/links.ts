@@ -1,103 +1,96 @@
 import { ChartNoAxesCombined, ClipboardClock, Cog, Info, SearchCheck, History, ShieldCheck, BugOff, RotateCcw, FolderSearch, Search, FileSearch } from "lucide-react"
-import { IQuickAccessItem } from "../types"
+import { IQuickAccessItem, ISidebarItem } from "../types"
+import { QuickAccessLink, SidebarLink } from "../types/enums"
 
-export const SIDEBAR_LINKS = [
+export const SIDEBAR_LINKS: ISidebarItem[] = [
      {
-          name: "Overview",
+          name: SidebarLink.Overview,
           href: "/",
           Icon: ShieldCheck
      },
      {
-          name: "Scan",
+          name: SidebarLink.Scan,
           href: "/scan",
           Icon: SearchCheck
      },
      {
-          name: "Quarantine",
+          name: SidebarLink.Quarantine,
           href: "/quarantine",
           Icon: BugOff
      },
      {
-          name: "History",
+          name: SidebarLink.History,
           href: "/history",
           Icon: History
      },
      {
-          name: "Statistics",
+          name: SidebarLink.Stats,
           href: "/stats",
           Icon: ChartNoAxesCombined
      },
      {
-          name: "Scheduler",
+          name: SidebarLink.Scheduler,
           href: "/scheduler",
           Icon: ClipboardClock
      },
 ]
 export const SIDEBAR_FOOTER_LINKS = [
      {
-          name: "Settings",
+          name: SidebarLink.Settings,
           href: "/settings",
           Icon: Cog
      },
      {
-          name: "About ClamAV GUI",
+          name: SidebarLink.About,
           href: "/about",
           Icon: Info
      }
 ]
 export const QUICK_ACCESS_LINKS: IQuickAccessItem[] = [
      {
-          name: "Main Scan",
-          desc: "Check common locations now",
+          type: QuickAccessLink.MainScan,
           href: "/scan/main",
           Icon: Search,
           openDialogType: "none"
      },
      {
-          name: "Full Scan",
-          desc: "Scan everything (might take a while)",
+          type: QuickAccessLink.FullScan,
           href: "/scan/full",
           Icon: SearchCheck,
           openDialogType: "none"
      },
      {
-          name: "Custom Scan",
-          desc: "Choose a folder to scan",
+          type: QuickAccessLink.CustomScan,
           href: "/scan/custom",
           Icon: FolderSearch,
           openDialogType: "folder"
      },
      {
-          name: "File Scan",
-          desc: "Choose a file to scan",
+          type: QuickAccessLink.FileScan,
           href: "/scan/file",
           Icon: FileSearch,
           openDialogType: "file"
      },
      {
-          name: "Quarantine",
-          desc: "View isolated malicious files",
+          type: QuickAccessLink.Quarantine,
           href: "/quarantine",
           Icon: BugOff,
           openDialogType: "none"
      },
      {
-          name: "Update",
-          desc: "Update Virus Definitions from the ClamAV database",
+          type: QuickAccessLink.Update,
           href: "/settings?tab=update",
           Icon: RotateCcw,
           openDialogType: "none"
      },
      {
-          name: "History",
-          desc: "View the ClamAV GUI Actions history",
+          type: QuickAccessLink.History,
           href: "/history",
           Icon: History,
           openDialogType: "none"
      },
      {
-          name: "Real-Time Scan",
-          desc: "Scans newly created files in real time",
+          type: QuickAccessLink.RealTime,
           href: "/settings?tab=advanced",
           Icon: ShieldCheck,
           openDialogType: "none"

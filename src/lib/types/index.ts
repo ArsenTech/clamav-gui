@@ -1,6 +1,8 @@
 import * as z from "zod"
 import { LucideProps } from "lucide-react";
 import { SettingsProps } from "./props";
+import { ExclusionsSchema, SchedulerSchema } from "../schemas";
+import { QuickAccessLink, SidebarLink } from "./enums";
 
 export type ScanType = "" | "main" | "full" | "custom" | "file"
 export type ClamAVState = "checking" | "available" | "missing";
@@ -16,11 +18,15 @@ export interface IScanMenuItem{
      Icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>
 }
 export interface IQuickAccessItem{
-     name: string,
-     desc: string,
+     type: QuickAccessLink
      href: string,
      Icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>,
      openDialogType: "none" | "file" | "folder"
+}
+export interface ISidebarItem{
+     name: SidebarLink,
+     href: string,
+     Icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>,
 }
 export interface ISettingsTab{
      page: SettingsTab,
@@ -31,7 +37,5 @@ export interface ISettingsTab{
 }
 
 // Schemas
-import { ExclusionsSchema, SchedulerSchema } from "../schemas";
-
 export type SchedulerType = z.infer<typeof SchedulerSchema>
 export type ExclusionsType = z.infer<typeof ExclusionsSchema>

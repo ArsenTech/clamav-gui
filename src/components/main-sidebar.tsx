@@ -13,11 +13,13 @@ import { Link, useLocation } from "react-router"
 import Logo from "./logo";
 import { useMemo } from "react";
 import { useSettings } from "@/context/settings";
+import { useTranslation } from "react-i18next";
 
 export default function MainSidebar(){
      const location = useLocation();
      const {settings} = useSettings();
      const sidebarLinks = useMemo(()=>!settings.enableSchedulerUI ? SIDEBAR_LINKS.filter(val=>val.href!=="/scheduler") : SIDEBAR_LINKS,[settings.enableSchedulerUI])
+     const {t} = useTranslation();
      return (
           <Sidebar>
                <SidebarHeader>
@@ -29,7 +31,7 @@ export default function MainSidebar(){
                               {sidebarLinks.map(({Icon,name,href},i)=>(
                                    <SidebarMenuItem key={`${name}-${i}`}>
                                         <SidebarMenuButton isActive={location.pathname===href} asChild>
-                                             <Link to={href} className="text-muted-foreground"><Icon className="text-primary dark:text-accent-foreground"/> {name}</Link>
+                                             <Link to={href} className="text-muted-foreground"><Icon className="text-primary dark:text-accent-foreground"/> {t(`sidebar.${name}`)}</Link>
                                         </SidebarMenuButton>
                                    </SidebarMenuItem>
                               ))}
@@ -41,7 +43,7 @@ export default function MainSidebar(){
                          <SidebarMenu>
                               {SIDEBAR_FOOTER_LINKS.map(({Icon,name,href},i)=>(
                                    <SidebarMenuButton isActive={location.pathname===href} asChild key={`${name}-${i}`}>
-                                        <Link to={href} className="text-muted-foreground"><Icon className="text-primary dark:text-accent-foreground"/> {name}</Link>
+                                        <Link to={href} className="text-muted-foreground"><Icon className="text-primary dark:text-accent-foreground"/> {t(`sidebar.${name}`)}</Link>
                                    </SidebarMenuButton>
                               ))}
                          </SidebarMenu>

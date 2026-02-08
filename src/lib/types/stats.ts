@@ -1,5 +1,5 @@
 import { ScanType } from ".";
-import { ThreatStatus } from "./data";
+import { DataType, ThreatStatus } from "./data";
 
 export type ScanTypeStat = Exclude<ScanType,""> | "realtime";
 export type ThreatStatusStat = Exclude<ThreatStatus,"detected"|"safe"> | "unresolved";
@@ -17,7 +17,7 @@ export interface IActivityStat{
 export interface IScanTypeStat extends IStatBase{ scan_type: ScanTypeStat }
 export interface IThreatStatusStat extends IStatBase{ status: ThreatStatusStat }
 export interface IVirusTypeStat extends IStatBase{ virus_type: ComputerVirusType }
-export type StatsResponse<T extends "state" | "type"> = (T extends "state" ? {
+export type StatsResponse<T extends DataType> = (T extends "state" ? {
      scanTypes: IScanTypeStat[],
      threatStatus: IThreatStatusStat[],
      virusTypes: IVirusTypeStat[]

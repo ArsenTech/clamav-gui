@@ -1,10 +1,11 @@
 import { ScanType } from "."
 import { DAYS_OF_THE_WEEK } from "../constants"
+import { LogCategory } from "./enums";
 
 export type ThreatStatus = "quarantined" | "deleted" | "detected";
 export type HistoryStatus = "success" | "warning" | "error" | "acknowledged";
 export type HistoryClearType = "all" | "acknowledged" | "error";
-type LogCategory = "scan" | "update" | "quarantine" | "realtime" | "scheduler";
+export type DataType = "state" | "type"
 
 interface HistoryDataBase{
      id: string,
@@ -14,7 +15,7 @@ interface HistoryDataBase{
      status: HistoryStatus,
      category: LogCategory | null
 }
-export type IHistoryData<T extends "state" | "type"> =
+export type IHistoryData<T extends DataType> =
      T extends "type" ? HistoryDataBase & {
           log_id?: string
      }
@@ -28,14 +29,14 @@ export interface IThreatsData{
      status: ThreatStatus,
      detectedAt: Date
 }
-export interface IQuarantineData<T extends "state" | "type">{
+export interface IQuarantineData<T extends DataType>{
      id: string,
      threat_name: string,
      file_path: string,
      quarantined_at: Date,
      size: T extends "state" ? string | null : number
 }
-export type ISchedulerData<T extends "state" | "type"> = (T extends "type" ? {
+export type ISchedulerData<T extends DataType> = (T extends "type" ? {
      scan_type: ScanType,
      days: typeof DAYS_OF_THE_WEEK[number],
      time: string

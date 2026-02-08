@@ -8,7 +8,6 @@ import { Calendar, Palette, Bell, Search, SearchCheck } from "lucide-react";
 import SettingsItem from "@/components/settings-item";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { useTranslation } from "react-i18next";
 import { lazy, Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import {WindowIcon} from "@/components/app-icon";
@@ -18,7 +17,6 @@ const LanguageSelector = lazy(()=>import("@/i18n/languages"))
 export default function GeneralSettings(){
      const {setTheme, theme: currTheme, setColor, color: currColor} = useTheme();
      const {setSettings, settings} = useSettings()
-     const {t} = useTranslation("translation");
      return (
           <div className="px-1 py-2 space-y-3">
                <SettingsItem
@@ -82,7 +80,7 @@ export default function GeneralSettings(){
                     <div className="flex flex-row items-center justify-between">
                          <div className="space-y-1">
                               <Label>Language</Label>
-                              <p className="text-muted-foreground text-sm">The Language of the ClamAV GUI. Text: {t("greeting")}</p>
+                              <p className="text-muted-foreground text-sm">The Language of the ClamAV GUI.</p>
                          </div>
                          <Suspense fallback={<Skeleton className="h-9 w-32"/>}>
                               <LanguageSelector/>
