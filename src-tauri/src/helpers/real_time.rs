@@ -20,12 +20,12 @@ static BEHAVIOR: Lazy<Arc<Mutex<BehaviorConfig>>> =
     Lazy::new(|| Arc::new(Mutex::new(behavior_config(BehaviorMode::Balanced))));
 
 use crate::{
-    antivirus::quarantine::quarantine_file,
+    antivirus::{quarantine::quarantine_file},
     helpers::{
         get_exclusions,
-        matcher::{ExclusionMatcher, EXCLUSIONS},
-        path::path_to_regex,
-        resolve_command, silent_command,
+        matcher::{EXCLUSIONS, ExclusionMatcher},
+        path::{get_clamav_path, path_to_regex},
+        silent_command,
     },
     types::{enums::BehaviorMode, structs::BehaviorConfig},
 };
@@ -209,8 +209,8 @@ fn scan_file(path: &Path) -> Result<Option<String>, String> {
     if !path.exists() {
         return Err("File no longer exists".into());
     }
-    let clamscan = resolve_command("clamscan")?;
-    let output = silent_command(clamscan.to_str().unwrap())
+    let scanner = get_clamav_path()?;
+    let output = silent_command(&scanner)
         .arg("--no-summary")
         .arg(path)
         .output()

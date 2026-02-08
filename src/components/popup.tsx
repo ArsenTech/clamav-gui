@@ -20,7 +20,7 @@ export default function Popup({open, onOpen, title, description, submitTxt = "Su
           <Drawer open={open} onOpenChange={onOpen}>
                <DrawerContent>
                     <DrawerHeader>
-                         <DrawerTitle>{title}</DrawerTitle>
+                         <DrawerTitle className="leading-tight">{title}</DrawerTitle>
                          {description && (
                               <DrawerDescription>{description}</DrawerDescription>
                          )}
@@ -44,7 +44,7 @@ export default function Popup({open, onOpen, title, description, submitTxt = "Su
           <Dialog open={open} onOpenChange={onOpen}>
                <DialogContent>
                     <DialogHeader>
-                         <DialogTitle>{title}</DialogTitle>
+                         <DialogTitle className="leading-tight">{title}</DialogTitle>
                          {description && (
                               <DialogDescription>{description}</DialogDescription>
                          )}

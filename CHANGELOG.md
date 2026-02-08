@@ -5,9 +5,13 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 ## [1.0.0-2] - Unreleased (v1 Beta #2)
+### Added
+- Danger Zone Settings
 ### Changed
 - Organized some files and Updated Imports
 - Optimized some parts of the Frontend
+### Fixed
+- The "Scan failed" error resolving `clamscan` (it will return `clamdscan` if `clamscan` doesn't exist)
 
 ## [1.0.0-1] - 2026-02-07 (v1 Beta #1)
 ### Added

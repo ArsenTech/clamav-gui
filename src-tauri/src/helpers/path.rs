@@ -1,5 +1,9 @@
 //use std::path::Path;
 
+use std::path::PathBuf;
+
+use crate::helpers::resolve_command;
+
 #[cfg(windows)]
 fn normalize_path(path: &str) -> String {
     path.replace('\\', r"\\")
@@ -27,3 +31,19 @@ pub fn path_to_regex(path: &str) -> String {
 // pub fn pathbuf_to_regex(path: &Path) -> String {
 //     path_to_regex(&path.to_string_lossy())
 // }
+
+pub fn get_clamav_path() -> Result<PathBuf,String>{
+    if let Ok(clamscan) = resolve_command("clamscan"){
+        #[cfg(debug_assertions)]
+        println!("Using clamscan: {}",clamscan.display().to_string());
+
+        return Ok(clamscan);
+    };
+    if let Ok(clamdscan) = resolve_command("clamdscan"){
+        #[cfg(debug_assertions)]
+        println!("Using clamdscan: {}",clamdscan.display().to_string());
+
+        return Ok(clamdscan);
+    };
+    Err("ClamAV not found. Please install ClamAV and ensure clamscan or clamdscan is available in PATH.".into())
+}

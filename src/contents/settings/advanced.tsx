@@ -5,23 +5,56 @@ import { useSettings } from "@/context/settings";
 import { DEFAULT_SETTINGS, FILE_SCAN_WHITELIST, MAX_LONG_LINES_CHOICES, SCAN_OPTION_TITLE } from "@/lib/constants/settings";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Braces, FlaskConical, Scale, ScrollText, ShieldAlert, ShieldCheck } from "lucide-react";
+import { Braces, FlaskConical, RotateCcw, Scale, ScrollText, ShieldAlert, ShieldCheck, Trash2 } from "lucide-react";
 import SettingsItem from "@/components/settings-item";
 import { BehaviorMode } from "@/lib/types/settings";
-import { useMemo } from "react";
+import { useMemo, useState, useTransition } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useScanProfile } from "@/hooks/use-scan-profile";
 import { SettingsProps } from "@/lib/types/props";
 import { RealTimeToggle } from "@/components/settings-item/real-time-toggler";
+import { Button } from "@/components/ui/button";
+import { IDangerZoneState } from "@/lib/types/states";
+import { INITIAL_DANGER_ZONE_STATE } from "@/lib/constants/states";
+import Popup from "@/components/popup";
+import { Spinner } from "@/components/ui/spinner";
+import { toast } from "sonner";
+import { store } from "@/lib/store";
 
 export default function AdvancedSettings({scanProfile}: SettingsProps){
      const {settings, setSettings} = useSettings();
      const { values, setValue, isLoading } = useScanProfile(scanProfile);
+     const [isPending, startTransition] = useTransition();
+     const [dangerZoneState, setDangerZoneState] = useState<IDangerZoneState>(INITIAL_DANGER_ZONE_STATE);
+     const updateState = (overrides: Partial<IDangerZoneState>) => setDangerZoneState(prev=>({...prev,...overrides}));
      const visibleOptions = useMemo(()=>{
           const options = Object.entries(SCAN_SETTINGS).filter(([__dirname,option])=>option.group==="advanced")
           return scanProfile === "file" ? options.filter(([k]) =>FILE_SCAN_WHITELIST.includes(k)) : options;
      },[scanProfile])
+     const handleDangerZoneAction = (type: "restore" | "delete") => {
+          if (isPending) return;
+          updateState({
+               isOpenDelete: false,
+               isOpenRestore: false
+          });
+          startTransition(async()=>{
+               try {
+                    if(type==="restore"){
+                         await store.reset();
+                    } else {
+                         await store.clear();
+                    }
+                    setSettings(DEFAULT_SETTINGS);
+                    toast.success(type === "delete" ? "Settings deleted successfully" : "Settings restored to defaults");
+               } catch(err){
+                    const msg = type==="delete" ? "Failed to delete settings" : "Failed to restore default values"
+                    toast.error(msg);
+                    console.error(err)
+               }
+          })
+     }
      return (
+          <>
           <div className="px-1 py-2 space-y-3">
                <SettingsItem
                     Icon={Braces}
@@ -159,6 +192,53 @@ export default function AdvancedSettings({scanProfile}: SettingsProps){
                          </div>
                     ))}
                </SettingsItem>
+               <SettingsItem
+                    Icon={Trash2}
+                    title="Danger Zone"
+                    description="Be careful before deleting settings related to ClamAV GUI"
+                    type="danger"
+                    className="space-y-4"
+               >
+                    <div className="flex flex-row items-center justify-between">
+                         <div className="space-y-1">
+                              <Label>Delete Settings (Permanent)</Label>
+                              <p className="text-muted-foreground text-sm">This will clear all settings data</p>
+                         </div>
+                         <Button variant="destructive" onClick={()=>updateState({isOpenDelete: true})} disabled={isPending}>
+                              {isPending ? <Spinner/> : <Trash2/>}
+                              {isPending ? "Please Wait..." : "Delete Settings"}
+                         </Button>
+                    </div>
+                    <div className="flex flex-row items-center justify-between">
+                         <div className="space-y-1">
+                              <Label>Restore Defaults</Label>
+                              <p className="text-muted-foreground text-sm">This will reset all settings into default values</p>
+                         </div>
+                         <Button variant="destructive" onClick={()=>updateState({isOpenRestore: true})} disabled={isPending}>
+                              {isPending ? <Spinner/> : <RotateCcw/>}
+                              {isPending ? "Please Wait..." : "Restore Defaults"}
+                         </Button>
+                    </div>
+               </SettingsItem>
           </div>
+          <Popup
+               open={dangerZoneState.isOpenDelete}
+               onOpen={isOpenDelete=>updateState({isOpenDelete})}
+               title="This will permanently delete all ClamAV GUI settings, exclusions, and preferences."
+               description="Continue?"
+               closeText="Cancel"
+               submitTxt="Delete Settings"
+               submitEvent={()=>handleDangerZoneAction("delete")}
+          />
+          <Popup
+               open={dangerZoneState.isOpenRestore}
+               onOpen={isOpenRestore=>updateState({isOpenRestore})}
+               title="This will permanently restore all ClamAV GUI settings, exclusions, and preferences into default values."
+               description="Continue?"
+               closeText="Cancel"
+               submitTxt="Restore Defaults"
+               submitEvent={()=>handleDangerZoneAction("restore")}
+          />
+          </>
      )
 }

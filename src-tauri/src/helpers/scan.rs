@@ -12,10 +12,7 @@ use walkdir::WalkDir;
 
 use crate::{
     helpers::{
-        history::append_scan_history,
-        log::{log_err, log_info, log_path},
-        matcher::EXCLUSIONS,
-        new_id, resolve_command, silent_command,
+        history::append_scan_history, log::{log_err, log_info, log_path}, matcher::EXCLUSIONS, new_id, path::get_clamav_path, silent_command
     },
     types::{
         enums::{HistoryStatus, LogCategory, ScanResult, ScanType},
@@ -216,8 +213,8 @@ pub fn run_headless_scan(startup: StartupScan) -> Result<(), String> {
         Some(s) => s,
         None => return Ok(()),
     };
-    let clamscan = resolve_command("clamscan")?;
-    let mut cmd = silent_command(clamscan.to_str().unwrap());
+    let scanner = get_clamav_path()?;
+    let mut cmd = silent_command(&scanner);
     let mut paths = Vec::new();
     if let Some(home) = std::env::var_os(if cfg!(windows) { "USERPROFILE" } else { "HOME" }) {
         let home = PathBuf::from(home);

@@ -40,7 +40,7 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
     std::thread::spawn(move || {
         let _ = app.emit("freshclam:start", ()).map_err(|e| e.to_string());
 
-        let output = silent_command(freshclam.to_str().unwrap())
+        let output = silent_command(&freshclam)
             .arg("--stdout")
             .output();
         match output {
@@ -129,7 +129,7 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
 #[specta(result)]
 pub fn get_clamav_version() -> Result<String, String> {
     let freshclam = resolve_command("freshclam")?;
-    let output = silent_command(freshclam.to_str().unwrap())
+    let output = silent_command(&freshclam)
         .arg("--version")
         .output()
         .map_err(|e| e.to_string())?;

@@ -4,15 +4,9 @@ use tauri::{command, Emitter, Manager};
 
 use crate::{
     helpers::{
-        history::append_scan_history,
-        log::{initialize_log_with_id, log_err},
-        matcher::apply_exclusions,
-        new_id, resolve_command,
-        scan::{
-            estimate_total_files, fetch_custom_scan_args, get_main_paths, get_root_path, run_scan,
-            SCAN_PROCESS,
-        },
-        silent_command,
+        history::append_scan_history, log::{initialize_log_with_id, log_err}, matcher::apply_exclusions, new_id, path::get_clamav_path, resolve_command, scan::{
+            SCAN_PROCESS, estimate_total_files, fetch_custom_scan_args, get_main_paths, get_root_path, run_scan
+        }, silent_command
     },
     types::{
         enums::{HistoryStatus, LogCategory, ScanType},
@@ -69,25 +63,26 @@ pub fn start_main_scan(app: tauri::AppHandle, args: Option<Vec<String>>) -> Resu
         println!("Main scan argument: {}", arg);
     }
     std::thread::spawn(move || {
-        let clamscan = match resolve_command("clamscan") {
+        let scanner = match get_clamav_path() {
             Ok(cmd) => cmd,
-            Err(e) => return Err(format!("Failed to resolve command: {}", e)),
+            Err(e) => {
+                let _ = app.emit("clamscan:error", &e);
+                log_err(&log_file, &e);
+                return;
+            }
         };
-        let mut cmd = silent_command(clamscan.to_str().unwrap());
+        let mut cmd = silent_command(&scanner);
         cmd.args(&scan_args);
         let total_files = estimate_total_files(&paths);
-        app.emit("clamscan:total", total_files)
-            .map_err(|e| e.to_string())?;
+        let _ = app.emit("clamscan:total", total_files)
+            .map_err(|e| e.to_string());
         for path in paths {
             cmd.arg(path);
         }
         if let Err(e) = run_scan(app.clone(), log_id, cmd, ScanType::Main) {
-            app.emit("clamscan:error", &e.to_string())
-                .map_err(|e| e.to_string())?;
+            let _ = app.emit("clamscan:error", &e.to_string())
+                .map_err(|e| e.to_string());
             log_err(&log_file, &e.to_string());
-            Err(e.to_string())
-        } else {
-            Ok(())
         }
     });
 
@@ -127,19 +122,20 @@ pub fn start_full_scan(app: tauri::AppHandle) -> Result<(), String> {
     apply_exclusions(&app, &mut args)?;
     std::thread::spawn(move || {
         let root = get_root_path();
-        let clamscan = match resolve_command("clamscan") {
+        let scanner = match get_clamav_path() {
             Ok(cmd) => cmd,
-            Err(e) => return Err(format!("Failed to resolve command: {}", e)),
+            Err(e) => {
+                let _ = app.emit("clamscan:error", &e);
+                log_err(&log_file, &e);
+                return;
+            }
         };
-        let mut cmd = silent_command(clamscan.to_str().unwrap());
+        let mut cmd = silent_command(&scanner);
         cmd.args(&args).arg(root);
         if let Err(e) = run_scan(app.clone(), log_id, cmd, ScanType::Full) {
-            app.emit("clamscan:error", &e.to_string())
-                .map_err(|e| e.to_string())?;
+            let _ = app.emit("clamscan:error", &e.to_string())
+                .map_err(|e| e.to_string());
             log_err(&log_file, &e.to_string());
-            Err(e.to_string())
-        } else {
-            Ok(())
         }
     });
 
@@ -192,7 +188,6 @@ pub fn start_custom_scan(
         },
         &log_file,
     );
-    let clamscan = resolve_command("clamscan")?;
     let app_clone = app.clone();
     let mut scan_args: Vec<String> = fetch_custom_scan_args(args, has_directory);
     apply_exclusions(&app, &mut scan_args)?;
@@ -204,7 +199,15 @@ pub fn start_custom_scan(
         );
     }
     std::thread::spawn(move || {
-        let mut cmd = silent_command(clamscan.to_str().unwrap());
+        let scanner = match get_clamav_path() {
+            Ok(cmd) => cmd,
+            Err(e) => {
+                let _ = app.emit("clamscan:error", &e);
+                log_err(&log_file, &e);
+                return;
+            }
+        };
+        let mut cmd = silent_command(&scanner);
         if has_directory {
             cmd.arg("--recursive");
         }
@@ -237,7 +240,7 @@ pub fn stop_scan() -> Result<(), String> {
         #[cfg(windows)]
         {
             let cmd = resolve_command("taskkill")?;
-            silent_command(cmd.to_str().unwrap())
+            silent_command(&cmd)
                 .args(["/PID", &pid.to_string(), "/F"])
                 .spawn()
                 .map_err(|e| e.to_string())?;
@@ -245,7 +248,7 @@ pub fn stop_scan() -> Result<(), String> {
         #[cfg(unix)]
         {
             let cmd = resolve_command("kill")?;
-            silent_command(cmd.to_str().unwrap())
+            silent_command(&cmd)
                 .arg("-9")
                 .arg(pid.to_string())
                 .spawn()

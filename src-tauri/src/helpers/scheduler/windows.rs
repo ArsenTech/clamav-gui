@@ -38,7 +38,7 @@ pub fn schedule_scan(
     let log_file = log.file.clone();
 
     let schtasks = resolve_command("schtasks")?;
-    let mut cmd = silent_command(schtasks.to_str().unwrap());
+    let mut cmd = silent_command(&schtasks);
     cmd.args([
         "/create",
         "/tn",
@@ -150,7 +150,7 @@ pub fn remove_job(app: &tauri::AppHandle, task_name: String) -> Result<(), Strin
     let log_file = log.file.clone();
 
     let schtasks = resolve_command("schtasks")?;
-    let mut cmd = silent_command(schtasks.to_str().unwrap());
+    let mut cmd = silent_command(&schtasks);
     cmd.args(["/delete", "/tn", &task_name, "/f"]);
 
     let status = cmd.status().map_err(|e| e.to_string())?;
@@ -220,7 +220,7 @@ pub fn run_job_now(app: &tauri::AppHandle, task_name: String) -> Result<(), Stri
     let log_file = log.file.clone();
 
     let schtasks = resolve_command("schtasks")?;
-    let mut cmd = silent_command(schtasks.to_str().unwrap());
+    let mut cmd = silent_command(&schtasks);
 
     cmd.args(["/run", "/tn", &task_name]);
 
@@ -279,7 +279,7 @@ pub fn get_last_run_time(task_name: &str) -> Result<Option<String>, String> {
 
     let full_name = format!(r"\{}", task_name);
     let schtasks = resolve_command("schtasks")?;
-    let mut cmd = silent_command(schtasks.to_str().unwrap());
+    let mut cmd = silent_command(&schtasks);
 
     let output = cmd
         .args(["/query", "/tn", &full_name, "/fo", "CSV", "/v"])

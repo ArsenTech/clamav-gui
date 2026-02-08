@@ -23,6 +23,10 @@ export default function AdvancedSettingsLoader(){
                          />
                     ))}
                </SettingsItemLoader>
+               <SettingsItemLoader className="space-y-4">
+                    <SettingsOptionLoader optionType="choice" width={144}/>
+                    <SettingsOptionLoader optionType="choice" width={152}/>
+               </SettingsItemLoader>
           </div>
      )
 }

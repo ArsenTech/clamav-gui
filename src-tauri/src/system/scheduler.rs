@@ -51,7 +51,7 @@ pub fn schedule_task(
 
     let task_command = format!(
         r#""{}" {} --scheduled"#,
-        gui_command.to_string_lossy(),
+        gui_command.display().to_string(),
         scan_args
     );
 
@@ -162,7 +162,7 @@ pub fn clear_scheduled_jobs(app: tauri::AppHandle) -> Result<(), String> {
         let mut failed_deletions = Vec::new();
 
         for entry in &scheduler_file.schedulers {
-            let result = silent_command(schtasks.to_str().unwrap())
+            let result = silent_command(&schtasks)
                 .args(["/delete", "/tn", &entry.id, "/f"])
                 .status();
 

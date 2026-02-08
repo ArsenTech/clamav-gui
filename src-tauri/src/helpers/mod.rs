@@ -21,8 +21,8 @@ use std::os::windows::process::CommandExt;
 
 const CREATE_NO_WINDOW: u32 = 0x08000000;
 
-pub fn silent_command(program: &str) -> Command {
-    let mut cmd = Command::new(program);
+pub fn silent_command<P: AsRef<std::path::Path>>(program: P) -> Command {
+    let mut cmd = Command::new(program.as_ref());
     #[cfg(windows)]
     {
         cmd.creation_flags(CREATE_NO_WINDOW);

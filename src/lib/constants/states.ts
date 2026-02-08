@@ -1,5 +1,5 @@
 import { ScanType } from "../types";
-import { IDeviceInfo, IFinishScanState, IHistoryPageState, IQuarantineState, IScanPageState, ISchedulerState, IDefsUpdaterState, IUpdaterState, IVersion } from "../types/states";
+import { IDeviceInfo, IFinishScanState, IHistoryPageState, IQuarantineState, IScanPageState, ISchedulerState, IDefsUpdaterState, IUpdaterState, IVersion, IDangerZoneState } from "../types/states";
 
 export const INITIAL_DEIVCE_INFO: IDeviceInfo = {
      sys_os: "",
@@ -64,4 +64,8 @@ export const INITIAL_UPDATER_STATE: IUpdaterState = {
      isOpenNotes: false,
      downloaded: 0,
      total: 0
+}
+export const INITIAL_DANGER_ZONE_STATE: IDangerZoneState = {
+     isOpenDelete: false,
+     isOpenRestore: false,
 }

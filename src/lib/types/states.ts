@@ -65,3 +65,7 @@ export interface IUpdaterState{
      downloaded: number,
      total: number
 }
+export interface IDangerZoneState{
+     isOpenDelete: boolean,
+     isOpenRestore: boolean
+}
