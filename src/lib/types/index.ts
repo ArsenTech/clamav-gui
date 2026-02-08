@@ -13,8 +13,6 @@ export type FsOption = "file" | "folder";
 
 export interface IScanMenuItem{
      type: ScanType,
-     name: string,
-     desc: string,
      Icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>
 }
 export interface IQuickAccessItem{

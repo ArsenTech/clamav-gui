@@ -1,3 +1,5 @@
+import { LangCode, suffixWhitelist } from "@/i18n/config";
+import { TFunction } from "i18next";
 
 export function formatBytes(bytes: number) {
   const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
@@ -13,15 +15,20 @@ export function formatDuration(seconds: number){
   return `${hh}:${mm}:${ss}`;
 }
 
-export const formatNumber = (n: number): string => {
+const formatSuffix = (text: string, locale: LangCode) => {
+  const isInWhiteList = suffixWhitelist.has(locale);
+  return !isInWhiteList ? ` ${text}` : text
+}
+
+export const formatNumber = (n: number,t: TFunction<"translation">, locale: LangCode): string => {
   if (n < 1e3) return String(n);
   if (n >= 1e3 && n < 1e6)
-    return +(n / 1e3).toFixed(1) + "K";
+    return +(n / 1e3).toFixed(1) + formatSuffix(t("num-suffix.kilo"),locale);
   if (n >= 1e6 && n < 1e9)
-    return +(n / 1e6).toFixed(1) + "M";
+    return +(n / 1e6).toFixed(1) + formatSuffix(t("num-suffix.million"),locale);
   if (n >= 1e9 && n < 1e12)
-    return +(n / 1e9).toFixed(1) + "B";
-  return +(n / 1e12).toFixed(1) + "T";
+    return +(n / 1e9).toFixed(1) + formatSuffix(t("num-suffix.billion"),locale);
+  return +(n / 1e12).toFixed(1) + formatSuffix(t("num-suffix.trillion"),locale);
 }
 
 export const capitalizeText = (cellValue: string) => `${cellValue.toUpperCase()[0]}${cellValue.slice(1)}`;

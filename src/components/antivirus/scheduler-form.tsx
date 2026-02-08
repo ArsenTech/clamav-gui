@@ -12,6 +12,7 @@ import { ScanType } from "@/lib/types";
 import { ISchedulerFormValues } from "@/lib/types/settings"
 import { useState } from "react";
 import { Spinner } from "../ui/spinner";
+import { useTranslation } from "react-i18next";
 
 interface Props{
      handleSubmit: (values: SchedulerType) => void,
@@ -43,6 +44,7 @@ export default function SchedulerForm({handleSubmit, isSubmitting}: Props){
      }
      const time = `${form.watch("hours").toString().padStart(2,'0')}:${form.watch("minutes").toString().padStart(2,'0')}`
      const interval = form.watch("interval");
+     const {t} = useTranslation("scan");
      return (
           <Form {...form}>
                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full">
@@ -105,7 +107,7 @@ export default function SchedulerForm({handleSubmit, isSubmitting}: Props){
                                              </FormControl>
                                              <SelectContent>
                                                   {SCAN_OPTIONS.map(option=>(
-                                                       <SelectItem key={option.value} value={option.value}><option.icon/> {option.content}</SelectItem>
+                                                       <SelectItem key={option.value} value={option.value}><option.icon/> {t(`scan-type.${option.value}.name`)}</SelectItem>
                                                   ))}
                                              </SelectContent>
                                         </Select>

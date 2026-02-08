@@ -7,5 +7,11 @@ import { languageOptions } from "./config";
 i18next.use(LanguageDetector).use(initReactI18next).use(Backend).init({
      returnObjects: true,
      fallbackLng: "en",
-     supportedLngs: languageOptions.map(val=>val.code)
+     supportedLngs: languageOptions.map(val=>val.code),
+     interpolation: {
+          escapeValue: false, // React already does escaping
+     },
+     backend: {
+          loadPath: '/locales/{{lng}}/{{ns}}.json',
+     },
 });

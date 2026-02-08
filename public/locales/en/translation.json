@@ -8,5 +8,11 @@
           "scheduler": "Scheduler",
           "settings": "Settings",
           "about": "About ClamAV GUI"
+     },
+     "num-suffix": {
+          "kilo": "K",
+          "million": "M",
+          "billion": "B",
+          "trillion": "T"
      }
 }

@@ -9,11 +9,11 @@ import Popup from "@/components/popup";
 import { invoke } from "@tauri-apps/api/core";
 import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
-import { getExitText } from "@/lib/helpers";
 import { formatDuration } from "@/lib/helpers/formating";
 import { IFinishScanState, IScanPageState } from "@/lib/types/states";
 import { INITIAL_FINISH_SCAN_STATE } from "@/lib/constants/states";
 import { useSettings } from "@/context/settings";
+import { useTranslation } from "react-i18next";
 
 interface Props{
      setScanState: React.Dispatch<React.SetStateAction<IScanPageState>>,
@@ -83,11 +83,12 @@ export default function ScanFinishedTable({setScanState, isStartup, scanState, h
      }
      const {exitCode, threats, duration} = scanState;
      const isResolved = useMemo(() =>threats.some(t =>["quarantined", "deleted"].includes(t.status)),[threats]);
-     const {isOpenDelete, bulkDelete} = finishScanState
+     const {isOpenDelete, bulkDelete} = finishScanState;
+     const {t} = useTranslation("scan");
      return (
           <>
                <ShieldAlert className="size-32 text-destructive"/>
-               <h2 className="text-lg md:text-2xl font-medium">{threats.length} {threats.length<=1 ? "threat" : "threats"} require attention</h2>
+               <h2 className="text-lg md:text-2xl font-medium">{t("finished.with-threats",{count: threats.length})}</h2>
                <h2 className="text-lg sm:text-xl font-semibold flex items-center justify-center gap-2.5 w-fit"><Timer className="text-primary"/>{formatDuration(duration)}</h2>
                <ThreatsTable
                     columns={GET_THREATS_COLS(setScanState,setState,settings.developerMode)}
@@ -98,41 +99,46 @@ export default function ScanFinishedTable({setScanState, isStartup, scanState, h
                          <DropdownMenuTrigger asChild disabled={isResolved}>
                               <Button>
                                    {isPending ? <Spinner/> : <ShieldCheck/>}
-                                   {isPending ? "Please wait..." : isResolved ? "Successfully Resolved!" : "Resolve"}
+                                   {isPending ? t("please-wait") : isResolved ? t("resolve.success") : t("resolve.title")}
                               </Button>
                          </DropdownMenuTrigger>
                          <DropdownMenuContent align="end">
                               <DropdownMenuItem onClick={handleBulkQuarantine}>
-                                   <BugOff/> Quarantine All
+                                   <BugOff/> {t("resolve.quarantine")}
                               </DropdownMenuItem>
                               <DropdownMenuItem className="text-destructive" onClick={()=>setState({bulkDelete: true})}>
-                                   <Trash className="text-destructive"/> Delete All
+                                   <Trash className="text-destructive"/> {t("resolve.delete")}
                               </DropdownMenuItem>
                          </DropdownMenuContent>
                     </DropdownMenu>
-                    <Button onClick={handlePrimaryAction} variant="secondary" disabled={!isResolved}>
-                         {isStartup && <LogOut/>}
-                         {isStartup ? "Close" : "Back to the overview"}
+                    <Button onClick={handlePrimaryAction}>
+                         <LogOut/>
+                         {isStartup ? t("close") : t("back-to-overview")}
                     </Button>
                </ButtonGroup>
-               <p className="text-muted-foreground">{getExitText(exitCode,"scan")}</p>
+               <p className="text-muted-foreground">{t("exit-code-formatting",{
+                    msg: [0,1,2].includes(exitCode) ? t(`exit-code.${exitCode}`) : t("exit-code-fallback"),
+                    exitCode
+               })}</p>
                <Popup
                     open={isOpenDelete}
                     onOpen={isOpenDelete=>setState({isOpenDelete})}
-                    title="Are you sure to delete this file permanently?"
-                    description="The process can't be undone."
-                    submitTxt="Delete"
-                    closeText="Cancel"
+                    title={t("confirmation.title.delete")}
+                    description={t("confirmation.desc.action-undone")}
+                    submitTxt={t("confirmation.delete")}
+                    closeText={t("confirmation.cancel")}
                     submitEvent={handleDelete}
+                    type="danger"
                />
                <Popup
                     open={bulkDelete}
                     onOpen={bulkDelete=>setState({bulkDelete})}
-                    title="This will permanently delete all detected threats."
-                    description="Continue?"
-                    submitTxt="Delete"
-                    closeText="Cancel"
+                    title={t("confirmation.title.clear")}
+                    description={t("confirmation.desc.action-undone")}
+                    submitTxt={t("confirmation.delete")}
+                    closeText={t("confirmation.cancel")}
                     submitEvent={handleBulkDelete}
+                    type="danger"
                />
           </>
      )

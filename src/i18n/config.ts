@@ -13,3 +13,5 @@ export const dateFnsLanguages: Record<LangCode,Locale> = {
      en: enUS,
      hy, ru
 }
+
+export const suffixWhitelist: Set<LangCode> = new Set(["en"])

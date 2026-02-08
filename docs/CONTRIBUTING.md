@@ -104,7 +104,7 @@ If your changes affect the updater, release notes, or update flow, please test u
 > [!NOTE]
 > - All translations are stored in the `public/locales/` folder.
 > - Each language has its own JSON file (e.g. `public/locales/hy/translation.json` for Armenian).
-> - Keep placeholders like %s, %d intact.
+> - Keep placeholders like {{string}}, {{number}} intact.
 > - If unsure about a term, open a draft PR. Maintainers will help!
 
 ### Steps

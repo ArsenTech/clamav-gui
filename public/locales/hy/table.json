@@ -1,0 +1,53 @@
+{
+     "pagination": {
+          "rows-count": "Ընտրված է {{selected}} տող {{filtered}}-ից։",
+          "row-per-page": "Տողեր մեկ էջում",
+          "page-count": "Էջ {{index}}-ից {{count}}",
+          "buttons": {
+               "first": "Անցնել առաջին էջին",
+               "previous": "Անցնել նախորդ էջին",
+               "next": "Անցնել հաջորդ էջին",
+               "last": "Անցնել վերջին էջին"
+          }
+     },
+     "view": {
+          "title": "Ցուցադրել",
+          "toggle": "Սյունակների անջատիչ"
+     },
+     "search": {
+          "threats": "Փնտրել սպառնալիքներ..."
+     },
+     "not-found": {
+          "threats": "Սպառնալիքներ չեն գտնվել։"
+     },
+     "heading": {
+          "threats": {
+               "threat": "Սպառնալիք",
+               "path": "Տեղանք",
+               "detected-at": "Հայտնաբերվել է"
+          },
+          "status": "Կարգավիճակ",
+          "actions": "Գործողություններ"
+     },
+     "actions": {
+          "open-menu": "Բացել մենյու",
+          "threats": {
+               "quarantine": "Տեղափոխել կարանտին",
+               "delete": "Ջնջել ընդմիշտ",
+               "open": "Բացել պարունակող պանակը"
+          }
+     },
+     "status": {
+          "threats": {
+               "quarantined": "Կարանտինացված է",
+               "deleted": "Ջնջված է",
+               "detected": "Հայտնաբերված է"
+          },
+          "history": {
+               "success": "Հաջողված է",
+               "warning": "Նախազգուշացում",
+               "error": "Սխալ",
+               "acknowledged": "Ընդունված է"
+          }
+     }
+}

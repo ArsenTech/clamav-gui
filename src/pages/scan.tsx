@@ -20,8 +20,10 @@ import { capitalizeText } from "@/lib/helpers/formating";
 import { useBackendSettings } from "@/hooks/use-settings";
 import { ScanProfileId, ScanProfileValues } from "@/lib/types/settings";
 import { mapScanSettingsToArgs, validateScanSettings } from "@/lib/helpers/scan";
+import { useTranslation } from "react-i18next";
 
 const ScanProcess = lazy(()=>import("@/components/antivirus/scan-process"))
+
 export default function ScanPage(){
      const {type} = useParams<{type: ScanType}>();
      const [searchParams] = useSearchParams();
@@ -180,11 +182,13 @@ export default function ScanPage(){
           })
      }
      const {isFinished, logs, scanType} = scanState;
+     const {t} = useTranslation("scan")
+     const {t: logTxt} = useTranslation("log")
      return (
           <AppLayout className={isFinished ? "flex justify-center items-center gap-4 flex-col p-4" : "grid gris-cols-1 md:grid-cols-2 gap-10 p-4"}>
                {isFinished ? (
                     <>
-                         <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">Scan Completed!</h1>
+                         <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">{t("scan-complete")}</h1>
                          <ScanFinishResult
                               isStartup={isStartup}
                               setScanState={setScanState}
@@ -194,7 +198,7 @@ export default function ScanPage(){
                ) : (
                     <>
                          <div className="space-y-4">
-                              <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">Scan</h1>
+                              <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">{t("title")}</h1>
                               <Suspense fallback={<ScanLoader type={scanType}/>}>
                                    <ScanProcess
                                         handleReset={()=>{
@@ -208,7 +212,7 @@ export default function ScanPage(){
                          </div>
                          <ScrollArea className="max-h-[800px]">
                               <div className="space-y-3 px-3 text-lg">
-                                   <h2 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">Log</h2>
+                                   <h2 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">{logTxt("title")}</h2>
                                    <LogText logs={logs}/>
                               </div>
                          </ScrollArea>

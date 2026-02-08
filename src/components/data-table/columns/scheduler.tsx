@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { Link } from "react-router";
 import { ISchedulerState } from "@/lib/types/states";
 import { useSettings } from "@/context/settings";
+import { useTranslation } from "react-i18next";
 
 export const GET_SCHEDULER_COLS = (
      setState:  (overrides: Partial<ISchedulerState>) => void,
@@ -35,11 +36,12 @@ export const GET_SCHEDULER_COLS = (
           header: "Scan Type",
           cell: ({getValue}) => {
                const scanInfo = SCAN_TYPES.find(item=>item.type===getValue() as ScanType);
+               const {t} = useTranslation("scan");
                if(!scanInfo) return null;
                return (
                     <Badge variant="outline">
                          <scanInfo.Icon/>
-                         {capitalizeText(scanInfo.name)}
+                         {capitalizeText(t(`scan-type.${scanInfo.type}.name`))}
                     </Badge>
                )
           }

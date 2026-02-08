@@ -12,9 +12,10 @@ interface Props{
      submitEvent?: () => void,
      children?: React.ReactNode,
      closeText?: string
-     hideButtons?: boolean
+     hideButtons?: boolean,
+     type?: "default" | "danger"
 }
-export default function Popup({open, onOpen, title, description, submitTxt = "Submit", submitEvent, children, closeText = "Close", hideButtons=false}: Props){
+export default function Popup({open, onOpen, title, description, submitTxt = "Submit", submitEvent, children, closeText = "Close", hideButtons=false, type="default"}: Props){
      const isMobile = useIsMobile();
      return isMobile ? (
           <Drawer open={open} onOpenChange={onOpen}>
@@ -52,7 +53,7 @@ export default function Popup({open, onOpen, title, description, submitTxt = "Su
                     {children}
                     {!hideButtons && (
                          <DialogFooter>
-                              <Button variant={["delete","clear","remove"].some(val=>submitTxt.toLowerCase().includes(val)) ? "destructive" : "default"} type="button" onClick={submitEvent}>{submitTxt}</Button>
+                              <Button variant={type==="danger" ? "destructive" : "default"} type="button" onClick={submitEvent}>{submitTxt}</Button>
                               <DialogClose asChild>
                                    <Button variant="outline" type="button">{closeText}</Button>
                               </DialogClose>

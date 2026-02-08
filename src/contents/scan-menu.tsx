@@ -8,6 +8,7 @@ import { CheckCircle, FilePlus, FolderPlus, Search } from "lucide-react";
 import { open } from '@tauri-apps/plugin-dialog';
 import { normalizePaths } from "@/lib/helpers";
 import { useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 
 export default function ScanMenuContent(){
      const navigate = useNavigate();
@@ -46,16 +47,17 @@ export default function ScanMenuContent(){
                params.append("path",path);
           navigate(`${type}?${params.toString()}`)
      }
+     const {t} = useTranslation("scan");
      return (
           <>
-               <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">Scan</h1>
+               <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">{t("title")}</h1>
                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 flex-col">
-                    {SCAN_TYPES.map(({type,name,desc,Icon})=>(
+                    {SCAN_TYPES.map(({type,Icon})=>(
                          <div key={type} className={cn("p-4 border bg-card text-card-foreground shadow-sm rounded-md w-full flex justify-between items-center hover:border-primary hover:cursor-pointer",currScanType!==type ? "border-border bg-card" : "border-primary bg-primary/5")} onClick={()=>setCurrScanType(type)}>
                               <Icon className="flex-1 size-12 text-primary"/>
                               <div className="flex-3">
-                                   <h2 className="text-lg md:text-xl font-medium lg:text-2xl">{name}</h2>
-                                   <p>{desc}</p>
+                                   <h2 className="text-lg md:text-xl font-medium lg:text-2xl">{t(`scan-type.${type}.name`)}</h2>
+                                   <p>{t(`scan-type.${type}.desc`)}</p>
                               </div>
                          </div>
                     ))}
@@ -66,10 +68,12 @@ export default function ScanMenuContent(){
                                    onClick={() => openDialog(isCustom ? "folder" : "file")}
                               >
                                    <PathIcon />
-                                   Choose a {isFile ? "file" : "folder"} path
+                                   {t(`choose.${isFile ? "file" : "folder"}`)}
                               </Button>
                          )}
-                         <Button disabled={currScanType==="" || ((currScanType==="custom" || currScanType==="file") && !hasPath)} onClick={()=>handleStartScan(currScanType,path.paths)}><Search/> {(currScanType!=="custom" && currScanType!=="file") ? "Start Scanning" : ""}</Button>
+                         <Button disabled={currScanType==="" || ((currScanType==="custom" || currScanType==="file") && !hasPath)} onClick={()=>handleStartScan(currScanType,path.paths)}>
+                              <Search/> {(currScanType!=="custom" && currScanType!=="file") && t("start-scan")}
+                         </Button>
                     </ButtonGroup>
                </div>
           </>

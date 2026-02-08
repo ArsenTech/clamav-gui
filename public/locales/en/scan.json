@@ -1,0 +1,82 @@
+{
+     "title": "Scan",
+     "scan-complete": "Scan Completed!",
+     "scan-type": {
+          "title": "Scan Type:",
+          "main": {
+               "name": "Main Scan",
+               "desc": "Check common locations for malicious files"
+          },
+          "full": {
+               "name": "Full Scan",
+               "desc": "Scan everything inside this device (might take a while)"
+          },
+          "custom": {
+               "name": "Custom Scan",
+               "desc": "Choose a folder to scan"
+          },
+          "file": {
+               "name": "File Scan",
+               "desc": "Choose a file to scan"
+          }
+     },
+     "process": {
+          "preparing": "Preparing Scan...",
+          "percentage": "{{percentage}}% - {{scanned}}/{{total}} files scanned",
+          "files": "{{scanned}} files scanned",
+          "scanning": "Scanning..."
+     },
+     "items": {
+          "currently-scanned": "Currently scanned",
+          "location": "Scan Location",
+          "findings": "Findings",
+          "start-time": "Start Time",
+          "threat": "{{threats}} Threats"
+     },
+     "stop-scan": "Stop the Scan",
+     "confirmation": {
+          "title": {
+               "delete": "Are you sure to delete this file permanently?",
+               "clear": "Are you sure to delete all detected threats?",
+               "stop-scan": "Are you sure to stop the {{scanName}}?"
+          },
+          "desc": {
+               "stop-scan": "This will cancel all the scan process and return to the scan options menu.",
+               "action-undone": "The process can't be undone."
+          },
+          "stop": "Stop",
+          "cancel": "Cancel",
+          "delete": "Delete"
+     },
+     "full-scan-warn": "Full scans may take a while depending on disk size.",
+     "start-scan": "Start Scanning",
+     "choose": {
+          "file": "Choose a File",
+          "folder": "Choose a Folder"
+     },
+     "finished": {
+          "error": "Scan Failed",
+          "no-threats": "No threats detected!",
+          "with-threats_one": "One threat requires attention",
+          "with-threats_two": "Two threats require attention",
+          "with-threats_few": "{{count}} threats require attention",
+          "with-threats_many": "{{count}} threats require attention",
+          "with-threats_other": "{{count}} threats require attention"
+     },
+     "close": "Close",
+     "back-to-overview": "Back to the overview",
+     "exit-code": {
+          "0": "Scan completed successfully",
+          "1": "Threats were detected",
+          "2": "Some files could not be scanned due to access restrictions"
+     },
+     "exit-code-fallback": "Scan failed due to an internal error",
+     "exit-code-formatting": "{{msg}} (Exit Code: {{exitCode}})",
+     "please-wait": "Please wait...",
+     "resolve": {
+          "title": "Resolve",
+          "quarantine": "Quarantine All",
+          "delete": "Delete All",
+          "success": "Successfully Resolved!"
+     }
+}

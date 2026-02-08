@@ -2,7 +2,6 @@ import { ArrowDown, ArrowUp, ArrowUpDown, CheckCircle, Ellipsis, FileText, Scrol
 import { IHistoryData, HistoryStatus } from "@/lib/types/data";
 import { Badge } from "@/components/ui/badge";
 import { getHistoryStatusBadges } from "@/lib/helpers";
-import { capitalizeText } from "@/lib/helpers/formating";
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { invoke } from "@tauri-apps/api/core";
@@ -11,6 +10,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Link } from "react-router";
 import { IHistoryPageState } from "@/lib/types/states";
 import { useSettings } from "@/context/settings";
+import { useTranslation } from "react-i18next";
 
 export const GET_HISTORY_COLS = (
      setHistoryState: React.Dispatch<React.SetStateAction<IHistoryPageState>>,
@@ -54,10 +54,18 @@ export const GET_HISTORY_COLS = (
           },
           {
                accessorKey: "status",
-               header: "Status",
-               cell: ({getValue}) => <Badge variant={getHistoryStatusBadges(getValue() as HistoryStatus)}>
-                    {capitalizeText(getValue() as string)}
-               </Badge>
+               header: ()=>{
+                    const {t} = useTranslation("table");
+                    return t("heading.status")
+               },
+               cell: ({getValue}) => {
+                    const {t} = useTranslation("table");
+                    return (
+                         <Badge variant={getHistoryStatusBadges(getValue() as HistoryStatus)}>
+                              {t(`status.history.${getValue() as HistoryStatus}`)}
+                         </Badge>
+                    )
+               }
           },
           {
                id: "actions",

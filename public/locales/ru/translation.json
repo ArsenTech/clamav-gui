@@ -8,5 +8,11 @@
           "scheduler": "Планировщик",
           "settings": "Настройки",
           "about": "О приложении ClamAV GUI"
+     },
+     "num-suffix": {
+          "kilo": "тыс.",
+          "million": "млн.",
+          "billion": "млрд.",
+          "trillion": "трлн."
      }
 }

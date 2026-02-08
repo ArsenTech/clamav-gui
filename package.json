@@ -58,6 +58,7 @@
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2",
+    "@types/i18next": "^12.1.0",
     "@types/node": "^25.0.8",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",

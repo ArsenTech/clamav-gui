@@ -1,0 +1,53 @@
+{
+     "pagination": {
+          "rows-count": "{{selected}} из {{filtered}} строк выбран(ы).",
+          "row-per-page": "Строк на странице",
+          "page-count": "{{index}} из {{count}}",
+          "buttons": {
+               "first": "Перейти на первую страницу",
+               "previous": "Перейти на предыдущую страницу",
+               "next": "Перейти на следующую страницу",
+               "last": "Перейти на последнюю страницу"
+          }
+     },
+     "view": {
+          "title": "Показывать",
+          "toggle": "Переключить столбцы"
+     },
+     "search": {
+          "threats": "Поиск угроз..."
+     },
+     "not-found": {
+          "threats": "Угрозы не обнаружены."
+     },
+     "heading": {
+          "threats": {
+               "threat": "Угроза",
+               "path": "Местоположение",
+               "detected-at": "Обнаружено в"
+          },
+          "status": "Статус",
+          "actions": "Действия"
+     },
+     "actions": {
+          "open-menu": "Открыть меню",
+          "threats": {
+               "quarantine": "Переместить в карантин",
+               "delete": "Удалить навсегда",
+               "open": "Открыть содержащую папку"
+          }
+     },
+     "status": {
+          "threats": {
+               "quarantined": "В карантин",
+               "deleted": "Удалено",
+               "detected": "Обнаружено"
+          },
+          "history": {
+               "success": "Успех",
+               "warning": "Предупреждение",
+               "error": "Ошибка",
+               "acknowledged": "Признано"
+          }
+     }
+}

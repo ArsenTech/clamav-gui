@@ -5,14 +5,13 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { IThreatsData, ThreatStatus } from "@/lib/types/data";
 import { invoke } from "@tauri-apps/api/core";
 import { toast } from "sonner";
-import { openPath } from "@tauri-apps/plugin-opener";
-import { dirname } from "@tauri-apps/api/path";
+import { revealItemInDir } from "@tauri-apps/plugin-opener";
 import { useMemo } from "react";
 import { getThreatStatusBadges } from "@/lib/helpers";
-import { capitalizeText } from "@/lib/helpers/formating";
 import { Badge } from "@/components/ui/badge";
 import { IFinishScanState, IScanPageState } from "@/lib/types/states";
 import { useSettings } from "@/context/settings";
+import { useTranslation } from "react-i18next";
 
 export const GET_THREATS_COLS = (
      setScanState: React.Dispatch<React.SetStateAction<IScanPageState>>,
@@ -22,22 +21,31 @@ export const GET_THREATS_COLS = (
      const baseCols: ColumnDef<IThreatsData>[] = [
           {
                accessorKey: "displayName",
-               header: ({column}) => (
-                    <div className="flex items-center justify-between gap-2">
-                         <span>Threat</span>
-                         <Button variant="ghost" onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")} size="icon-sm">
-                              {column.getIsSorted()==="asc" ? <ArrowUp className="h-4 w-4" /> : column.getIsSorted()==="desc" ? <ArrowDown className="h-4 w-4" /> : <ArrowUpDown className="h-4 w-4" />}
-                         </Button>
-                    </div>
-               )
+               header: ({column}) => {
+                    const {t} = useTranslation("table")
+                    return (
+                         <div className="flex items-center justify-between gap-2">
+                              <span>{t("heading.threats.threat")}</span>
+                              <Button variant="ghost" onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")} size="icon-sm">
+                                   {column.getIsSorted()==="asc" ? <ArrowUp className="h-4 w-4" /> : column.getIsSorted()==="desc" ? <ArrowDown className="h-4 w-4" /> : <ArrowUpDown className="h-4 w-4" />}
+                              </Button>
+                         </div>
+                    )
+               }
           },
           {
                accessorKey: "filePath",
-               header: "Path"
+               header: ()=>{
+                    const {t} = useTranslation("table");
+                    return t("heading.threats.path")
+               }
           },
           {
                accessorKey: "detectedAt",
-               header: "Detected At",
+               header: ()=>{
+                    const {t} = useTranslation("table");
+                    return t("heading.threats.detected-at")
+               },
                cell: ({getValue}) => {
                     const {formatDate} = useSettings();
                     return formatDate(new Date(getValue() as string))
@@ -45,14 +53,23 @@ export const GET_THREATS_COLS = (
           },
           {
                accessorKey: "status",
-               header: "Status",
-               cell: ({getValue}) => <Badge variant={getThreatStatusBadges(getValue() as ThreatStatus)}>
-                    {capitalizeText(getValue() as string)}
-               </Badge>
+               header: ()=>{
+                    const {t} = useTranslation("table");
+                    return t("heading.status")
+               },
+               cell: ({getValue}) => {
+                    const {t} = useTranslation("table");
+                    return (
+                         <Badge variant={getThreatStatusBadges(getValue() as ThreatStatus)}>
+                              {t(`status.threats.${getValue() as ThreatStatus}`)}
+                         </Badge>
+                    )
+               }
           },
           {
                id: "actions",
                cell: ({ row }) => {
+                    const {t} = useTranslation("table");
                     const threat = row.original
                     const handleQuarantine = async() => {
                          try{
@@ -72,33 +89,32 @@ export const GET_THREATS_COLS = (
                               console.error(e);
                          }
                     }
-                    const handleRevealPath = async() => {
-                         const folder = await dirname(threat.filePath);
-                         await openPath(folder);
-                    }
+                    const handleRevealPath = async() => await revealItemInDir(threat.filePath)
                     const isResolved = useMemo(()=>["quarantined", "deleted", "safe"].includes(threat.status),[threat.status]);
                     return (
                          <DropdownMenu>
                               <DropdownMenuTrigger asChild>
                                    <Button variant="ghost" className="h-8 w-8 p-0">
-                                        <span className="sr-only">Open menu</span>
+                                        <span className="sr-only">{t("actions.open-menu")}</span>
                                         <MoreHorizontal className="h-4 w-4" />
                                    </Button>
                               </DropdownMenuTrigger>
                               <DropdownMenuContent align="end">
-                                   <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                   <DropdownMenuLabel>{t("heading.actions")}</DropdownMenuLabel>
                                    <DropdownMenuSeparator/>
                                    <DropdownMenuItem disabled={isResolved} onClick={handleQuarantine}>
-                                        <BugOff/> Quarantine
+                                        <BugOff/>
+                                        {t("actions.threats.quarantine")}
                                    </DropdownMenuItem>
                                    <DropdownMenuItem className="text-destructive" onClick={()=>setState({
                                         isOpenDelete: true,
                                         currThreat: threat
                                    })} disabled={isResolved} >
-                                        <Trash className="text-destructive"/> Delete permanently
+                                        <Trash className="text-destructive"/> {t("actions.threats.delete")}
                                    </DropdownMenuItem>
                                    <DropdownMenuItem onClick={handleRevealPath} disabled={isResolved} >
-                                        <FolderOpen/> Open Containing Folder
+                                        <FolderOpen/>
+                                        {t("actions.threats.open")}
                                    </DropdownMenuItem>
                               </DropdownMenuContent>
                          </DropdownMenu>

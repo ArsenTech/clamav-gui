@@ -1,0 +1,53 @@
+{
+     "pagination": {
+          "rows-count": "{{selected}} of {{filtered}} row(s) selected.",
+          "row-per-page": "Rows per page",
+          "page-count": "Page {{index}} of {{count}}",
+          "buttons": {
+               "first": "Go to first page",
+               "previous": "Go to previous page",
+               "next": "Go to next page",
+               "last": "Go to last page"
+          }
+     },
+     "view": {
+          "title": "View",
+          "toggle": "Toggle columns"
+     },
+     "search": {
+          "threats": "Search Threats..."
+     },
+     "not-found": {
+          "threats": "No threats found."
+     },
+     "heading": {
+          "threats": {
+               "threat": "Threat",
+               "path": "Path",
+               "detected-at": "Detected At"
+          },
+          "status": "Status",
+          "actions": "Actions"
+     },
+     "actions": {
+          "open-menu": "Open menu",
+          "threats": {
+               "quarantine": "Quarantine",
+               "delete": "Delete permanently",
+               "open": "Open Containing Folder"
+          }
+     },
+     "status": {
+          "threats": {
+               "quarantined": "Quarantined",
+               "deleted": "Deleted",
+               "detected": "Detected"
+          },
+          "history": {
+               "success": "Success",
+               "warning": "Warning",
+               "error": "Error",
+               "acknowledged": "Acknowledged"
+          }
+     }
+}

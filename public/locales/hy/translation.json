@@ -8,5 +8,11 @@
           "scheduler": "Ժամանակացույց",
           "settings": "Կարգավորումներ",
           "about": "ClamAV GUI-ի մասին"
+     },
+     "num-suffix": {
+          "kilo": "հզր․",
+          "million": "մլն․",
+          "billion": "մլրդ․",
+          "trillion": "տրլն․"
      }
 }

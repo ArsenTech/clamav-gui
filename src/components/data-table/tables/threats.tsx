@@ -23,6 +23,7 @@ import { SearchIcon } from "lucide-react"
 import { DataTablePagination } from "../pagination"
 import { DataTableViewOptions } from "../col-toggle"
 import { DataTableProps } from "@/lib/types/props"
+import { useTranslation } from "react-i18next"
 
 export function ThreatsTable<TData>({ columns, data, searchColumn = "displayName" }: DataTableProps<TData>) {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -44,13 +45,13 @@ export function ThreatsTable<TData>({ columns, data, searchColumn = "displayName
       columnVisibility
     }
   })
-
+  const {t} = useTranslation("table")
   return (
     <>
     <div className="flex items-center justify-between gap-4 w-full">
       <InputGroup className="max-w-lg">
         <InputGroupInput
-          placeholder="Search Threats..."
+          placeholder={t("search.threats")}
           value={(table.getColumn(searchColumn)?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn(searchColumn)?.setFilterValue(event.target.value)
@@ -99,7 +100,7 @@ export function ThreatsTable<TData>({ columns, data, searchColumn = "displayName
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                No threats found.
+                {t("not-found.threats")}
               </TableCell>
             </TableRow>
           )}

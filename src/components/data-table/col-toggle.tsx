@@ -10,12 +10,14 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu"
+import { useTranslation } from "react-i18next"
 
 export function DataTableViewOptions<TData>({
   table,
 }: {
   table: Table<TData>
 }) {
+  const {t} = useTranslation("table")
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -24,11 +26,11 @@ export function DataTableViewOptions<TData>({
           className="ml-auto hidden lg:flex"
         >
           <Settings2 />
-          View
+          {t("view.title")}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[150px]">
-        <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+        <DropdownMenuLabel>{t("view.toggle")}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {table
           .getAllColumns()
