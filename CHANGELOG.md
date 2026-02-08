@@ -10,8 +10,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Changed
 - Organized some files and Updated Imports
 - Optimized some parts of the Frontend
-### Fixed
-- The "Scan failed" error resolving `clamscan` (it will return `clamdscan` if `clamscan` doesn't exist)
+### Improved
+- The `clamscan` resolving function
+- The `check_availability()` command
 
 ## [1.0.0-1] - 2026-02-07 (v1 Beta #1)
 ### Added
