@@ -229,6 +229,7 @@ export default function AdvancedSettings({scanProfile}: SettingsProps){
                closeText="Cancel"
                submitTxt="Delete Settings"
                submitEvent={()=>handleDangerZoneAction("delete")}
+               type="danger"
           />
           <Popup
                open={dangerZoneState.isOpenRestore}
@@ -238,6 +239,7 @@ export default function AdvancedSettings({scanProfile}: SettingsProps){
                closeText="Cancel"
                submitTxt="Restore Defaults"
                submitEvent={()=>handleDangerZoneAction("restore")}
+               type="danger"
           />
           </>
      )

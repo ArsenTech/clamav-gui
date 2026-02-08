@@ -18,6 +18,7 @@ import { DataTablePagination } from "../pagination"
 import { ISchedulerData } from "@/lib/types/data"
 import { DataTableProps } from "@/lib/types/props"
 import { DataTableViewOptions } from "../col-toggle"
+import { useTranslation } from "react-i18next"
 
 export function SchedulerTable({columns,data,headerElement}: DataTableProps<ISchedulerData<"state">>) {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -32,6 +33,7 @@ export function SchedulerTable({columns,data,headerElement}: DataTableProps<ISch
       sorting,
     }
   })
+  const {t} = useTranslation("table")
   return (
     <>
     <div className="flex items-center justify-between gap-4 w-full">
@@ -75,7 +77,7 @@ export function SchedulerTable({columns,data,headerElement}: DataTableProps<ISch
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                No scheduled scans found.
+                {t("not-found.scheduler")}
               </TableCell>
             </TableRow>
           )}

@@ -183,7 +183,7 @@ export default function ScanPage(){
      }
      const {isFinished, logs, scanType} = scanState;
      const {t} = useTranslation("scan")
-     const {t: logTxt} = useTranslation("log")
+     const {t: logTxt} = useTranslation()
      return (
           <AppLayout className={isFinished ? "flex justify-center items-center gap-4 flex-col p-4" : "grid gris-cols-1 md:grid-cols-2 gap-10 p-4"}>
                {isFinished ? (
@@ -198,7 +198,7 @@ export default function ScanPage(){
                ) : (
                     <>
                          <div className="space-y-4">
-                              <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">{t("title")}</h1>
+                              <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">{t("log.title")}</h1>
                               <Suspense fallback={<ScanLoader type={scanType}/>}>
                                    <ScanProcess
                                         handleReset={()=>{

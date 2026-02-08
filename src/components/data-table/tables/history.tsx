@@ -25,6 +25,7 @@ import { DataTableViewOptions } from "../col-toggle"
 import { ButtonGroup } from "@/components/ui/button-group"
 import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { CheckCircle, CircleAlert, Eye, Shield, TriangleAlert } from "lucide-react"
+import { useTranslation } from "react-i18next"
 
 export function HistoryTable({columns,data,headerElement}: DataTableProps<IHistoryData<"state">>) {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -52,7 +53,7 @@ export function HistoryTable({columns,data,headerElement}: DataTableProps<IHisto
     if(!statusCol) return;
     statusCol.setFilterValue(value==="all" ? "" : value)
   }
-
+  const {t} = useTranslation("table")
   return (
     <>
     <div className="flex items-center justify-between gap-4 w-full">
@@ -60,15 +61,30 @@ export function HistoryTable({columns,data,headerElement}: DataTableProps<IHisto
       <ButtonGroup>
         <Select defaultValue="all" onValueChange={val=>handleChangeFilters(val as Exclude<HistoryStatus,"acknowledged"> | "all")}>
           <SelectTrigger>
-            <SelectValue placeholder="Filter Status By"/>
+            <SelectValue placeholder={t("filter.history.title")}/>
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all"><Shield/> All</SelectItem>
+            <SelectItem value="all">
+              <Shield/>
+              {t("filter.history.all")}
+            </SelectItem>
             <SelectSeparator/>
-            <SelectItem value="success"><CheckCircle/> Success</SelectItem>
-            <SelectItem value="warning"><TriangleAlert/> Warning</SelectItem>
-            <SelectItem value="error"><CircleAlert/> Error</SelectItem>
-            <SelectItem value="acknowledged"><Eye/> Acknowledged</SelectItem>
+            <SelectItem value="success">
+              <CheckCircle/>
+              {t("filter.history.success")}
+            </SelectItem>
+            <SelectItem value="warning">
+              <TriangleAlert/>
+              {t("filter.history.warning")}
+            </SelectItem>
+            <SelectItem value="error">
+              <CircleAlert/>
+              {t("filter.history.error")}
+            </SelectItem>
+            <SelectItem value="acknowledged">
+              <Eye/>
+              {t("filter.history.acknowledged")}
+            </SelectItem>
           </SelectContent>
         </Select>
         <DataTableViewOptions table={table}/>
@@ -111,7 +127,7 @@ export function HistoryTable({columns,data,headerElement}: DataTableProps<IHisto
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                No entries found.
+                {t("not-found.history")}
               </TableCell>
             </TableRow>
           )}

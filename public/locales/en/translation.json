@@ -21,5 +21,12 @@
           "mb": "MB",
           "gb": "GB",
           "tb": "TB"
+     },
+     "log": {
+          "title": "Log",
+          "page-name": "Log Viewer",
+          "log-id": "Log ID:",
+          "back": "Back",
+          "please-wait": "Please wait..."
      }
 }

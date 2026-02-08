@@ -98,7 +98,8 @@ export const GET_QUARANTINE_COLS = (
                                         id: threat.id,
                                         isOpenDelete: true
                                    })}>
-                                        <Trash className="text-destructive"/> {t("actions.threats.delete")}
+                                        <Trash className="text-destructive"/>
+                                        {t("actions.delete")}
                                    </DropdownMenuItem>
                               </DropdownMenuContent>
                          </DropdownMenu>

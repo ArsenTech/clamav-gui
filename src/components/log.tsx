@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils"
 import { useEffect, useRef } from "react"
 import { ScrollArea } from "./ui/scroll-area";
 import { useSettings } from "@/context/settings";
+import { useTranslation } from "react-i18next";
 
 interface Props{
      logs: string[],
@@ -15,11 +16,12 @@ export default function LogText({logs, isLoading}: Props){
           if(settings.autoScrollText && logs.length > 0){
                logRef.current.scrollIntoView({behavior: "smooth"})
           }
-     },[settings.autoScrollText, logs])
+     },[settings.autoScrollText, logs]);
+     const {t} = useTranslation()
      return (
           <ScrollArea className="min-h-[calc(100vh-200px)]">
                <pre className="whitespace-pre-wrap text-sm"> {isLoading ? (
-                    <code className="inline-block w-full break-all">Initializing...</code>
+                    <code className="inline-block w-full break-all">{t("log.please-wait")}</code>
                ) : logs.slice(-settings.maxLogLines).map((val,i)=>{
                     const isLast = i === logs.length-1;
                     const line = val.toLowerCase();

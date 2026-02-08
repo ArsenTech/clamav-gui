@@ -116,6 +116,7 @@ export default function DirExclusionsItem({data, onSubmit, onDelete}: Props){
                     onDelete(currPath);
                     setCurrPath("")
                }}
+               type="danger"
           />
           </>
      )

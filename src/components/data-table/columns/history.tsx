@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowUp, ArrowUpDown, CheckCircle, Ellipsis, FileText, ScrollText } from "lucide-react";
+import { ArrowDown, ArrowUp, ArrowUpDown, CheckCircle, FileText, MoreHorizontal, ScrollText } from "lucide-react";
 import { IHistoryData, HistoryStatus } from "@/lib/types/data";
 import { Badge } from "@/components/ui/badge";
 import { getHistoryStatusBadges } from "@/lib/helpers";
@@ -19,14 +19,17 @@ export const GET_HISTORY_COLS = (
      const baseCols: ColumnDef<IHistoryData<"state">>[] = [
           {
                accessorKey: "timestamp",
-               header: ({column}) => (
-                    <div className="flex items-center justify-between gap-2">
-                         <span>Timestamp</span>
-                         <Button variant="ghost" onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")} size="icon-sm">
-                              {column.getIsSorted()==="asc" ? <ArrowUp className="h-4 w-4" /> : column.getIsSorted()==="desc" ? <ArrowDown className="h-4 w-4" /> : <ArrowUpDown className="h-4 w-4" />}
-                         </Button>
-                    </div>
-               ),
+               header: ({column}) => {
+                    const {t} = useTranslation("table")
+                    return (
+                         <div className="flex items-center justify-between gap-2">
+                              <span>{t("heading.history.timestamp")}</span>
+                              <Button variant="ghost" onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")} size="icon-sm">
+                                   {column.getIsSorted()==="asc" ? <ArrowUp className="h-4 w-4" /> : column.getIsSorted()==="desc" ? <ArrowDown className="h-4 w-4" /> : <ArrowUpDown className="h-4 w-4" />}
+                              </Button>
+                         </div>
+                    )
+               },
                cell: ({getValue}) => {
                     const {formatDate} = useSettings();
                     return formatDate(new Date(getValue() as string))
@@ -34,18 +37,24 @@ export const GET_HISTORY_COLS = (
           },
           {
                accessorKey: "action",
-               header: ({column}) => (
-                    <div className="flex items-center justify-between gap-2">
-                         <span>Action (Event)</span>
-                         <Button variant="ghost" onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")} size="icon-sm">
-                              {column.getIsSorted()==="asc" ? <ArrowUp className="h-4 w-4" /> : column.getIsSorted()==="desc" ? <ArrowDown className="h-4 w-4" /> : <ArrowUpDown className="h-4 w-4" />}
-                         </Button>
-                    </div>
-               )
+               header: ({column}) => {
+                    const {t} = useTranslation("table")
+                         return (
+                         <div className="flex items-center justify-between gap-2">
+                              <span>{t("heading.history.event")}</span>
+                              <Button variant="ghost" onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")} size="icon-sm">
+                                   {column.getIsSorted()==="asc" ? <ArrowUp className="h-4 w-4" /> : column.getIsSorted()==="desc" ? <ArrowDown className="h-4 w-4" /> : <ArrowUpDown className="h-4 w-4" />}
+                              </Button>
+                         </div>
+                    )
+               }
           },
           {
                accessorKey: "details",
-               header: "Details",
+               header: () => {
+                    const {t} = useTranslation("table")
+                    return t("heading.history.details")
+               },
                cell: ({ getValue }) => (
                     <div className="max-w-[420px] truncate">
                          {getValue() as string}
@@ -70,6 +79,7 @@ export const GET_HISTORY_COLS = (
           {
                id: "actions",
                cell: ({row}) => {
+                    const {t} = useTranslation("table")
                     const item = row.original
                     const revealLog = async()=>{
                          if(!item.logId || !item.category) return;
@@ -85,21 +95,24 @@ export const GET_HISTORY_COLS = (
                     }
                     return (
                          <DropdownMenu>
-                              <DropdownMenuTrigger>
-                                   <Button variant="ghost" size="icon" title="Log Actions">
-                                        <Ellipsis/>
+                              <DropdownMenuTrigger asChild>
+                                   <Button variant="ghost" className="h-8 w-8 p-0">
+                                        <span className="sr-only">{t("actions.open-menu")}</span>
+                                        <MoreHorizontal className="h-4 w-4" /> 
                                    </Button>
                               </DropdownMenuTrigger>
-                              <DropdownMenuContent>
-                                   <DropdownMenuLabel>Log Actions</DropdownMenuLabel>
+                              <DropdownMenuContent align="end">
+                                   <DropdownMenuLabel>{t("heading.actions")}</DropdownMenuLabel>
                                    <DropdownMenuSeparator/>
                                    <DropdownMenuItem disabled={!item.logId || !item.category} asChild>
                                         <Link to={`/history/${item.logId}?category=${item.category}`}>
-                                             <ScrollText/> View Log
+                                             <ScrollText/>
+                                             {t("actions.view-log")}
                                         </Link>
                                    </DropdownMenuItem>
                                    <DropdownMenuItem onClick={revealLog} disabled={!item.logId || !item.category}>
-                                        <FileText /> Reveal Log File
+                                        <FileText />
+                                        {t("actions.reveal-log")}
                                    </DropdownMenuItem>
                               </DropdownMenuContent>
                          </DropdownMenu>
@@ -107,73 +120,46 @@ export const GET_HISTORY_COLS = (
                },
           }
      ];
-     return isDevMode ? [
-          {
-               id: "isAcknowledged",
-               cell: ({row}) => {
-                    const item = row.original
-                    const markAsAcknowledged = async () => {
-                         try{
-                              await invoke("mark_as_acknowledged", {
-                                   id: item.id,
-                                   date: item.timestamp.split("T")[0]
-                              });
-                              setHistoryState(prev=>({
-                                   ...prev,
-                                   data: prev.data.map(val=>({
-                                        ...val,
-                                        status: val.id===item.id ? "acknowledged" : val.status
-                                   }))
+     const acknowledgeCol: ColumnDef<IHistoryData<"state">> = {
+          id: "isAcknowledged",
+          cell: ({row}) => {
+               const {t} = useTranslation("table")
+               const item = row.original
+               const markAsAcknowledged = async () => {
+                    try{
+                         await invoke("mark_as_acknowledged", {
+                              id: item.id,
+                              date: item.timestamp.split("T")[0]
+                         });
+                         setHistoryState(prev=>({
+                              ...prev,
+                              data: prev.data.map(val=>({
+                                   ...val,
+                                   status: val.id===item.id ? "acknowledged" : val.status
                               }))
-                              toast.success("Entry acknowledged!")
-                         } catch (error){
-                              toast.error("Failed to mark the entry as acknowledged");
-                              console.error(error)
-                         }
+                         }))
+                         toast.success("Entry acknowledged!")
+                    } catch (error){
+                         toast.error("Failed to mark the entry as acknowledged");
+                         console.error(error)
                     }
-                    return (
-                         <Button variant="ghost" size="icon" title="Mark As Acknowledged" onClick={markAsAcknowledged} disabled={item.status==="acknowledged"}>
-                              <CheckCircle/>
-                         </Button>
-                    )
-               },
-          },
+               }
+               return (
+                    <Button variant="ghost" size="icon" title={t("mark-as-acknowledged")} onClick={markAsAcknowledged} disabled={item.status==="acknowledged"}>
+                         <CheckCircle/>
+                    </Button>
+               )
+          }
+     };
+     return isDevMode ? [
+          acknowledgeCol,
           {
                accessorKey: "id",
                header: "Entry ID"
           },
           ...baseCols
      ] : [
-          {
-               id: "isAcknowledged",
-               cell: ({row}) => {
-                    const item = row.original
-                    const markAsAcknowledged = async () => {
-                         try{
-                              await invoke("mark_as_acknowledged", {
-                                   id: item.id,
-                                   date: item.timestamp.split("T")[0]
-                              });
-                              setHistoryState(prev=>({
-                                   ...prev,
-                                   data: prev.data.map(val=>({
-                                        ...val,
-                                        status: val.id===item.id ? "acknowledged" : val.status
-                                   }))
-                              }))
-                              toast.success("Entry acknowledged!")
-                         } catch (error){
-                              toast.error("Failed to mark the entry as acknowledged");
-                              console.error(error)
-                         }
-                    }
-                    return (
-                         <Button variant="ghost" size="icon" title="Mark As Acknowledged" onClick={markAsAcknowledged} disabled={item.status==="acknowledged"}>
-                              <CheckCircle/>
-                         </Button>
-                    )
-               },
-          },
+          acknowledgeCol,
           ...baseCols
      ];
 }

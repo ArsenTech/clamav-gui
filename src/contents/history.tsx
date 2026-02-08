@@ -130,6 +130,7 @@ export default function HistoryContent(){
                submitTxt="Clear history"
                closeText="Cancel"
                submitEvent={()=>clearHistory("all")}
+               type="danger"
           />
           <Popup
                open={clearAcknowledged}
@@ -139,6 +140,7 @@ export default function HistoryContent(){
                submitTxt="Clear"
                closeText="Cancel"
                submitEvent={()=>clearHistory("acknowledged")}
+               type="danger"
           />
           <Popup
                open={clearErrors}
@@ -148,6 +150,7 @@ export default function HistoryContent(){
                submitTxt="Clear"
                closeText="Cancel"
                submitEvent={()=>clearHistory("error")}
+               type="danger"
           />
           </>
      )

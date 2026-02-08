@@ -6,6 +6,7 @@ export type ThreatStatus = "quarantined" | "deleted" | "detected";
 export type HistoryStatus = "success" | "warning" | "error" | "acknowledged";
 export type HistoryClearType = "all" | "acknowledged" | "error";
 export type DataType = "state" | "type"
+export type IntervalType = "daily" | "weekly" | "monthly"
 
 interface HistoryDataBase{
      id: string,
@@ -47,6 +48,6 @@ export type ISchedulerData<T extends DataType> = (T extends "type" ? {
      nextScan: Date | null
 }) & {
      id: string,
-     interval: "daily" | "weekly" | "monthly",
+     interval: IntervalType,
      log_id?: string
 }

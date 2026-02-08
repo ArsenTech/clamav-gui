@@ -171,6 +171,7 @@ export default function SchedulerContent(){
                submitTxt="Remove"
                closeText="Cancel"
                submitEvent={handleRemoveJob}
+               type="danger"
           />
           <Popup
                open={isOpenClear}
@@ -180,6 +181,7 @@ export default function SchedulerContent(){
                submitTxt="Clear Jobs"
                closeText="Cancel"
                submitEvent={handleClear}
+               type="danger"
           />
           </>
      )

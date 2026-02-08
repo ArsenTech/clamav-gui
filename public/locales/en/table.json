@@ -14,11 +14,21 @@
           "title": "View",
           "toggle": "Toggle columns"
      },
-     "search": {
-          "threats": "Search Threats..."
+     "filter": {
+          "threats": "Search Threats...",
+          "history": {
+               "title": "Filter Status By",
+               "all": "All",
+               "success": "Success",
+               "warning": "Warning",
+               "error": "Error",
+               "acknowledged": "Acknowledged"
+          }
      },
      "not-found": {
-          "threats": "No threats found."
+          "threats": "No threats found.",
+          "history": "No entries found.",
+          "scheduler": "No scheduled scans found."
      },
      "heading": {
           "threats": {
@@ -30,17 +40,31 @@
                "quarantined-at": "Quarantined At",
                "size": "Size"
           },
+          "history": {
+               "timestamp": "Timestamp",
+               "event": "Event",
+               "details": "Details"
+          },
+          "scheduler": {
+               "job-name": "Job Name",
+               "interval": "Interval",
+               "scan-type": "Type",
+               "last-scan": "Last Scan",
+               "next-scan": "Next Scan"
+          },
           "status": "Status",
           "actions": "Actions"
      },
      "actions": {
           "open-menu": "Open menu",
-          "threats": {
-               "quarantine": "Quarantine",
-               "delete": "Delete permanently",
-               "open": "Open Containing Folder"
-          },
-          "restore": "Restore"
+          "quarantine": "Quarantine",
+          "delete": "Delete permanently",
+          "open": "Open Containing Folder",
+          "scan-now": "Scan Now",
+          "view-log": "View Log",
+          "reveal-log": "Reveal Log File",
+          "restore": "Restore",
+          "remove-job": "Remove Job"
      },
      "status": {
           "threats": {
@@ -54,5 +78,11 @@
                "error": "Error",
                "acknowledged": "Acknowledged"
           }
-     }
+     },
+     "interval": {
+          "daily" : "Daily",
+          "weekly" : "Weekly",
+          "monthly" : "Monthly"
+     },
+     "mark-as-acknowledged": "Mark As Acknowledged"
 }

@@ -104,17 +104,17 @@ export const GET_THREATS_COLS = (
                                    <DropdownMenuSeparator/>
                                    <DropdownMenuItem disabled={isResolved} onClick={handleQuarantine}>
                                         <BugOff/>
-                                        {t("actions.threats.quarantine")}
+                                        {t("actions.quarantine")}
                                    </DropdownMenuItem>
                                    <DropdownMenuItem className="text-destructive" onClick={()=>setState({
                                         isOpenDelete: true,
                                         currThreat: threat
                                    })} disabled={isResolved} >
-                                        <Trash className="text-destructive"/> {t("actions.threats.delete")}
+                                        <Trash className="text-destructive"/> {t("actions.delete")}
                                    </DropdownMenuItem>
                                    <DropdownMenuItem onClick={handleRevealPath} disabled={isResolved} >
                                         <FolderOpen/>
-                                        {t("actions.threats.open")}
+                                        {t("actions.open")}
                                    </DropdownMenuItem>
                               </DropdownMenuContent>
                          </DropdownMenu>

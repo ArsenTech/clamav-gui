@@ -1,5 +1,4 @@
 import "i18next";
-import log from "locales/en/log.json";
 import overview from "locales/en/overview.json";
 import scan from "locales/en/scan.json";
 import translation from "locales/en/translation.json";
@@ -12,7 +11,6 @@ declare module "i18next" {
      interface CustomTypeOptions {
           defaultNS: "translation";
           resources: {
-               log: typeof log;
                overview: typeof overview;
                scan: typeof scan;
                translation: typeof translation;

@@ -4,6 +4,7 @@ import { useSettings } from "@/context/settings";
 import { invoke } from "@tauri-apps/api/core";
 import { ChevronLeft, ScrollText } from "lucide-react";
 import { useEffect, useState, useTransition } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useParams, useSearchParams } from "react-router";
 
 interface Props{
@@ -34,15 +35,17 @@ export default function LogContent({returnUrl}: Props){
                }
           })
      },[])
+     const {t} = useTranslation()
      return (
           <div className="space-y-4">
-               <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">Log Viewer</h1>
+               <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">{t("log.page-name")}</h1>
                {settings.developerMode && (
-                    <p className="text-muted-foreground flex items-center gap-2"><ScrollText className="size-5"/> Log ID: {logId}</p>
+                    <p className="text-muted-foreground flex items-center gap-2"><ScrollText className="size-5"/> {t("log.log-id")} {logId}</p>
                )}
                <Button asChild size="sm" variant="outline">
                     <Link to={returnUrl}>
-                         <ChevronLeft/> Back
+                         <ChevronLeft/>
+                         {t("log.back")}
                     </Link>
                </Button>
                <LogText

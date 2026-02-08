@@ -51,7 +51,7 @@ export function ThreatsTable<TData>({ columns, data, searchColumn = "displayName
     <div className="flex items-center justify-between gap-4 w-full">
       <InputGroup className="max-w-lg">
         <InputGroupInput
-          placeholder={t("search.threats")}
+          placeholder={t("filter.threats")}
           value={(table.getColumn(searchColumn)?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn(searchColumn)?.setFilterValue(event.target.value)
