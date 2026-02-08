@@ -38,7 +38,8 @@ export default function ScanProcess({scanState, handleReset, isStartup}: Props){
                }
           } catch (e){
                toast.error("Failed to stop the scan");
-               console.error(e)
+               console.error(e);
+               navigate("/scan");
           }
      }
      const percentage = useMemo(()=>totalFiles>0 ? Math.min(100,Math.floor((scannedFiles/totalFiles)*100)) : 0,[scannedFiles,totalFiles]);

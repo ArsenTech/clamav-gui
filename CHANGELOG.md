@@ -7,12 +7,15 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [1.0.0-2] - 2026-02-08 (v1 Beta #2)
 ### Added
 - Danger Zone Settings
+- Error Message when the scan failed to start
 ### Changed
 - Organized some files and Updated Imports
 - Optimized some parts of the Frontend
 ### Improved
 - The `clamscan` resolving function
 - The `check_availability()` command
+### Removed
+- Notification Audio Support (Failed to play a sound)
 
 ## [1.0.0-1] - 2026-02-07 (v1 Beta #1)
 ### Added

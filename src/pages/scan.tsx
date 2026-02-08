@@ -17,7 +17,6 @@ import { useSettings } from "@/context/settings";
 import { sendNotification } from "@tauri-apps/plugin-notification";
 import { hydrateProfile } from "@/lib/helpers/scan";
 import { capitalizeText } from "@/lib/helpers/formating";
-import { resolveResource } from "@tauri-apps/api/path";
 import { useBackendSettings } from "@/hooks/use-settings";
 import { ScanProfileId, ScanProfileValues } from "@/lib/types/settings";
 import { mapScanSettingsToArgs, validateScanSettings } from "@/lib/helpers/scan";
@@ -54,12 +53,22 @@ export default function ScanPage(){
                await invoke(scanCommand,{
                     ...payload,
                     args: scanOptions ? mapScanSettingsToArgs(validateScanSettings(scanOptions)): null
-               }).catch(() => {
-                    throw new Error("Scan command not found");
+               }).catch((err) => {
+                    console.error("Scan command not found")
+                    throw new Error(err);
                })
           } catch (e){
                toast.error("Failed to start the scan");
-               console.error(e)
+               if (!scanActiveRef.current) return;
+               scanStartedRef.current = false;
+               scanActiveRef.current = false;
+               setState({
+                    isFinished: true,
+                    errMsg: String(e),
+                    duration: startTimeRef.current ? Math.floor((Date.now() - startTimeRef.current)/1000) : 0,
+                    exitCode: -1
+               })
+               startTimeRef.current = null;
           }
      }
      useEffect(() => {
@@ -137,11 +146,6 @@ export default function ScanPage(){
      useEffect(()=>{
           if(!scanState.isFinished) return;
           if(settings.notifOnScanFinish){
-               resolveResource("resources/sounds/scan-finish.wav").then(path=>new Audio(path).play())
-               .catch((err)=>{
-                    toast.error("Failed to play a sound");
-                    console.error(err)
-               })
                sendNotification({
                     title: "Scan Finished",
                     body: !scanState.errMsg ? `${scanState.threats.length<=0 ? "No": scanState.threats.length} threat${scanState.threats.length===1 ? "" : "s"} were found.` : "Scan Finished with Errors"
@@ -159,11 +163,6 @@ export default function ScanPage(){
           handleStartScan()
           setState({ duration: 0, exitCode: 0, errMsg: undefined });
           if(settings.notifOnScanStart){
-               resolveResource("resources/sounds/scan-start.wav").then(path=>new Audio(path).play())
-               .catch((err)=>{
-                    toast.error("Failed to play a sound");
-                    console.error(err)
-               })
                sendNotification({
                     title: "Scan Started!",
                     body: `The ${capitalizeText(scanType)} Scan has been started`
