@@ -29,12 +29,12 @@ export interface IThreatsData{
      status: ThreatStatus,
      detectedAt: Date
 }
-export interface IQuarantineData<T extends DataType>{
+export interface IQuarantineData{
      id: string,
      threat_name: string,
      file_path: string,
      quarantined_at: Date,
-     size: T extends "state" ? string | null : number
+     size: number
 }
 export type ISchedulerData<T extends DataType> = (T extends "type" ? {
      scan_type: ScanType,

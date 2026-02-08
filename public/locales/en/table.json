@@ -26,6 +26,10 @@
                "path": "Path",
                "detected-at": "Detected At"
           },
+          "quarantine": {
+               "quarantined-at": "Quarantined At",
+               "size": "Size"
+          },
           "status": "Status",
           "actions": "Actions"
      },
@@ -35,7 +39,8 @@
                "quarantine": "Quarantine",
                "delete": "Delete permanently",
                "open": "Open Containing Folder"
-          }
+          },
+          "restore": "Restore"
      },
      "status": {
           "threats": {

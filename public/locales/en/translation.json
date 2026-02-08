@@ -14,5 +14,12 @@
           "million": "M",
           "billion": "B",
           "trillion": "T"
+     },
+     "size-suffix": {
+          "byte": "Bytes",
+          "kb": "KB",
+          "mb": "MB",
+          "gb": "GB",
+          "tb": "TB"
      }
 }

@@ -1,0 +1,30 @@
+{
+     "title": "Quarantine",
+     "no-threats": {
+          "title": "No Quarantined Threats",
+          "desc": "Your system is clean and lookin' good!"
+     },
+     "confirmation": {
+          "title": {
+               "restore": "This will restore the file from quarantine.",
+               "delete": "Are you sure to delete this file permanently?",
+               "bulk-restore": "This will restore all quarantined threats.",
+               "bulk-delete": "Are you sure to delete all quarantined threats?"
+          },
+          "desc": {
+               "action-undone": "The process can't be undone.",
+               "continue": "Continue?"
+          },
+          "delete": "Delete",
+          "restore": "Restore",
+          "cancel": "Cancel"
+     },
+     "bulk-actions": {
+          "refresh": {
+               "original": "Refresh",
+               "loading": "Refreshing..."
+          },
+          "clear": "Clear All",
+          "restore": "Restore All"
+     }
+}

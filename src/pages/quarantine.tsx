@@ -9,10 +9,10 @@ import { IQuarantineState } from "@/lib/types/states";
 import { INITIAL_QUARANTINE_STATE } from "@/lib/constants/states";
 import QuarantineLoader from "@/loaders/quarantine";
 import { IQuarantineData } from "@/lib/types/data";
-import { formatBytes } from "@/lib/helpers/formating";
 import { useSettings } from "@/context/settings";
 import { GET_QUARANTINE_COLS } from "@/components/data-table/columns/quarantine";
 import { QuarantineAction } from "@/lib/types";
+import { useTranslation } from "react-i18next";
 const QuarantineTable = lazy(()=>import("@/contents/quarantine"))
 
 export default function QuarantinePage(){
@@ -20,13 +20,13 @@ export default function QuarantinePage(){
      const [quarantineState, setQuarantineState] = useState<IQuarantineState>(INITIAL_QUARANTINE_STATE);
      const [isRefreshing, startTransition] = useTransition();
      const fetchData = () => {
-          startTransition(()=>invoke<IQuarantineData<"type">[]>("list_quarantine").then(data=>{
-               const newData: IQuarantineData<"state">[] = data.map(({id,threat_name,file_path,quarantined_at,size})=>({
+          startTransition(()=>invoke<IQuarantineData[]>("list_quarantine").then(data=>{
+               const newData: IQuarantineData[] = data.map(({id,threat_name,file_path,quarantined_at,size})=>({
                     id,
                     threat_name,
                     file_path,
                     quarantined_at: new Date(quarantined_at),
-                    size: isNaN(size) ? null : formatBytes(size)
+                    size: isNaN(size) ? 0 : size
                }))
                setState({ data: newData });
           }).catch(() => setState({ data: [] })));
@@ -73,10 +73,11 @@ export default function QuarantinePage(){
           }
      }
      const {isOpenDelete, isOpenRestore, bulkDelete, bulkRestore, data} = quarantineState
-     const isNotEmpty = useMemo(()=>data.length>0,[data])
+     const isNotEmpty = useMemo(()=>data.length>0,[data]);
+     const {t} = useTranslation("quarantine")
      return (
           <AppLayout className="flex justify-center items-center gap-4 flex-col p-4">
-               <h1 className="text-2xl md:text-3xl lg:text-4xl font-medium border-b pb-2 w-fit">Quarantine</h1>
+               <h1 className="text-2xl md:text-3xl lg:text-4xl font-medium border-b pb-2 w-fit">{t("title")}</h1>
                {isNotEmpty ? (
                     <Suspense fallback={<QuarantineLoader rows={data.slice(0,10).length}/>}>
                          <QuarantineTable
@@ -94,44 +95,47 @@ export default function QuarantinePage(){
                               <EmptyMedia variant="icon">
                                    <ShieldCheck/>
                               </EmptyMedia>
-                              <EmptyTitle>No Quarantined Threats</EmptyTitle>
-                              <EmptyDescription>Your system is clean and Lookin' Good!</EmptyDescription>
+                              <EmptyTitle>{t("no-threats.title")}</EmptyTitle>
+                              <EmptyDescription>{t("no-threats.desc")}</EmptyDescription>
                          </EmptyHeader>
                     </Empty>
                )}
                <Popup
                     open={isOpenRestore}
                     onOpen={isOpenRestore=>setState({isOpenRestore})}
-                    title="Are you sure to restore this file from quarantine?"
-                    submitTxt="Restore"
-                    closeText="Cancel"
+                    title={t("confirmation.title.restore")}
+                    description={t("confirmation.desc.continue")}
+                    submitTxt={t("confirmation.restore")}
+                    closeText={t("confirmation.cancel")}
                     submitEvent={()=>quarantineAction("restore")}
                />
                <Popup
                     open={isOpenDelete}
                     onOpen={isOpenDelete=>setState({isOpenDelete})}
-                    title="Are you sure to delete this file permanently?"
-                    description="The process can't be undone."
-                    submitTxt="Delete"
-                    closeText="Cancel"
+                    title={t("confirmation.title.delete")}
+                    description={t("confirmation.desc.action-undone")}
+                    submitTxt={t("confirmation.delete")}
+                    type="danger"
+                    closeText={t("confirmation.cancel")}
                     submitEvent={()=>quarantineAction("delete")}
                />
                <Popup
                     open={bulkDelete}
                     onOpen={bulkDelete=>setState({bulkDelete})}
-                    title="This will permanently delete all quarantined threats."
-                    description="Continue?"
-                    submitTxt="Delete"
-                    closeText="Cancel"
+                    title={t("confirmation.title.bulk-delete")}
+                    description={t("confirmation.desc.action-undone")}
+                    submitTxt={t("confirmation.delete")}
+                    type="danger"
+                    closeText={t("confirmation.cancel")}
                     submitEvent={()=>bulkAction("delete")}
                />
                <Popup
                     open={bulkRestore}
                     onOpen={bulkRestore=>setState({bulkRestore})}
-                    title="This will restore all quarantined threats."
-                    description="Continue?"
-                    submitTxt="Restore"
-                    closeText="Cancel"
+                    title={t("confirmation.title.bulk-restore")}
+                    description={t("confirmation.desc.continue")}
+                    submitTxt={t("confirmation.restore")}
+                    closeText={t("confirmation.cancel")}
                     submitEvent={()=>bulkAction("restore")}
                />
           </AppLayout>

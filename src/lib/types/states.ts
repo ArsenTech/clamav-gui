@@ -48,7 +48,7 @@ export interface IQuarantineState{
      isOpenRestore: boolean,
      isOpenDelete: boolean,
      id: string,
-     data: IQuarantineData<"state">[]
+     data: IQuarantineData[]
 }
 export interface ISchedulerState{
      isOpenDelete: boolean,
