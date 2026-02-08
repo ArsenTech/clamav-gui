@@ -14,6 +14,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Improved
 - The `clamscan` resolving function
 - The `check_availability()` command
+- The Exit code logic inside `run_scan()`
 ### Removed
 - Notification Audio Support (Failed to play a sound)
 

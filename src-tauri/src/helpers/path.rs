@@ -34,9 +34,6 @@ pub fn path_to_regex(path: &str) -> String {
 
 pub fn get_clamav_path() -> Result<PathBuf,String>{
     if let Ok(clamscan) = resolve_command("clamscan"){
-        #[cfg(debug_assertions)]
-        println!("Using clamscan: {}",clamscan.display().to_string());
-
         return Ok(clamscan);
     };
     Err("ClamAV not found. Please install ClamAV and ensure clamscan is available in PATH.".into())
