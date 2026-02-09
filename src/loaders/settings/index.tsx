@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import GeneralSettingsLoader from "./general";
-import { SettingsTab } from "@/lib/types";
+import { SettingsTab } from "@/lib/types/enums";
 import ScanSettingsLoader from "./scan";
 import AdvancedSettingsLoader from "./advanced";
 import UpdateSettingsLoader from "./update";

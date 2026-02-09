@@ -1,0 +1,67 @@
+{
+     "title": "Settings",
+     "scan-profile": {
+          "title": "Active Scan Profile",
+          "main": "Main Scan",
+          "custom": "Custom Scan",
+          "file": "File Scan"
+     },
+     "tabs": {
+          "general": "General",
+          "advanced": "Advanced",
+          "scan": "Scan",
+          "update": "Update"
+     },
+     "appearance": {
+          "title": "Appearance",
+          "theme": {
+               "title": "Theme",
+               "system": "System",
+               "light": "Light",
+               "dark": "Dark"
+          },
+          "color": {
+               "title": "Color",
+               "blue": "Blue",
+               "green": "Green",
+               "rose": "Rose"
+          }
+     },
+     "date-format": {
+          "title": "Date Format",
+          "us": {
+               "title": "American",
+               "format": "mm/dd/yyyy hh:mm:ss"
+          },
+          "eu": {
+               "title": "European",
+               "format": "dd/mm/yyyy hh:mm:ss"
+          },
+          "iso": {
+               "title": "International",
+               "format": "yyyy-mm-dd hh:mm:ss"
+          }
+     },
+     "ui": {
+          "title": "User Interface",
+          "scheduler-ui": {
+               "title": "Enable Scheduler UI",
+               "desc": "Gives you an access to the Scheduler page"
+          },
+          "language": {
+               "title": "Language",
+               "desc": "The Language of the ClamAV GUI"
+          }
+     },
+     "notifs": {
+          "title": "Notifications",
+          "scan-start": {
+               "title": "On Scan Start",
+               "desc": "Notifies once the scan has been started"
+          },
+          "scan-finish": {
+               "title": "On Scan Finish",
+               "desc": "Notifies once the scan has been finished"
+          }
+     }
+}

@@ -35,3 +35,14 @@ export enum LogCategory{
      RealTime = "realtime",
      Scheduler = "scheduler"
 }
+export enum SettingsTab {
+     General = "general",
+     Advanced = "advanced",
+     Scan = "scan",
+     Update = "update"
+}
+export enum DateFormatType{
+     American = "us",
+     European = "eu",
+     International = "iso"
+}

@@ -1,7 +1,7 @@
 import { AppLayout } from "@/components/layout";
 import { lazy, Suspense, useMemo } from "react";
 import SettingsLoader from "@/loaders/settings";
-import { SettingsTab } from "@/lib/types";
+import { SettingsTab } from "@/lib/types/enums";
 const SettingsContent = lazy(()=>import("@/contents/settings"))
 
 export default function SettingsPage(){

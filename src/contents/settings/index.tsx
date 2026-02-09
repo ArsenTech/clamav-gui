@@ -3,27 +3,31 @@ import { Suspense, useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { SETTINGS_TABS } from "@/lib/constants/settings/tabs";
 import { useSearchParams } from "react-router";
-import { SettingsTab } from "@/lib/types";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ScanProfileId } from "@/lib/types/settings";
 import { Search, FolderSearch, FileSearch } from "lucide-react";
 import { useSettings } from "@/context/settings";
+import { useTranslation } from "react-i18next";
+import { SettingsTab } from "@/lib/types/enums";
 
 export default function SettingsContent(){
      const [searchParams] = useSearchParams();
      const {settings, setSettings} = useSettings();
-     const [tab, setTab] = useState(()=>searchParams.get("tab") ?? (localStorage.getItem("settings-tab") || "general"));
+     const [tab, setTab] = useState(()=>searchParams.get("tab") ?? (localStorage.getItem("settings-tab") || SettingsTab.General));
      const changeTab = (tab: SettingsTab) => {
           setTab(tab);
           localStorage.setItem("settings-tab",tab)
      }
+     const {t} = useTranslation("settings")
      return (
           <>
           <h1 className="inline-flex justify-between items-center gap-2 w-full">
-               <span className="text-2xl md:text-3xl lg:text-4xl font-medium border-b pb-2 w-fit inline-block">Settings</span>
+               <span className="text-2xl md:text-3xl lg:text-4xl font-medium border-b pb-2 w-fit inline-block">
+                    {t("title")}
+               </span>
                <div className="flex items-center gap-3">
-                    <Label>Active Scan Profile</Label>
+                    <Label>{t("scan-profile.title")}</Label>
                     <Select
                          value={settings.currScanProfile || "custom"}
                          onValueChange={v=>setSettings({currScanProfile: v as ScanProfileId})}
@@ -32,18 +36,28 @@ export default function SettingsContent(){
                               <SelectValue />
                          </SelectTrigger>
                          <SelectContent>
-                              <SelectItem value="main"><Search/> Main Scan</SelectItem>
-                              <SelectItem value="custom"><FolderSearch/> Custom Scan</SelectItem>
-                              <SelectItem value="file"><FileSearch/> File Scan</SelectItem>
+                              <SelectItem value="main">
+                                   <Search/>
+                                   {t("scan-profile.main")}
+                              </SelectItem>
+                              <SelectItem value="custom">
+                                   <FolderSearch/>
+                                   {t("scan-profile.custom")}
+                              </SelectItem>
+                              <SelectItem value="file">
+                                   <FileSearch/>
+                                   {t("scan-profile.file")}
+                              </SelectItem>
                          </SelectContent>
                     </Select>
                </div>
           </h1>
           <Tabs onValueChange={tab=>changeTab(tab as SettingsTab)} defaultValue={tab} className="w-full">
                <TabsList className="w-full">
-                    {SETTINGS_TABS.map(({name,page,Icon})=>(
+                    {SETTINGS_TABS.map(({page,Icon})=>(
                          <TabsTrigger key={page} value={page}>
-                              <Icon/> {name}
+                              <Icon/>
+                              {t(`tabs.${page}`)}
                          </TabsTrigger>
                     ))}
                </TabsList>

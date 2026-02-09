@@ -1,5 +1,6 @@
 import { Files, Folder, Monitor, Moon, Sun, Gauge, ChevronsLeftRightEllipsis, ShieldCheck, SearchCode, LucideProps } from "lucide-react";
 import { BackendSettings, IDateFormatSettings, ISettings, IThemeSettings, ScanOptionGroup } from "@/lib/types/settings";
+import { DateFormatType } from "@/lib/types/enums";
 
 export const SCAN_OPTION_TITLE: Record<ScanOptionGroup,{
      title: string,
@@ -67,17 +68,14 @@ export const THEME_SETTINGS: IThemeSettings = {
      theme: [
           {
                Icon: Monitor,
-               name: "System",
                theme: "system"
           },
           {
                Icon: Sun,
-               name: "Light",
                theme: "light"
           },
           {
                Icon: Moon,
-               name: "Dark",
                theme: "dark"
           }
      ],
@@ -101,15 +99,15 @@ export const THEME_SETTINGS: IThemeSettings = {
 }
 export const DATE_TIME_FORMATS: IDateFormatSettings[] = [
      {
-          name: "European",
-          format: "dd/MM/yyyy HH:mm:ss"
-     },
-     {
-          name: "American",
+          type: DateFormatType.American,
           format: "MM/dd/yyyy HH:mm:ss"
      },
      {
-          name: "International",
+          type: DateFormatType.European,
+          format: "dd/MM/yyyy HH:mm:ss"
+     },
+     {
+          type: DateFormatType.International,
           format: "yyyy-MM-dd HH:mm:ss"
      }
 ]

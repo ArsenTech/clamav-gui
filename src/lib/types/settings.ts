@@ -2,6 +2,7 @@ import { LucideProps } from "lucide-react";
 import { ScanType, SchedulerType } from ".";
 import { COLORS } from "../constants/colors";
 import { SCAN_SETTINGS } from "../constants/settings/scan-options";
+import { DateFormatType } from "./enums";
 
 export type ScanOptionGroup = "detection" | "file-types" | "filesystem" | "limits-performance" | "output" | "advanced"
 export type DateFormat = "dd/MM/yyyy HH:mm:ss" | "MM/dd/yyyy HH:mm:ss" | "yyyy-MM-dd HH:mm:ss"
@@ -36,7 +37,6 @@ export type Color = keyof typeof COLORS;
 export interface IThemeSettings{
      theme: {
           Icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>,
-          name: string,
           theme: Theme
      }[],
      color: {
@@ -46,7 +46,7 @@ export interface IThemeSettings{
      }[]
 }
 export interface IDateFormatSettings{
-     name: string,
+     type: DateFormatType
      format: DateFormat
 }
 export interface ISettings{

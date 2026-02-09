@@ -9,7 +9,7 @@ i18next.use(LanguageDetector).use(initReactI18next).use(Backend).init({
      fallbackLng: "en",
      supportedLngs: languageOptions.map(val=>val.code),
      interpolation: {
-          escapeValue: false, // React already does escaping
+          escapeValue: false,
      },
      backend: {
           loadPath: '/locales/{{lng}}/{{ns}}.json',
