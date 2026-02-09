@@ -11,15 +11,18 @@ import { NoData } from "@/components/charts/no-data"
 import { Suspense, lazy } from "react"
 const ThreatsChart = lazy(()=>import("@/components/charts/threats"))
 
-export function ThreatsStats({data}: ChartProps<IThreatStatusStat[]>) {
+export function ThreatsStats({data,t}: ChartProps<IThreatStatusStat[]>) {
   return (
     <Card className="flex flex-col w-full">
       <CardHeader className="items-center pb-0">
-        <CardTitle className="flex items-center gap-2"><Bug className="size-5"/> Threat Status Overview</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <Bug className="size-5"/>
+          {t("threats.title")}
+        </CardTitle>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
-        <Suspense fallback={<NoData label="Loading..."/>}>
-          <ThreatsChart data={data}/>
+        <Suspense fallback={<NoData label={t("loading")}/>}>
+          <ThreatsChart data={data} t={t}/>
         </Suspense>
       </CardContent>
     </Card>

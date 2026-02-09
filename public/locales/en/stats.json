@@ -1,0 +1,70 @@
+{
+     "title": "Statistics",
+     "refresh": {
+          "original": "Refresh Antivirus Stats",
+          "loading": "Refreshing..."
+     },
+     "device-info": {
+          "title": "Device Information",
+          "os": "Operating System:",
+          "host-name": "Host Name:"
+     },
+     "loading": "Loading...",
+     "no-data": "No Data Yet",
+     "date": {
+          "last-30-secs": "Last 30 Seconds",
+          "last-6-months": "Last 6 months"
+     },
+     "disk": {
+          "title": "Hard Drive",
+          "desc": "The Hard Drive I/O",
+          "read-stat": "Read: {{read}}/s",
+          "write-stat": "Write: {{write}}/s",
+          "labels": {
+               "read": "Read Speed",
+               "write": "Write Speed"
+          }
+     },
+     "ram": {
+          "title": "Memory",
+          "desc": "The Current RAM usage",
+          "stat": "{{total}} ({{used}} Used)",
+          "usage": "Usage (%):"
+     },
+     "cpu": {
+          "title": "CPU Activity",
+          "desc": "The Current CPU Activiry Based on the Base Frequency",
+          "speed-stat": "Speed: {{freq}} GHz",
+          "util-stat": "Utilization: {{util}}%",
+          "utilization": "Utilization (%):"
+     },
+     "stat-label": "Threats",
+     "threats": {
+          "title": "Threat Status Overview",
+          "quarantined": "Quarantined",
+          "skipped": "Skipped",
+          "deleted": "Cleaned",
+          "unresolved": "Unresolved"
+     },
+     "virus-types": {
+          "title": "Threats by Malware Type",
+          "trojan": "Trojan",
+          "ransomware": "Ransomware",
+          "spyware": "Spyware",
+          "rootkit": "Rootkit",
+          "other": "Other"
+     },
+     "scan": {
+          "title": "Threats by Scan Type",
+          "main": "Main Scan",
+          "full": "Full Scan",
+          "custom": "Custom Scan",
+          "file": "File Scan",
+          "real-time": "Real-Time Scan"
+     },
+     "activity": {
+          "title": "Scan Activity",
+          "unresolved": "Unresolved",
+          "resolved": "Resolved"
+     }
+}

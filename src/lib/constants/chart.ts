@@ -1,114 +1,115 @@
 import { ChartConfig } from "@/components/ui/chart";
+import { TFunction } from "i18next";
 import { Bug, BugOff } from "lucide-react";
 
-export const VIRUS_TYPE_CONFIG = {
+export const GET_VIRUS_TYPE_CONFIG = (t: TFunction<"stats">) => ({
   threats: {
-    label: "Threats",
+    label: t("stat-label"),
   },
   trojan: {
-    label: "Trojan",
+    label: t("virus-types.trojan"),
     color: "var(--chart-1)",
   },
   ransomware: {
-    label: "Ransomware",
+    label: t("virus-types.ransomware"),
     color: "var(--chart-2)",
   },
   spyware: {
-    label: "Spyware",
+    label: t("virus-types.spyware"),
     color: "var(--chart-3)",
   },
   rootkit: {
-    label: "Rootkit",
+    label: t("virus-types.rootkit"),
     color: "var(--chart-4)",
   },
   other: {
-    label: "Other",
+    label: t("virus-types.other"),
     color: "var(--chart-5)",
   },
-} satisfies ChartConfig
+}) satisfies ChartConfig
 
-export const THREAT_STATUS_CONFIG = {
+export const GET_THREAT_STATUS_CONFIG = (t: TFunction<"stats">) => ({
   threats: {
-    label: "threats",
+    label: t("stat-label"),
   },
   quarantined: {
-    label: "Quarantined",
+    label: t("threats.quarantined"),
     color: "var(--chart-1)",
   },
   skipped: {
-    label: "Skipped",
+    label: t("threats.skipped"),
     color: "var(--chart-2)",
   },
   deleted: {
-    label: "Cleaned",
+    label: t("threats.deleted"),
     color: "var(--chart-3)",
   },
   unresolved: {
-    label: "Unresolved",
+    label: t("threats.unresolved"),
     color: "var(--destructive)",
   },
-} satisfies ChartConfig
+}) satisfies ChartConfig
 
-export const SCAN_TYPE_CONFIG = {
+export const GET_SCAN_TYPE_CONFIG = (t: TFunction<"stats">) => ({
   threats: {
-    label: "Threats",
+    label: t("stat-label"),
   },
   main: {
-    label: "Main Scan",
+    label: t("scan.main"),
     color: "var(--chart-1)",
   },
   full: {
-    label: "Full Scan",
+    label: t("scan.full"),
     color: "var(--chart-2)",
   },
   custom: {
-    label: "Custom Scan",
+    label: t("scan.custom"),
     color: "var(--chart-3)",
   },
   file: {
-    label: "File Scan",
+    label: t("scan.file"),
     color: "var(--chart-4)",
   },
   realtime: {
-    label: "Real-Time Scan",
+    label: t("scan.real-time"),
     color: "var(--chart-5)",
   },
-} satisfies ChartConfig
+}) satisfies ChartConfig
 
-export const RAM_USAGE_CONFIG = {
+export const GET_RAM_USAGE_CONFIG = (t: TFunction<"stats">) => ({
   usage: {
-    label: "Usage (%): ",
+    label: t("ram.usage"),
     color: "oklch(0.723 0.219 149.579)",
   },
-} satisfies ChartConfig;
+}) satisfies ChartConfig;
 
-export const DISK_USAGE_CONFIG = {
+export const GET_DISK_USAGE_CONFIG = (t: TFunction<"stats">) => ({
   read: {
-    label: "Read Speed",
+    label: t("disk.labels.read"),
     color: "oklch(0.81 0.117 11.638)",
   },
   write: {
-    label: "Write Speed",
+    label: t("disk.labels.write"),
     color: "oklch(0.645 0.246 16.439)",
   },
-} satisfies ChartConfig;
+}) satisfies ChartConfig;
 
-export const CPU_STATS_CONFIG = {
+export const GET_CPU_STATS_CONFIG = (t: TFunction<"stats">) => ({
   util: {
-    label: "Utilization (%): ",
+    label: t("cpu.utilization"),
     color: "oklch(0.623 0.214 259.815)",
   },
-} satisfies ChartConfig;
+}) satisfies ChartConfig;
 
-export const ACTIVITY_STATS_CONFIG = {
+export const GET_ACTIVITY_STATS_CONFIG = (t: TFunction<"stats">) => ({
   unresolved: {
-    label: "Unresolved",
+    label: t("activity.unresolved"),
     color: "var(--destructive)",
     icon: Bug,
   },
   resolved: {
-    label: "Resolved",
+    label: t("activity.resolved"),
     color: "oklch(0.723 0.219 149.579)",
     icon: BugOff,
   },
-} satisfies ChartConfig
+}) satisfies ChartConfig

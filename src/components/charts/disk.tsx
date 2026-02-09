@@ -4,14 +4,12 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { DISK_USAGE_CONFIG } from "@/lib/constants/chart";
+import { GET_DISK_USAGE_CONFIG } from "@/lib/constants/chart";
+import { ChartProps } from "@/lib/types/props";
 
-interface ChartProps{
-  data: {read: number; write: number }[]
-}
-export default function DiskChart({data}: ChartProps) {
+export default function DiskChart({data,t}: ChartProps<{read: number; write: number }[]>) {
   return (
-    <ChartContainer config={DISK_USAGE_CONFIG}>
+    <ChartContainer config={GET_DISK_USAGE_CONFIG(t)}>
       <AreaChart
         accessibilityLayer
         data={data}

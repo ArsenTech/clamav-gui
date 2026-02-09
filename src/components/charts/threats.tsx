@@ -5,18 +5,18 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-import { THREAT_STATUS_CONFIG } from "@/lib/constants/chart"
+import { GET_THREAT_STATUS_CONFIG } from "@/lib/constants/chart"
 import { IThreatStatusStat } from "@/lib/types/stats"
 import { ChartProps } from "@/lib/types/props"
 import { NoData } from "./no-data"
 
-export default function ThreatsChart({data}: ChartProps<IThreatStatusStat[]>) {
+export default function ThreatsChart({data,t}: ChartProps<IThreatStatusStat[]>) {
   const totalThreats = React.useMemo(() => data.reduce((acc, curr) => acc + curr.threats, 0), [data])
   return (!data.length || totalThreats===0) ? (
-    <NoData/>
+    <NoData label={t("no-data")}/>
   ) : (
     <ChartContainer
-      config={THREAT_STATUS_CONFIG}
+      config={GET_THREAT_STATUS_CONFIG(t)}
       className="mx-auto aspect-square max-h-[300px]"
     >
       <PieChart>

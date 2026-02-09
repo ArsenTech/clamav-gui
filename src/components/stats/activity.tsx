@@ -12,16 +12,19 @@ import { NoData } from "@/components/charts/no-data"
 import { Suspense, lazy  } from "react"
 const ActivityChart = lazy(()=>import("@/components/charts/activity"))
 
-export function ScanActivity({data}: ChartProps<IActivityStat[]>) {
+export function ScanActivity({data,t}: ChartProps<IActivityStat[]>) {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2"><LineChart className="size-5"/> Scan Activity</CardTitle>
-        <CardDescription>Last 6 months</CardDescription>
+        <CardTitle className="flex items-center gap-2">
+          <LineChart className="size-5"/>
+          {t("activity.title")}
+        </CardTitle>
+        <CardDescription>{t("date.last-6-months")}</CardDescription>
       </CardHeader>
       <CardContent>
-        <Suspense fallback={<NoData label="Loading..."/>}>
-          <ActivityChart data={data}/>
+        <Suspense fallback={<NoData label={t("loading")}/>}>
+          <ActivityChart data={data} t={t}/>
         </Suspense>
       </CardContent>
     </Card>

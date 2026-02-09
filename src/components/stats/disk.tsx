@@ -11,9 +11,11 @@ import { Suspense, useEffect, useRef, useState, lazy } from "react";
 import { useSystemStats } from "@/hooks/use-stats";
 import { formatBytes } from "@/lib/helpers/formating";
 import { NoData } from "@/components/charts/no-data";
+import { useTranslation } from "react-i18next";
+import { RealTimeChartProps } from "@/lib/types/props";
 const DiskChart = lazy(()=>import("@/components/charts/disk"));
 
-export function DiskStats() {
+export function DiskStats({t}: RealTimeChartProps) {
   const prevRef = useRef<{
     read: number;
     write: number;
@@ -52,17 +54,19 @@ export function DiskStats() {
       write: Math.max(0, writeDelta),
     }));
   }, [disk]);
+  const {t: mainTxt} = useTranslation();
   return (
     <Card className="w-full">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <HardDrive /> Hard Drive
+          <HardDrive />
+          {t("disk.title")}
         </CardTitle>
-        <CardDescription>The Hard Drive I/O</CardDescription>
+        <CardDescription>{t("disk.desc")}</CardDescription>
       </CardHeader>
       <CardContent>
-        <Suspense fallback={<NoData label="Loading..."/>}>
-          <DiskChart data={data}/>
+        <Suspense fallback={<NoData label={t("loading")}/>}>
+          <DiskChart data={data} t={t}/>
         </Suspense>
       </CardContent>
       <CardFooter>
@@ -71,15 +75,19 @@ export function DiskStats() {
             <div className="text-base md:text-lg font-semibold flex items-center gap-0.5 leading-none">
               <span className="flex items-center gap-2">
                 <GaugeCircle />
-                Read: {formatBytes(currStats.read)}/s
+                {t("disk.read-stat",{
+                  read: formatBytes(currStats.read,mainTxt)
+                })}
               </span>
               <Dot />
               <span className="flex items-center gap-2">
-                Write: {formatBytes(currStats.write)}/s
+                {t("disk.write-stat",{
+                  write: formatBytes(currStats.write,mainTxt)
+                })}
               </span>
             </div>
             <div className="text-muted-foreground flex items-center gap-2 leading-none">
-              Last 30 Seconds
+              {t("date.last-30-secs")}
             </div>
           </div>
         </div>

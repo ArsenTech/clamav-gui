@@ -1,5 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { ScanProfileId } from "./settings"
+import { TFunction } from "i18next"
 
 export interface TableLoaderProps{
      rows: number
@@ -7,8 +8,11 @@ export interface TableLoaderProps{
 export interface SettingsProps{
      scanProfile: ScanProfileId
 }
-export interface ChartProps<T>{
-     data: T
+export interface RealTimeChartProps{
+     t: TFunction<"stats">
+}
+export interface ChartProps<T> extends RealTimeChartProps{
+     data: T,
 }
 export interface DataTableProps<TData> {
      columns: ColumnDef<TData>[]

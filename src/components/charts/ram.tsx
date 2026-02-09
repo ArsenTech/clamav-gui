@@ -4,14 +4,12 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { RAM_USAGE_CONFIG } from "@/lib/constants/chart";
+import { GET_RAM_USAGE_CONFIG } from "@/lib/constants/chart";
+import { ChartProps } from "@/lib/types/props";
 
-interface ChartProps{
-  data: { usage: number }[]
-}
-export default function RAMChart({data}: ChartProps) {
+export default function RAMChart({data,t}: ChartProps<{ usage: number }[]>) {
   return (
-    <ChartContainer config={RAM_USAGE_CONFIG}>
+    <ChartContainer config={GET_RAM_USAGE_CONFIG(t)}>
       <AreaChart
         accessibilityLayer
         data={data}

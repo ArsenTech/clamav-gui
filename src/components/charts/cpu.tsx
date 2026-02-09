@@ -4,14 +4,12 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { CPU_STATS_CONFIG } from "@/lib/constants/chart";
+import { GET_CPU_STATS_CONFIG } from "@/lib/constants/chart";
+import { ChartProps } from "@/lib/types/props";
 
-interface ChartProps{
-  data: { util: number }[]
-}
-export default function CPUChart({data}: ChartProps) {
+export default function CPUChart({data,t}: ChartProps<{ util: number }[]>) {
   return (
-  <ChartContainer config={CPU_STATS_CONFIG}>
+  <ChartContainer config={GET_CPU_STATS_CONFIG(t)}>
     <AreaChart
       accessibilityLayer
       data={data}

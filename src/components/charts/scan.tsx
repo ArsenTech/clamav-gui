@@ -4,16 +4,17 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-import { SCAN_TYPE_CONFIG } from "@/lib/constants/chart"
+import { GET_SCAN_TYPE_CONFIG } from "@/lib/constants/chart"
 import { IScanTypeStat } from "@/lib/types/stats"
 import { ChartProps } from "@/lib/types/props"
 import { NoData } from "./no-data"
 
-export default function ScanChart({data}: ChartProps<IScanTypeStat[]>) {
+export default function ScanChart({data,t}: ChartProps<IScanTypeStat[]>) {
+  const config = GET_SCAN_TYPE_CONFIG(t)
   return !data.length ? (
-    <NoData/>
+    <NoData label={t("no-data")}/>
   ) : (
-    <ChartContainer config={SCAN_TYPE_CONFIG}>
+    <ChartContainer config={config}>
       <BarChart
         accessibilityLayer
         data={data}
@@ -25,7 +26,7 @@ export default function ScanChart({data}: ChartProps<IScanTypeStat[]>) {
           tickLine={false}
           tickMargin={2}
           axisLine={false}
-          tickFormatter={(value) =>SCAN_TYPE_CONFIG[value as keyof typeof SCAN_TYPE_CONFIG]?.label}
+          tickFormatter={(value) =>config[value as keyof typeof config]?.label}
         />
         <XAxis dataKey="threats" type="number" hide />
         <ChartTooltip

@@ -6,7 +6,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-import { ACTIVITY_STATS_CONFIG } from "@/lib/constants/chart"
+import { GET_ACTIVITY_STATS_CONFIG } from "@/lib/constants/chart"
 import { IActivityStat } from "@/lib/types/stats"
 import { ChartProps } from "@/lib/types/props"
 import { useMemo } from "react"
@@ -14,12 +14,12 @@ import { NoData } from "./no-data"
 
 const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
-export default function ActivityChart({data}: ChartProps<IActivityStat[]>) {
+export default function ActivityChart({data,t}: ChartProps<IActivityStat[]>) {
   const hasData = useMemo(()=>data.some(d => d.resolved > 0 || d.unresolved > 0),[data])
   return (!data.length || !hasData) ? (
-    <NoData/>
+    <NoData label={t("no-data")}/>
   ) : (
-    <ChartContainer config={ACTIVITY_STATS_CONFIG}>
+    <ChartContainer config={GET_ACTIVITY_STATS_CONFIG(t)}>
       <AreaChart
         accessibilityLayer
         data={data}
