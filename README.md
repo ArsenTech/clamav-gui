@@ -71,7 +71,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - **Notifications** - Be informed when the scan is started or finished, or a new threat has been detected
 - **System Tray** - Quick Access through some actions all by using a system tray
 
-### Coming Soon
+### Currently In Progress
 - [X] Finishing touches and optimization before v1
 - [ ] Translate the GUI into mentioned languages
 
