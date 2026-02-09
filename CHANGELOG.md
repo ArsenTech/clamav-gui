@@ -4,22 +4,29 @@ All notable changes of ArsenTech's ClamAV GUI will be documented here.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
-## 1.0.0 - Unreleased
-### Added Translations
-- Armenian (Հայերեն)
-- Russian (Русский)
-- English
-### Improved
-- Some Enums used in frontend
+## [1.0.0-3] - Unreleased (v1 Beta #3)
 
-## [1.0.0-2] - 2026-02-08 (v1 Beta #2)
+## [1.0.0-2] - 2026-02-09 (v1 Beta #2)
 ### Added
 - Danger Zone Settings
 - Error Message when the scan failed to start
 ### Changed
 - Organized some files and Updated Imports
 - Optimized some parts of the Frontend
+### Translated
+- Overview UI
+- Scan + Scan Menu UIs
+- Quarantine UI
+- History UI
+- Stats UI
+- Scheduler UI
+- Log Viewer UI
+### Added Translations
+- Armenian (Հայերեն)
+- Russian (Русский)
+- English
 ### Improved
+- Some Enums used in frontend
 - The `clamscan` resolving function
 - The `check_availability()` command
 - The Exit code logic inside `run_scan()`
@@ -200,6 +207,7 @@ This is the first pre-release of the ClamAV GUI. The backend functionality will 
 - The About Page
 - State-gated Layout (It'll show "Oops, No ClamAV found" if ClamAV isn't installed)
 
+[1.0.0-3]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.0-3
 [1.0.0-2]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.0-2
 [1.0.0-1]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.0-1
 [0.3.3]: https://github.com/ArsenTech/clamav-gui/releases/tag/v0.3.3
