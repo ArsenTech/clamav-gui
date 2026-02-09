@@ -14,6 +14,7 @@ export default function ScanFinishedContent({isStartup, handlePrimaryAction, sca
      const {errMsg,duration,exitCode} = scanState
      const hasErrors = useMemo(()=>!!errMsg && errMsg.trim()!=="",[errMsg])
      const {t} = useTranslation("scan");
+     const exitCodes = t("exit-code",{returnObjects: true})
      return (
           <>
                {hasErrors ? (
@@ -34,7 +35,7 @@ export default function ScanFinishedContent({isStartup, handlePrimaryAction, sca
                     {isStartup ? t("close") : t("back-to-overview")}
                </Button>
                <p className="text-muted-foreground">{t("exit-code-formatting",{
-                    msg: [0,1,2].includes(exitCode) ? t(`exit-code.${exitCode}`) : t("exit-code-fallback"),
+                    msg: exitCodes[exitCode] ?? t("exit-code-fallback"),
                     exitCode
                })}</p>
           </>

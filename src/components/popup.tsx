@@ -2,6 +2,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from "./ui/drawer";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "./ui/dialog";
 import { Button } from "./ui/button";
+import { DesignType } from "@/lib/types";
 
 interface Props{
      open: boolean,
@@ -13,7 +14,7 @@ interface Props{
      children?: React.ReactNode,
      closeText?: string
      hideButtons?: boolean,
-     type?: "default" | "danger"
+     type?: DesignType
 }
 export default function Popup({open, onOpen, title, description, submitTxt = "Submit", submitEvent, children, closeText = "Close", hideButtons=false, type="default"}: Props){
      const isMobile = useIsMobile();

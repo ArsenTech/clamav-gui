@@ -1,6 +1,6 @@
 import { Files, Folder, Monitor, Moon, Sun, Gauge, ChevronsLeftRightEllipsis, ShieldCheck, SearchCode, LucideProps } from "lucide-react";
-import { BackendSettings, IDateFormatSettings, ISettings, IThemeSettings, ScanOptionGroup } from "@/lib/types/settings";
-import { DateFormatType } from "@/lib/types/enums";
+import { BackendSettings, IDateFormatSettings, ISettings, IThemeSettings } from "@/lib/types/settings";
+import { DateFormatType, ScanProfiles, ScanOptionGroup, BehaviorMode } from "@/lib/types/enums";
 
 export const SCAN_OPTION_TITLE: Record<ScanOptionGroup,{
      title: string,
@@ -39,13 +39,13 @@ export const DEFAULT_SETTINGS: ISettings = {
      confirmStopScan: true,
      autoScrollText: true,
      maxLogLines: 500,
-     currScanProfile: "custom",
+     currScanProfile: ScanProfiles.Custom,
      realTime: true,
      enableSchedulerUI: true,
      notifOnScanStart: false,
      notifOnScanFinish: true,
      notifPermitted: false,
-     behavior: "balanced",
+     behavior: BehaviorMode.Balanced,
 }
 export const DEFAULT_BACKEND_SETTINGS: BackendSettings = {
      scanProfiles: {

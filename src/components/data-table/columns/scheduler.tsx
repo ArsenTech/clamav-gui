@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowDown, ArrowUp, ArrowUpDown, CalendarSearch, FileText, MoreHorizontal, ScrollText, Search, Trash2 } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { ScanType } from "@/lib/types";
+import { ScanType } from "@/lib/types/enums";
 import { IntervalType, ISchedulerData } from "@/lib/types/data";
 import { Badge } from "@/components/ui/badge";
 import { capitalizeText } from "@/lib/helpers/formating";
@@ -50,7 +50,7 @@ export const GET_SCHEDULER_COLS = (
                const scanInfo = SCAN_TYPES.find(item=>item.type===getValue() as ScanType);
                const {t} = useTranslation("scan");
                if(!scanInfo) return null;
-               return (
+               return scanInfo.type!==ScanType.None && (
                     <Badge variant="outline">
                          <scanInfo.Icon/>
                          {capitalizeText(t(`scan-type.${scanInfo.type}.name`))}

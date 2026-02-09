@@ -5,11 +5,10 @@ import { SETTINGS_TABS } from "@/lib/constants/settings/tabs";
 import { useSearchParams } from "react-router";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ScanProfileId } from "@/lib/types/settings";
 import { Search, FolderSearch, FileSearch } from "lucide-react";
 import { useSettings } from "@/context/settings";
 import { useTranslation } from "react-i18next";
-import { SettingsTab } from "@/lib/types/enums";
+import { SettingsTab, ScanProfiles } from "@/lib/types/enums";
 
 export default function SettingsContent(){
      const [searchParams] = useSearchParams();
@@ -30,7 +29,7 @@ export default function SettingsContent(){
                     <Label>{t("scan-profile.title")}</Label>
                     <Select
                          value={settings.currScanProfile || "custom"}
-                         onValueChange={v=>setSettings({currScanProfile: v as ScanProfileId})}
+                         onValueChange={v=>setSettings({currScanProfile: v as ScanProfiles})}
                     >
                          <SelectTrigger className="w-48">
                               <SelectValue />

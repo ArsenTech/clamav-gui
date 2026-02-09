@@ -1,5 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import { ScanType } from "@/lib/types";
+import { ScanType } from "@/lib/types/enums";
 
 interface Props{
      type: ScanType

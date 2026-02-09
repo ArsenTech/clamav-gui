@@ -1,4 +1,4 @@
-import { GUIUpdaterStatus } from "../types"
+import { GuiUpdaterStatus } from "../types/enums"
 import { HistoryClearType } from "../types/data"
 
 export const SCAN_EXIT_CODE_MSG: Record<number, string> = {
@@ -15,7 +15,7 @@ export const HISTORY_CLEAR_MSGS: Record<HistoryClearType,string> = {
      acknowledged: "Acknowledged Entries Cleared!",
      error: "All errors Cleared!"
 }
-export const UPDATER_TEXTS: Record<GUIUpdaterStatus,{
+export const UPDATER_TEXTS: Record<GuiUpdaterStatus,{
      main: string,
      secondary: string
 }> = {

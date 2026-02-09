@@ -2,6 +2,7 @@ import { LucideProps } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
 import { cn } from "@/lib/utils";
+import { DesignType } from "@/lib/types";
 
 interface Props{
      Icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>,
@@ -10,7 +11,7 @@ interface Props{
      className?: string,
      description?: string,
      button?: React.JSX.Element,
-     type?: "default" | "danger"
+     type?: DesignType
 }
 export default function SettingsItem({children, Icon, title, className, description, button, type="default"}: Props){
      const borderColor = cn(type==="default" ? "border-border" : "border-destructive")

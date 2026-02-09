@@ -3,7 +3,7 @@ import { useParams } from "react-router";
 import ScanFinishResult from "@/components/antivirus/finish-scan";
 import LogText from "@/components/log";
 import { GET_INITIAL_SCAN_STATE } from "@/lib/constants/states";
-import { ScanType } from "@/lib/types";
+import { ScanType, ScanProfiles } from "@/lib/types/enums";
 import { IScanPageState } from "@/lib/types/states";
 import { invoke } from "@tauri-apps/api/core";
 import { listen, UnlistenFn } from "@tauri-apps/api/event";
@@ -18,7 +18,7 @@ import { sendNotification } from "@tauri-apps/plugin-notification";
 import { hydrateProfile } from "@/lib/helpers/scan";
 import { capitalizeText } from "@/lib/helpers/formating";
 import { useBackendSettings } from "@/hooks/use-settings";
-import { ScanProfileId, ScanProfileValues } from "@/lib/types/settings";
+import { ScanProfileValues } from "@/lib/types/settings";
 import { mapScanSettingsToArgs, validateScanSettings } from "@/lib/helpers/scan";
 import { useTranslation } from "react-i18next";
 
@@ -28,7 +28,7 @@ export default function ScanPage(){
      const {type} = useParams<{type: ScanType}>();
      const [searchParams] = useSearchParams();
      const path = searchParams.getAll("path");
-     const [scanState, setScanState] = useState<IScanPageState>(GET_INITIAL_SCAN_STATE(type || "",path));
+     const [scanState, setScanState] = useState<IScanPageState>(GET_INITIAL_SCAN_STATE(type || ScanType.None,path));
      const setState = (overrides: Partial<IScanPageState>) => setScanState(prev=>({ ...prev, ...overrides }))
      const {isStartup} = useStartupScan();
      const {settings} = useSettings();
@@ -42,7 +42,10 @@ export default function ScanPage(){
                let scanOptions: ScanProfileValues | null = null;
                const isMainOrFull = scanState.scanType==="main" || scanState.scanType === "full";
                const scanCommand = `start_${isMainOrFull ? scanState.scanType : "custom"}_scan`;
-               const scanProfile: ScanProfileId | null = scanState.scanType==="main" ? "main" : scanState.scanType==="custom" ? "custom" : scanType==="file" ? "file" : null;
+               const scanProfile: ScanProfiles | null =
+                    scanState.scanType==="main" ? ScanProfiles.Main :
+                    scanState.scanType==="custom" ? ScanProfiles.Custom :
+                    scanState.scanType==="file" ? ScanProfiles.File : null;
                if(scanProfile){
                     const availableOptions = await getSettingsBySection("scanProfiles",scanProfile);
                     if(availableOptions) scanOptions = hydrateProfile(availableOptions,scanProfile==="file");
@@ -176,8 +179,8 @@ export default function ScanPage(){
           scanActiveRef.current = false; 
           startTimeRef.current = null;
           setState({
-               ...GET_INITIAL_SCAN_STATE(type || "",path),
-               scanType: "", exitCode: 0,
+               ...GET_INITIAL_SCAN_STATE(type || ScanType.None,path),
+               scanType: ScanType.None, exitCode: 0,
                ...overrides
           })
      }
@@ -198,7 +201,7 @@ export default function ScanPage(){
                ) : (
                     <>
                          <div className="space-y-4">
-                              <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">{t("log.title")}</h1>
+                              <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">{t("title")}</h1>
                               <Suspense fallback={<ScanLoader type={scanType}/>}>
                                    <ScanProcess
                                         handleReset={()=>{
@@ -212,7 +215,7 @@ export default function ScanPage(){
                          </div>
                          <ScrollArea className="max-h-[800px]">
                               <div className="space-y-3 px-3 text-lg">
-                                   <h2 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">{logTxt("title")}</h2>
+                                   <h2 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">{logTxt("log.title")}</h2>
                                    <LogText logs={logs}/>
                               </div>
                          </ScrollArea>

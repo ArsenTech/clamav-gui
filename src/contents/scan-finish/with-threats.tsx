@@ -85,6 +85,7 @@ export default function ScanFinishedTable({setScanState, isStartup, scanState, h
      const isResolved = useMemo(() =>threats.some(t =>["quarantined", "deleted"].includes(t.status)),[threats]);
      const {isOpenDelete, bulkDelete} = finishScanState;
      const {t} = useTranslation("scan");
+     const exitCodes = t("exit-code",{returnObjects: true})
      return (
           <>
                <ShieldAlert className="size-32 text-destructive"/>
@@ -117,7 +118,7 @@ export default function ScanFinishedTable({setScanState, isStartup, scanState, h
                     </Button>
                </ButtonGroup>
                <p className="text-muted-foreground">{t("exit-code-formatting",{
-                    msg: [0,1,2].includes(exitCode) ? t(`exit-code.${exitCode}`) : t("exit-code-fallback"),
+                    msg: exitCodes[exitCode] ?? t("exit-code-fallback"),
                     exitCode
                })}</p>
                <Popup

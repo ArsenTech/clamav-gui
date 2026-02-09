@@ -1,11 +1,12 @@
-import {ScanOption } from "@/lib/types/settings";
+import { ScanOption } from "@/lib/types/settings";
+import { ScanOptionGroup } from "@/lib/types/enums";
 
 export const SCAN_SETTINGS: ScanOption = {
   // File System
   recursive: {
     label: "Recursive",
     flag: "--recursive",
-    group: "filesystem",
+    group: ScanOptionGroup.FileSystem,
     conflictsWith: [],
     dependsOn: [],
     value: { kind: "yes-no", default: true },
@@ -13,7 +14,7 @@ export const SCAN_SETTINGS: ScanOption = {
   crossFs: {
     label: "Scan other mounted filesystems",
     flag: "--cross-fs",
-    group: "filesystem",
+    group: ScanOptionGroup.FileSystem,
     conflictsWith: [],
     dependsOn: [],
     value: { kind: "yes-no", default: false },
@@ -21,7 +22,7 @@ export const SCAN_SETTINGS: ScanOption = {
   followDirSymlinks: {
     label: "Follow directory symlinks",
     flag: "--follow-dir-symlinks",
-    group: "filesystem",
+    group: ScanOptionGroup.FileSystem,
     conflictsWith: [],
     dependsOn: [],
     value: {
@@ -37,7 +38,7 @@ export const SCAN_SETTINGS: ScanOption = {
   followFileSymlinks: {
     label: "Follow file symlinks",
     flag: "--follow-file-symlinks",
-    group: "filesystem",
+    group: ScanOptionGroup.FileSystem,
     conflictsWith: [],
     dependsOn: [],
     value: {
@@ -55,7 +56,7 @@ export const SCAN_SETTINGS: ScanOption = {
   quiet: {
     label: "Suppress normal output",
     flag: "--quiet",
-    group: "output",
+    group: ScanOptionGroup.Output,
     conflictsWith: ["verbose", "infected"],
     dependsOn: [],
     value: { kind: "yes-no", default: false },
@@ -63,7 +64,7 @@ export const SCAN_SETTINGS: ScanOption = {
   verbose: {
     label: "Output detailed logs",
     flag: "--verbose",
-    group: "output",
+    group: ScanOptionGroup.Output,
     conflictsWith: ["quiet", "infected"],
     dependsOn: [],
     value: { kind: "yes-no", default: false },
@@ -71,7 +72,7 @@ export const SCAN_SETTINGS: ScanOption = {
   infected: {
     label: "List only infected files",
     flag: "--infected",
-    group: "output",
+    group: ScanOptionGroup.Output,
     conflictsWith: ["verbose", "quiet"],
     dependsOn: [],
     value: { kind: "yes-no", default: false },
@@ -79,7 +80,7 @@ export const SCAN_SETTINGS: ScanOption = {
   noSummary: {
     label: "Hide scan summary",
     flag: "--no-summary",
-    group: "output",
+    group: ScanOptionGroup.Output,
     conflictsWith: [],
     dependsOn: [],
     value: { kind: "yes-no", default: false },
@@ -87,7 +88,7 @@ export const SCAN_SETTINGS: ScanOption = {
   bell: {
     label: "Play sound on detection",
     flag: "--bell",
-    group: "output",
+    group: ScanOptionGroup.Output,
     conflictsWith: [],
     dependsOn: [],
     value: { kind: "yes-no", default: false },
@@ -96,7 +97,7 @@ export const SCAN_SETTINGS: ScanOption = {
     label: "Debug output",
     description: "Display debug messages from libclamav.",
     flag: "--debug",
-    group: "advanced",
+    group: ScanOptionGroup.Advanced,
     conflictsWith: [],
     dependsOn: [],
     value: { kind: "yes-no", default: false },
@@ -106,7 +107,7 @@ export const SCAN_SETTINGS: ScanOption = {
   algorithmicDetection: {
     label: "Algorithmic detection",
     flag: "--algorithmic-detection",
-    group: "detection",
+    group: ScanOptionGroup.Detection,
     conflictsWith: [],
     dependsOn: [],
     value: { kind: "yes-no", default: true },
@@ -115,7 +116,7 @@ export const SCAN_SETTINGS: ScanOption = {
     label: "Heuristic alerts",
     description: "May increase false positives.",
     flag: "--heuristic-alerts",
-    group: "advanced",
+    group: ScanOptionGroup.Advanced,
     conflictsWith: [],
     dependsOn: [],
     value: { kind: "yes-no", default: true },
@@ -123,7 +124,7 @@ export const SCAN_SETTINGS: ScanOption = {
   heuristicPrecedence: {
     label: "Heuristic scan precedence",
     flag: "--heuristic-scan-precedence",
-    group: "advanced",
+    group: ScanOptionGroup.Advanced,
     conflictsWith: [],
     dependsOn: [],
     value: { kind: "yes-no", default: false },
@@ -131,7 +132,7 @@ export const SCAN_SETTINGS: ScanOption = {
   detectPUA: {
     label: "Detect Possibly Unwanted Applications (PUA)",
     flag: "--detect-pua",
-    group: "detection",
+    group: ScanOptionGroup.Detection,
     conflictsWith: [],
     dependsOn: [],
     value: { kind: "yes-no", default: false },
@@ -139,7 +140,7 @@ export const SCAN_SETTINGS: ScanOption = {
   detectStructured: {
     label: "Detect SSN and credit card numbers",
     flag: "--detect-structured",
-    group: "detection",
+    group: ScanOptionGroup.Detection,
     conflictsWith: [],
     dependsOn: [],
     value: { kind: "yes-no", default: false },
@@ -147,7 +148,7 @@ export const SCAN_SETTINGS: ScanOption = {
   structuredSSNFormat: {
     label: "SSN format",
     flag: "--structured-ssn-format",
-    group: "advanced",
+    group: ScanOptionGroup.Advanced,
     conflictsWith: [],
     dependsOn: ["detectStructured"],
     value: {
@@ -163,7 +164,7 @@ export const SCAN_SETTINGS: ScanOption = {
   structuredSSNCount: {
     label: "SSN detection threshold",
     flag: "--structured-ssn-count",
-    group: "advanced",
+    group: ScanOptionGroup.Advanced,
     conflictsWith: [],
     dependsOn: ["detectStructured"],
     value: { kind: "input", inputType: "number", min: 1, max: 100 },
@@ -171,7 +172,7 @@ export const SCAN_SETTINGS: ScanOption = {
   structuredCCCount: {
     label: "Credit card detection threshold",
     flag: "--structured-cc-count",
-    group: "advanced",
+    group: ScanOptionGroup.Advanced,
     conflictsWith: [],
     dependsOn: ["detectStructured"],
     value: { kind: "input", inputType: "number", min: 1, max: 100 },
@@ -181,7 +182,7 @@ export const SCAN_SETTINGS: ScanOption = {
   scanPE: {
     label: "Scan PE files",
     flag: "--scan-pe",
-    group: "file-types",
+    group: ScanOptionGroup.FileTypes,
     conflictsWith: [],
     dependsOn: [],
     value: { kind: "yes-no", default: true },
@@ -189,7 +190,7 @@ export const SCAN_SETTINGS: ScanOption = {
   scanELF: {
     label: "Scan ELF files",
     flag: "--scan-elf",
-    group: "file-types",
+    group: ScanOptionGroup.FileTypes,
     conflictsWith: [],
     dependsOn: [],
     value: { kind: "yes-no", default: true },
@@ -197,7 +198,7 @@ export const SCAN_SETTINGS: ScanOption = {
   scanOLE2: {
     label: "Scan Office / MSI files",
     flag: "--scan-ole2",
-    group: "file-types",
+    group: ScanOptionGroup.FileTypes,
     conflictsWith: [],
     dependsOn: [],
     value: { kind: "yes-no", default: true },
@@ -205,7 +206,7 @@ export const SCAN_SETTINGS: ScanOption = {
   scanPDF: {
     label: "Scan PDF files",
     flag: "--scan-pdf",
-    group: "file-types",
+    group: ScanOptionGroup.FileTypes,
     conflictsWith: [],
     dependsOn: [],
     value: { kind: "yes-no", default: true },
@@ -213,7 +214,7 @@ export const SCAN_SETTINGS: ScanOption = {
   scanHTML: {
     label: "Scan HTML files",
     flag: "--scan-html",
-    group: "file-types",
+    group: ScanOptionGroup.FileTypes,
     conflictsWith: [],
     dependsOn: [],
     value: { kind: "yes-no", default: true },
@@ -221,7 +222,7 @@ export const SCAN_SETTINGS: ScanOption = {
   scanArchive: {
     label: "Scan archives",
     flag: "--scan-archive",
-    group: "file-types",
+    group: ScanOptionGroup.FileTypes,
     conflictsWith: [],
     dependsOn: [],
     value: { kind: "yes-no", default: true },
@@ -229,7 +230,7 @@ export const SCAN_SETTINGS: ScanOption = {
   scanMail: {
     label: "Scan mail files",
     flag: "--scan-mail",
-    group: "file-types",
+    group: ScanOptionGroup.FileTypes,
     conflictsWith: [],
     dependsOn: [],
     value: { kind: "yes-no", default: true },
@@ -237,7 +238,7 @@ export const SCAN_SETTINGS: ScanOption = {
   detectBroken: {
     label: "Detect broken executables",
     flag: "--detect-broken",
-    group: "advanced",
+    group: ScanOptionGroup.Advanced,
     conflictsWith: [],
     dependsOn: [],
     value: { kind: "yes-no", default: false },
@@ -247,7 +248,7 @@ export const SCAN_SETTINGS: ScanOption = {
   maxFileSize: {
     label: "Max file size (KB)",
     flag: "--max-filesize",
-    group: "limits-performance",
+    group: ScanOptionGroup.LimitsPerformance,
     conflictsWith: [],
     dependsOn: [],
     value: { kind: "input", inputType: "number", min: 64, max: 1024 * 1024, default: 100_000 },
@@ -255,7 +256,7 @@ export const SCAN_SETTINGS: ScanOption = {
   maxScanSize: {
     label: "Max scan size (KB)",
     flag: "--max-scansize",
-    group: "limits-performance",
+    group: ScanOptionGroup.LimitsPerformance,
     conflictsWith: [],
     dependsOn: [],
     value: { kind: "input", inputType: "number", min: 64, max: 1024 * 1024, default: 400_000 },
@@ -263,7 +264,7 @@ export const SCAN_SETTINGS: ScanOption = {
   alertEncrypted: {
     label: "Alert on encrypted archives or documents",
     flag: "--alert-encrypted",
-    group: "output",
+    group: ScanOptionGroup.Output,
     conflictsWith: [],
     dependsOn: [],
     value: {kind: "yes-no", default: true}
@@ -271,7 +272,7 @@ export const SCAN_SETTINGS: ScanOption = {
   maxFiles: {
     label: "Max extracted files",
     flag: "--max-files",
-    group: "limits-performance",
+    group: ScanOptionGroup.LimitsPerformance,
     conflictsWith: [],
     dependsOn: [],
     value: { kind: "input", inputType: "number", min: 1, max: 100000 },
@@ -279,7 +280,7 @@ export const SCAN_SETTINGS: ScanOption = {
   maxRecursion: {
     label: "Archive recursion limit",
     flag: "--max-recursion",
-    group: "limits-performance",
+    group: ScanOptionGroup.LimitsPerformance,
     conflictsWith: [],
     dependsOn: [],
     value: { kind: "input", inputType: "number", min: 1, max: 50 },
@@ -287,7 +288,7 @@ export const SCAN_SETTINGS: ScanOption = {
   maxDirRecursion: {
     label: "Directory recursion depth",
     flag: "--max-dir-recursion",
-    group: "limits-performance",
+    group: ScanOptionGroup.LimitsPerformance,
     conflictsWith: [],
     dependsOn: [],
     value: { kind: "input", inputType: "number", min: 1, max: 100 },
@@ -297,7 +298,7 @@ export const SCAN_SETTINGS: ScanOption = {
   noCerts: {
     label: "Disable Authenticode verification",
     flag: "--nocerts",
-    group: "advanced",
+    group: ScanOptionGroup.Advanced,
     conflictsWith: [],
     dependsOn: [],
     value: { kind: "yes-no", default: false },
@@ -305,7 +306,7 @@ export const SCAN_SETTINGS: ScanOption = {
   disableCache: {
     label: "Disable cache",
     flag: "--disable-cache",
-    group: "advanced",
+    group: ScanOptionGroup.Advanced,
     conflictsWith: [],
     dependsOn: [],
     value: { kind: "yes-no", default: false },
@@ -313,7 +314,7 @@ export const SCAN_SETTINGS: ScanOption = {
   officialDbOnly: {
     label: "Use only official databases",
     flag: "--official-db-only",
-    group: "advanced",
+    group: ScanOptionGroup.Advanced,
     conflictsWith: [],
     dependsOn: [],
     value: { kind: "yes-no", default: false },
@@ -321,7 +322,7 @@ export const SCAN_SETTINGS: ScanOption = {
   leaveTemps: {
     label: "Do not remove temporary files",
     flag: "--leave-temps",
-    group: "advanced",
+    group: ScanOptionGroup.Advanced,
     conflictsWith: [],
     dependsOn: [],
     value: { kind: "yes-no", default: false },
@@ -329,7 +330,7 @@ export const SCAN_SETTINGS: ScanOption = {
   bytecode: {
     label: "Enable bytecode",
     flag: "--bytecode",
-    group: "advanced",
+    group: ScanOptionGroup.Advanced,
     conflictsWith: [],
     dependsOn: [],
     value: { kind: "yes-no", default: true },
@@ -338,7 +339,7 @@ export const SCAN_SETTINGS: ScanOption = {
     label: "Allow unsigned bytecode",
     description: "Dangerous. Use only for testing.",
     flag: "--bytecode-unsigned",
-    group: "advanced",
+    group: ScanOptionGroup.Advanced,
     conflictsWith: [],
     dependsOn: ["bytecode"],
     value: { kind: "yes-no", default: false },
@@ -346,7 +347,7 @@ export const SCAN_SETTINGS: ScanOption = {
   bytecodeTimeout: {
     label: "Bytecode timeout (ms)",
     flag: "--bytecode-timeout",
-    group: "advanced",
+    group: ScanOptionGroup.Advanced,
     conflictsWith: [],
     dependsOn: ["bytecode"],
     value: { kind: "input", inputType: "number", min: 100, max: 60000 },
@@ -354,7 +355,7 @@ export const SCAN_SETTINGS: ScanOption = {
   databasePath: {
     label: "Database path",
     flag: "--database",
-    group: "advanced",
+    group: ScanOptionGroup.Advanced,
     conflictsWith: [],
     dependsOn: [],
     value: { kind: "input", inputType: "path" },
@@ -362,7 +363,7 @@ export const SCAN_SETTINGS: ScanOption = {
   tempDir: {
     label: "Temporary files directory",
     flag: "--tempdir",
-    group: "advanced",
+    group: ScanOptionGroup.Advanced,
     conflictsWith: [],
     dependsOn: [],
     value: { kind: "input", inputType: "path" },

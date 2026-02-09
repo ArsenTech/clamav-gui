@@ -4,7 +4,7 @@ import MainSidebar from "@/components/main-sidebar";
 import { cn } from "@/lib/utils";
 import {invoke} from "@tauri-apps/api/core"
 import SplashScreen from "./splash-screen";
-import { ClamAVState } from "@/lib/types";
+import { ClamAVState } from "@/lib/types/enums";
 import { Toaster } from "../ui/sonner";
 import { useNavigate } from "react-router";
 import { useStartupScan } from "@/context/startup-scan";
@@ -20,7 +20,7 @@ interface Props{
 }
 export function AppLayout({children, className}: Props){
      const cached = localStorage.getItem("clamav") as ClamAVState | null;
-     const [status, setStatus] = useState<ClamAVState>(cached || "checking");
+     const [status, setStatus] = useState<ClamAVState>(cached || ClamAVState.Checking);
      const navigate = useNavigate();
      const [isLoading, startTransition] = useTransition();
      const {setSettings} = useSettings()
@@ -29,11 +29,11 @@ export function AppLayout({children, className}: Props){
           startTransition(async() => {
                try{
                     const isAvailable = await invoke<boolean>("check_availability");
-                    const next: ClamAVState = isAvailable ? "available" : "missing";
+                    const next: ClamAVState = isAvailable ? ClamAVState.Available : ClamAVState.Missing;
                     setStatus(next);
                     localStorage.setItem("clamav",next);
                } catch {
-                    setStatus("missing");
+                    setStatus(ClamAVState.Missing);
                     localStorage.setItem("clamav","missing");
                }
           })

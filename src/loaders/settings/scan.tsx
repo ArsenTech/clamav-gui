@@ -1,5 +1,5 @@
 import { SCAN_SETTINGS_GROUPED } from "@/lib/constants/settings/scan-options";
-import { ScanOptionGroup } from "@/lib/types/settings";
+import { ScanOptionGroup } from "@/lib/types/enums";
 import ExclusionsLoader from "@/components/loaders/exclusions";
 import SettingsOptionLoader from "@/components/loaders/settings-options";
 import SettingsItemLoader from "@/components/loaders/settings-item";

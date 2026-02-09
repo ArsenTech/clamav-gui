@@ -1,4 +1,4 @@
-import { ScanType } from "../types";
+import { GuiUpdaterStatus, ScanType } from "../types/enums";
 import { IDeviceInfo, IFinishScanState, IHistoryPageState, IQuarantineState, IScanPageState, ISchedulerState, IDefsUpdaterState, IUpdaterState, IVersion, IDangerZoneState } from "../types/states";
 
 export const INITIAL_DEIVCE_INFO: IDeviceInfo = {
@@ -57,7 +57,7 @@ export const INITIAL_SCHEDULER_STATE: ISchedulerState = {
      data: []
 }
 export const INITIAL_UPDATER_STATE: IUpdaterState = {
-     status: "checking",
+     status: GuiUpdaterStatus.Checking,
      notes: null,
      newVersion: null,
      patchDate: null,

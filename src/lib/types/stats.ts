@@ -1,8 +1,8 @@
-import { ScanType } from ".";
+import { ScanType } from "./enums";
 import { DataType, ThreatStatus } from "./data";
 
 export type ScanTypeStat = Exclude<ScanType,""> | "realtime";
-export type ThreatStatusStat = Exclude<ThreatStatus,"detected"|"safe"> | "unresolved";
+export type ThreatStatusStat = Exclude<ThreatStatus,"detected" | "safe"> | "unresolved";
 export type ComputerVirusType = "trojan" | "ransomware" | "spyware" | "rootkit" | "other";
 
 interface IStatBase{

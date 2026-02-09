@@ -1,24 +1,25 @@
 import { Search, SearchCheck, FolderSearch, FileSearch } from "lucide-react";
 import { IScanMenuItem } from "../types";
+import { ScanType } from "../types/enums";
 
 export const DAYS_OF_THE_WEEK = ["mon","tue","wed","thu","fri","sat","sun"] as const;
 export const INTERVALS = ["daily","weekly","monthly"] as const
 
 export const SCAN_TYPES: IScanMenuItem[] = [
      {
-          type: "main",
+          type: ScanType.Main,
           Icon: Search
      },
      {
-          type: "full",
+          type: ScanType.Full,
           Icon: SearchCheck
      },
      {
-          type: "custom",
+          type: ScanType.Custom,
           Icon: FolderSearch
      },
      {
-          type: "file",
+          type: ScanType.File,
           Icon: FileSearch
      }
 ]

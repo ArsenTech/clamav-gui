@@ -46,3 +46,48 @@ export enum DateFormatType{
      European = "eu",
      International = "iso"
 }
+export enum ClamAVState{
+     Checking = "checking",
+     Available = "available",
+     Missing = "missing"
+}
+export enum GuiUpdaterStatus{
+     Checking = "checking",
+     Updating = "updating",
+     NeedsUpdate = "needs-update",
+     Updated = "updated",
+     CheckError = "failed-check",
+     Completed = "completed",
+     UpdateError = "failed-update"
+}
+export enum ScanType{
+     None = "",
+     Main = "main",
+     Full = "full",
+     Custom = "custom",
+     File = "file"
+}
+export enum ScanExitCode{
+     Success,
+     ThreatsDetected,
+     Error
+}
+export enum ScanProfiles{
+     Main = "main",
+     Custom = "custom",
+     File = "file"
+}
+export enum BehaviorMode{
+     Balanced = "balanced",
+     Safe = "safe",
+     Strict = "strict",
+     Expert = "expert"
+}
+export enum ScanOptionGroup {
+     Detection = "detection",
+     FileTypes = "file-types",
+     FileSystem = "filesystem",
+     LimitsPerformance = "limits-performance",
+     Output = "output",
+     Advanced = "advanced"
+}

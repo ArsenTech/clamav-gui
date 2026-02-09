@@ -8,7 +8,7 @@ import { Button } from "../ui/button";
 import { ClipboardClock } from "lucide-react";
 import { Input } from "../ui/input";
 import { DAYS_OF_THE_WEEK, INTERVALS, SCAN_OPTIONS } from "@/lib/constants";
-import { ScanType } from "@/lib/types";
+import { ScanType } from "@/lib/types/enums";
 import { ISchedulerFormValues } from "@/lib/types/settings"
 import { useState } from "react";
 import { Spinner } from "../ui/spinner";
@@ -28,7 +28,7 @@ export default function SchedulerForm({handleSubmit, isSubmitting}: Props){
                minutes: new Date().getMinutes(),
                days: DAYS_OF_THE_WEEK[new Date().getDay()],
                interval: "weekly",
-               scanType: "main"
+               scanType: ScanType.Main
           }
      });
      const onSubmit = (values: SchedulerType) => {
@@ -110,7 +110,7 @@ export default function SchedulerForm({handleSubmit, isSubmitting}: Props){
                                                   </SelectTrigger>
                                              </FormControl>
                                              <SelectContent>
-                                                  {SCAN_OPTIONS.map(option=>(
+                                                  {SCAN_OPTIONS.map(option=> option.value !== ScanType.None && (
                                                        <SelectItem key={option.value} value={option.value}>
                                                             <option.icon/>
                                                             {t(`scan-type.${option.value}.name`)}

@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { useSettings } from "@/context/settings";
 import { DEFAULT_SETTINGS, FILE_SCAN_WHITELIST, SCAN_OPTION_TITLE, DEFAULT_BACKEND_SETTINGS } from "@/lib/constants/settings";
 import { SCAN_SETTINGS_GROUPED } from "@/lib/constants/settings/scan-options";
-import { ScanOptionGroup } from "@/lib/types/settings";
+import { ScanOptionGroup } from "@/lib/types/enums";
 import { Search } from "lucide-react";
 import SettingsItem from "@/components/settings-item";
 import { Skeleton } from "@/components/ui/skeleton";

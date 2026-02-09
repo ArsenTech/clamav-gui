@@ -1,5 +1,6 @@
 import { SCAN_TYPES } from "@/lib/constants";
-import { FsOption, ScanType } from "@/lib/types";
+import { FsOption } from "@/lib/types";
+import { ScanType } from "@/lib/types/enums";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
@@ -12,13 +13,13 @@ import { useTranslation } from "react-i18next";
 
 export default function ScanMenuContent(){
      const navigate = useNavigate();
-     const [currScanType, setCurrScanType] = useState<ScanType>("");
+     const [currScanType, setCurrScanType] = useState<ScanType>(ScanType.None);
      const [path, setPath] = useState<{
           paths: string[],
-          scanType: Exclude<ScanType,"main"|"full">
+          scanType: Exclude<ScanType,"main" | "full">
      }>({
           paths: [],
-          scanType: ""
+          scanType: ScanType.None
      });
      const hasPath = path.paths.every(p=>p!== "") && path.scanType===currScanType;
      const isFile = currScanType === "file";
@@ -37,7 +38,7 @@ export default function ScanMenuContent(){
           setPath(prev=>({
                ...prev,
                paths,
-               scanType: type==="folder" ? "custom" : type
+               scanType: type==="folder" ? ScanType.Custom : type==="file" ? ScanType.File : ScanType.None
           }))
      }
      const handleStartScan = (type: ScanType, pathList: string[]) =>{
@@ -48,11 +49,12 @@ export default function ScanMenuContent(){
           navigate(`${type}?${params.toString()}`)
      }
      const {t} = useTranslation("scan");
+     
      return (
           <>
                <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">{t("title")}</h1>
                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 flex-col">
-                    {SCAN_TYPES.map(({type,Icon})=>(
+                    {SCAN_TYPES.map(({type,Icon})=>type!==ScanType.None && (
                          <div key={type} className={cn("p-4 border bg-card text-card-foreground shadow-sm rounded-md w-full flex justify-between items-center hover:border-primary hover:cursor-pointer",currScanType!==type ? "border-border bg-card" : "border-primary bg-primary/5")} onClick={()=>setCurrScanType(type)}>
                               <Icon className="flex-1 size-12 text-primary"/>
                               <div className="flex-3">

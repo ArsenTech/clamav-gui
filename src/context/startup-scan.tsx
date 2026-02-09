@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { ScanType } from "@/lib/types";
+import { ScanType } from "@/lib/types/enums";
 import { invoke } from "@tauri-apps/api/core";
 
 interface StartupScanState {

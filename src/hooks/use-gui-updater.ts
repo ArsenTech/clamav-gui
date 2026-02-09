@@ -4,6 +4,7 @@ import {check} from "@tauri-apps/plugin-updater"
 import { INITIAL_UPDATER_STATE } from "@/lib/constants/states";
 import { IUpdaterState } from "@/lib/types/states";
 import { useEffect, useMemo, useState, useTransition } from "react";
+import { GuiUpdaterStatus } from "@/lib/types/enums";
 
 export function useGuiUpdater(){
      const [isChecking, startChecking] = useTransition();
@@ -12,7 +13,7 @@ export function useGuiUpdater(){
      const setUpdaterState = (overrides: Partial<IUpdaterState>) => setGuiUpdate(prev=>({...prev, ...overrides}))
      const checkForUpdates = async () => {
           setUpdaterState({
-               status: "checking",
+               status: GuiUpdaterStatus.Checking,
                downloaded: 0,
                total: 0
           })
@@ -21,25 +22,25 @@ export function useGuiUpdater(){
                     const update = await check();
                     if(update){
                          setUpdaterState({
-                              status: "needs-update",
+                              status: GuiUpdaterStatus.NeedsUpdate,
                               notes: !update.body ? null : update.body
                          })
                     } else {
                          setUpdaterState({
-                              status: "updated",
+                              status: GuiUpdaterStatus.Updated,
                          })
                     }
                } catch (err){
                     console.error(err)
                     setUpdaterState({
-                         status: "failed-check",
+                         status: GuiUpdaterStatus.CheckError,
                     })
                }
           })
      }
      const updateGUI = () => {
           setUpdaterState({
-               status: "updating",
+               status: GuiUpdaterStatus.Updating,
                downloaded: 0,
                total: 0
           })
@@ -66,7 +67,7 @@ export function useGuiUpdater(){
                                         break;
                                    case 'Finished':
                                         setUpdaterState({
-                                             status: "completed"
+                                             status: GuiUpdaterStatus.Completed
                                         })
                                         break;
                               }
@@ -75,7 +76,7 @@ export function useGuiUpdater(){
                } catch (err){
                     console.error(err)
                     setUpdaterState({
-                         status: "failed-update",
+                         status: GuiUpdaterStatus.UpdateError,
                          total: 0,
                          downloaded: 0
                     })

@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { Braces, FlaskConical, RotateCcw, Scale, ScrollText, ShieldAlert, ShieldCheck, Trash2 } from "lucide-react";
 import SettingsItem from "@/components/settings-item";
-import { BehaviorMode } from "@/lib/types/settings";
+import { BehaviorMode } from "@/lib/types/enums";
 import { useMemo, useState, useTransition } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useScanProfile } from "@/hooks/use-scan-profile";

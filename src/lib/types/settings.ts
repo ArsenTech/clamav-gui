@@ -1,13 +1,12 @@
 import { LucideProps } from "lucide-react";
-import { ScanType, SchedulerType } from ".";
+import { SchedulerType } from ".";
+import { ScanProfiles, ScanType } from "./enums";
 import { COLORS } from "../constants/colors";
 import { SCAN_SETTINGS } from "../constants/settings/scan-options";
-import { DateFormatType } from "./enums";
+import { DateFormatType, BehaviorMode, ScanOptionGroup } from "./enums";
 
-export type ScanOptionGroup = "detection" | "file-types" | "filesystem" | "limits-performance" | "output" | "advanced"
 export type DateFormat = "dd/MM/yyyy HH:mm:ss" | "MM/dd/yyyy HH:mm:ss" | "yyyy-MM-dd HH:mm:ss"
 export type Theme = "dark" | "light" | "system";
-export type BehaviorMode = "balanced" | "safe" | "strict" | "expert"
 
 type ScanOptionValue =
   | { kind: "yes-no"; default?: boolean }
@@ -16,7 +15,6 @@ type ScanOptionValue =
 export type ScanProfileValues = {
      [K in keyof typeof SCAN_SETTINGS]?: string | number | boolean;
 };
-export type ScanProfileId = "main" | "custom" | "file";
 
 export interface IScanOption{
      label: string;
@@ -57,7 +55,7 @@ export interface ISettings{
      confirmStopScan: boolean,
      autoScrollText: boolean,
      maxLogLines: number,
-     currScanProfile: ScanProfileId,
+     currScanProfile: ScanProfiles,
      realTime: boolean,
      enableSchedulerUI: boolean,
      notifOnScanStart: boolean,

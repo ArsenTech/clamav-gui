@@ -1,4 +1,4 @@
-import { ScanType } from "."
+import { ScanType } from "./enums"
 import { DAYS_OF_THE_WEEK, INTERVALS } from "../constants"
 import { LogCategory } from "./enums";
 

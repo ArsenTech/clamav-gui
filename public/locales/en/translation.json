@@ -28,5 +28,6 @@
           "log-id": "Log ID:",
           "back": "Back",
           "please-wait": "Please wait..."
-     }
+     },
+     "splash-screen-text": "Loading..."
 }

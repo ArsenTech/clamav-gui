@@ -5,6 +5,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { useSettings } from "@/context/settings";
 import { useLocale } from "@/i18n/locale";
 import { formatNumber } from "@/lib/helpers/formating";
+import { ScanType } from "@/lib/types/enums";
 import { IScanPageState } from "@/lib/types/states";
 import { invoke } from "@tauri-apps/api/core";
 import { exit } from "@tauri-apps/plugin-process";
@@ -48,9 +49,11 @@ export default function ScanProcess({scanState, handleReset, isStartup}: Props){
      const {t: numSuffixTxt} = useTranslation()
      return (
           <>
-               <p className="text-muted-foreground font-medium">{t("scan-type.title",{
-                    scanType: t(`scan-type.${scanType}.name`)
-               })}</p>
+               {scanType!==ScanType.None && (
+                    <p className="text-muted-foreground font-medium">{t("scan-type.title",{
+                         scanType: t(`scan-type.${scanType}.name`)
+                    })}</p>
+               )}
                {scanType!=="full" ? (
                     <>
                     <Progress value={percentage}/>
@@ -115,7 +118,7 @@ export default function ScanProcess({scanState, handleReset, isStartup}: Props){
                <Popup
                     open={isOpen}
                     onOpen={setIsOpen}
-                    title={t("confirmation.title.stop-scan",{scanName: t(`scan-type.${scanType}.name`)})}
+                    title={t("confirmation.title.stop-scan",{scanName: scanType!=="" ? t(`scan-type.${scanType}.name`) : ""})}
                     description={t("confirmation.desc.stop-scan")}
                     submitTxt={t("confirmation.stop")}
                     closeText={t("confirmation.cancel")}

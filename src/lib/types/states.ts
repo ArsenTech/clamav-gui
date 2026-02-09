@@ -1,5 +1,6 @@
-import { GUIUpdaterStatus, ScanType } from ".";
+import { ScanType } from "./enums";
 import { IHistoryData, IQuarantineData, ISchedulerData, IThreatsData } from "./data"
+import { GuiUpdaterStatus } from "./enums";
 
 export interface IDeviceInfo {
      sys_name: string;
@@ -57,7 +58,7 @@ export interface ISchedulerState{
      data: ISchedulerData<"state">[]
 }
 export interface IUpdaterState{
-     status: GUIUpdaterStatus,
+     status: GuiUpdaterStatus,
      notes: string | null,
      newVersion: string | null,
      patchDate: Date | null,

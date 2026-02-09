@@ -20,8 +20,8 @@ export default function GeneralSettingsLoader(){
                     </div>
                </SettingsItemLoader>
                <SettingsItemLoader className="space-y-2 w-full" noDescription>
-                    {DATE_TIME_FORMATS.map(({name,format})=>(
-                         <div key={`${name}-${format}`} className="h-[78px] bg-accent rounded-md w-full"/>
+                    {DATE_TIME_FORMATS.map(({type,format})=>(
+                         <div key={`${type}-${format}`} className="h-[78px] bg-accent rounded-md w-full"/>
                     ))}
                </SettingsItemLoader>
                <SettingsItemLoader className="space-y-4 w-full" noDescription>
