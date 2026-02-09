@@ -40,7 +40,7 @@
           "never-scanned": "Չսկանավորված"
      },
      "definition": {
-          "title": "Սահմանումներ:",
+          "title": "Սահմանումներ՝ {{status}}",
           "updated": "Թարմացված",
           "outdated": "Հնացած",
           "loading": "Բեռնվում է..."

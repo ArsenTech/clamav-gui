@@ -1,15 +1,15 @@
 import { LangCode, suffixWhitelist } from "@/i18n/config";
 import { TFunction } from "i18next";
 
-export function formatBytes(bytes: number, t?: TFunction<"translation">) {
+export function formatBytes(bytes: number, t: TFunction<"translation">) {
   const sizes = [
-    t ? t("size-suffix.byte","Bytes") : "Bytes", 
-    t ? t("size-suffix.kb","KB") : "KB", 
-    t ? t("size-suffix.mb","MB") : "MB", 
-    t ? t("size-suffix.gb","GB") : "GB", 
-    t ? t("size-suffix.tb","TB") : "TB"
+    t("size-suffix.byte","Bytes"), 
+    t("size-suffix.kb","KB"), 
+    t("size-suffix.mb","MB"), 
+    t("size-suffix.gb","GB"), 
+    t("size-suffix.tb","TB")
   ];
-  if (bytes === 0) return "0 Bytes";
+  if (bytes === 0) return `0 ${sizes[0]}`;
   const i = Math.floor(Math.log(bytes) / Math.log(1024));
   return parseFloat((bytes / Math.pow(1024, i)).toFixed(2)) + " " + sizes[i];
 }

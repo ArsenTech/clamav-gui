@@ -2,7 +2,7 @@
      "title": "Scan",
      "scan-complete": "Scan Completed!",
      "scan-type": {
-          "title": "Scan Type:",
+          "title": "Scan Type: {{scanType}}",
           "main": {
                "name": "Main Scan",
                "desc": "Check common locations for malicious files"
@@ -65,11 +65,11 @@
      },
      "close": "Close",
      "back-to-overview": "Back to the overview",
-     "exit-code": {
-          "0": "Scan completed successfully",
-          "1": "Threats were detected",
-          "2": "Some files could not be scanned due to access restrictions"
-     },
+     "exit-code": [
+          "Scan completed successfully",
+          "Threats were detected",
+          "Some files could not be scanned due to access restrictions"
+     ],
      "exit-code-fallback": "Scan failed due to an internal error",
      "exit-code-formatting": "{{msg}} (Exit Code: {{exitCode}})",
      "please-wait": "Please wait...",

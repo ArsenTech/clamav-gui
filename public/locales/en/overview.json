@@ -40,7 +40,7 @@
           "never-scanned": "Never Scanned"
      },
      "definition": {
-          "title": "Definitions:",
+          "title": "Definitions: {{status}}",
           "updated": "Up to Date",
           "outdated": "Outdated",
           "loading": "Loading..."

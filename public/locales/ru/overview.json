@@ -40,7 +40,7 @@
           "never-scanned": "Никогда не сканировалось"
      },
      "definition": {
-          "title": "Определения:",
+          "title": "Определения: {{status}}",
           "updated": "Актуальные",
           "outdated": " Устаревшие",
           "loading": "Загрузка..."

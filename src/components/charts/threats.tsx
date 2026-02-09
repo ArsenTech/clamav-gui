@@ -53,7 +53,7 @@ export default function ThreatsChart({data,t}: ChartProps<IThreatStatusStat[]>) 
                       y={(viewBox.cy || 0) + 24}
                       className="fill-muted-foreground"
                     >
-                      Threats
+                      {t("stat-label")}
                     </tspan>
                   </text>
                 )

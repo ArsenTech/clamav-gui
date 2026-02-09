@@ -48,7 +48,9 @@ export default function ScanProcess({scanState, handleReset, isStartup}: Props){
      const {t: numSuffixTxt} = useTranslation()
      return (
           <>
-               <p className="text-muted-foreground font-medium">{t("scan-type.title")} {t(`scan-type.${scanType}.name`)}</p>
+               <p className="text-muted-foreground font-medium">{t("scan-type.title",{
+                    scanType: t(`scan-type.${scanType}.name`)
+               })}</p>
                {scanType!=="full" ? (
                     <>
                     <Progress value={percentage}/>

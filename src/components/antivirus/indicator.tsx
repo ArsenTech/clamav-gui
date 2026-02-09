@@ -54,7 +54,9 @@ export default function SafetyIndicator({type, definitionStatus}: Props){
                          </li>
                          <li className="flex items-center gap-2 text-base md:text-lg flex-1 md:flex-none!">
                               {definitionStatus==="loading" ? <Spinner className="size-5 md:size-6"/> : definitionStatus==="outdated" ? <AlertCircle className="size-5 md:size-6"/> : <CheckCircle className="size-5 md:size-6"/>}
-                              {t("definition.title")} {t(`definition.${definitionStatus}`)}
+                              {t("definition.title",{
+                                   status: t(`definition.${definitionStatus}`)
+                              })}
                          </li>
                     </ul>
                </div>

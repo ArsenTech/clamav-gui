@@ -66,5 +66,6 @@
           "title": "Scan Activity",
           "unresolved": "Unresolved",
           "resolved": "Resolved"
-     }
+     },
+     "month": ["January","February","March","April","May","June","July","August","September","October","November","December"]
 }

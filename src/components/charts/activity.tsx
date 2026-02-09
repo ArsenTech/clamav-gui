@@ -12,10 +12,9 @@ import { ChartProps } from "@/lib/types/props"
 import { useMemo } from "react"
 import { NoData } from "./no-data"
 
-const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-
 export default function ActivityChart({data,t}: ChartProps<IActivityStat[]>) {
-  const hasData = useMemo(()=>data.some(d => d.resolved > 0 || d.unresolved > 0),[data])
+  const hasData = useMemo(()=>data.some(d => d.resolved > 0 || d.unresolved > 0),[data]);
+  const month = t("month",{returnObjects: true})
   return (!data.length || !hasData) ? (
     <NoData label={t("no-data")}/>
   ) : (
