@@ -18,6 +18,7 @@ import { IHistoryPageState } from "@/lib/types/states";
 import { INITIAL_HISTORY_STATE } from "@/lib/constants/states";
 import { useSettings } from "@/context/settings";
 import { HISTORY_CLEAR_MSGS } from "@/lib/constants/maps"
+import { useTranslation } from "react-i18next";
 
 export default function HistoryContent(){
      const {settings} = useSettings();
@@ -25,6 +26,7 @@ export default function HistoryContent(){
      const [isClearing, startClearTransition] = useTransition();
      const [historyState, setHistoryState] = useState<IHistoryPageState>(INITIAL_HISTORY_STATE)
      const setState = (overrides: Partial<IHistoryPageState>) => setHistoryState(prev=>({ ...prev, ...overrides }))
+     const {t} = useTranslation("history")
      const fetchData = () => {
           startTransition(async()=>{
                try {
@@ -65,8 +67,8 @@ export default function HistoryContent(){
           try{
                const path = await save({
                     filters: [
-                         { name: "CSV", extensions: ["csv"] },
-                         { name: "JSON", extensions: ["json","jsonc"] }
+                         { name: t("export.csv"), extensions: ["csv"] },
+                         { name: t("export.json"), extensions: ["json","jsonc"] }
                     ],
                })
                if(!path) return;
@@ -86,7 +88,7 @@ export default function HistoryContent(){
      return (
           <>
           <div className="space-y-4">
-               <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">History</h1>
+               <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">{t("title")}</h1>
                <HistoryTable
                     columns={GET_HISTORY_COLS(setHistoryState,settings.developerMode)}
                     data={data}
@@ -94,29 +96,30 @@ export default function HistoryContent(){
                          <ButtonGroup>
                               <Button onClick={fetchData} disabled={isRefreshing || isClearing}>
                                    <RotateCw className={cn(isRefreshing && "animate-spin")}/>
-                                   Refresh
+                                   {isRefreshing ? t("refresh.loading") : t("refresh.original")}
                               </Button>
                               <DropdownMenu>
                                    <DropdownMenuTrigger asChild>
                                         <Button variant="outline" disabled={isClearing}>
                                              {isClearing ? <Spinner/> : <Trash2/>}
-                                             {isClearing ? "Please Wait..." : "Clear history"}
+                                             {isClearing ? t("clear.loading") : t("clear.title")}
                                         </Button>
                                    </DropdownMenuTrigger>
                                    <DropdownMenuContent>
                                         <DropdownMenuItem onClick={()=>setState({clearAll: true})} disabled={isEmpty}>
-                                             Clear all history
+                                             {t("clear.all")}
                                         </DropdownMenuItem>
                                         <DropdownMenuItem onClick={()=>setState({clearAcknowledged: true})} disabled={isEmpty}>
-                                             Clear acknowledged only
+                                             {t("clear.acknowledged")}
                                         </DropdownMenuItem>
                                         <DropdownMenuItem onClick={()=>setState({clearErrors: true})} disabled={isEmpty}>
-                                             Clear all errors
+                                             {t("clear.errors")}
                                         </DropdownMenuItem>
                                    </DropdownMenuContent>
                               </DropdownMenu>
                               <Button variant="outline" onClick={exportDataAs} disabled={isEmpty}>
-                                   <Download/> Export History As
+                                   <Download/>
+                                   {t("export.title")}
                               </Button>
                          </ButtonGroup>
                     )}
@@ -125,30 +128,30 @@ export default function HistoryContent(){
           <Popup
                open={clearAll}
                onOpen={clearAll=>setState({clearAll})}
-               title="Clear history?"
-               description="This will remove all scan, update, and action history. Logs and quarantine items will not be affected."
-               submitTxt="Clear history"
-               closeText="Cancel"
+               title={t("confirmation.clear-history.title")}
+               description={t("confirmation.clear-history.desc")}
+               submitTxt={t("confirmation.clear")}
+               closeText={t("confirmation.cancel")}
                submitEvent={()=>clearHistory("all")}
                type="danger"
           />
           <Popup
                open={clearAcknowledged}
                onOpen={clearAcknowledged=>setState({clearAcknowledged})}
-               title="Clear acknowledged entries?"
-               description="This will remove only acknowledged history entries. Unresolved events will remain."
-               submitTxt="Clear"
-               closeText="Cancel"
+               title={t("confirmation.clear-acknowledged.title")}
+               description={t("confirmation.clear-acknowledged.desc")}
+               submitTxt={t("confirmation.clear")}
+               closeText={t("confirmation.cancel")}
                submitEvent={()=>clearHistory("acknowledged")}
                type="danger"
           />
           <Popup
                open={clearErrors}
                onOpen={clearErrors=>setState({clearErrors})}
-               title="Clear all errors?"
-               description="This will remove all errors in the history table. Rest of these events will remain."
-               submitTxt="Clear"
-               closeText="Cancel"
+               title={t("confirmation.clear-errors.title")}
+               description={t("confirmation.clear-errors.desc")}
+               submitTxt={t("confirmation.clear")}
+               closeText={t("confirmation.cancel")}
                submitEvent={()=>clearHistory("error")}
                type="danger"
           />

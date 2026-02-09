@@ -16,6 +16,7 @@ import { ButtonGroup } from "@/components/ui/button-group";
 import { ISchedulerState } from "@/lib/types/states";
 import { INITIAL_SCHEDULER_STATE } from "@/lib/constants/states";
 import { useSettings } from "@/context/settings";
+import { useTranslation } from "react-i18next";
 
 export default function SchedulerContent(){
      const {settings} = useSettings();
@@ -139,26 +140,27 @@ export default function SchedulerContent(){
           }
      },[])
      const {data,isOpenClear,isOpenDelete} = schedulerState
+     const {t} = useTranslation("scheduler")
      return !settings.enableSchedulerUI ? null : (
           <>
-          <h1 className="text-2xl md:text-3xl lg:text-4xl font-medium border-b pb-2 w-fit">Scheduler</h1>
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-medium border-b pb-2 w-fit">{t("title")}</h1>
           <SchedulerTable
                headerElement={(
                     <ButtonGroup>
                          <Button disabled={isPending || isSubmitting} onClick={refresh}>
                               <RotateCw className={cn(isPending && "animate-spin")}/>
-                              {isPending ? "Please wait..." : "Refresh"}
+                              {isPending ? t("refresh.loading") : t("refresh.original")}
                          </Button>
                          <Button variant="outline" disabled={isPending || !data.length || isSubmitting} onClick={()=>setState({isOpenClear: true})}>
                               <Trash2/>
-                              Clear Jobs
+                              {t("clear-jobs")}
                          </Button>
                     </ButtonGroup>
                )}
                columns={GET_SCHEDULER_COLS(setState)}
                data={data}
           />
-          <h2 className="text-xl md:text-2xl font-medium border-b pb-2 w-fit self-start text-left">Schedule a scan</h2>
+          <h2 className="text-xl md:text-2xl font-medium border-b pb-2 w-fit self-start text-left">{t("form.title")}</h2>
           <SchedulerForm
                handleSubmit={handleSchedule}
                isSubmitting={isSubmitting}
@@ -166,20 +168,20 @@ export default function SchedulerContent(){
           <Popup
                open={isOpenDelete}
                onOpen={isOpenDelete=>setState({isOpenDelete})}
-               title="This will remove the selected scheduled scan job"
-               description="Continue?"
-               submitTxt="Remove"
-               closeText="Cancel"
+               title={t("confirmation.remove.title")}
+               description={t("confirmation.continue")}
+               submitTxt={t("confirmation.remove.button")}
+               closeText={t("confirmation.cancel")}
                submitEvent={handleRemoveJob}
                type="danger"
           />
           <Popup
                open={isOpenClear}
                onOpen={isOpenClear=>setState({isOpenClear})}
-               title="This will remove all scheduled scan jobs"
-               description="Continue?"
-               submitTxt="Clear Jobs"
-               closeText="Cancel"
+               title={t("confirmation.clear.title")}
+               description={t("confirmation.continue")}
+               submitTxt={t("confirmation.clear.button")}
+               closeText={t("confirmation.cancel")}
                submitEvent={handleClear}
                type="danger"
           />

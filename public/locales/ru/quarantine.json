@@ -17,7 +17,7 @@
           },
           "delete": "Удалить",
           "restore": "Восстановить",
-          "cancel": "Отменить"
+          "cancel": "Отмена"
      },
      "bulk-actions": {
           "refresh": {

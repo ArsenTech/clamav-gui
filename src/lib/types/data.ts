@@ -1,12 +1,12 @@
 import { ScanType } from "."
-import { DAYS_OF_THE_WEEK } from "../constants"
+import { DAYS_OF_THE_WEEK, INTERVALS } from "../constants"
 import { LogCategory } from "./enums";
 
 export type ThreatStatus = "quarantined" | "deleted" | "detected";
 export type HistoryStatus = "success" | "warning" | "error" | "acknowledged";
 export type HistoryClearType = "all" | "acknowledged" | "error";
 export type DataType = "state" | "type"
-export type IntervalType = "daily" | "weekly" | "monthly"
+export type IntervalType = typeof INTERVALS[number]
 
 interface HistoryDataBase{
      id: string,

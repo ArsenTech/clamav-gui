@@ -1,7 +1,8 @@
 import { Search, SearchCheck, FolderSearch, FileSearch } from "lucide-react";
 import { IScanMenuItem } from "../types";
 
-export const DAYS_OF_THE_WEEK = ["sun","mon","tue","wed","thu","fri","sat"] as const;
+export const DAYS_OF_THE_WEEK = ["mon","tue","wed","thu","fri","sat","sun"] as const;
+export const INTERVALS = ["daily","weekly","monthly"] as const
 
 export const SCAN_TYPES: IScanMenuItem[] = [
      {

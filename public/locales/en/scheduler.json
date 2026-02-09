@@ -1,0 +1,56 @@
+{
+     "title": "Scheduler",
+     "refresh": {
+          "original": "Refresh",
+          "loading": "Refreshing..."
+     },
+     "clear-jobs": "Clear Jobs",
+     "form": {
+          "title": "Schedule a scan",
+          "interval": {
+               "label": "Interval",
+               "values": {
+                    "daily" : "Daily",
+                    "weekly" : "Weekly",
+                    "monthly" : "Monthly"
+               },
+               "placeholder": "Select a Job Interval"
+          },
+          "scan-type": {
+               "label": "Scan Type",
+               "placeholder": "Select a Scan Type"
+          },
+          "days": {
+               "label": "Day of the week",
+               "values": {
+                    "mon": "Monday",
+                    "tue": "Tuesday",
+                    "wed": "Wednesday",
+                    "thu": "Thursday",
+                    "fri": "Friday",
+                    "sat": "Saturday",
+                    "sun": "Sunday"
+               },
+               "placeholder": "Select a day of the week"
+          },
+          "hour": "Hour",
+          "minute": "Minute",
+          "button": {
+               "pending": "Please Wait...",
+               "original": "Schedule"
+          },
+          "scheduled-time": "Scheduled Time: {{time}}"
+     },
+     "confirmation": {
+          "cancel": "Cancel",
+          "continue": "Continue?",
+          "remove": {
+               "title": "This will remove the selected scheduled scan job",
+               "button": "Remove Job"
+          },
+          "clear": {
+               "title": "This will remove all scheduled scan jobs",
+               "button": "Clear Jobs"
+          }
+     }
+}

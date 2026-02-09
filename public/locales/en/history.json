@@ -1,0 +1,35 @@
+{
+     "title": "History",
+     "refresh": {
+          "original": "Refresh",
+          "loading": "Refreshing..."
+     },
+     "clear": {
+          "title": "Clear History",
+          "all": "Clear All",
+          "acknowledged": "Clear Acknowledged",
+          "errors": "Clear Errors",
+          "loading": "Clearing..."
+     },
+     "export": {
+          "title": "Export History As",
+          "csv": "CSV File",
+          "json": "JSON File"
+     },
+     "confirmation": {
+          "cancel": "Cancel",
+          "clear": "Clear",
+          "clear-history": {
+               "title": "Clear history?",
+               "desc": "This will remove all scan, update, and action history. Logs and quarantine items will not be affected."
+          },
+          "clear-acknowledged": {
+               "title": "Clear acknowledged entries?",
+               "desc": "This will remove only acknowledged history entries. Unresolved events will remain."
+          },
+          "clear-errors": {
+               "title": "Clear all errors?",
+               "desc": "This will remove all errors in the history table. Rest of these events will remain."
+          }
+     }
+}
