@@ -63,5 +63,87 @@
                "title": "On Scan Finish",
                "desc": "Notifies once the scan has been finished"
           }
+     },
+     "scan": {
+          "title": "Scan Settings",
+          "desc": "All of these settings are applied only on Main Scan, Custom Scan, and File Scan",
+          "confirm-stop": {
+               "title": "Confirm Stop",
+               "desc": "Show a Confirm Message when you stop the scan."
+          },
+          "advanced-desc": "Advanced options for any scan profile. It may reduce detection accuracy"
+     },
+     "exclusions": {
+          "title": "Directory Exclusions",
+          "add-button": "Add an exclusion",
+          "no-exclusions": "No Folder Exclusions yet",
+          "form": {
+               "title": "Add a Directory to Exclusions",
+               "path": "Directory Path",
+               "browse": "Browse",
+               "add": "Add",
+               "close": "Close"
+          },
+          "confirmation": {
+               "title": "This will remove the directory path from exclusions",
+               "desc": "Continue?",
+               "remove":"Remove",
+               "cancel": "Cancel"
+          }
+     },
+     "advanced": {
+          "title": "Advanced GUI Options",
+          "desc": "It may break some features and reduce detection accuracy",
+          "dev-mode": {
+               "title": "Developer Mode",
+               "desc": "Shows the ID on every data. Perfect for developers!"
+          },
+          "real-time-scan": {
+               "title": "Real-Time Scan",
+               "desc": "Automatically scans files when they are created or modified."
+          },
+          "behavior": {
+               "title": "Behavior",
+               "desc": "How the ClamAV GUI act in other cases?",
+               "placeholder": "ClamAV Behavior",
+               "choices": {
+                    "balanced": "Balanced",
+                    "safe": "Safe",
+                    "strict": "Strict",
+                    "expert": "Expert"
+               }
+          }
+     },
+     "logs": {
+          "title": "Logs",
+          "auto-scroll": {
+               "title": "Auto-scroll text",
+               "desc": "Scrolls the log automatically once the new log is added"
+          },
+          "max-lines": {
+               "title": "Max Log Lines",
+               "desc": "Shows the log up to the mentioned maximum line count",
+               "placeholder": "Select a max line count",
+               "lines": "{{lines}} lines"
+          }
+     },
+     "danger-zone": {
+          "title": "Danger Zone",
+          "desc": "Be careful before deleting settings related to ClamAV GUI",
+          "delete": {
+               "title": "Delete Settings (Permanent)",
+               "desc": "This will clear all settings data",
+               "confirmation": "This will permanently delete all ClamAV GUI settings, exclusions, and preferences.",
+               "button": "Delete Settings"
+          },
+          "restore": {
+               "title": "Restore Defaults",
+               "desc": "This will reset all settings into default values",
+               "confirmation": "This will permanently restore all ClamAV GUI settings, exclusions, and preferences into default values.",
+               "button": "Restore Defaults"
+          },
+          "continue": "Continue?",
+          "cancel": "Cancel",
+          "pending": "Please wait..."
      }
 }

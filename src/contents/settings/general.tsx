@@ -10,10 +10,9 @@ import { lazy, Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import {WindowIcon} from "@/components/app-icon";
 import { useTranslation } from "react-i18next";
-import SettingsOptionLoader from "@/components/loaders/settings-options";
+import SettingsOption from "@/components/settings-item/settings-option"
 
 const LanguageSelector = lazy(()=>import("@/i18n/languages"))
-const SettingsOption = lazy(()=>import("@/components/settings-item/settings-option"))
 
 export default function GeneralSettings(){
      const {setTheme, theme: currTheme, setColor, color: currColor} = useTheme();
@@ -76,66 +75,52 @@ export default function GeneralSettings(){
                     title={t("ui.title")}
                     className="space-y-4"
                >
-                    <Suspense fallback={(
-                         <>
-                              <SettingsOptionLoader type="animated" optionType="switch"/>
-                              <SettingsOptionLoader type="animated" optionType="choice" width={128}/>
-                         </>
-                    )}>
-                         <SettingsOption
-                              title={t("ui.scheduler-ui.title")}
-                              description={t("ui.scheduler-ui.desc")}
-                         >
-                              <Switch
-                                   defaultChecked={settings.enableSchedulerUI || DEFAULT_SETTINGS.enableSchedulerUI}
-                                   checked={settings.enableSchedulerUI}
-                                   onCheckedChange={checked=>setSettings({enableSchedulerUI: checked})}
-                              />
-                         </SettingsOption>
-                         <SettingsOption
-                              title={t("ui.language.title")}
-                              description={t("ui.language.desc")}
-                         >
-                              <Suspense fallback={<Skeleton className="h-9 w-32"/>}>
-                                   <LanguageSelector/>
-                              </Suspense>
+                    <SettingsOption
+                         title={t("ui.scheduler-ui.title")}
+                         description={t("ui.scheduler-ui.desc")}
+                    >
+                         <Switch
+                              defaultChecked={settings.enableSchedulerUI || DEFAULT_SETTINGS.enableSchedulerUI}
+                              checked={settings.enableSchedulerUI}
+                              onCheckedChange={checked=>setSettings({enableSchedulerUI: checked})}
+                         />
                     </SettingsOption>
-                    </Suspense>
+                    <SettingsOption
+                         title={t("ui.language.title")}
+                         description={t("ui.language.desc")}
+                    >
+                         <Suspense fallback={<Skeleton className="h-9 w-32"/>}>
+                              <LanguageSelector/>
+                         </Suspense>
+                    </SettingsOption>
                </SettingsItem>
                <SettingsItem
                     Icon={Bell}
                     title={t("notifs.title")}
                     className="space-y-4"
                >
-                    <Suspense fallback={(
-                         <>
-                              <SettingsOptionLoader type="animated" optionType="switch"/>
-                              <SettingsOptionLoader type="animated" optionType="switch"/>
-                         </>
-                    )}>
-                         <SettingsOption
-                              title={t("notifs.scan-start.title")}
-                              description={t("notifs.scan-start.desc")}
-                         >
-                              <Switch
-                                   disabled={!settings.notifPermitted}
-                                   defaultChecked={settings.notifOnScanStart || DEFAULT_SETTINGS.notifOnScanStart}
-                                   checked={settings.notifOnScanStart}
-                                   onCheckedChange={checked=>setSettings({notifOnScanStart: checked})}
-                              />
-                         </SettingsOption>
-                         <SettingsOption
-                              title={t("notifs.scan-finish.title")}
-                              description={t("notifs.scan-finish.desc")}
-                         >
-                              <Switch
-                                   disabled={!settings.notifPermitted}
-                                   defaultChecked={settings.notifOnScanFinish || DEFAULT_SETTINGS.notifOnScanFinish}
-                                   checked={settings.notifOnScanFinish}
-                                   onCheckedChange={checked=>setSettings({notifOnScanFinish: checked})}
-                              />
-                         </SettingsOption>
-                    </Suspense>
+                    <SettingsOption
+                         title={t("notifs.scan-start.title")}
+                         description={t("notifs.scan-start.desc")}
+                    >
+                         <Switch
+                              disabled={!settings.notifPermitted}
+                              defaultChecked={settings.notifOnScanStart || DEFAULT_SETTINGS.notifOnScanStart}
+                              checked={settings.notifOnScanStart}
+                              onCheckedChange={checked=>setSettings({notifOnScanStart: checked})}
+                         />
+                    </SettingsOption>
+                    <SettingsOption
+                         title={t("notifs.scan-finish.title")}
+                         description={t("notifs.scan-finish.desc")}
+                    >
+                         <Switch
+                              disabled={!settings.notifPermitted}
+                              defaultChecked={settings.notifOnScanFinish || DEFAULT_SETTINGS.notifOnScanFinish}
+                              checked={settings.notifOnScanFinish}
+                              onCheckedChange={checked=>setSettings({notifOnScanFinish: checked})}
+                         />
+                    </SettingsOption>
                </SettingsItem>
           </div>
      )

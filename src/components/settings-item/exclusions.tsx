@@ -11,6 +11,7 @@ import { ButtonGroup } from "../ui/button-group";
 import { Input } from "../ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { open } from "@tauri-apps/plugin-dialog";
+import { useTranslation } from "react-i18next";
 
 interface Props{
      data: string[];
@@ -38,17 +39,18 @@ export default function DirExclusionsItem({data, onSubmit, onDelete}: Props){
           if(!path) return;
           form.setValue("path",path)
      }
+     const {t} = useTranslation("settings")
      return (
           <>
           <SettingsItem
                Icon={Folder}
-               title="Directory Exclusions"
+               title={t("exclusions.title")}
                description="--exclude-dir"
                className="space-y-2.5"
                button={(
                     <Button variant="outline" onClick={()=>setIsOpen(true)}>
                          <Plus/>
-                         Add an exclusion
+                         {t("exclusions.add-button")}
                     </Button>
                )}
           >
@@ -57,7 +59,7 @@ export default function DirExclusionsItem({data, onSubmit, onDelete}: Props){
                          {data.map((exclusion,i)=>(
                               <li key={i+1} className="flex justify-between items-center gap-2 pb-1 border-b last:pb-0 last:border-none break-all">
                                    {exclusion}
-                                   <Button variant="ghost" size="icon-lg" title="Remove" onClick={()=>{
+                                   <Button variant="ghost" size="icon-lg" title={t("exclusions.confirmation.remove")} onClick={()=>{
                                         setIsOpenDelete(true);
                                         setCurrPath(exclusion)
                                    }}>
@@ -67,13 +69,13 @@ export default function DirExclusionsItem({data, onSubmit, onDelete}: Props){
                          ))}
                     </ul>
                ) : (
-                    <p className="text-muted-foreground font-medium text-center mt-1">No Folder Exclusions yet</p>
+                    <p className="text-muted-foreground font-medium text-center mt-1">{t("exclusions.no-exclusions")}</p>
                )}
           </SettingsItem>
           <Popup
                open={isOpen}
                onOpen={setIsOpen}
-               title="Add a Directory to Exclusions"
+               title={t("exclusions.form.title")}
                hideButtons
           >
                <Form {...form}>
@@ -83,11 +85,11 @@ export default function DirExclusionsItem({data, onSubmit, onDelete}: Props){
                               name="path"
                               render={({field})=>(
                                    <FormItem >
-                                        <FormLabel>Directory Path</FormLabel>
+                                        <FormLabel>{t("exclusions.form.path")}</FormLabel>
                                         <FormControl>
                                              <ButtonGroup className="w-full">
                                                   <Input {...field}/>
-                                                  <Button type="button" onClick={handleBrowse}>Browse</Button>
+                                                  <Button type="button" onClick={handleBrowse}>{t("exclusions.form.browse")}</Button>
                                              </ButtonGroup>
                                         </FormControl>
                                         <FormMessage/>
@@ -95,11 +97,17 @@ export default function DirExclusionsItem({data, onSubmit, onDelete}: Props){
                               )}
                          />
                          <ButtonGroup>
-                              <Button type="submit"><Plus/> Add</Button>
+                              <Button type="submit">
+                                   <Plus/>
+                                   {t("exclusions.form.add")}
+                              </Button>
                               <Button type="reset" variant="secondary" onClick={()=>{
                                    setIsOpen(false)
                                    form.reset()
-                              }}><X/> Close</Button>
+                              }}>
+                                   <X/>
+                                   {t("exclusions.form.close")}
+                              </Button>
                          </ButtonGroup>
                     </form>
                </Form>
@@ -107,10 +115,10 @@ export default function DirExclusionsItem({data, onSubmit, onDelete}: Props){
           <Popup
                open={isOpenDelete}
                onOpen={setIsOpenDelete}
-               title="This will remove the directory path from exclusions"
-               description="Continue?"
-               submitTxt="Remove"
-               closeText="Cancel"
+               title={t("exclusions.confirmation.title")}
+               description={t("exclusions.confirmation.desc")}
+               submitTxt={t("exclusions.confirmation.remove")}
+               closeText={t("exclusions.confirmation.cancel")}
                submitEvent={()=>{
                     setIsOpenDelete(false);
                     onDelete(currPath);

@@ -1,6 +1,5 @@
 import { isDescKey, SCAN_SETTINGS } from "@/lib/constants/settings/scan-options";
 import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label"
 import { useSettings } from "@/context/settings";
 import { DEFAULT_SETTINGS, FILE_SCAN_WHITELIST, MAX_LONG_LINES_CHOICES, SCAN_OPTION_ICON } from "@/lib/constants/settings";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -59,96 +58,108 @@ export default function AdvancedSettings({scanProfile}: SettingsProps){
           })
      }
      const {t: scanTxt} = useTranslation("scan-settings")
+     const {t} = useTranslation("settings")
      return (
           <>
           <div className="px-1 py-2 space-y-3">
                <SettingsItem
                     Icon={Braces}
-                    title="Advanced GUI Options"
+                    title={t("advanced.title")}
                     className="space-y-4"
-                    description="It may break some features and reduce detection accuracy"
+                    description={t("advanced.desc")}
                >
-                    <div className="flex flex-row items-center justify-between">
-                         <div className="space-y-1">
-                              <Label>Developer Mode</Label>
-                              <p className="text-muted-foreground text-sm">Shows the ID on every data. Perfect for developers!</p>
-                         </div>
+                    <SettingsOption
+                         title={t("advanced.dev-mode.title")}
+                         description={t("advanced.dev-mode.desc")}
+                    >
                          <Switch
                               defaultChecked={settings.developerMode || DEFAULT_SETTINGS.developerMode}
                               checked={settings.developerMode}
                               onCheckedChange={checked=>setSettings({developerMode: checked})}
                          />
-                    </div>
-                    <div className="flex flex-row items-center justify-between">
-                         <div className="space-y-1">
-                              <Label>Real-Time Scan</Label>
-                              <p className="text-muted-foreground text-sm">Automatically scans files when they are created or modified.</p>
-                         </div>
+                    </SettingsOption>
+                    <SettingsOption
+                         title={t("advanced.real-time-scan.title")}
+                         description={t("advanced.real-time-scan.desc")}
+                    >
                          <RealTimeToggle/>
-                    </div>
-                    <div className="flex flex-row items-center justify-between">
-                         <div className="space-y-1">
-                              <Label>Behavior</Label>
-                              <p className="text-muted-foreground text-sm">How the ClamAV GUI act in other cases?</p>
-                         </div>
+                    </SettingsOption>
+                    <SettingsOption
+                         title={t("advanced.behavior.title")}
+                         description={t("advanced.behavior.desc")}
+                    >
                          <Select
                               defaultValue={settings.behavior || DEFAULT_SETTINGS.behavior}
                               value={settings.behavior}
                               onValueChange={value=>setSettings({behavior: value as BehaviorMode})}
                          >
                               <SelectTrigger>
-                                   <SelectValue placeholder="ClamAV Behavior"/>
+                                   <SelectValue placeholder={t("advanced.behavior.title")}/>
                               </SelectTrigger>
                               <SelectContent>
-                                   <SelectItem value="balanced"><Scale/> Balanced</SelectItem>
-                                   <SelectItem value="safe"><ShieldCheck/> Safe</SelectItem>
-                                   <SelectItem value="strict"><ShieldAlert/> Strict</SelectItem>
-                                   <SelectItem value="expert"><FlaskConical/> Expert</SelectItem>
+                                   <SelectItem value="balanced">
+                                        <Scale/>
+                                        {t("advanced.behavior.choices.balanced")}
+                                   </SelectItem>
+                                   <SelectItem value="safe">
+                                        <ShieldCheck/>
+                                        {t("advanced.behavior.choices.safe")}
+                                   </SelectItem>
+                                   <SelectItem value="strict">
+                                        <ShieldAlert/>
+                                        {t("advanced.behavior.choices.strict")}
+                                   </SelectItem>
+                                   <SelectItem value="expert">
+                                        <FlaskConical/>
+                                        {t("advanced.behavior.choices.expert")}
+                                   </SelectItem>
                               </SelectContent>
                          </Select>
-                    </div>
+                    </SettingsOption>
                </SettingsItem>
                <SettingsItem
                     Icon={ScrollText}
-                    title="Logs"
+                    title={t("logs.title")}
                     className="space-y-4"
                >
-                    <div className="flex flex-row items-center justify-between">
-                         <div className="space-y-1">
-                              <Label>Auto-scroll text</Label>
-                              <p className="text-muted-foreground text-sm">Scrolls the log automatically once the new log is added</p>
-                         </div>
+                    <SettingsOption
+                         title={t("logs.auto-scroll.title")}
+                         description={t("logs.auto-scroll.desc")}
+                    >
                          <Switch
                               defaultChecked={settings.autoScrollText || DEFAULT_SETTINGS.autoScrollText}
                               checked={settings.autoScrollText}
                               onCheckedChange={autoScrollText=>setSettings({autoScrollText})}
                          />
-                    </div>
-                    <div className="flex flex-row items-center justify-between">
-                         <div className="space-y-1">
-                              <Label>Max Log Lines</Label>
-                              <p className="text-muted-foreground text-sm">Shows the log up to the mentioned maximum line count</p>
-                         </div>
+                    </SettingsOption>
+                    <SettingsOption
+                         title={t("logs.max-lines.title")}
+                         description={t("logs.max-lines.desc")}
+                    >
                          <Select
                               defaultValue={String(settings.maxLogLines || DEFAULT_SETTINGS.maxLogLines)}
                               onValueChange={lines=>setSettings({maxLogLines: parseInt(lines)})}
                          >
                               <SelectTrigger>
-                                   <SelectValue placeholder="Select a max line count"/>
+                                   <SelectValue placeholder={t("logs.max-lines.placeholder")}/>
                               </SelectTrigger>
                               <SelectContent>
                                    {MAX_LONG_LINES_CHOICES.map(choice=>(
-                                        <SelectItem key={choice} value={choice.toString()}>{choice} lines</SelectItem>
+                                        <SelectItem key={choice} value={choice.toString()}>
+                                             {t("logs.max-lines.lines",{
+                                                  lines: choice
+                                             })}
+                                        </SelectItem>
                                    ))}
                               </SelectContent>
                          </Select>
-                    </div>
+                    </SettingsOption>
                </SettingsItem>
                <SettingsItem
                     Icon={SCAN_OPTION_ICON.advanced}
                     title={scanTxt("option-group.advanced")}
                     className="space-y-4"
-                    description="Advanced options for the Custom Scan. It may reduce detection accuracy"
+                    description={t("scan.advanced-desc")}
                >
                     {visibleOptions.map(([key,option])=>{
                          return (
@@ -196,52 +207,49 @@ export default function AdvancedSettings({scanProfile}: SettingsProps){
                </SettingsItem>
                <SettingsItem
                     Icon={Trash2}
-                    title="Danger Zone"
-                    description="Be careful before deleting settings related to ClamAV GUI"
+                    title={t("danger-zone.title")}
+                    description={t("danger-zone.desc")}
                     type="danger"
                     className="space-y-4"
                >
-                    <div className="flex flex-row items-center justify-between">
-                         <div className="space-y-1">
-                              <Label>Delete Settings (Permanent)</Label>
-                              <p className="text-muted-foreground text-sm">This will clear all settings data</p>
-                         </div>
+                    <SettingsOption
+                         title={t("danger-zone.delete.title")}
+                         description={t("danger-zone.delete.desc")}
+                    >
                          <Button variant="destructive" onClick={()=>updateState({isOpenDelete: true})} disabled={isPending}>
                               {isPending ? <Spinner/> : <Trash2/>}
-                              {isPending ? "Please Wait..." : "Delete Settings"}
+                              {isPending ? t("danger-zone.pending") : t("danger-zone.delete.button")}
                          </Button>
-                    </div>
-                    <div className="flex flex-row items-center justify-between">
-                         <div className="space-y-1">
-                              <Label>Restore Defaults</Label>
-                              <p className="text-muted-foreground text-sm">This will reset all settings into default values</p>
-                         </div>
+                    </SettingsOption>
+                    <SettingsOption
+                         title={t("danger-zone.restore.title")}
+                         description={t("danger-zone.restore.desc")}
+                    >
                          <Button variant="destructive" onClick={()=>updateState({isOpenRestore: true})} disabled={isPending}>
                               {isPending ? <Spinner/> : <RotateCcw/>}
-                              {isPending ? "Please Wait..." : "Restore Defaults"}
+                              {isPending ? t("danger-zone.pending") : t("danger-zone.restore.button")}
                          </Button>
-                    </div>
+                    </SettingsOption>
                </SettingsItem>
           </div>
           <Popup
                open={dangerZoneState.isOpenDelete}
                onOpen={isOpenDelete=>updateState({isOpenDelete})}
-               title="This will permanently delete all ClamAV GUI settings, exclusions, and preferences."
-               description="Continue?"
-               closeText="Cancel"
-               submitTxt="Delete Settings"
+               title={t("danger-zone.delete.confirmation")}
+               description={t("danger-zone.continue")}
+               closeText={t("danger-zone.cancel")}
+               submitTxt={t("danger-zone.delete.button")}
                submitEvent={()=>handleDangerZoneAction("delete")}
                type="danger"
           />
           <Popup
                open={dangerZoneState.isOpenRestore}
                onOpen={isOpenRestore=>updateState({isOpenRestore})}
-               title="This will permanently restore all ClamAV GUI settings, exclusions, and preferences into default values."
-               description="Continue?"
-               closeText="Cancel"
-               submitTxt="Restore Defaults"
+               title={t("danger-zone.restore.confirmation")}
+               description={t("danger-zone.continue")}
+               closeText={t("danger-zone.cancel")}
+               submitTxt={t("danger-zone.restore.button")}
                submitEvent={()=>handleDangerZoneAction("restore")}
-               type="danger"
           />
           </>
      )

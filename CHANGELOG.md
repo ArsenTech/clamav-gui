@@ -8,6 +8,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Translated
 - Settings
   - General Settings
+  - Scan Settings
+  - Advanced Settings
 - Splash Screen
 ### Improved
 - Some more Enums used in frontend

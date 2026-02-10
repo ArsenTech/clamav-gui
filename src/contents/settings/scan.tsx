@@ -1,4 +1,3 @@
-import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { useSettings } from "@/context/settings";
@@ -49,25 +48,25 @@ export default function ScanSettings({scanProfile}: SettingsProps){
           await updateExclusions(newArr);
      }
      const {t: scanTxt} = useTranslation("scan-settings")
+     const {t} = useTranslation("settings")
      return (
           <div className="px-1 py-2 space-y-3">
                <SettingsItem
                     Icon={Search}
-                    title="Scan Settings"
+                    title={t("scan.title")}
                     className="space-y-4"
-                    description="All of these settings are applied only on Main Scan, Custom Scan, and File Scan"
+                    description={t("scan.desc")}
                >
-                    <div className="flex flex-row items-center justify-between">
-                         <div className="space-y-1">
-                              <Label>Confirm Stop</Label>
-                              <p className="text-muted-foreground text-sm">Show a Confirm Message when you stop the scan.</p>
-                         </div>
+                    <SettingsOption
+                         title={t("scan.confirm-stop.title")}
+                         description={t("scan.confirm-stop.desc")}
+                    >
                          <Switch
                               defaultChecked={settings.confirmStopScan || DEFAULT_SETTINGS.confirmStopScan}
                               checked={settings.confirmStopScan}
                               onCheckedChange={checked=>setSettings({confirmStopScan: checked})}
                          />
-                    </div>
+                    </SettingsOption>
                </SettingsItem>
                {Object.entries(SCAN_SETTINGS_GROUPED).filter(([key])=>key!=="advanced" as ScanOptionGroup).map(([key,options])=>{
                     const visibleOptions = scanProfile === "file" ? options.filter(o =>FILE_SCAN_WHITELIST.includes(o.optionKey)) : options;
