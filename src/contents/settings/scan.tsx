@@ -1,10 +1,9 @@
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { useSettings } from "@/context/settings";
-import { DEFAULT_SETTINGS, FILE_SCAN_WHITELIST, SCAN_OPTION_TITLE, DEFAULT_BACKEND_SETTINGS } from "@/lib/constants/settings";
-import { SCAN_SETTINGS_GROUPED } from "@/lib/constants/settings/scan-options";
+import { DEFAULT_SETTINGS, FILE_SCAN_WHITELIST, SCAN_OPTION_ICON, DEFAULT_BACKEND_SETTINGS } from "@/lib/constants/settings";
+import { isDescKey, SCAN_SETTINGS_GROUPED } from "@/lib/constants/settings/scan-options";
 import { ScanOptionGroup } from "@/lib/types/enums";
 import { Search } from "lucide-react";
 import SettingsItem from "@/components/settings-item";
@@ -17,6 +16,9 @@ import { BackendSettings } from "@/lib/types/settings";
 import ExclusionsLoader from "@/components/loaders/exclusions";
 import { useTransition, useState, useEffect, useMemo } from "react";
 import { toast } from "sonner";
+import SettingsOption from "@/components/settings-item/settings-option";
+import { useTranslation } from "react-i18next";
+import { ChoiceOption } from "@/components/settings-item/scan-option";
 
 export default function ScanSettings({scanProfile}: SettingsProps){
      const {settings, setSettings} = useSettings();
@@ -46,6 +48,7 @@ export default function ScanSettings({scanProfile}: SettingsProps){
           const newArr = action==="exclude" ? [...mainArr,value] : mainArr.filter(val=>val!==value)
           await updateExclusions(newArr);
      }
+     const {t: scanTxt} = useTranslation("scan-settings")
      return (
           <div className="px-1 py-2 space-y-3">
                <SettingsItem
@@ -71,16 +74,16 @@ export default function ScanSettings({scanProfile}: SettingsProps){
                     return visibleOptions.length > 0 ? (
                          <SettingsItem
                               key={key}
-                              Icon={SCAN_OPTION_TITLE[key as ScanOptionGroup].Icon}
-                              title={SCAN_OPTION_TITLE[key as ScanOptionGroup].title}
+                              Icon={SCAN_OPTION_ICON[key as ScanOptionGroup]}
+                              title={scanTxt(`option-group.${key as ScanOptionGroup}`)}
                               className="space-y-4"
                          >
                               {visibleOptions.map(option=>(
-                                   <div key={option.optionKey} className="flex flex-row items-center justify-between">
-                                        <div className="space-y-1">
-                                             <Label>{option.label}</Label>
-                                             <p className="text-muted-foreground text-sm">{option.flag}</p>
-                                        </div>
+                                   <SettingsOption
+                                        title={scanTxt(`labels.${option.optionKey}`)}
+                                        description={option.flag}
+                                        tooltip={isDescKey(option.optionKey) ? scanTxt(`descriptions.${option.optionKey}`) : undefined}
+                                   >
                                         {option.value.kind==="yes-no" ? (
                                              isLoading ? (
                                                   <Skeleton className="w-8 h-[18px]"/>
@@ -94,19 +97,13 @@ export default function ScanSettings({scanProfile}: SettingsProps){
                                              isLoading ? (
                                                   <Skeleton className="h-9 w-32"/>
                                              ) : (
-                                                  <Select
+                                                  <ChoiceOption
                                                        value={String(values[option.optionKey] ?? option.value.default)}
                                                        onValueChange={val=>setValue(option.optionKey, typeof option.value.default === "number" ? Number(val) : val)}
-                                                  >
-                                                       <SelectTrigger>
-                                                            <SelectValue placeholder={option.label}/>
-                                                       </SelectTrigger>
-                                                       <SelectContent>
-                                                            {option.value.choices.map(choice=>(
-                                                                 <SelectItem value={typeof choice.value==="string" ? choice.value : choice.value.toString()}>{choice.label}</SelectItem>
-                                                            ))}
-                                                       </SelectContent>
-                                                  </Select>
+                                                       label={scanTxt(`labels.${option.optionKey}`)}
+                                                       scanTxt={scanTxt}
+                                                       choiceKey={option.optionKey==="structuredSSNFormat" ? "ssn-formats" : "sym-links"}
+                                                  />
                                              )
                                         ) : isLoading ? (
                                              <Skeleton className="w-1/3 h-9"/>
@@ -120,7 +117,7 @@ export default function ScanSettings({scanProfile}: SettingsProps){
                                                   onChange={e =>setValue(option.optionKey, Number(e.target.value))}
                                              />
                                         )}
-                                   </div>
+                                   </SettingsOption>
                               ))}
                          </SettingsItem>
                     ) : null})

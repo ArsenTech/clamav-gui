@@ -1,8 +1,8 @@
-import { SCAN_SETTINGS } from "@/lib/constants/settings/scan-options";
+import { isDescKey, SCAN_SETTINGS } from "@/lib/constants/settings/scan-options";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label"
 import { useSettings } from "@/context/settings";
-import { DEFAULT_SETTINGS, FILE_SCAN_WHITELIST, MAX_LONG_LINES_CHOICES, SCAN_OPTION_TITLE } from "@/lib/constants/settings";
+import { DEFAULT_SETTINGS, FILE_SCAN_WHITELIST, MAX_LONG_LINES_CHOICES, SCAN_OPTION_ICON } from "@/lib/constants/settings";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Braces, FlaskConical, RotateCcw, Scale, ScrollText, ShieldAlert, ShieldCheck, Trash2 } from "lucide-react";
@@ -20,6 +20,11 @@ import Popup from "@/components/popup";
 import { Spinner } from "@/components/ui/spinner";
 import { toast } from "sonner";
 import { store } from "@/lib/store";
+import SettingsOption from "@/components/settings-item/settings-option";
+import { useTranslation } from "react-i18next";
+import { ScanOptionKeys } from "@/lib/types/settings";
+import { ObjectEntries } from "@/lib/helpers";
+import { ChoiceOption } from "@/components/settings-item/scan-option";
 
 export default function AdvancedSettings({scanProfile}: SettingsProps){
      const {settings, setSettings} = useSettings();
@@ -28,8 +33,8 @@ export default function AdvancedSettings({scanProfile}: SettingsProps){
      const [dangerZoneState, setDangerZoneState] = useState<IDangerZoneState>(INITIAL_DANGER_ZONE_STATE);
      const updateState = (overrides: Partial<IDangerZoneState>) => setDangerZoneState(prev=>({...prev,...overrides}));
      const visibleOptions = useMemo(()=>{
-          const options = Object.entries(SCAN_SETTINGS).filter(([__dirname,option])=>option.group==="advanced")
-          return scanProfile === "file" ? options.filter(([k]) =>FILE_SCAN_WHITELIST.includes(k)) : options;
+          const options = ObjectEntries(SCAN_SETTINGS).filter(([_,option])=>option.group==="advanced");
+          return scanProfile === "file" ? options.filter(([k])=>FILE_SCAN_WHITELIST.includes(k as ScanOptionKeys)) : options;
      },[scanProfile])
      const handleDangerZoneAction = (type: "restore" | "delete") => {
           if (isPending) return;
@@ -53,6 +58,7 @@ export default function AdvancedSettings({scanProfile}: SettingsProps){
                }
           })
      }
+     const {t: scanTxt} = useTranslation("scan-settings")
      return (
           <>
           <div className="px-1 py-2 space-y-3">
@@ -139,58 +145,54 @@ export default function AdvancedSettings({scanProfile}: SettingsProps){
                     </div>
                </SettingsItem>
                <SettingsItem
-                    Icon={SCAN_OPTION_TITLE.advanced.Icon}
-                    title={SCAN_OPTION_TITLE.advanced.title}
+                    Icon={SCAN_OPTION_ICON.advanced}
+                    title={scanTxt("option-group.advanced")}
                     className="space-y-4"
                     description="Advanced options for the Custom Scan. It may reduce detection accuracy"
                >
-                    {visibleOptions.map(([key,option])=>(
-                         <div key={key} className="flex flex-row items-center justify-between">
-                              <div className="space-y-1">
-                                   <Label>{option.label}</Label>
-                                   <p className="text-muted-foreground text-sm">{option.flag}</p>
-                              </div>
-                              {option.value.kind==="yes-no" ? (
-                                   isLoading ? (
-                                        <Skeleton className="w-8 h-[18px]"/>
-                                   ): (
-                                        <Switch
-                                             checked={(values[key] ?? option.value.default) as boolean}
-                                             onCheckedChange={checked => setValue(key, checked)}
-                                        />
-                                   )
-                              ) : option.value.kind==="choice" ? (
-                                   isLoading ? (
-                                        <Skeleton className="h-9 w-32"/>
+                    {visibleOptions.map(([key,option])=>{
+                         return (
+                              <SettingsOption
+                                   title={scanTxt(`labels.${key}`)}
+                                   description={option.flag}
+                                   tooltip={isDescKey(key) ? scanTxt(`descriptions.${key}`) : undefined}
+                              >
+                                   {option.value.kind==="yes-no" ? (
+                                        isLoading ? (
+                                             <Skeleton className="w-8 h-[18px]"/>
+                                        ): (
+                                             <Switch
+                                                  checked={(values[key] ?? option.value.default) as boolean}
+                                                  onCheckedChange={checked => setValue(key, checked)}
+                                             />
+                                        )
+                                   ) : option.value.kind==="choice" ? (
+                                        isLoading ? (
+                                             <Skeleton className="h-9 w-32"/>
+                                        ) : (
+                                             <ChoiceOption
+                                                  value={String(values[key] ?? option.value.default)}
+                                                  onValueChange={val=>setValue(key, typeof option.value.default === "number" ? Number(val) : val)}
+                                                  label={scanTxt(`labels.${key}`)}
+                                                  scanTxt={scanTxt}
+                                                  choiceKey={key==="structuredSSNFormat" ? "ssn-formats" : "sym-links"}
+                                             />
+                                        )
+                                   ) : isLoading ? (
+                                        <Skeleton className="w-1/3 h-9"/>
                                    ) : (
-                                        <Select
-                                             value={String(values[key] ?? option.value.default)}
-                                             onValueChange={val=>setValue(key, typeof option.value.default === "number" ? Number(val) : val)}
-                                        >
-                                             <SelectTrigger>
-                                                  <SelectValue placeholder={option.label}/>
-                                             </SelectTrigger>
-                                             <SelectContent>
-                                                  {option.value.choices.map(choice=>(
-                                                       <SelectItem value={typeof choice.value==="string" ? choice.value : choice.value.toString()}>{choice.label}</SelectItem>
-                                                  ))}
-                                             </SelectContent>
-                                        </Select>
-                                   )
-                              ) : isLoading ? (
-                                   <Skeleton className="w-1/3 h-9"/>
-                              ) : (
-                                   <Input
-                                        type={option.value.inputType==="number" ? "number" : "text"}
-                                        min={option.value.min}
-                                        max={option.value.max}
-                                        className="max-w-1/3"
-                                        value={(values[key] ?? option.value.default ?? "") as number}
-                                        onChange={e =>setValue(key, Number(e.target.value))}
-                                   />
-                              )}
-                         </div>
-                    ))}
+                                        <Input
+                                             type={option.value.inputType==="number" ? "number" : "text"}
+                                             min={option.value.min}
+                                             max={option.value.max}
+                                             className="max-w-1/3"
+                                             value={(values[key] ?? option.value.default ?? "") as number}
+                                             onChange={e =>setValue(key, Number(e.target.value))}
+                                        />
+                                   )}
+                              </SettingsOption>
+                         )}
+                    )}
                </SettingsItem>
                <SettingsItem
                     Icon={Trash2}

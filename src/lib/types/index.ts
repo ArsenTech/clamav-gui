@@ -4,6 +4,10 @@ import { SettingsProps } from "./props";
 import { ExclusionsSchema, SchedulerSchema } from "../schemas";
 import { QuickAccessLink, SettingsTab, SidebarLink, ScanType } from "./enums";
 
+export type Mutable<T> = {
+  -readonly [P in keyof T]: T[P];
+};
+
 export type QuarantineAction = "restore" | "delete"
 export type FsOption = "file" | "folder";
 export type DesignType = "default" | "danger";

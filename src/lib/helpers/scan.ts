@@ -1,6 +1,7 @@
 import { FILE_SCAN_WHITELIST } from "../constants/settings";
 import { SCAN_SETTINGS } from "../constants/settings/scan-options";
-import { ScanProfileValues } from "../types/settings";
+import { Mutable } from "../types";
+import { ScanOptionKeys, ScanProfileValues } from "../types/settings";
 
 export function mapScanSettingsToArgs(
   settings: ScanProfileValues,
@@ -31,27 +32,28 @@ export function validateScanSettings(
   settings: ScanProfileValues,
   schema = SCAN_SETTINGS
 ) {
+  type SchemaKey = keyof typeof schema
   for (const [key] of Object.entries(settings)) {
-    const opt = schema[key as keyof typeof schema];
+    const opt = schema[key as SchemaKey];
     if (!opt) continue;
     for (const dep of opt.dependsOn) 
       if (!settings[dep]) 
-        delete settings[key];
+        delete settings[key as SchemaKey];
     for (const conflict of opt.conflictsWith) 
       if (settings[conflict]) 
-        delete settings[key];
+        delete settings[key as SchemaKey];
   }
   return settings;
 }
 
 export function hydrateProfile(profile: ScanProfileValues, isFile = false) {
   const whitelist = new Set(FILE_SCAN_WHITELIST)
-  const result: ScanProfileValues = {};
+  const result: Mutable<ScanProfileValues> = {};
   for (const key in SCAN_SETTINGS) {
-    if(!whitelist.has(key) && isFile) continue;
-    const opt = SCAN_SETTINGS[key];
+    if(!whitelist.has(key as ScanOptionKeys) && isFile) continue;
+    const opt = SCAN_SETTINGS[key as ScanOptionKeys];
     if (opt.value.default !== undefined)
-      result[key] = opt.value.default;
+      result[key as ScanOptionKeys] = opt.value.default;
   }
   return { ...result, ...profile };
 }

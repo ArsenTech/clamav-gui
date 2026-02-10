@@ -46,3 +46,8 @@ export const getExitText = (exitCode: number, type: "scan" | "update") => {
   const msg = exitMsgs[exitCode] ?? fallbackMsg
   return `${msg} (Exit Code: ${exitCode})`
 }
+
+type Entries<T> = { [K in keyof T]: [K, T[K]] }[keyof T];
+export function ObjectEntries<T extends object>(t: T): Entries<T>[] {
+  return Object.entries(t) as any;
+}

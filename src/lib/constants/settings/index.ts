@@ -1,35 +1,14 @@
 import { Files, Folder, Monitor, Moon, Sun, Gauge, ChevronsLeftRightEllipsis, ShieldCheck, SearchCode, LucideProps } from "lucide-react";
-import { BackendSettings, IDateFormatSettings, ISettings, IThemeSettings } from "@/lib/types/settings";
+import { BackendSettings, IDateFormatSettings, ISettings, IThemeSettings, ScanOptionKeys } from "@/lib/types/settings";
 import { DateFormatType, ScanProfiles, ScanOptionGroup, BehaviorMode } from "@/lib/types/enums";
 
-export const SCAN_OPTION_TITLE: Record<ScanOptionGroup,{
-     title: string,
-     Icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>
-}> = {
-     detection: {
-          title: "Detection",
-          Icon: ShieldCheck
-     },
-     "file-types": {
-          title: "File Types",
-          Icon: Files
-     },
-     filesystem: {
-          title: "Filesystem",
-          Icon: Folder
-     },
-     "limits-performance": {
-          title: "Limits and Performance",
-          Icon: Gauge
-     },
-     output: {
-          title: "Output",
-          Icon: ChevronsLeftRightEllipsis
-     },
-     advanced: {
-          title: "Advanced Scan Options",
-          Icon: SearchCode
-     },
+export const SCAN_OPTION_ICON: Record<ScanOptionGroup,React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>> = {
+     detection: ShieldCheck,
+     "file-types": Files,
+     filesystem: Folder,
+     "limits-performance": Gauge,
+     output: ChevronsLeftRightEllipsis,
+     advanced: SearchCode,
 }
 export const DEFAULT_SETTINGS: ISettings = {
      theme: "system",
@@ -55,7 +34,7 @@ export const DEFAULT_BACKEND_SETTINGS: BackendSettings = {
      },
      exclusions: [],
 }
-export const FILE_SCAN_WHITELIST =  [
+export const FILE_SCAN_WHITELIST: ScanOptionKeys[] = [
      "algorithmicDetection",
      "heuristicAlerts",
      "detectPUA",

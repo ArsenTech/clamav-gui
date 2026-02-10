@@ -3,29 +3,15 @@ import { SchedulerType } from ".";
 import { ScanProfiles, ScanType } from "./enums";
 import { COLORS } from "../constants/colors";
 import { SCAN_SETTINGS } from "../constants/settings/scan-options";
-import { DateFormatType, BehaviorMode, ScanOptionGroup } from "./enums";
+import { DateFormatType, BehaviorMode } from "./enums";
 
 export type DateFormat = "dd/MM/yyyy HH:mm:ss" | "MM/dd/yyyy HH:mm:ss" | "yyyy-MM-dd HH:mm:ss"
 export type Theme = "dark" | "light" | "system";
 
-type ScanOptionValue =
-  | { kind: "yes-no"; default?: boolean }
-  | { kind: "input"; inputType: "number" | "path" | "string"; min?: number; max?: number, default?: string | number }
-  | { kind: "choice"; choices: readonly { label: string; value: string | number }[]; default?: string | number };
+export type ScanOptionKeys = keyof typeof SCAN_SETTINGS;
 export type ScanProfileValues = {
-     [K in keyof typeof SCAN_SETTINGS]?: string | number | boolean;
+     [K in ScanOptionKeys]?: string | number | boolean;
 };
-
-export interface IScanOption{
-     label: string;
-     description?: string;
-     flag: string;
-     conflictsWith: readonly (keyof typeof SCAN_SETTINGS)[];
-     group: ScanOptionGroup;
-     value: ScanOptionValue;
-     dependsOn: readonly (keyof typeof SCAN_SETTINGS)[];
-}
-export type ScanOption = Record<string,IScanOption>;
 export interface ISchedulerFormValues{
      interval: SchedulerType["interval"] | null,
      scanType: ScanType | null

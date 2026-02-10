@@ -1,0 +1,70 @@
+{
+     "labels": {
+          "recursive": "Recursive",
+          "crossFs": "Scan other mounted filesystems",
+          "followDirSymlinks": "Follow directory symlinks",
+          "followFileSymlinks": "Follow file symlinks",
+          "quiet": "Suppress normal output",
+          "verbose": "Output detailed logs",
+          "infected": "List only infected files",
+          "noSummary": "Hide scan summary",
+          "bell": "Play sound on detection",
+          "debug": "Debug output",
+          "algorithmicDetection": "Algorithmic detection",
+          "heuristicAlerts": "Heuristic alerts",
+          "heuristicPrecedence": "Heuristic scan precedence",
+          "detectPUA": "Detect Possibly Unwanted Applications (PUA)",
+          "detectStructured": "Detect SSN and credit card numbers",
+          "structuredSSNFormat": "SSN format",
+          "structuredSSNCount": "SSN detection threshold",
+          "structuredCCCount": "Credit card detection threshold",
+          "scanPE": "Scan PE files",
+          "scanELF": "Scan ELF files",
+          "scanOLE2": "Scan Office / MSI files",
+          "scanPDF": "Scan PDF files",
+          "scanHTML": "Scan HTML files",
+          "scanArchive": "Scan archives",
+          "scanMail": "Scan mail files",
+          "detectBroken": "Detect broken executables",
+          "maxFileSize": "Max file size (KB)",
+          "maxScanSize": "Max scan size (KB)",
+          "alertEncrypted": "Alert on encrypted archives or documents",
+          "maxFiles": "Max extracted files",
+          "maxRecursion": "Archive recursion limit",
+          "maxDirRecursion": "Directory recursion depth",
+          "noCerts": "Disable Authenticode verification",
+          "disableCache": "Disable cache",
+          "officialDbOnly": "Use only official databases",
+          "leaveTemps": "Do not remove temporary files",
+          "bytecode": "Enable bytecode",
+          "bytecodeUnsigned": "Allow unsigned bytecode",
+          "bytecodeTimeout": "Bytecode timeout (ms)",
+          "databasePath": "Database path",
+          "tempDir": "Temporary files directory"
+     },
+     "descriptions": {
+          "debug": "Display debug messages from libclamav.",
+          "heuristicAlerts": "May increase false positives.",
+          "bytecodeUnsigned": "Dangerous. Use only for testing."
+     },
+     "option-group": {
+          "detection": "Detection",
+          "file-types": "File Types",
+          "filesystem": "Filesystem",
+          "limits-performance": "Limits and Performance",
+          "output": "Output",
+          "advanced": "Advanced Scan Options"
+     },
+     "choices": {
+          "sym-links": [
+               "Never",
+               "Only if passed explicitly",
+               "Always"
+          ],
+          "ssn-formats": [
+               "xxx-yy-zzzz",
+               "xxxyyzzzz",
+               "Both formats"
+          ]
+     }
+}
