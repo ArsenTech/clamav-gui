@@ -1,0 +1,55 @@
+{
+     
+     "titles": "Credits",
+     "credits-data": {
+          "coreTech": {
+               "title": "Core Technologies",
+               "entries": [
+                    "ClamAV (Antivirus Engine)",
+                    "ClamScan (On-demand Scanner)",
+                    "FreshClam (Signature Updates)"
+               ]
+          },
+          "interface": {
+               "title": "Interface & Platform",
+               "entries": [
+                    "Tauri (Desktop Runtime)",
+                    "React (UI/UX)",
+                    "Rust (Backend & Security)",
+                    "React Router (Navigation)",
+                    "ShadCN UI (Design System)",
+                    "Tailwind CSS (Styling)",
+                    "Specta (Type-safe IPC)"
+               ]
+          },
+          "system": {
+               "title": "System Integration",
+               "entries": [
+                    "Windows Task Scheduler",
+                    "Windows Security APIs",
+                    "Process & Signal Management",
+                    "Command-line Integration (ClamAV tooling)"
+               ]
+          },
+          "ecosystem": {
+               "title": "Open Source Ecosystem",
+               "entries": [
+                    "ClamAV Community",
+                    "Tauri Community",
+                    "Rust Ecosystem",
+                    "Open Source Contributors"
+               ]
+          }
+     },
+     "special-thanks": {
+          "title": "Special Thanks To",
+          "notes": {
+               "early-test": "Early testing & feedback",
+               "bug-report-test": "Critical bug reports & real-world testing"
+          },
+          "desc": {
+               "line1": "Special thanks to users who tested pre-release versions and reported issues directly.",
+               "line2": "Built with respect for users, privacy, and open-source software. <bold>Made by ArsenTech with love & trust</bold>"
+          }
+     }
+}

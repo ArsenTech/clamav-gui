@@ -9,8 +9,6 @@ export const INITIAL_DEIVCE_INFO: IDeviceInfo = {
 export const INITIAL_VERSION_INFO: IVersion = {
      app: "0.0.0",
      tauri: "0.0.0",
-     versionType: "Beta 2",
-     clamAV: ""
 }
 export const GET_INITIAL_SCAN_STATE = (type: ScanType, path: string[] | null): IScanPageState => ({
      scanType: type,

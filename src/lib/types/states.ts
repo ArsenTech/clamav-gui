@@ -10,8 +10,6 @@ export interface IDeviceInfo {
 export interface IVersion{
      app: string,
      tauri: string,
-     versionType: string,
-     clamAV: string
 }
 export interface IScanPageState{
      scanType: ScanType,

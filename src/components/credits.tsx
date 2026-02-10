@@ -1,14 +1,17 @@
-import { CREDIS_DATA, SPECIAL_THANKS } from "@/lib/constants/credits";
+import { SPECIAL_THANKS } from "@/lib/constants";
 import { Button } from "./ui/button";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { ScrollArea } from "./ui/scroll-area";
+import { Trans, useTranslation } from "react-i18next";
 
 export default function CreditsSection(){
+     const {t} = useTranslation("credits");
+     const creditsData = t("credits-data",{returnObjects: true})
      return (
-          <ScrollArea className="max-h-[800px]">
-               <div className="space-y-4 px-3 ">
-                    <h2 className="text-2xl md:text-3xl font-medium border-b pb-1.5 w-fit border-primary/50">Credits</h2>
-                    {Object.entries(CREDIS_DATA).map(([key,{title,entries}])=>(
+          <ScrollArea className="max-h-[810px]">
+               <div className="prose dark:prose-invert">
+                    <h2 className="text-2xl md:text-3xl font-medium border-b pb-1.5 w-fit border-primary/50">{t("titles")}</h2>
+                    {Object.entries(creditsData).map(([key,{title,entries}])=>(
                          <div key={key} className="space-y-1">
                               <p className="text-lg md:text-xl font-medium border-b w-fit pb-1 mb-1.5">{title}</p>
                               <ul>
@@ -21,19 +24,25 @@ export default function CreditsSection(){
                          </div>
                     ))}
                     <div className="space-y-1">
-                         <p className="text-lg md:text-xl font-medium border-b w-fit pb-1 mb-1.5">Special Thanks To</p>
+                         <p className="text-lg md:text-xl font-medium border-b w-fit pb-1 mb-1.5">{t("special-thanks.title")}</p>
                          <ul>
                               {SPECIAL_THANKS.map((person,i)=>(
                                    <li key={`person-${i+1}`}>
-                                        <Button className="p-0 h-3" variant="link" onClick={()=>openUrl(person.link)}>
+                                        <Button className="p-0 h-4 text-base" variant="link" onClick={()=>openUrl(person.link)}>
                                              {person.handle}
-                                        </Button> - {person.note}
+                                        </Button> - {t(`special-thanks.notes.${person.note}`)}
                                    </li>
                               ))}
                          </ul>
                     </div>
-                    <p>Special thanks to users who tested pre-release versions and reported issues directly.</p>
-                    <p>Built with respect for users, privacy, and open-source software. <span className="font-semibold">Made by ArsenTech with love & trust</span></p>
+                    <p>{t("special-thanks.desc.line1")}</p>
+                    <p><Trans
+                         ns="credits"
+                         i18nKey="special-thanks.desc.line2"
+                         components={{
+                              bold: <span className="font-semibold"/>
+                         }}
+                    /></p>
                </div>
           </ScrollArea>
      )

@@ -33,6 +33,15 @@ export interface ISettingsTab{
      Loader: React.FC,
      LazyComponent: React.LazyExoticComponent<React.FC<SettingsProps>>
 }
+export interface IClamAvVersion{
+     engine: string,
+     dbVersion: string
+}
+export interface ISpecialThanksItem{
+     handle: string,
+     link: string,
+     note: "early-test" | "bug-report-test"
+}
 
 // Schemas
 export type SchedulerType = z.infer<typeof SchedulerSchema>

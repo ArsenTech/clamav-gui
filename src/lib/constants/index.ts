@@ -1,5 +1,5 @@
 import { Search, SearchCheck, FolderSearch, FileSearch } from "lucide-react";
-import { IScanMenuItem } from "../types";
+import { IScanMenuItem, ISpecialThanksItem } from "../types";
 import { ScanType } from "../types/enums";
 
 export const DAYS_OF_THE_WEEK = ["mon","tue","wed","thu","fri","sat","sun"] as const;
@@ -28,3 +28,16 @@ export const SCAN_OPTIONS = SCAN_TYPES.filter(val=>val.type!=="" && val.type!=="
      value: val.type,
      icon: val.Icon
 }))
+
+export const SPECIAL_THANKS: ISpecialThanksItem[] = [
+     {
+          handle: "@LorNapes2",
+          link: "https://www.youtube.com/@LorNapes2",
+          note: "early-test",
+     },
+     {
+          handle: "@EinfxxhMicro",
+          link: "https://www.youtube.com/@EinfxchMicro",
+          note: "bug-report-test"
+     },
+];

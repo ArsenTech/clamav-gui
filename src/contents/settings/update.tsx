@@ -20,10 +20,11 @@ import { Progress } from "@/components/ui/progress";
 import {useGuiUpdater} from "@/hooks/use-gui-updater";
 import { useTranslation } from "react-i18next";
 import { useLocale } from "@/i18n/locale";
+import { IClamAvVersion } from "@/lib/types";
 
 export default function UpdateSettings(){
      const [updateState, setUpdateState] = useState<IDefsUpdaterState>(INITIAL_DEF_UPDATE_STATE);
-     const [clamAvVersion, setClamavVersion] = useState<string>(()=>localStorage.getItem("clamav-version") || "");
+     const [clamAvVersion, setClamavVersion] = useState<IClamAvVersion|null>(()=>JSON.parse(localStorage.getItem("clamav-version") as string) || null);
      const {t} = useTranslation("update");
      const {dateFns} = useLocale();
      const setState = (overrides: Partial<IDefsUpdaterState>) => setUpdateState(prev=>({ ...prev, ...overrides }))
@@ -33,12 +34,12 @@ export default function UpdateSettings(){
      }
      const updateVersions = (parsed: ReturnType<typeof parseClamVersion>) => {
           if(!parsed) return;
-          const versionText = t("definitions.clamav-version",{
+          const version: IClamAvVersion = {
                engine: parsed.engine,
                dbVersion: parsed.dbVersion
-          })
-          localStorage.setItem("clamav-version", versionText);
-          setClamavVersion(versionText);
+          }
+          localStorage.setItem("clamav-version", JSON.stringify(version));
+          setClamavVersion(version);
      }
      useEffect(()=>{
           (async()=>{
@@ -136,8 +137,11 @@ export default function UpdateSettings(){
                          <RotateCw className={cn(isUpdatingDefs && "animate-spin")}/>
                          {isUpdatingDefs ? t("definitions.update.pending") : t("definitions.update.original")}
                     </Button>
-                    {clamAvVersion.trim()!=="" && (
-                         <p className="text-sm text-muted-foreground" title="Virus definition database version">{clamAvVersion}</p>
+                    {clamAvVersion && (
+                         <p className="text-sm text-muted-foreground" title="Virus definition database version">{t("definitions.clamav-version",{
+                              engine: clamAvVersion.engine,
+                              dbVersion: clamAvVersion.dbVersion
+                         })}</p>
                     )}
                     {exitMsg!==null && (
                          <p className="text-sm text-muted-foreground">{exitCodes[exitMsg]}</p>

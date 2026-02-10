@@ -10,6 +10,8 @@ import stats from "@public/locales/en/stats.json";
 import settings from "@public/locales/en/settings.json"
 import scanSettings from "@public/locales/en/scan-settings.json"
 import update from "@public/locales/en/update.json"
+import about from "@public/locales/en/about.json"
+import credits from "@public/locales/en/credits.json"
 
 import { LangCode } from "../i18n/config";
 
@@ -27,7 +29,9 @@ declare module "i18next" {
                stats: typeof stats;
                settings: typeof settings;
                "scan-settings": typeof scanSettings;
-               update: typeof update
+               update: typeof update;
+               about: typeof about;
+               credits: typeof credits;
           };
      }
 }

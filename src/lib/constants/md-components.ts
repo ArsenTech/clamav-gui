@@ -30,7 +30,7 @@ export const COMPONENTS: MarkdownToJSX.Overrides = {
      },
      a: {
           props: {
-               className: cn(buttonVariants({ variant: "link" }), "px-0.5 py-0 whitespace-normal text-sm md:text-base break-all")
+               className: cn(buttonVariants({ variant: "link" }), "px-0.5 py-0 whitespace-normal inline-block text-sm md:text-base break-all")
           }
      },
      small: {

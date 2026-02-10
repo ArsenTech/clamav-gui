@@ -12,6 +12,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   - Advanced Settings UI
   - Update Settings Tab UI
 - Splash Screen
+- About
+  - Credits
 ### Improved
 - Some more Enums used in frontend
 
