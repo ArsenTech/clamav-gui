@@ -79,6 +79,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
   - [X] Validation message Translation
   - [X] Notification Translation
   - [ ] Backend Translation
+  - [ ] No ClamAV Page Translation
 
 ### To Do List
 - [ ] YARA Rules and YARA Scan Type + YARA Real-Time Scan Type
