@@ -80,6 +80,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
   - [X] Notification Translation
   - [ ] Backend Translation
   - [ ] No ClamAV Page Translation
+- [ ] Quick access to Feature Request and Bug Report links as buttons
 
 ### To Do List
 - [ ] YARA Rules and YARA Scan Type + YARA Real-Time Scan Type
