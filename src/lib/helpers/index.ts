@@ -1,4 +1,3 @@
-import { UPDATE_EXIT_CODE_MSG, SCAN_EXIT_CODE_MSG } from "../constants/maps";
 import { HistoryStatus, ThreatStatus } from "../types/data";
 
 export function pickKeys<T extends object, K extends readonly (keyof T)[]>(
@@ -39,12 +38,6 @@ export function getHistoryStatusBadges(cellValue: HistoryStatus) {
   return cellValue === "warning" ? "warning" : 
     cellValue === "error" ? "destructive" :
     cellValue==="success" ? "success" : "outline";
-}
-export const getExitText = (exitCode: number, type: "scan" | "update") => {
-  const exitMsgs: Record<number,string> = type==="scan" ? SCAN_EXIT_CODE_MSG : UPDATE_EXIT_CODE_MSG;
-  const fallbackMsg = type==="scan" ? "Scan failed due to an internal error" : "Update Failed"
-  const msg = exitMsgs[exitCode] ?? fallbackMsg
-  return `${msg} (Exit Code: ${exitCode})`
 }
 
 type Entries<T> = { [K in keyof T]: [K, T[K]] }[keyof T];

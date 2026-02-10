@@ -16,7 +16,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useSettings } from "@/context/settings";
 import { sendNotification } from "@tauri-apps/plugin-notification";
 import { hydrateProfile } from "@/lib/helpers/scan";
-import { capitalizeText } from "@/lib/helpers/formating";
 import { useBackendSettings } from "@/hooks/use-settings";
 import { ScanProfileValues } from "@/lib/types/settings";
 import { mapScanSettingsToArgs, validateScanSettings } from "@/lib/helpers/scan";
@@ -153,8 +152,8 @@ export default function ScanPage(){
           if(!scanState.isFinished) return;
           if(settings.notifOnScanFinish){
                sendNotification({
-                    title: "Scan Finished",
-                    body: !scanState.errMsg ? `${scanState.threats.length<=0 ? "No": scanState.threats.length} threat${scanState.threats.length===1 ? "" : "s"} were found.` : "Scan Finished with Errors"
+                    title: t("notification.scan-finish.title"),
+                    body: !scanState.errMsg ? t("notification.scan-finish.desc",{count: scanState.threats.length}) : t("notification.scan-finish.with-err")
                })
           }
      },[scanState.isFinished,settings.notifOnScanFinish,scanState.errMsg,scanState.threats])
@@ -170,8 +169,10 @@ export default function ScanPage(){
           setState({ duration: 0, exitCode: 0, errMsg: undefined });
           if(settings.notifOnScanStart){
                sendNotification({
-                    title: "Scan Started!",
-                    body: `The ${capitalizeText(scanType)} Scan has been started`
+                    title: t("notification.scan-start.title"),
+                    body: t("notification.scan-start.desc",{
+                         scanName: scanType!==ScanType.None ? t(`scan-type.${scanType}.name`) : t("scan-type.fallback")
+                    })
                });
           }
      }, [scanState.scanType, scanState.paths, isStartup]);

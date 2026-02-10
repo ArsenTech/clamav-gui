@@ -15,6 +15,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - About
   - Credits
 - Toast messages and validation messages
+- Notifications
 ### Improved
 - Some more Enums used in frontend
 - `console.error()` in some places into `toast.error(...,{description})`

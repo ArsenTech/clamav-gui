@@ -5,7 +5,6 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { ScanType } from "@/lib/types/enums";
 import { IntervalType, ISchedulerData } from "@/lib/types/data";
 import { Badge } from "@/components/ui/badge";
-import { capitalizeText } from "@/lib/helpers/formating";
 import { SCAN_TYPES } from "@/lib/constants";
 import { invoke } from "@tauri-apps/api/core";
 import { toast } from "sonner";
@@ -53,7 +52,7 @@ export const GET_SCHEDULER_COLS = (
                return scanInfo.type!==ScanType.None && (
                     <Badge variant="outline">
                          <scanInfo.Icon/>
-                         {capitalizeText(t(`scan-type.${scanInfo.type}.name`))}
+                         {t(`scan-type.${scanInfo.type}.name`)}
                     </Badge>
                )
           }

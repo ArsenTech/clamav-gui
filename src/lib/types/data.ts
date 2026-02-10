@@ -4,7 +4,6 @@ import { LogCategory } from "./enums";
 
 export type ThreatStatus = "quarantined" | "deleted" | "detected";
 export type HistoryStatus = "success" | "warning" | "error" | "acknowledged";
-export type HistoryClearType = "all" | "acknowledged" | "error";
 export type DataType = "state" | "type"
 export type IntervalType = typeof INTERVALS[number]
 

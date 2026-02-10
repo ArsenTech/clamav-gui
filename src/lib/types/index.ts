@@ -8,7 +8,7 @@ export type Mutable<T> = {
   -readonly [P in keyof T]: T[P];
 };
 
-export type QuarantineAction = "restore" | "delete"
+export type ActionType = "restore" | "delete"
 export type FsOption = "file" | "folder";
 export type DesignType = "default" | "danger";
 
@@ -44,9 +44,5 @@ export interface ISpecialThanksItem{
 }
 
 // Schemas
-export type SchedulerType = z.infer<
-     ReturnType<typeof getSchedulerSchema>
->
-export type ExclusionsType = z.infer<
-     ReturnType<typeof getExclusionsSchema>
->
+export type SchedulerType = z.infer<ReturnType<typeof getSchedulerSchema>>
+export type ExclusionsType = z.infer<ReturnType<typeof getExclusionsSchema>>

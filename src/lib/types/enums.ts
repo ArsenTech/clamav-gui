@@ -67,11 +67,6 @@ export enum ScanType{
      Custom = "custom",
      File = "file"
 }
-export enum ScanExitCode{
-     Success,
-     ThreatsDetected,
-     Error
-}
 export enum ScanProfiles{
      Main = "main",
      Custom = "custom",
@@ -90,4 +85,9 @@ export enum ScanOptionGroup {
      LimitsPerformance = "limits-performance",
      Output = "output",
      Advanced = "advanced"
+}
+export enum HistoryClearType{
+     All = "all",
+     Acknowledged = "acknowledged",
+     Error = "error"
 }

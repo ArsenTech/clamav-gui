@@ -18,7 +18,8 @@
           "file": {
                "name": "File Scan",
                "desc": "Choose a file to scan"
-          }
+          },
+          "fallback": "Unknown Scan"
      },
      "process": {
           "preparing": "Preparing Scan...",
@@ -78,5 +79,21 @@
           "quarantine": "Quarantine All",
           "delete": "Delete All",
           "success": "Successfully Resolved!"
+     },
+     "notification": {
+          "scan-finish": {
+               "title": "Scan Finished!",
+               "desc_zero" : "No threats were found",
+               "desc_one" : "One threat was found",
+               "desc_two" : "Two threats were found",
+               "desc_few" : "{{count}} threats were found",
+               "desc_many" : "{{count}} threats were found",
+               "desc_other" : "{{count}} threats were found",
+               "with-err": "Scan Finished with Errors"
+          },
+          "scan-start": {
+               "title": "Scan Started!",
+               "desc" : "The {{scanName}} has been started"
+          }
      }
 }

@@ -317,13 +317,14 @@ export const SCAN_SETTINGS = {
   },
 } as const
 
-const array = Object.entries(SCAN_SETTINGS).map(([key,obj])=>({
+export const SCAN_SETTINGS_GROUPED = Object.groupBy(
+  Object.entries(SCAN_SETTINGS).map(([key,obj])=>({
   ...obj,
   optionKey: key as ScanOptionKeys
-}))
-
-export const SCAN_SETTINGS_GROUPED = Object.groupBy(array,({group})=>group)
+})),({group})=>group)
 const DESC_WHITELIST = ["debug","heuristicAlerts","bytecodeUnsigned"] as const
+
+// TODO: Move
 const DESC_KEYS: Set<ScanOptionKeys> = new Set(DESC_WHITELIST)
 export function isDescKey(key: ScanOptionKeys): key is typeof DESC_WHITELIST[number] {
   return DESC_KEYS.has(key as ScanOptionKeys);

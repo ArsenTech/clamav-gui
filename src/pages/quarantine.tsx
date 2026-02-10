@@ -11,7 +11,7 @@ import QuarantineLoader from "@/loaders/quarantine";
 import { IQuarantineData } from "@/lib/types/data";
 import { useSettings } from "@/context/settings";
 import { GET_QUARANTINE_COLS } from "@/components/data-table/columns/quarantine";
-import { QuarantineAction } from "@/lib/types";
+import { ActionType } from "@/lib/types";
 import { useTranslation } from "react-i18next";
 const QuarantineTable = lazy(()=>import("@/contents/quarantine"))
 
@@ -34,7 +34,7 @@ export default function QuarantinePage(){
      useEffect(()=>fetchData(),[])
      const setState = (overrides: Partial<IQuarantineState>) => setQuarantineState(prev=>({ ...prev, ...overrides }))
      const {t: messageTxt} = useTranslation("messages")
-     const quarantineAction = async(type: QuarantineAction) => {
+     const quarantineAction = async(type: ActionType) => {
           const commandName = `${type}_quarantine`
           try{
                await invoke(commandName,{
@@ -56,7 +56,7 @@ export default function QuarantinePage(){
                })
           }
      }
-     const bulkAction = async(type: QuarantineAction) => {
+     const bulkAction = async(type: ActionType) => {
           const key = type==="restore" ? "bulkRestore" : "bulkDelete"
           setState({ [key]: false })
           try{

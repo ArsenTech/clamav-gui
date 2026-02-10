@@ -1,7 +1,7 @@
 import CreditsSection from "@/components/credits";
 import { AppLayout } from "@/components/layout";
 import Logo from "@/components/logo";
-import { COMPONENTS } from "@/lib/constants/md-components";
+import { COMPONENTS } from "@/lib/constants";
 import { INITIAL_VERSION_INFO } from "@/lib/constants/states";
 import { parseClamVersion } from "@/lib/helpers";
 import { IClamAvVersion } from "@/lib/types";

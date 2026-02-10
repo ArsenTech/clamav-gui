@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { GET_HISTORY_COLS } from "@/components/data-table/columns/history";
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { invoke } from "@tauri-apps/api/core";
-import { HistoryClearType, IHistoryData } from "@/lib/types/data";
+import { IHistoryData } from "@/lib/types/data";
 import { Download, Trash2 } from "lucide-react"
 import { ButtonGroup } from "@/components/ui/button-group"
 import { cn } from "@/lib/utils";
@@ -18,6 +18,7 @@ import { IHistoryPageState } from "@/lib/types/states";
 import { INITIAL_HISTORY_STATE } from "@/lib/constants/states";
 import { useSettings } from "@/context/settings";
 import { useTranslation } from "react-i18next";
+import { HistoryClearType } from "@/lib/types/enums"
 
 export default function HistoryContent(){
      const {settings} = useSettings();
@@ -44,7 +45,7 @@ export default function HistoryContent(){
                }
           })
      }
-     const clearHistory = (mode: HistoryClearType = "all") => {
+     const clearHistory = (mode = HistoryClearType.All) => {
           setState({
                clearAll: false,
                clearAcknowledged: false,
@@ -137,7 +138,7 @@ export default function HistoryContent(){
                description={t("confirmation.clear-history.desc")}
                submitTxt={t("confirmation.clear")}
                closeText={t("confirmation.cancel")}
-               submitEvent={()=>clearHistory("all")}
+               submitEvent={()=>clearHistory(HistoryClearType.All)}
                type="danger"
           />
           <Popup
@@ -147,7 +148,7 @@ export default function HistoryContent(){
                description={t("confirmation.clear-acknowledged.desc")}
                submitTxt={t("confirmation.clear")}
                closeText={t("confirmation.cancel")}
-               submitEvent={()=>clearHistory("acknowledged")}
+               submitEvent={()=>clearHistory(HistoryClearType.Acknowledged)}
                type="danger"
           />
           <Popup
@@ -157,7 +158,7 @@ export default function HistoryContent(){
                description={t("confirmation.clear-errors.desc")}
                submitTxt={t("confirmation.clear")}
                closeText={t("confirmation.cancel")}
-               submitEvent={()=>clearHistory("error")}
+               submitEvent={()=>clearHistory(HistoryClearType.Error)}
                type="danger"
           />
           </>

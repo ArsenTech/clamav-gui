@@ -24,6 +24,7 @@ import { useTranslation } from "react-i18next";
 import { ScanOptionKeys } from "@/lib/types/settings";
 import { ObjectEntries } from "@/lib/helpers";
 import { ChoiceOption } from "@/components/settings-item/scan-option";
+import { ActionType } from "@/lib/types";
 
 export default function AdvancedSettings({scanProfile}: SettingsProps){
      const {settings, setSettings} = useSettings();
@@ -36,7 +37,7 @@ export default function AdvancedSettings({scanProfile}: SettingsProps){
           return scanProfile === "file" ? options.filter(([k])=>FILE_SCAN_WHITELIST.includes(k as ScanOptionKeys)) : options;
      },[scanProfile])
      const {t: messageTxt} = useTranslation("messages")
-     const handleDangerZoneAction = (type: "restore" | "delete") => {
+     const handleDangerZoneAction = (type: ActionType) => {
           if (isPending) return;
           updateState({
                isOpenDelete: false,

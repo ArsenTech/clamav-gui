@@ -45,18 +45,9 @@ export const FILE_SCAN_WHITELIST: ScanOptionKeys[] = [
 export const MAX_LONG_LINES_CHOICES = [100, 500, 1000, 1500] as const
 export const THEME_SETTINGS: IThemeSettings = {
      theme: [
-          {
-               Icon: Monitor,
-               theme: "system"
-          },
-          {
-               Icon: Sun,
-               theme: "light"
-          },
-          {
-               Icon: Moon,
-               theme: "dark"
-          }
+          { Icon: Monitor, theme: "system" },
+          { Icon: Sun, theme: "light" },
+          { Icon: Moon, theme: "dark" }
      ],
      color: [
           {
