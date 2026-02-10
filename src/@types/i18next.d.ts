@@ -9,6 +9,7 @@ import scheduler from "@public/locales/en/scheduler.json";
 import stats from "@public/locales/en/stats.json";
 import settings from "@public/locales/en/settings.json"
 import scanSettings from "@public/locales/en/scan-settings.json"
+import update from "@public/locales/en/update.json"
 
 import { LangCode } from "../i18n/config";
 
@@ -25,7 +26,8 @@ declare module "i18next" {
                scheduler: typeof scheduler;
                stats: typeof stats;
                settings: typeof settings;
-               "scan-settings": typeof scanSettings
+               "scan-settings": typeof scanSettings;
+               update: typeof update
           };
      }
 }

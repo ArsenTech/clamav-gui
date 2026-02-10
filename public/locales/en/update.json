@@ -1,0 +1,68 @@
+{
+     "definitions": {
+          "title": "Definitions",
+          "status": {
+               "updating": "Updating definitions...",
+               "checking": "Checking database status...",
+               "outdated": "Update Required!",
+               "updated": "Up to date!"
+          },
+          "last-updated": "Last Updated: {{date}}",
+          "update": {
+               "pending": "Updating...",
+               "original": "Update Database"
+          },
+          "exit-codes": [
+               "Definitions are updated successfully",
+               "Some update sources may not have been reachable"
+          ],
+          "clamav-version": "ClamAV v{{engine}}, Database Version: {{dbVersion}}"
+     },
+     "gui": {
+          "title": "GUI Updater",
+          "checking": {
+               "main": "Checking for new version...",
+               "secondary": "Please Wait..."
+          },
+          "updating": {
+               "main": "Updating the GUI...",
+               "secondary": "Please Wait until it finishes downloading contents..."
+          },
+          "needs-update": {
+               "main": "The New Version is Available!",
+               "secondary": "Make sure to update the GUI for improvements."
+          },
+          "updated": {
+               "main": "The GUI is Up to Date!",
+               "secondary": "No New updates are available"
+          },
+          "failed-check": {
+               "main": "Failed to check for updates",
+               "secondary": "Make sure to try again later to check for the new version."
+          },
+          "completed":{
+               "main": "The GUI has been updated to the new version!",
+               "secondary": "Make sure to relaunch the app to finalize the update."
+          },
+          "failed-update": {
+               "main": "Failed to update the GUI",
+               "secondary": "Make sure to try again later."
+          },
+          "buttons": {
+               "relaunch": "Relaunch",
+               "update": {
+                    "pending": "Updating...",
+                    "original": "Update"
+               },
+               "check": {
+                    "pending": "Checking...",
+                    "original": "Check for the Updates"
+               }
+          }
+     },
+     "notes": {
+          "title": "What's new?",
+          "no-notes": "No release notes available.",
+          "button-text": "Notes"
+     }
+}

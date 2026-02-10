@@ -7,9 +7,10 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [1.0.0-3] - Unreleased (v1 Beta #3)
 ### Translated
 - Settings
-  - General Settings
-  - Scan Settings
-  - Advanced Settings
+  - General Settings UI
+  - Scan Settings UI
+  - Advanced Settings UI
+  - Update Settings Tab UI
 - Splash Screen
 ### Improved
 - Some more Enums used in frontend

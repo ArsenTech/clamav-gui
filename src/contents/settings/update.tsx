@@ -4,11 +4,11 @@ import { IDefsUpdaterState } from "@/lib/types/states";
 import { cn } from "@/lib/utils";
 import { listen, UnlistenFn } from "@tauri-apps/api/event";
 import { AlertCircle, BugOff, CheckCircle, RotateCcw, RotateCw, ScrollText } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { Spinner } from "@/components/ui/spinner";
 import { invoke } from "@tauri-apps/api/core";
-import { getExitText, parseClamVersion } from "@/lib/helpers";
+import { parseClamVersion } from "@/lib/helpers";
 import { toast } from "sonner";
 import SettingsItem from "@/components/settings-item";
 import { ButtonGroup } from "@/components/ui/button-group";
@@ -18,10 +18,14 @@ import Markdown from "markdown-to-jsx"
 import { COMPONENTS } from "@/lib/constants/md-components";
 import { Progress } from "@/components/ui/progress";
 import {useGuiUpdater} from "@/hooks/use-gui-updater";
+import { useTranslation } from "react-i18next";
+import { useLocale } from "@/i18n/locale";
 
 export default function UpdateSettings(){
      const [updateState, setUpdateState] = useState<IDefsUpdaterState>(INITIAL_DEF_UPDATE_STATE);
      const [clamAvVersion, setClamavVersion] = useState<string>(()=>localStorage.getItem("clamav-version") || "");
+     const {t} = useTranslation("update");
+     const {dateFns} = useLocale();
      const setState = (overrides: Partial<IDefsUpdaterState>) => setUpdateState(prev=>({ ...prev, ...overrides }))
      const handleUpdateDefs = async()=>{
           if (updateState.isUpdatingDefs) return;
@@ -29,7 +33,10 @@ export default function UpdateSettings(){
      }
      const updateVersions = (parsed: ReturnType<typeof parseClamVersion>) => {
           if(!parsed) return;
-          const versionText = `ClamAV v${parsed.engine}, Database Version: ${parsed.dbVersion}`;
+          const versionText = t("definitions.clamav-version",{
+               engine: parsed.engine,
+               dbVersion: parsed.dbVersion
+          })
           localStorage.setItem("clamav-version", versionText);
           setClamavVersion(versionText);
      }
@@ -92,53 +99,61 @@ export default function UpdateSettings(){
      const {isRequired, exitMsg, lastUpdated, isUpdatingDefs} = updateState
      const isInitializing = !lastUpdated && !isUpdatingDefs
      const Icon = (isUpdatingDefs || isInitializing) ? Spinner : !isRequired ? CheckCircle : AlertCircle;
-     const {status, updaterText, currProgress, relaunchApp, updateGUI, isChecking, isUpdating, setIsOpenNotes, isOpenNotes, notes, checkForUpdates} = useGuiUpdater()
+     const {status, currProgress, relaunchApp, updateGUI, isChecking, isUpdating, setIsOpenNotes, isOpenNotes, notes, checkForUpdates} = useGuiUpdater()
+     const exitCodes = t("definitions.exit-codes",{returnObjects: true});
+     const definitionsText = useMemo(()=>isUpdatingDefs ? "updating" : isInitializing ? "checking" : isRequired ? "outdated" : "updated",[isUpdatingDefs,isInitializing,isRequired])
      return (
           <>
           <div className="px-1 py-2 space-y-3">
                <SettingsItem
                     Icon={BugOff}
-                    title="Definitions"
+                    title={t("definitions.title")}
                     className="flex flex-col items-center gap-4"
                >
                     <div className="flex justify-center items-center gap-4">
                          <Icon className={cn("size-12",isRequired ? "text-destructive" : "text-emerald-600", (isUpdatingDefs || isInitializing) && "text-muted-foreground")}/>
                          <div className="text-center space-y-0.5">
-                              <h2 className={cn("text-xl md:text-2xl lg:text-3xl xl:text-[32px] font-semibold",isRequired ? "text-red-900 dark:text-red-300" : (isUpdatingDefs || isInitializing) ? "text-muted-foreground" : "text-emerald-900 dark:text-emerald-300")}>
-                                   {isUpdatingDefs ? "Updating definitions..." :
-                                   isInitializing ? "Checking database status..." :
-                                   isRequired ? "Update Required!" : "Up to date!"}
-                              </h2>
+                              <h2 className={cn(
+                                   "text-xl md:text-2xl lg:text-3xl xl:text-[32px] font-semibold",
+                                   isRequired ? "text-red-900 dark:text-red-300" :
+                                   (isUpdatingDefs || isInitializing) ? "text-muted-foreground" :
+                                   "text-emerald-900 dark:text-emerald-300")}
+                              >{t(`definitions.status.${definitionsText}`)}</h2>
                               {lastUpdated && (
-                                   <p className="text-sm text-muted-foreground">Last Updated: {formatDistanceToNow(lastUpdated,{
-                                        includeSeconds: true,
-                                        addSuffix: true
-                                   })}</p>
+                                   <p className="text-sm text-muted-foreground">
+                                        {t("definitions.last-updated",{
+                                             date: formatDistanceToNow(lastUpdated,{
+                                                  includeSeconds: true,
+                                                  addSuffix: true,
+                                                  locale: dateFns
+                                             })
+                                        })}
+                                   </p>
                               )}
                          </div>
                     </div>
                     <Button disabled={isUpdatingDefs} onClick={handleUpdateDefs}>
                          <RotateCw className={cn(isUpdatingDefs && "animate-spin")}/>
-                         {isUpdatingDefs ? "Updating..." : "Update Database"}
+                         {isUpdatingDefs ? t("definitions.update.pending") : t("definitions.update.original")}
                     </Button>
                     {clamAvVersion.trim()!=="" && (
                          <p className="text-sm text-muted-foreground" title="Virus definition database version">{clamAvVersion}</p>
                     )}
                     {exitMsg!==null && (
-                         <p className="text-sm text-muted-foreground">{getExitText(exitMsg,"update")}</p>
+                         <p className="text-sm text-muted-foreground">{exitCodes[exitMsg]}</p>
                     )}
                </SettingsItem>
                <SettingsItem
                     Icon={RotateCcw}
-                    title="GUI Updater"
+                    title={t("gui.title")}
                     className="flex justify-center items-center gap-2 flex-col"
                >
                     <h2 className={cn(
                          "text-xl md:text-2xl lg:text-3xl font-semibold",
                          (status==="failed-check" || status==="failed-update") && "text-destructive",
                          (status==="checking" || status==="updating") && "text-muted-foreground"
-                    )}>{updaterText.main}</h2>
-                    <p className="text-muted-foreground">{updaterText.secondary}</p>
+                    )}>{t(`gui.${status}.main`)}</h2>
+                    <p className="text-muted-foreground">{t(`gui.${status}.secondary`)}</p>
                     {status==="needs-update" && (
                          <div className="flex items-center justify-center w-full max-w-md gap-3">
                               <span className="font-medium">{currProgress.toFixed(0)}%</span>
@@ -146,21 +161,24 @@ export default function UpdateSettings(){
                          </div>
                     )}
                     {status==="completed" ? (
-                         <Button onClick={relaunchApp}><RotateCcw/> Relaunch</Button>
+                         <Button onClick={relaunchApp}>
+                              <RotateCcw/>
+                              {t("gui.buttons.relaunch")}
+                         </Button>
                     ) : status==="needs-update" ? (
                          <ButtonGroup>
                               <Button disabled={isUpdating} onClick={updateGUI}>
                                    <RotateCw className={cn(isUpdating && "animate-spin")}/>
-                                   {isUpdating ? "Updating..." : "Update"}
+                                   {isUpdating ? t("gui.buttons.update.pending") : t("gui.buttons.update.original")}
                               </Button>
-                              <Button variant="secondary" size="icon" title="Notes" onClick={()=>setIsOpenNotes(true)}>
+                              <Button variant="secondary" size="icon" title={t("notes.button-text")} onClick={()=>setIsOpenNotes(true)}>
                                    <ScrollText/>
                               </Button>
                          </ButtonGroup>   
                     ) : (
                          <Button onClick={checkForUpdates} disabled={isChecking}>
                               <RotateCw className={cn(isChecking && "animate-spin")}/>
-                              {isChecking ? "Checking..." : "Check for the Updates"}
+                              {isChecking ? t("gui.buttons.check.pending") : t("gui.buttons.check.original")}
                          </Button>
                     )}
                </SettingsItem>
@@ -168,18 +186,16 @@ export default function UpdateSettings(){
           <Popup
                open={isOpenNotes}
                onOpen={setIsOpenNotes}
-               title="What's new?"
+               title={t("notes.title")}
                hideButtons
           >
                <ScrollArea className={cn(!!notes && "h-[400px] md:h-[600px]")}>
                     {notes ? (
-                         <Markdown options={{
-                              overrides: COMPONENTS
-                         }} className="mt-2 prose prose-slate dark:prose-invert">
+                         <Markdown options={{ overrides: COMPONENTS }} className="mt-2 prose prose-slate dark:prose-invert">
                               {notes}
                          </Markdown>
                     ) : (
-                         <p className="text-muted-foreground text-center">No release notes available.</p>
+                         <p className="text-muted-foreground text-center">{t("notes.no-notes")}</p>
                     )}
                </ScrollArea>
           </Popup>

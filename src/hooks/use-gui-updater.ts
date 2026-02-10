@@ -1,5 +1,4 @@
 import { relaunch } from "@tauri-apps/plugin-process";
-import { UPDATER_TEXTS } from "@/lib/constants/maps";
 import {check} from "@tauri-apps/plugin-updater"
 import { INITIAL_UPDATER_STATE } from "@/lib/constants/states";
 import { IUpdaterState } from "@/lib/types/states";
@@ -87,12 +86,10 @@ export function useGuiUpdater(){
      useEffect(()=>{
           checkForUpdates()
      },[]);
-     const updaterText = useMemo(()=>UPDATER_TEXTS[guiUpdate.status],[guiUpdate.status]);
      const currProgress = useMemo(()=>(guiUpdate.downloaded/guiUpdate.total)*100,[guiUpdate.downloaded,guiUpdate.total]);
      const {status, isOpenNotes, notes} = guiUpdate
      return {
           status,
-          updaterText,
           currProgress,
           relaunchApp,
           updateGUI,
