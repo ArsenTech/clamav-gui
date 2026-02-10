@@ -1,6 +1,6 @@
 [package]
 name = "clamav-gui"
-version = "1.0.0-3"
+version = "1.0.0"
 description = "A GUI for ClamAV Antivirus that makes the Antivirus itself look professional and work exactly like ClamAV (A Freeware CLI Antivirus)"
 authors = ["ArsenTech"]
 edition = "2021"

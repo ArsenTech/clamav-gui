@@ -466,7 +466,7 @@ dependencies = [
 
 [[package]]
 name = "clamav-gui"
-version = "1.0.0-3"
+version = "1.0.0"
 dependencies = [
  "chrono",
  "notify",

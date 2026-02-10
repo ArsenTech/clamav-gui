@@ -74,6 +74,11 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 ### Currently In Progress
 - [X] Finishing touches and optimization before v1
 - [ ] Translate the GUI into mentioned languages
+  - [X] UI Translation
+  - [X] Messages Translation (used in toaster)
+  - [X] Validation message Translation
+  - [X] Notification Translation
+  - [ ] Backend Translation
 
 ### To Do List
 - [ ] YARA Rules and YARA Scan Type + YARA Real-Time Scan Type
