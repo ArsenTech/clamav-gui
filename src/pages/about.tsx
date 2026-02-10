@@ -59,7 +59,7 @@ export default function AboutPage(){
                     <p>{t("desc.line3")}</p>
                     <ul className="text-sm text-muted-foreground">
                          {clamavVersion && (
-                              <li title="Virus definition database version">{t("clamav-version",{
+                              <li title={t("def-version")}>{t("clamav-version",{
                                    engine: clamavVersion.engine,
                                    dbVersion: clamavVersion.dbVersion
                               })}</li>

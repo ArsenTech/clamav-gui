@@ -16,7 +16,8 @@
                "Definitions are updated successfully",
                "Some update sources may not have been reachable"
           ],
-          "clamav-version": "ClamAV v{{engine}}, Database Version: {{dbVersion}}"
+          "clamav-version": "ClamAV v{{engine}}, Database Version: {{dbVersion}}",
+          "version": "Virus definition database version"
      },
      "gui": {
           "title": "GUI Updater",

@@ -8,5 +8,6 @@
      },
      "clamav-version": "ClamAV v{{engine}}, Database Version: {{dbVersion}}",
      "all-rights-reserved": "All Rights Reserved",
-     "translated-by": ""
+     "translated-by": "",
+     "def-version": "Virus definition database version"
 }

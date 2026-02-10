@@ -8,5 +8,6 @@
      },
      "clamav-version": "ClamAV տարբերակ՝ {{engine}}, Տվյալների բազայի տարբերակ՝ {{dbVersion}}",
      "all-rights-reserved": "Բոլոր իրավունքները պաշտպանված են",
-     "translated-by": "Հայաֆիկացումը՝ ArsenTech-ի - https://github.com/ArsenTech"
+     "translated-by": "Հայաֆիկացումը՝ ArsenTech-ի - https://github.com/ArsenTech",
+     "def-version": "Վիրուսի սահմանումների տվյալների բազայի տարբերակ"
 }

@@ -138,7 +138,7 @@ export default function UpdateSettings(){
                          {isUpdatingDefs ? t("definitions.update.pending") : t("definitions.update.original")}
                     </Button>
                     {clamAvVersion && (
-                         <p className="text-sm text-muted-foreground" title="Virus definition database version">{t("definitions.clamav-version",{
+                         <p className="text-sm text-muted-foreground" title={t("definitions.version")}>{t("definitions.clamav-version",{
                               engine: clamAvVersion.engine,
                               dbVersion: clamAvVersion.dbVersion
                          })}</p>

@@ -8,5 +8,6 @@
      },
      "clamav-version": "ClamAV версия {{engine}}, Версия базы данных: {{dbVersion}}",
      "all-rights-reserved": "Все права защищены",
-     "translated-by": "Перевод на Русском: ArsenTech - https://github.com/ArsenTech"
+     "translated-by": "Перевод на Русском: ArsenTech - https://github.com/ArsenTech",
+     "def-version": "Версия базы данных вирусных определений"
 }
