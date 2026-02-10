@@ -31,5 +31,10 @@
                "title": "Clear all errors?",
                "desc": "This will remove all errors in the history table. Rest of these events will remain."
           }
+     },
+     "clear-messages": {
+          "all": "History Cleared!",
+          "acknowledged": "Acknowledged Entries Cleared!",
+          "error": "All errors Cleared!"
      }
 }

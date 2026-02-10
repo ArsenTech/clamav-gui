@@ -29,5 +29,6 @@
           "back": "Назад",
           "please-wait": "Пожалуйста, подождите..."
      },
-     "splash-screen-text": "Загрузка..."
+     "splash-screen-text": "Загрузка...",
+     "copy-command": "Скопируйте команду"
 }

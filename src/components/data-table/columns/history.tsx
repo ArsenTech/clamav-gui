@@ -80,7 +80,8 @@ export const GET_HISTORY_COLS = (
                id: "actions",
                cell: ({row}) => {
                     const {t} = useTranslation("table")
-                    const item = row.original
+                    const item = row.original;
+                    const {t: messageTxt} = useTranslation("messages")
                     const revealLog = async()=>{
                          if(!item.logId || !item.category) return;
                          try{
@@ -89,8 +90,9 @@ export const GET_HISTORY_COLS = (
                                    id: item.logId
                               })
                          } catch(err){
-                              toast.error("Failed to reveal log file");
-                              console.error(err)
+                              toast.error(messageTxt("log-reveal-error",{
+                                   description: String(err)
+                              }));
                          }
                     }
                     return (
@@ -125,6 +127,7 @@ export const GET_HISTORY_COLS = (
           cell: ({row}) => {
                const {t} = useTranslation("table")
                const item = row.original
+               const {t: messageTxt} = useTranslation("messages")
                const markAsAcknowledged = async () => {
                     try{
                          await invoke("mark_as_acknowledged", {
@@ -138,10 +141,11 @@ export const GET_HISTORY_COLS = (
                                    status: val.id===item.id ? "acknowledged" : val.status
                               }))
                          }))
-                         toast.success("Entry acknowledged!")
-                    } catch (error){
-                         toast.error("Failed to mark the entry as acknowledged");
-                         console.error(error)
+                         toast.success(messageTxt("acknowledge-history.success"))
+                    } catch (err){
+                         toast.error(messageTxt("acknowledge-history.error",{
+                              description: String(err)
+                         }));
                     }
                }
                return (

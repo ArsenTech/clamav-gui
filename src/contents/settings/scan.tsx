@@ -25,14 +25,16 @@ export default function ScanSettings({scanProfile}: SettingsProps){
      const [isFetching, startTransition] = useTransition()
      const {getSettingsByKey,setSettingsbyKey} = useBackendSettings()
      const [exclusions, setExclusions] = useState<BackendSettings["exclusions"]>(DEFAULT_BACKEND_SETTINGS.exclusions);
+     const {t: messageTxt} = useTranslation("messages")
      useEffect(()=>{
           startTransition(async()=>{
                try {
                     const stored = await getSettingsByKey("exclusions")
                     setExclusions(val=>!stored ? val : stored)
                } catch (err){
-                    toast.error("Failed to fetch existing exclusions");
-                    console.error(err)
+                    toast.error(messageTxt("fetch-error.exclusions",{
+                         description: String(err)
+                    }));
                }
           })
      },[])

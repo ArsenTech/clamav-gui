@@ -26,7 +26,8 @@ export default function ScanProcess({scanState, handleReset, isStartup}: Props){
      const {scanType, threats, currLocation, totalFiles, scannedFiles, paths} = scanState
      const [isOpen, setIsOpen] = useState(false);
      const {formatDate} = useSettings()
-     const dateRef = useRef<Date>(new Date(Date.now()))
+     const dateRef = useRef<Date>(new Date(Date.now()));
+     const {t: messageTxt} = useTranslation("messages")
      const handleStopScan = async () => {
           if(settings.confirmStopScan) setIsOpen(false);
           handleReset();
@@ -37,9 +38,10 @@ export default function ScanProcess({scanState, handleReset, isStartup}: Props){
                } else {
                     navigate("/scan");
                }
-          } catch (e){
-               toast.error("Failed to stop the scan");
-               console.error(e);
+          } catch (err){
+               toast.error(messageTxt("scan-stop-error",{
+                    description: String(err)
+               }));
                navigate("/scan");
           }
      }

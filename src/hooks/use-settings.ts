@@ -1,8 +1,10 @@
 import { store } from "@/lib/store";
 import { BackendSettings } from "@/lib/types/settings";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 export function useBackendSettings(){
+     const {t: messageTxt} = useTranslation("messages")
      async function getSettingsBySection<
           S extends keyof BackendSettings,
           K extends keyof BackendSettings[S]
@@ -31,9 +33,10 @@ export function useBackendSettings(){
                     ...current,
                     [key]: value,
                });
-          } catch(e){
-               toast.error("Failed to save settings");
-               console.error(e)
+          } catch(err){
+               toast.error(messageTxt("save-settings-error",{
+                    description: String(err)
+               }));
           }
      }
      async function getSettingsByKey<K extends keyof BackendSettings>(key: K): Promise<BackendSettings[K] | undefined> {
@@ -44,9 +47,10 @@ export function useBackendSettings(){
           try{
                const current = await store.get<BackendSettings[K]>(key)
                await store.set(key,!value ? current : value);
-          } catch(e){
-               toast.error("Failed to save settings");
-               console.error(e)
+          } catch(err){
+               toast.error(messageTxt("save-settings-error",{
+                    description: String(err)
+               }));
           }
      }
      return {

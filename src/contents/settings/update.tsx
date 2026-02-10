@@ -62,6 +62,7 @@ export default function UpdateSettings(){
                }
           })()
      },[])
+     const {t: messageTxt} = useTranslation("messages")
      useEffect(()=>{
           const unsubs: Promise<UnlistenFn>[] = [
                listen("freshclam:start",() => setState({
@@ -87,9 +88,10 @@ export default function UpdateSettings(){
                          const raw = await invoke<string>("get_clamav_version");
                          const parsed = parseClamVersion(raw);
                          updateVersions(parsed);
-                    } catch (e) {
-                         toast.error("Failed to update definitions")
-                         console.error(e)
+                    } catch (err) {
+                         toast.error(messageTxt("def-update-error",{
+                              description: String(err)
+                         }))
                     }
                })
           ];

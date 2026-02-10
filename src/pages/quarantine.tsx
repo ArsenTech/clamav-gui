@@ -33,10 +33,9 @@ export default function QuarantinePage(){
      }
      useEffect(()=>fetchData(),[])
      const setState = (overrides: Partial<IQuarantineState>) => setQuarantineState(prev=>({ ...prev, ...overrides }))
+     const {t: messageTxt} = useTranslation("messages")
      const quarantineAction = async(type: QuarantineAction) => {
           const commandName = `${type}_quarantine`
-          const message = type==="restore" ? "File restored from quarantine!" : "The file has been deleted permanently";
-          const errorMessage = type==="restore" ? "Failed to restore file from quarantine" : "Failed to delete file from quarantine"
           try{
                await invoke(commandName,{
                     id: quarantineState.id,
@@ -44,10 +43,11 @@ export default function QuarantinePage(){
                })
                const dataCopy = [...quarantineState.data].filter(val=>val.id!==quarantineState.id)
                setState({ data: dataCopy });
-               toast.success(message);
-          } catch (e){
-               toast.error(errorMessage);
-               console.error(e);
+               toast.success(messageTxt(`${type}-quarantine.success`));
+          } catch (err){
+               toast.error(messageTxt(`${type}-quarantine.error`,{
+                    description: String(err)
+               }));
           } finally {
                setState({
                     isOpenRestore: false,
@@ -62,14 +62,13 @@ export default function QuarantinePage(){
           try{
                const ids = data.map(t => t.id);
                const commandName = type==="restore" ? "restore_all" : "clear_quarantine";
-               const msgName = type === "restore" ? "All Threats restored" : "All Threats deleted"
                await invoke(commandName, { ids });
                setState({ data: [] })
-               toast.success(msgName);
+               toast.success(messageTxt(`bulk-${type}-quarantine.success`));
           } catch (err){
-               const errMsg = type==="restore" ? "Failed to restore all threats" : "Failed to delete all threats";
-               toast.error(errMsg);
-               console.error(err)
+               toast.error(messageTxt(`bulk-${type}-quarantine.error`,{
+                    description: String(err)
+               }));
           }
      }
      const {isOpenDelete, isOpenRestore, bulkDelete, bulkRestore, data} = quarantineState

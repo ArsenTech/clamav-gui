@@ -26,6 +26,7 @@ interface Props{
 export default function ScanFinishedTable({setScanState, isStartup, scanState, handlePrimaryAction, finishScanState, setState}: Props){
      const {settings} = useSettings();
      const [isPending, startTransition] = useTransition()
+     const {t: messageTxt} = useTranslation("messages")
      const handleDelete = async() => {
           try{
                if(!finishScanState.currThreat) return;
@@ -38,10 +39,11 @@ export default function ScanFinishedTable({setScanState, isStartup, scanState, h
                     ...prev,
                     threats: prev.threats.map(val => val.filePath === filePath && val.displayName === displayName ? { ...val, status: "deleted" } : val)
                }))
-               toast.success("Threat deleted permanently!")
-          } catch (e){
-               toast.error("Failed to delete threat");
-               console.error(e);
+               toast.success(messageTxt("threat-deleted.success"))
+          } catch (err){
+               toast.error(messageTxt("threat-deleted.error",{
+                    description: String(err)
+               }));
           } finally {
                setState(INITIAL_FINISH_SCAN_STATE)
           }
@@ -57,9 +59,9 @@ export default function ScanFinishedTable({setScanState, isStartup, scanState, h
                          ...prev,
                          threats: prev.threats.map(t =>t.status === "detected" ? { ...t, status: "quarantined" } : t)
                     }))
-                    toast.success("All threats quarantined");
+                    toast.success(messageTxt("threat-quarantined.success"));
                } catch {
-                    toast.error("Failed to quarantine all threats");
+                    toast.error(messageTxt("threat-quarantined.error"));
                }
           })
      }
@@ -75,9 +77,9 @@ export default function ScanFinishedTable({setScanState, isStartup, scanState, h
                          ...prev,
                          threats: prev.threats.map(t =>t.status === "detected" ? { ...t, status: "deleted" } : t)
                     }))
-                    toast.success("All threats deleted");
+                    toast.success(messageTxt("threat-bulk-delete.success"));
                } catch {
-                    toast.error("Failed to delete all threats");
+                    toast.error(messageTxt("threat-bulk-delete.error"));
                } 
           })
      }

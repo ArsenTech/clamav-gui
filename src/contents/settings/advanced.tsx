@@ -35,6 +35,7 @@ export default function AdvancedSettings({scanProfile}: SettingsProps){
           const options = ObjectEntries(SCAN_SETTINGS).filter(([_,option])=>option.group==="advanced");
           return scanProfile === "file" ? options.filter(([k])=>FILE_SCAN_WHITELIST.includes(k as ScanOptionKeys)) : options;
      },[scanProfile])
+     const {t: messageTxt} = useTranslation("messages")
      const handleDangerZoneAction = (type: "restore" | "delete") => {
           if (isPending) return;
           updateState({
@@ -49,11 +50,11 @@ export default function AdvancedSettings({scanProfile}: SettingsProps){
                          await store.clear();
                     }
                     setSettings(DEFAULT_SETTINGS);
-                    toast.success(type === "delete" ? "Settings deleted successfully" : "Settings restored to defaults");
+                    toast.success(messageTxt(`${type}-settings.success`));
                } catch(err){
-                    const msg = type==="delete" ? "Failed to delete settings" : "Failed to restore default values"
-                    toast.error(msg);
-                    console.error(err)
+                    toast.error(messageTxt(`${type}-settings.error`,{
+                         description: String(err)
+                    }));
                }
           })
      }

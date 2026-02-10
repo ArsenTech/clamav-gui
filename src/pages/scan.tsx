@@ -37,6 +37,7 @@ export default function ScanPage(){
      const scanStartedRef = useRef(false);
      const scanStoppedRef = useRef(false);
      const {getSettingsBySection} = useBackendSettings();
+     const {t: messageTxt} = useTranslation("messages")
      const handleStartScan = async() => {
           try{
                let scanOptions: ScanProfileValues | null = null;
@@ -59,11 +60,11 @@ export default function ScanPage(){
                     ...payload,
                     args: scanOptions ? mapScanSettingsToArgs(validateScanSettings(scanOptions)): null
                }).catch((err) => {
-                    console.error("Scan command not found")
+                    toast.error(messageTxt("no-scan-command"))
                     throw new Error(err);
                })
           } catch (e){
-               toast.error("Failed to start the scan");
+               toast.error(messageTxt("scan-start-error"));
                if (!scanActiveRef.current) return;
                scanStartedRef.current = false;
                scanActiveRef.current = false;

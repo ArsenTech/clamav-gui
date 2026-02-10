@@ -6,7 +6,7 @@ import { Button } from "../ui/button";
 import { useForm } from "react-hook-form";
 import { ExclusionsType } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ExclusionsSchema } from "@/lib/schemas";
+import { getExclusionsSchema } from "@/lib/schemas";
 import { ButtonGroup } from "../ui/button-group";
 import { Input } from "../ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
@@ -22,8 +22,9 @@ export default function DirExclusionsItem({data, onSubmit, onDelete}: Props){
      const [isOpen, setIsOpen] = useState(false);
      const [isOpenDelete, setIsOpenDelete] = useState(false)
      const [currPath, setCurrPath] = useState("")
+     const {t: validationMsg} = useTranslation("messages")
      const form = useForm<ExclusionsType>({
-          resolver: zodResolver(ExclusionsSchema),
+          resolver: zodResolver(getExclusionsSchema(validationMsg)),
           defaultValues: {path: ""}
      })
      const handleSubmit = (values: ExclusionsType) => {

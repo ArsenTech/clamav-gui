@@ -71,6 +71,7 @@ export const GET_THREATS_COLS = (
                cell: ({ row }) => {
                     const {t} = useTranslation("table");
                     const threat = row.original
+                    const {t: messageTxt} = useTranslation("messages")
                     const handleQuarantine = async() => {
                          try{
                               const {filePath, displayName} = threat
@@ -83,10 +84,11 @@ export const GET_THREATS_COLS = (
                                    ...prev,
                                    threats: prev.threats.map(val => val.filePath === filePath && val.displayName === displayName ? { ...val, status: "quarantined" } : val)
                               }))
-                              toast.success("Threat quarantined!")
-                         } catch (e){
-                              toast.error("Failed to quarantine threat");
-                              console.error(e);
+                              toast.success(messageTxt("quarantine.success"))
+                         } catch (err){
+                              toast.error(messageTxt("quarantine.error"),{
+                                   description: String(err)
+                              });
                          }
                     }
                     const handleRevealPath = async() => await revealItemInDir(threat.filePath)

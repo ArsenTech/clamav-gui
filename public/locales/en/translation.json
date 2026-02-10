@@ -29,5 +29,6 @@
           "back": "Back",
           "please-wait": "Please wait..."
      },
-     "splash-screen-text": "Loading..."
+     "splash-screen-text": "Loading...",
+     "copy-command": "Copy the Command"
 }

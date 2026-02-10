@@ -24,6 +24,7 @@ export default function SchedulerContent(){
      const [isSubmitting, startSubmitTransition] = useTransition();
      const [schedulerState, setSchedulerState] = useState<ISchedulerState>(INITIAL_SCHEDULER_STATE);
      const setState = (overrides: Partial<ISchedulerState>) => setSchedulerState(prev=>({ ...prev, ...overrides }))
+     const {t: messageTxt} = useTranslation("messages")
      const handleSchedule = (values: SchedulerType) => {
           if(!settings.enableSchedulerUI) return;
           startSubmitTransition(async()=>{
@@ -34,8 +35,9 @@ export default function SchedulerContent(){
                          days: values.days || DAYS_OF_THE_WEEK[currDay]
                     })
                } catch (err) {
-                    toast.error("Failed to schedule a scan job");
-                    console.error(err);
+                    toast.error(messageTxt("schedule-scan-error",{
+                         description: String(err)
+                    }));
                }
           })
      }
@@ -53,10 +55,11 @@ export default function SchedulerContent(){
                          job_id: "",
                          data: prev.data.filter(val=>val.id!==schedulerState.job_id)
                     }))
-                    toast.success("Scheduled scan job removed!")
+                    toast.success(messageTxt("remove-job.success"))
                } catch (err){
-                    toast.error("Failed to remove the scheduled scan job");
-                    console.error(err);
+                    toast.error(messageTxt("remove-job.error",{
+                         description: String(err)
+                    }));
                }
           })
      }
@@ -67,10 +70,11 @@ export default function SchedulerContent(){
                try {
                     await invoke("clear_scheduled_jobs");
                     setState(INITIAL_SCHEDULER_STATE)
-                    toast.success("Scheduled scan job removed!")
+                    toast.success(messageTxt("clear-jobs.success"))
                } catch (err){
-                    toast.error("Failed to remove all scheduled scan jobs");
-                    console.error(err);
+                    toast.error(messageTxt("clear-jobs.error",{
+                         description: String(err)
+                    }));
                }
           })
      }
@@ -102,8 +106,9 @@ export default function SchedulerContent(){
                     })
                     setState({data: newData})
                } catch (err){
-                    toast.error("Failed to fetch scheduled scans");
-                    console.error(err);
+                    toast.error(messageTxt("fetch-error.scheduler",{
+                         description: String(err)
+                    }));
                     setState({data: []})
                }
           })

@@ -1,7 +1,7 @@
 import * as z from "zod"
 import { LucideProps } from "lucide-react";
 import { SettingsProps } from "./props";
-import { ExclusionsSchema, SchedulerSchema } from "../schemas";
+import { getExclusionsSchema, getSchedulerSchema } from "../schemas";
 import { QuickAccessLink, SettingsTab, SidebarLink, ScanType } from "./enums";
 
 export type Mutable<T> = {
@@ -44,5 +44,9 @@ export interface ISpecialThanksItem{
 }
 
 // Schemas
-export type SchedulerType = z.infer<typeof SchedulerSchema>
-export type ExclusionsType = z.infer<typeof ExclusionsSchema>
+export type SchedulerType = z.infer<
+     ReturnType<typeof getSchedulerSchema>
+>
+export type ExclusionsType = z.infer<
+     ReturnType<typeof getExclusionsSchema>
+>

@@ -1,0 +1,96 @@
+{
+     "copy-command": {
+          "success": "Command Copied",
+          "error": "Failed to copy the command"
+     },
+     "fetch-error": {
+          "history": "Failed to fetch the recent history data",
+          "scheduler": "Failed to fetch scheduled scans",
+          "exclusions": "Failed to fetch existing exclusions"
+     },
+     "scan-stop-error": "Failed to stop the scan",
+     "scan-start-error": "Failed to start the scan",
+     "log-reveal-error": "Failed to reveal log file",
+     "acknowledge-history": {
+          "success": "Entry acknowledged!",
+          "error": "Failed to mark the entry as acknowledged"
+     },
+     "trigger-scan": {
+          "success": "Scan Job Triggered",
+          "error": "Failed to run scheduled task"
+     },
+     "quarantine": {
+         "success": "Threat quarantined!" ,
+         "error": "Failed to quarantine threat"
+     },
+     "history-clear-errror": "Failed to clear history",
+     "export": {
+          "success": "History data exported as {{fileName}}",
+          "error": "Failed to export the history data"
+     },
+     "schedule-scan-error": "Failed to schedule a scan job",
+     "remove-job": {
+          "success": "Scheduled scan job removed!",
+          "error": "Failed to remove the scheduled scan job"
+     },
+     "clear-jobs": {
+          "success": "All scheduled scan jobs cleared!",
+          "error": "Failed to clear all scheduled scan jobs"
+     },
+     "threat-deleted": {
+          "success": "Threat deleted permanently!",
+          "error": "Failed to delete threat"
+     },
+     "threat-quarantined": {
+          "success": "All threats quarantined",
+          "error": "Failed to quarantine all threats"
+     },
+     "threat-bulk-delete": {
+          "success": "All threats deleted",
+          "error": "Failed to delete all threats"
+     },
+     "restore-settings": {
+          "success": "Settings restored to defaults",
+          "error": "Failed to restore default values"
+     },
+     "delete-settings": {
+          "success": "Settings deleted successfully",
+          "error": "Failed to delete settings"
+     },
+     "def-update-error": "Failed to update definitions",
+     "save-settings-error": "Failed to save settings",
+     "restore-quarantine": {
+          "success": "File restored from quarantine!",
+          "error": "Failed to restore file from quarantine"
+     },
+     "delete-quarantine": {
+          "success": "The file has been deleted permanently",
+          "error": "Failed to delete file from quarantine"
+     },
+     "bulk-restore-quarantine": {
+          "success": "All Threats restored",
+          "error": "Failed to restore all threats"
+     },
+     "bulk-delete-quarantine": {
+          "success": "All Threats deleted",
+          "error": "Failed to delete all threats"
+     },
+     "no-scan-command": "Scan command not found",
+     "form-validations": {
+          "interval": "Please set the interval type",
+          "scanType": "Please choose the scan type",
+          "days": "Please choose a day of the week",
+          "hours": {
+               "min": "It should be between 0 and 23 hours",
+               "max": "It is greater than 23 hours"
+          },
+          "minutes": {
+               "min": "It should be between 0 and 59 minutes",
+               "max": "It is greater than 59 minutes"
+          },
+          "exclusion-path": {
+               "required": "The exclusion path is required.",
+               "too-long": "The exclusion path is too long."
+          }
+     }
+}

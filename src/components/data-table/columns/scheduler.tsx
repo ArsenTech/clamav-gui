@@ -99,6 +99,7 @@ export const GET_SCHEDULER_COLS = (
           cell: ({row}) => {
                const {t} = useTranslation("table")
                const item = row.original
+               const {t: messageTxt} = useTranslation("messages")
                const revealLog = async()=>{
                     if(!item.log_id) return;
                     try{
@@ -107,8 +108,9 @@ export const GET_SCHEDULER_COLS = (
                               id: item.log_id
                          })
                     } catch(err){
-                         toast.error("Failed to reveal log file");
-                         console.error(err)
+                         toast.error(messageTxt("log-reveal-error",{
+                              description: String(err)
+                         }));
                     }
                }
                const handleRunScan = async()=>{
@@ -116,10 +118,11 @@ export const GET_SCHEDULER_COLS = (
                          await invoke("run_job_now",{
                               taskName: item.id
                          });
-                         toast.success("Scan Job Triggered")
+                         toast.success(messageTxt("trigger-scan.success"))
                     } catch (err){
-                         toast.error("Failed to run scheduled task");
-                         console.error(err)
+                         toast.error(messageTxt("trigger-scan.error",{
+                              description: String(err)
+                         }));
                     }
                }
                return (

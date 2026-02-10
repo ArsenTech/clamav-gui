@@ -17,7 +17,6 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { IHistoryPageState } from "@/lib/types/states";
 import { INITIAL_HISTORY_STATE } from "@/lib/constants/states";
 import { useSettings } from "@/context/settings";
-import { HISTORY_CLEAR_MSGS } from "@/lib/constants/maps"
 import { useTranslation } from "react-i18next";
 
 export default function HistoryContent(){
@@ -27,6 +26,7 @@ export default function HistoryContent(){
      const [historyState, setHistoryState] = useState<IHistoryPageState>(INITIAL_HISTORY_STATE)
      const setState = (overrides: Partial<IHistoryPageState>) => setHistoryState(prev=>({ ...prev, ...overrides }))
      const {t} = useTranslation("history")
+     const {t: messageTxt} = useTranslation("messages")
      const fetchData = () => {
           startTransition(async()=>{
                try {
@@ -36,9 +36,10 @@ export default function HistoryContent(){
                          logId: val.log_id
                     }))
                     setState({ data: newData })
-               } catch (error){
-                    toast.error("Failed to fetch the recent history data")
-                    console.error(error);
+               } catch (err){
+                    toast.error(messageTxt("fetch-error.history",{
+                         description: String(err)
+                    }))
                     setState({ data: [] })
                }
           })
@@ -56,10 +57,11 @@ export default function HistoryContent(){
                          ...prev,
                          data: mode==="all" ? [] : prev.data.filter(val=>val.status!==mode)
                     }))
-                    toast.success(HISTORY_CLEAR_MSGS[mode])
-               } catch (error){
-                    toast.error("Failed to clear history")
-                    console.error(error);
+                    toast.success(t(`clear-messages.${mode}`))
+               } catch (err){
+                    toast.error(messageTxt("history-clear-errror",{
+                         description: String(err)
+                    }))
                }
           })
      }
@@ -74,10 +76,13 @@ export default function HistoryContent(){
                if(!path) return;
                const exportFile = path.endsWith(".csv") ? exportCSV : exportJSON;
                await exportFile(path,historyState.data);
-               toast.success(`History data exported as ${path.endsWith(".csv") ? "CSV File" : "JSON File"}`)
-          } catch (error) {
-               toast.error("Failed to export the history data");
-               console.error(error)
+               toast.success(messageTxt("export.success",{
+                    fileName: path.endsWith(".csv") ? t("export.csv") : t("export.json")
+               }))
+          } catch (err) {
+               toast.error(messageTxt("export.error",{
+                    description: String(err)
+               }));
           }
      }
      useEffect(()=>{

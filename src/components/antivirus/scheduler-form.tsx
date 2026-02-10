@@ -1,7 +1,7 @@
 import { SchedulerType } from "@/lib/types";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
-import { SchedulerSchema } from "@/lib/schemas";
+import { getSchedulerSchema } from "@/lib/schemas";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage} from "../ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Button } from "../ui/button";
@@ -21,8 +21,9 @@ interface Props{
 }
 export default function SchedulerForm({handleSubmit, isSubmitting}: Props){
      const [data, setData] = useState<ISchedulerFormValues>({ interval: null, scanType: null })
+     const {t: validationMsg} = useTranslation("messages")
      const form = useForm<SchedulerType>({
-          resolver: zodResolver(SchedulerSchema),
+          resolver: zodResolver(getSchedulerSchema(validationMsg)),
           defaultValues:{
                hours: new Date().getHours(),
                minutes: new Date().getMinutes(),

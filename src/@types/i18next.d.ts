@@ -12,6 +12,7 @@ import scanSettings from "@public/locales/en/scan-settings.json"
 import update from "@public/locales/en/update.json"
 import about from "@public/locales/en/about.json"
 import credits from "@public/locales/en/credits.json"
+import messages from "@public/locales/en/messages.json"
 
 import { LangCode } from "../i18n/config";
 
@@ -32,6 +33,7 @@ declare module "i18next" {
                update: typeof update;
                about: typeof about;
                credits: typeof credits;
+               messages: typeof messages;
           };
      }
 }
