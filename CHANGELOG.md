@@ -7,6 +7,12 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## 1.0.0 - Unreleased
 
 ## [1.0.0-3] - 2026-02-10 (v1 Beta #3)
+### Added
+- Buttons related to Contribution in the About Page
+  - Report bug
+  - Request Feature
+  - Contribute
+  - Add Your Language
 ### Translated
 - Settings
   - General Settings UI

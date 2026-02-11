@@ -4,10 +4,17 @@
      "desc": {
           "line1": "A minimal, open-source interface for file scanning and threat detection that makes the Antivirus itself look professional and work exactly like ClamAV (A FOSS CLI Antivirus).",
           "line2": "Built with Tauri, React, and modern desktop and web tools. This software is provided as-is. No data is collected or transmitted. This GUI uses ClamAV's <code>clamscan</code> and <code>freshclam</code> engines. Scan types are presets that define which locations and which limits are used.",
-          "line3": "ClamAV is a trademark of Cisco Systems, Inc. This project is an independent, open-source GUI and is not affiliated with or endorsed by Cisco."
+          "line3": "ClamAV is a trademark of Cisco Systems, Inc. This project is an independent, open-source GUI and is not affiliated with or endorsed by Cisco.",
+          "line4": "This project is community-driven. Your feedback shapes the future."
      },
      "clamav-version": "ClamAV v{{engine}}, Database Version: {{dbVersion}}",
      "all-rights-reserved": "All Rights Reserved",
      "translated-by": "",
-     "def-version": "Virus definition database version"
+     "def-version": "Virus definition database version",
+     "buttons": {
+          "bug-report": "Report a bug",
+          "feature-request": "Request a feature",
+          "contribute": "Contribute",
+          "translate": "Add Your Language"
+     }
 }
