@@ -1,0 +1,40 @@
+{
+     "title": "Վայ, <primary>ClamAV</primary>-ն տեղադրված չէ։",
+     "step": "Քայլ {{current}}/{{total}}",
+     "installation": {
+          "title": "Տեղադրում",
+          "info": "Համոզվեք, որ տեղադրել եք ClamAV-ն՝ հետևելով այստեղ ներկայացված տեղադրման ուղեցույցին.",
+          "linux-commands": "Առաջարկվող Linux հրամաններ"
+     },
+     "add-to-path": {
+          "title": "Ավելացում PATH փոփոխականին",
+          "windows": {
+               "cmd": "Բացեք հրամանի տողը, ապա մուտքագրեք՝",
+               "if-returns-path": "Երբ այն վերադարձնի ուղին (օրինակ՝ <code>C:\\Program Files\\ClamAV</code>)՝",
+               "steps": [
+                    "Բացեք <bold>Start</bold> մենյուն, մուտքագրեք <code>env</code>։",
+                    "Սեղմեք «Edit the system environment variables»։",
+                    "«System Properties» պատուհանում սեղմեք «Environment Variables»։",
+                    "Գտեք <code>PATH</code> փոփոխականը, սեղմեք <bold>Edit</bold>, ապա ավելացրեք <code>where clamscan</code> հրամանի ելքային ուղին։",
+                    "Սեղմեք <bold>OK</bold>, ապա <bold>OK</bold>, <bold>Apply</bold>, ապա <bold>OK</bold>"
+               ],
+               "verification": "Ստուգեք՝ բացելով հրամանի տողը և մուտքագրելով՝"
+          },
+          "linux": {
+               "cmd": "Բացեք նախընտրելի տերմինալը, ապա մուտքագրեք՝",
+               "nano": "Երբ այն վերադարձնի ուղին (օրինակ՝ <code>/path/to/clamav/bin</code>), բացեք <bold>~/.bashrc</bold> ֆայլը nano-ով",
+               "snippet": "Ավելացրեք հետևյալ հատվածը <bold>~/.bashrc</bold> ֆայլի վերջում՝",
+               "kbd-shortcut": "Սեղմեք <save/>, ապա <exit/>, վերագործարկեք տերմինալը՝ օգտագործելով՝",
+               "verification": "Ստուգեք՝ մուտքագրելով՝"
+          },
+          "check-step": "ClamAV-ն տեղադրելուց և <code>PATH</code> փոփոխականին ClamAV ուղին ավելացնելուց հետո սեղմեք ստորև նշված <bold>Ստուգել առկայությունը</bold> կոճակը՝ ClamAV GUI-ն անվճար ակտիվացնելու համար։"
+     },
+     "buttons": {
+          "prev": "Նախորդը",
+          "next": "Հաջորդը",
+          "check": {
+               "pending": "Առկայության ստուգում...",
+               "original": "Ստուգել առկայությունը"
+          }
+     }
+}

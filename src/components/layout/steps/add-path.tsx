@@ -2,9 +2,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { platform } from "@tauri-apps/plugin-os";
 import CommandSnippetBlock from "@/components/command-snippet";
 import { Kbd, KbdGroup } from "@/components/ui/kbd";
+import { Trans, useTranslation } from "react-i18next";
 
 export default function AddPath(){
      const currPlatform = platform();
+     const {t} = useTranslation("no-clamav-page");
+     const windowsSteps = t("add-to-path.windows.steps",{returnObjects: true})
      return (
           <div className="space-y-3 text-left self-start px-6">
                <Tabs defaultValue={currPlatform==="windows" ? "windows" : "linux"}>
@@ -13,55 +16,95 @@ export default function AddPath(){
                          <TabsTrigger value="linux">Linux</TabsTrigger>
                     </TabsList>
                     <TabsContent value="windows" className="space-y-3">
-                         <p>Open the Command Prompt, then type:</p>
+                         <p>{t("add-to-path.windows.cmd")}</p>
                          <CommandSnippetBlock
                               command="where clamscan"
                          />
-                         <p>Once it returns the path (example: <code className="bg-accent text-accent-foreground px-1 py-0.5 rounded-sm">C:\Program Files\ClamAV</code>):</p>
+                         <p><Trans
+                              ns="no-clamav-page"
+                              i18nKey="add-to-path.windows.if-returns-path"
+                              components={{
+                                   code: <code className="bg-accent text-accent-foreground px-1 py-0.5 rounded-sm"/>
+                              }}
+                         /></p>
                          <ol className="list-decimal text-left self-start space-y-2 px-8">
-                              <li>Open the Start Menu, Type <code className="bg-accent text-accent-foreground px-1 py-0.5 rounded-sm">env</code></li>
-                              <li>Click on the "Edit the system environment variables".</li>
-                              <li>Click on "Environment Variables" in the System Properties Window.</li>
-                              <li>Find the <code className="bg-accent text-accent-foreground px-1 py-0.5 rounded-sm">Path</code> variable, Click <span className="font-semibold">Edit</span>, then add the output path of the <code className="bg-accent text-accent-foreground px-1 py-0.5 rounded-sm">where clamscan</code> command.</li>
-                              <li>Click <span className="font-semibold">OK</span>, then <span className="font-semibold">OK</span>, <span className="font-semibold">Apply</span>, then <span className="font-semibold">OK</span></li>
+                              {windowsSteps.map((step,i)=>(
+                                   <li key={`step-${i+1}`}>
+                                        <Trans
+                                             components={{
+                                                  code: <code className="bg-accent text-accent-foreground px-1 py-0.5 rounded-sm"/>,
+                                                  bold: <span className="font-semibold"/>
+                                             }}
+                                        >
+                                             {step}
+                                        </Trans>
+                                   </li>
+                              ))}
                          </ol>
-                         <p>Verify by opening the Command Prompt, and typing:</p>
+                         <p>{t("add-to-path.windows.verification")}</p>
                          <CommandSnippetBlock
                               command="clamscan --version"
                          />
                     </TabsContent>
                     <TabsContent value="linux" className="space-y-3">
-                         <p>Open the preferred terminal, then type:</p>
+                         <p>{t("add-to-path.linux.cmd")}</p>
                          <CommandSnippetBlock
                               command="which clamscan"
                          />
-                         <p>Once it returns the path (example: <code className="bg-accent text-accent-foreground px-1 py-0.5 rounded-sm">/path/to/clamav/bin</code>), open the <span className="font-semibold">~/.bashrc</span> file with nano:</p>
+                         <p><Trans
+                              ns="no-clamav-page"
+                              i18nKey="add-to-path.linux.nano"
+                              components={{
+                                   code: <code className="bg-accent text-accent-foreground px-1 py-0.5 rounded-sm"/>,
+                                   bold: <span className="font-semibold"/>
+                              }}
+                         /></p>
                          <CommandSnippetBlock
                               command="sudo nano ~/.bashrc"
                          />
-                         <p>Then add the following snippet in the end of <span className="font-semibold">~/.bashrc</span> file:</p>
+                         <p><Trans
+                              ns="no-clamav-page"
+                              i18nKey="add-to-path.linux.snippet"
+                              components={{
+                                   bold: <span className="font-semibold"/>
+                              }}
+                         /></p>
                          <CommandSnippetBlock
                               command='export PATH="$PATH:/path/to/clamav/bin"'
                          />
-                         <p>Press <KbdGroup>
-                              <Kbd>Ctrl</Kbd>
-                              <span>+</span>
-                              <Kbd>S</Kbd>
-                         </KbdGroup>, then <KbdGroup>
-                              <Kbd>Ctrl</Kbd>
-                              <span>+</span>
-                              <Kbd>X</Kbd>
-                         </KbdGroup>, reload the terminal by using:</p>
+                         <p><Trans
+                              ns="no-clamav-page"
+                              i18nKey="add-to-path.linux.kbd-shortcut"
+                              components={{
+                                   save: <KbdGroup>
+                                        <Kbd>Ctrl</Kbd>
+                                        <span>+</span>
+                                        <Kbd>S</Kbd>
+                                   </KbdGroup>,
+                                   exit: <KbdGroup>
+                                        <Kbd>Ctrl</Kbd>
+                                        <span>+</span>
+                                        <Kbd>X</Kbd>
+                                   </KbdGroup>
+                              }}
+                         /></p>
                          <CommandSnippetBlock
                               command='source ~/.bashrc'
                          />
-                         <p>then verify by typing:</p>
+                         <p>{t("add-to-path.linux.verification")}</p>
                          <CommandSnippetBlock
                               command="clamscan --version"
                          />
                     </TabsContent>
                </Tabs>
-               <p>Once you installed ClamAV and added the ClamAV path into the <code className="bg-accent text-accent-foreground px-1 py-0.5 rounded-sm">PATH</code> environment variable, click on the <span className="font-semibold">Check Availability</span> button below to activate the ClamAV GUI for free</p>
+               <p><Trans
+                    ns="no-clamav-page"
+                    i18nKey="add-to-path.check-step"
+                    components={{
+                         code: <code className="bg-accent text-accent-foreground px-1 py-0.5 rounded-sm"/>,
+                         bold: <span className="font-semibold"/>
+                    }}
+               /></p>
           </div>
      )
 }

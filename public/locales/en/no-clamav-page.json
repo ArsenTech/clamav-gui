@@ -1,0 +1,40 @@
+{
+     "title": "Oops, <primary>ClamAV</primary> has not been installed",
+     "step": "Step {{current}} of {{total}}",
+     "installation": {
+          "title": "Installation",
+          "info": "Make sure to Install ClamAV by following the installation guide here:",
+          "linux-commands": "Recommended Linux Commands"
+     },
+     "add-to-path": {
+          "title": "Adding to PATH Environment variable",
+          "windows": {
+               "cmd": "Open the Command Prompt, then type:",
+               "if-returns-path": "Once it returns the path (example: <code>C:\\Program Files\\ClamAV</code>):",
+               "steps": [
+                    "Open the Start Menu, Type <code>env</code>",
+                    "Click on \"Edit the system environment variables\".",
+                    "Click on \"Environment Variables\" in the System Properties Window.",
+                    "Find the <code>Path</code> variable, Click <bold>Edit</bold>, then add the output path of the <code>where clamscan</code> command.",
+                    "Click <bold>OK</bold>, then <bold>OK</bold>, <bold>Apply</bold>, then <bold>OK</bold>"
+               ],
+               "verification": "Verify by opening the Command Prompt, and typing:"
+          },
+          "linux": {
+               "cmd": "Open the preferred terminal, then type:",
+               "nano": "Once it returns the path (example: <code>/path/to/clamav/bin</code>), open the <bold>~/.bashrc</bold> file with nano:",
+               "snippet": "Add the following snippet in the end of <bold>~/.bashrc</bold> file:",
+               "kbd-shortcut": "Press <save/>, then <exit/>, reload the terminal by using:",
+               "verification": "Verify by typing:"
+          },
+          "check-step": "Once you installed ClamAV and added the ClamAV path into the <code>PATH</code> environment variable, click on the <bold>Check Availability</bold> button below to activate the ClamAV GUI for free"
+     },
+     "buttons": {
+          "prev": "Previous",
+          "next": "Next",
+          "check": {
+               "pending": "Checking...",
+               "original": "Check Availability"
+          }
+     }
+}
