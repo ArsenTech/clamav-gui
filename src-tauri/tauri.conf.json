@@ -32,8 +32,8 @@
       "icons/icon.ico"
     ],
     "resources": {
-      "assets/icon-variants/*.png": "resources/icons/",
-      "assets/sounds/*.wav": "resources/sounds/"
+      "assets/icon-variants/*.png": "icons/",
+      "i18n/*.json": "i18n/"
     },
     "createUpdaterArtifacts": true,
     "windows": {

@@ -7,11 +7,11 @@ use tauri::command;
 
 use crate::{
     helpers::{
-        history::append_history, log::{initialize_log_with_id, log_err, log_info}, new_id, path::get_clamav_path,
+        history::append_history, i18n::{TRANSLATIONS, load_translations}, log::{initialize_log_with_id, log_err, log_info}, new_id, path::get_clamav_path, sys_tray::generate_system_tray
     },
     types::{
-        enums::{HistoryStatus, LogCategory},
-        structs::HistoryItem,
+        enums::{HistoryStatus, HistoryType, LogCategory},
+        structs::{AppLanguage, HistoryItem},
     },
 };
 
@@ -40,7 +40,7 @@ pub fn remove_file(
                 HistoryItem {
                     id: new_id(),
                     timestamp: chrono::Utc::now().to_rfc3339(),
-                    action: "File Deleted".into(),
+                    action: Some(HistoryType::FileDelete),
                     details: message,
                     status: HistoryStatus::Success,
                     log_id: Some(log_id),
@@ -64,7 +64,7 @@ pub fn remove_file(
                 HistoryItem {
                     id: new_id(),
                     timestamp: chrono::Utc::now().to_rfc3339(),
-                    action: "File Deletion Failed".into(),
+                    action: Some(HistoryType::FileDeleteError),
                     details: error_msg.clone(),
                     status: HistoryStatus::Error,
                     log_id: Some(log_id),
@@ -85,4 +85,32 @@ pub fn remove_file(
 #[specta]
 pub fn check_availability() -> bool {
     get_clamav_path().is_ok()
+}
+
+#[command]
+#[specta]
+pub fn set_language(
+    app: tauri::AppHandle,
+    state: tauri::State<AppLanguage>,
+    lang: String,
+) -> Result<(), String> {
+    {
+        let mut guard = state.0.lock().unwrap();
+        *guard = lang.clone();
+    }
+    let map = load_translations(&app,&lang);
+    let mut translations = TRANSLATIONS
+        .write()
+        .map_err(|_| "Translation lock poisoned")?;
+    *translations = map;
+    Ok(())
+}
+
+#[command]
+#[specta(result)]
+pub fn rebuild_tray(app: tauri::AppHandle) -> Result<(), String> {
+
+    app.remove_tray_by_id("main_tray");
+    generate_system_tray(&app).map_err(|e|e.to_string())?;
+    Ok(())
 }

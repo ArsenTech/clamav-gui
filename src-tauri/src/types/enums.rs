@@ -118,3 +118,24 @@ pub enum BehaviorMode {
     Strict,
     Expert,
 }
+
+#[derive(Serialize, Deserialize, Type, Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[serde(rename_all = "kebab-case")]
+pub enum HistoryType{
+    RealTimeError,
+    RealTimeStart,
+    RealTimeStop,
+    QuarantineThreat,
+    RestoreThreat,
+    DeleteThreat,
+    ScanStart,
+    ScanFinish,
+    DefUpdateStart,
+    DefUpdateFinish,
+    DefUpdateError,
+    SchedulerCreate,
+    SchedulerDelete,
+    SchedulerTrigger,
+    FileDelete,
+    FileDeleteError
+}

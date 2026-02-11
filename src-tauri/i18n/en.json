@@ -1,0 +1,17 @@
+{
+     "tray": {
+          "open": "Open the GUI",
+          "about": "About ClamAV GUI",
+          "settings": "GUI Settings",
+          "scan": {
+               "title": "Scan",
+               "main": "Start Main Scan",
+               "full": "Start Full Scan",
+               "custom": "Start Custom Scan",
+               "file": "Start File Scan"
+          },
+          "quit": "Quit",
+          "update": "Update",
+          "tooltip": "ClamAV GUI is running in the system tray"
+     }
+}

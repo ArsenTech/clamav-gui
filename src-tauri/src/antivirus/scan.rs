@@ -9,7 +9,7 @@ use crate::{
         }, silent_command
     },
     types::{
-        enums::{HistoryStatus, LogCategory, ScanType},
+        enums::{HistoryStatus, LogCategory, ScanType, HistoryType},
         structs::{HistoryItem, StartupScan},
     },
 };
@@ -33,7 +33,7 @@ pub fn start_main_scan(app: tauri::AppHandle, args: Option<Vec<String>>) -> Resu
         HistoryItem {
             id: new_id(),
             timestamp: chrono::Utc::now().to_rfc3339(),
-            action: "Scan Started".into(),
+            action: Some(HistoryType::ScanStart),
             details: "The main scan has been started".into(),
             status: HistoryStatus::Success,
             category: Some(LogCategory::Scan),
@@ -101,7 +101,7 @@ pub fn start_full_scan(app: tauri::AppHandle) -> Result<(), String> {
         HistoryItem {
             id: new_id(),
             timestamp: chrono::Utc::now().to_rfc3339(),
-            action: "Scan Started".into(),
+            action: Some(HistoryType::ScanStart),
             details: "The full scan has been started".into(),
             status: HistoryStatus::Success,
             category: Some(LogCategory::Scan),
@@ -177,7 +177,7 @@ pub fn start_custom_scan(
         HistoryItem {
             id: new_id(),
             timestamp: chrono::Utc::now().to_rfc3339(),
-            action: "Scan Started".into(),
+            action: Some(HistoryType::ScanStart),
             details: "The custom scan has been started".into(),
             status: HistoryStatus::Success,
             category: Some(LogCategory::Scan),

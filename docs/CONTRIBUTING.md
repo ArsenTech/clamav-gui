@@ -123,8 +123,9 @@ If your changes affect the updater, release notes, or update flow, please test u
             // ^ This will be your contribution :-)
       ];
       ```
-6. Test by switching to your new language.
-7. Submit a PR for review!
+6. Open `src-tauri/i18n/[lang-code].json` and Translate the backend using your preferred tool.
+7. Test by switching to your new language.
+8. Submit a PR for review!
 
 ## 💡 Feedback & Feature Requests
 We love new ideas! If you have a suggestion:

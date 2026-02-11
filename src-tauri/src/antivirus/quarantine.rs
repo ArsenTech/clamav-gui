@@ -10,7 +10,7 @@ use crate::{
         quarantine::{move_file_cross_device, quarantine_dir, quarantine_id},
     },
     types::{
-        enums::{HistoryStatus, LogCategory},
+        enums::{HistoryStatus, LogCategory, HistoryType},
         structs::{HistoryItem, QuarantinedItem},
     },
 };
@@ -61,7 +61,7 @@ pub fn quarantine_file(
         HistoryItem {
             id: new_id(),
             timestamp: chrono::Utc::now().to_rfc3339(),
-            action: "Threat Quarantined".into(),
+            action: Some(HistoryType::QuarantineThreat),
             details: format!("{} was moved to quarantine", threat_name),
             status: HistoryStatus::Warning,
             category: Some(LogCategory::Quarantine),
@@ -169,7 +169,7 @@ pub fn restore_quarantine(
         HistoryItem {
             id: new_id(),
             timestamp: chrono::Utc::now().to_rfc3339(),
-            action: "Threat restored".into(),
+            action: Some(HistoryType::RestoreThreat),
             details: format!("{} was restored from quarantine", meta.threat_name),
             status: HistoryStatus::Success,
             category: Some(LogCategory::Quarantine),
@@ -238,7 +238,7 @@ pub fn delete_quarantine(
         HistoryItem {
             id: new_id(),
             timestamp: chrono::Utc::now().to_rfc3339(),
-            action: "Threat deleted".into(),
+            action: Some(HistoryType::DeleteThreat),
             details: format!("{} was deleted from quarantine", meta.threat_name),
             status: HistoryStatus::Success,
             category: Some(LogCategory::Quarantine),

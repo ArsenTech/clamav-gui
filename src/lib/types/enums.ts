@@ -91,3 +91,21 @@ export enum HistoryClearType{
      Acknowledged = "acknowledged",
      Error = "error"
 }
+export enum HistoryType{
+     RealTimeError = "real-time-error",
+     RealTimeStart = "real-time-start",
+     RealTimeStop = "real-time-stop",
+     QuarantineThreat = "quarantine-threat",
+     RestoreThreat = "restore-threat",
+     DeleteThreat = "delete-threat",
+     ScanStart = "scan-start",
+     ScanFinish = "scan-finish",
+     DefUpdateStart = "def-update-start",
+     DefUpdateFinish = "def-update-finish",
+     DefUpdateError = "def-update-error",
+     SchedulerCreate = "scheduler-create",
+     SchedulerDelete = "scheduler-delete",
+     SchedulerTrigger = "scheduler-trigger",
+     FileDelete = "file-delete",
+     FileDeleteError = "file-delete-error"
+}

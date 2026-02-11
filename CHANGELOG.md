@@ -5,14 +5,20 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 ## 1.0.0 - Unreleased
-
-## [1.0.0-3] - 2026-02-10 (v1 Beta #3)
 ### Added
 - Buttons related to Contribution in the About Page
   - Report bug
   - Request Feature
   - Contribute
   - Add Your Language
+### Translated
+- The **No ClamAV Found** Page
+- History Item Names
+- The System Tray
+### Improved
+- Credits Section
+
+## [1.0.0-3] - 2026-02-10 (v1 Beta #3)
 ### Translated
 - Settings
   - General Settings UI
@@ -24,11 +30,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   - Credits
 - Toast messages and validation messages
 - Notifications
-- The **No ClamAV Found** Page
 ### Improved
 - Some more Enums used in frontend
 - `console.error()` in some places into `toast.error(...,{description})`
-- Credits Section
 
 ## [1.0.0-2] - 2026-02-09 (v1 Beta #2)
 ### Added

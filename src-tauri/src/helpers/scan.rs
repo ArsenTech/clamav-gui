@@ -15,7 +15,7 @@ use crate::{
         history::append_scan_history, log::{log_err, log_info, log_path}, matcher::EXCLUSIONS, new_id, path::get_clamav_path, silent_command
     },
     types::{
-        enums::{HistoryStatus, LogCategory, ScanResult, ScanType},
+        enums::{HistoryStatus, HistoryType, LogCategory, ScanResult, ScanType},
         structs::{HistoryItem, StartupScan},
     },
 };
@@ -164,7 +164,7 @@ pub fn run_scan(
         HistoryItem {
             id: new_id(),
             timestamp: chrono::Utc::now().to_rfc3339(),
-            action: "Scan Finished".into(),
+            action: Some(HistoryType::ScanFinish),
             details,
             status,
             category: Some(LogCategory::Scan),

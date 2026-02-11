@@ -8,7 +8,7 @@ use crate::{
         new_id, resolve_command, silent_command,
     },
     types::{
-        enums::{HistoryStatus, LogCategory},
+        enums::{HistoryStatus, LogCategory, HistoryType},
         structs::HistoryItem,
     },
 };
@@ -25,7 +25,7 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
         HistoryItem {
             id: new_id(),
             timestamp: chrono::Utc::now().to_rfc3339(),
-            action: "Definitions Update Started".into(),
+            action: Some(HistoryType::DefUpdateStart),
             details: "ClamAV database update has started".into(),
             status: HistoryStatus::Success,
             category: Some(LogCategory::Update),
@@ -80,7 +80,7 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
                     HistoryItem {
                         id: new_id(),
                         timestamp: chrono::Utc::now().to_rfc3339(),
-                        action: "Definitions Update Finished".into(),
+                        action: Some(HistoryType::DefUpdateFinish),
                         details,
                         status,
                         category: Some(LogCategory::Update),
@@ -107,7 +107,7 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
                     HistoryItem {
                         id: new_id(),
                         timestamp: chrono::Utc::now().to_rfc3339(),
-                        action: "Definitions Update Failed".into(),
+                        action: Some(HistoryType::DefUpdateError),
                         details: error_msg,
                         status: HistoryStatus::Error,
                         category: Some(LogCategory::Update),

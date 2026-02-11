@@ -11,6 +11,7 @@ import { Link } from "react-router";
 import { IHistoryPageState } from "@/lib/types/states";
 import { useSettings } from "@/context/settings";
 import { useTranslation } from "react-i18next";
+import { HistoryType } from "@/lib/types/enums";
 
 export const GET_HISTORY_COLS = (
      setHistoryState: React.Dispatch<React.SetStateAction<IHistoryPageState>>,
@@ -47,6 +48,10 @@ export const GET_HISTORY_COLS = (
                               </Button>
                          </div>
                     )
+               },
+               cell: ({getValue}) => {
+                    const {t} = useTranslation("history");
+                    return t(`history-type.${getValue() as HistoryType}`)
                }
           },
           {

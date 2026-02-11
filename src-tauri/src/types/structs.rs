@@ -4,10 +4,8 @@ use std::{
     fs::File,
     sync::{Arc, Mutex},
 };
-
 use crate::types::enums::{
-    ComputerVirusType, DayOfTheWeek, HistoryStatus, LogCategory, ScanResult, ScanType,
-    SchedulerInterval, ThreatStatus,
+    ComputerVirusType, DayOfTheWeek, HistoryStatus, HistoryType, LogCategory, ScanResult, ScanType, SchedulerInterval, ThreatStatus
 };
 
 #[derive(Debug, Serialize, Type, Deserialize)]
@@ -47,7 +45,7 @@ pub struct StatsResponse {
 pub struct HistoryItem {
     pub id: String,
     pub timestamp: String,
-    pub action: String,
+    pub action: Option<HistoryType>,
     pub details: String,
     pub status: HistoryStatus,
     pub category: Option<LogCategory>,
@@ -131,3 +129,5 @@ pub struct BehaviorConfig {
     pub auto_quarantine: bool,
     pub rescan_on_modify: bool,
 }
+
+pub struct AppLanguage(pub Mutex<String>);

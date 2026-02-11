@@ -1,4 +1,4 @@
-import { ScanType } from "./enums"
+import { HistoryType, ScanType } from "./enums"
 import { DAYS_OF_THE_WEEK, INTERVALS } from "../constants"
 import { LogCategory } from "./enums";
 
@@ -10,7 +10,7 @@ export type IntervalType = typeof INTERVALS[number]
 interface HistoryDataBase{
      id: string,
      timestamp: string,
-     action: string,
+     action: HistoryType,
      details: string
      status: HistoryStatus,
      category: LogCategory | null

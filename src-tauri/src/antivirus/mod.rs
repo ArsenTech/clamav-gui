@@ -16,7 +16,7 @@ use crate::{
         real_time::{start_realtime_scan, stop_realtime_scan},
     },
     types::{
-        enums::{BehaviorMode, HistoryStatus, LogCategory, ScanType},
+        enums::{BehaviorMode, HistoryStatus, LogCategory, ScanType, HistoryType},
         structs::HistoryItem,
     },
 };
@@ -48,7 +48,7 @@ pub fn start_real_time_scan(
             HistoryItem {
                 id: new_id(),
                 timestamp: chrono::Utc::now().to_rfc3339(),
-                action: "Real-time Scan Failed".into(),
+                action: Some(HistoryType::RealTimeError),
                 details: format!("Failed to start real-time scan: {}", e),
                 status: HistoryStatus::Error,
                 category: Some(LogCategory::Realtime),
@@ -70,7 +70,7 @@ pub fn start_real_time_scan(
         HistoryItem {
             id: new_id(),
             timestamp: chrono::Utc::now().to_rfc3339(),
-            action: "Real-time Scan Started".into(),
+            action: Some(HistoryType::RealTimeStart),
             details: format!(
                 "Real-time scan started in {:?} mode, monitoring {} path(s)",
                 behavior,
@@ -105,7 +105,7 @@ pub fn stop_real_time_scan(app: tauri::AppHandle) -> Result<(), String> {
         HistoryItem {
             id: new_id(),
             timestamp: chrono::Utc::now().to_rfc3339(),
-            action: "Real-time Scan Stopped".into(),
+            action: Some(HistoryType::RealTimeStop),
             details: "Real-time scan has been stopped".into(),
             status: HistoryStatus::Warning,
             category: Some(LogCategory::Realtime),

@@ -11,6 +11,7 @@ import { useStartupScan } from "@/context/startup-scan";
 import { useSettings } from "@/context/settings";
 import { isPermissionGranted, requestPermission, } from '@tauri-apps/plugin-notification';
 import { listen, UnlistenFn } from "@tauri-apps/api/event";
+import { useLocale } from "@/i18n/locale";
 
 const NoClamAVPage = lazy(()=>import("./no-clamav"));
 
@@ -25,6 +26,7 @@ export function AppLayout({children, className}: Props){
      const [isLoading, startTransition] = useTransition();
      const {setSettings} = useSettings()
      const startupScan = useStartupScan()
+     const {locale: lang} = useLocale()
      const handleCheck = () => {
           startTransition(async() => {
                try{
@@ -46,22 +48,22 @@ export function AppLayout({children, className}: Props){
                     const permission = await requestPermission();
                     permissionGranted = permission === 'granted';
                }
-               setSettings({notifPermitted: permissionGranted})
+               setSettings({notifPermitted: permissionGranted});
+               await invoke("set_language",{ lang });
+               await invoke("rebuild_tray")
           })()
-     }, []);
-     useEffect(() => {
-          if (!startupScan) return;
-          if (startupScan.isStartup && startupScan.scanType)
-               navigate(`/scan/${startupScan.scanType}`, { replace: true });
-     }, [startupScan]);
-     useEffect(()=>{
           const listeners: Promise<UnlistenFn>[] = [
                listen<string>("systray:move",e=>navigate(encodeURI(e.payload)))
           ]
           return () => {
                Promise.all(listeners).then(fns=>fns.forEach(fn=>fn()))
           }
-     },[])
+     }, []);
+     useEffect(() => {
+          if (!startupScan) return;
+          if (startupScan.isStartup && startupScan.scanType)
+               navigate(`/scan/${startupScan.scanType}`, { replace: true });
+     }, [startupScan]);
      return (
           <>
                {status==="checking" ? (

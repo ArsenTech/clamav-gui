@@ -2,7 +2,7 @@ use crate::{
     antivirus::history::load_history,
     helpers::quarantine::quarantine_dir,
     types::{
-        enums::{ComputerVirusType, LogCategory, ScanResult, ScanType, ThreatStatus},
+        enums::{ComputerVirusType, HistoryType, LogCategory, ScanResult, ScanType, ThreatStatus},
         structs::{
             ActivityStat, HistoryItem, QuarantinedItem, ScanTypeStat, ThreatStatusStat,
             VirusTypeStat,
@@ -32,7 +32,7 @@ pub fn aggregate_activity(history: &[HistoryItem]) -> Vec<ActivityStat> {
     let mut map: BTreeMap<String, (u32 /* unresolved */, u32 /* resolved */)> = BTreeMap::new();
 
     for item in history {
-        if item.category != Some(LogCategory::Scan) || item.action != "Scan Finished" {
+        if item.category != Some(LogCategory::Scan) || item.action != Some(HistoryType::ScanFinish) {
             continue;
         }
 
@@ -68,7 +68,7 @@ pub fn aggregate_scan_types(history: &[HistoryItem]) -> Vec<ScanTypeStat> {
     let mut seen: HashSet<String> = HashSet::new();
 
     for item in history {
-        if item.category != Some(LogCategory::Scan) || item.action != "Scan Finished" {
+        if item.category != Some(LogCategory::Scan) || item.action != Some(HistoryType::ScanFinish) {
             continue;
         }
         let (Some(scan_type), Some(log_id)) = (item.scan_type, item.log_id.as_ref()) else {
@@ -118,12 +118,12 @@ pub fn aggregate_threat_status(
             continue;
         }
         let Some(log_id) = item.log_id else { continue };
-        match item.action.as_str() {
-            "Threat deleted" => {
+        match item.action {
+            Some(HistoryType::DeleteThreat) => {
                 deleted.insert(log_id.clone());
                 restored.remove(&log_id);
             }
-            "Threat restored" => {
+            Some(HistoryType::RestoreThreat) => {
                 if !deleted.contains(&log_id) {
                     restored.insert(log_id);
                 }

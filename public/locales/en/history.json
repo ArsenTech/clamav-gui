@@ -36,5 +36,23 @@
           "all": "History Cleared!",
           "acknowledged": "Acknowledged Entries Cleared!",
           "error": "All errors Cleared!"
+     },
+     "history-type": {
+          "real-time-error": "Real-time Scan Failed",
+          "real-time-start": "Real-time Scan Started",
+          "real-time-stop": "Real-time Scan Stopped",
+          "quarantine-threat": "Threat Quarantined",
+          "restore-threat": "Threat Restored",
+          "delete-threat": "Threat Deleted",
+          "scan-start": "Scan Started",
+          "scan-finish": "Scan Finished",
+          "def-update-start": "Definitions Update Started",
+          "def-update-finish": "Definitions Update Finished",
+          "def-update-error": "Definitions Update Failed",
+          "scheduler-create": "New Scheduled Scan Job Created",
+          "scheduler-delete": "Scheduled Scan Job Deleted",
+          "scheduler-trigger": "Scheduled Scan Job Triggered",
+          "file-delete": "File Deleted",
+          "file-delete-error": "File Deletion Failed"
      }
 }

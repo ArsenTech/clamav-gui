@@ -9,7 +9,7 @@ use crate::{
         silent_command,
     },
     types::{
-        enums::{DayOfTheWeek, HistoryStatus, LogCategory, ScanType, SchedulerInterval},
+        enums::{DayOfTheWeek, HistoryStatus, LogCategory, ScanType, SchedulerInterval, HistoryType},
         structs::{HistoryItem, SchedulerEntry, SchedulerEvent},
     },
 };
@@ -125,7 +125,7 @@ pub fn schedule_scan(
         HistoryItem {
             id: new_id(),
             timestamp: chrono::Utc::now().to_rfc3339(),
-            action: "New Scheduled Scan Job created".into(),
+            action: Some(HistoryType::SchedulerCreate),
             details: format!("New Scheduled Job Created Successfully: {}", task_name),
             status: HistoryStatus::Success,
             category: Some(LogCategory::Scheduler),
@@ -195,7 +195,7 @@ pub fn remove_job(app: &tauri::AppHandle, task_name: String) -> Result<(), Strin
         HistoryItem {
             id: new_id(),
             timestamp: chrono::Utc::now().to_rfc3339(),
-            action: "Scheduled Scan Job Deleted".into(),
+            action: Some(HistoryType::SchedulerDelete),
             details: format!("Scan Job Deleted Successfully: {}", task_name),
             status: HistoryStatus::Success,
             category: Some(LogCategory::Scheduler),
@@ -237,7 +237,7 @@ pub fn run_job_now(app: &tauri::AppHandle, task_name: String) -> Result<(), Stri
             HistoryItem {
                 id: new_id(),
                 timestamp: chrono::Utc::now().to_rfc3339(),
-                action: "Scheduled job Triggered".into(),
+                action: Some(HistoryType::SchedulerTrigger),
                 details: format!("Scheduled job triggered manually: {}", task_name),
                 status: HistoryStatus::Success,
                 category: Some(LogCategory::Scheduler),
@@ -257,7 +257,7 @@ pub fn run_job_now(app: &tauri::AppHandle, task_name: String) -> Result<(), Stri
             HistoryItem {
                 id: new_id(),
                 timestamp: chrono::Utc::now().to_rfc3339(),
-                action: "Scheduled job Triggered".into(),
+                action: Some(HistoryType::SchedulerTrigger),
                 details: format!("Failed to run scheduled task: {}", task_name),
                 status: HistoryStatus::Error,
                 category: Some(LogCategory::Scheduler),

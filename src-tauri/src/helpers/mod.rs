@@ -9,6 +9,7 @@ pub mod scan;
 pub mod scheduler;
 pub mod stats;
 pub mod sys_tray;
+pub mod i18n;
 
 use std::{
     path::PathBuf,

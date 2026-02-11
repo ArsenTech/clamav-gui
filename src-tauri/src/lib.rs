@@ -7,7 +7,10 @@ mod helpers;
 mod system;
 mod types;
 
-use std::sync::atomic::Ordering;
+use std::sync::{
+    atomic::Ordering,
+    Mutex
+};
 use tauri_specta::{collect_commands, Builder};
 
 use crate::{
@@ -25,9 +28,12 @@ use crate::{
         flags::parse_startup_flags,
         scan::run_headless_scan,
         sys_tray::{generate_system_tray, SHOULD_QUIT},
+        i18n::{load_translations,TRANSLATIONS}
     },
     system::{
         check_availability,
+        set_language,
+        rebuild_tray,
         logs::{read_log, reveal_log},
         remove_file,
         scheduler::{
@@ -35,6 +41,7 @@ use crate::{
         },
         sysinfo::{get_sys_info, get_sys_stats},
     },
+    types::structs::AppLanguage
 };
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -79,13 +86,21 @@ pub fn run() {
         run_job_now,
         clear_scheduled_jobs,
         start_real_time_scan,
-        stop_real_time_scan
+        stop_real_time_scan,
+        set_language,
+        rebuild_tray
     ]);
 
     tauri::Builder::default()
         .plugin(tauri_plugin_updater::Builder::new().build())
         .setup(|app| {
             use tauri::{Manager, WindowEvent};
+            let app_handle = app.handle();
+            let default = load_translations(&app_handle.clone(),"en");
+            {
+                let mut guard = TRANSLATIONS.write().unwrap();
+                *guard = default;
+            }
             if let Some(window) = app.get_webview_window("main") {
                 window.clone().on_window_event(move |event| {
                     if let WindowEvent::CloseRequested { api, .. } = event {
@@ -96,17 +111,18 @@ pub fn run() {
                     }
                 });
             }
-            generate_system_tray(app)?;
+            generate_system_tray(app_handle)?;
             Ok(())
         })
         .plugin(tauri_plugin_notification::init())
         .plugin(tauri_plugin_store::Builder::new().build())
         .plugin(tauri_plugin_process::init())
-        .manage(scan_flag.clone())
         .plugin(tauri_plugin_fs::init())
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_os::init())
+        .manage(AppLanguage(Mutex::new("en".into())))
+        .manage(scan_flag.clone())
         .invoke_handler(specta_builder.invoke_handler())
         .run(tauri::generate_context!())
         .expect("error while building tauri application");
