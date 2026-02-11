@@ -11,9 +11,10 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   - Request Feature
   - Contribute
   - Add Your Language
+- View Details Button
 ### Translated
 - The **No ClamAV Found** Page
-- History Item Names
+- History Item Names and Details
 - The System Tray
 ### Improved
 - Credits Section

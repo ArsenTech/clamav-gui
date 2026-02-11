@@ -15,7 +15,7 @@ use crate::{
         history::append_scan_history, log::{log_err, log_info, log_path}, matcher::EXCLUSIONS, new_id, path::get_clamav_path, silent_command
     },
     types::{
-        enums::{HistoryStatus, HistoryType, LogCategory, ScanResult, ScanType},
+        enums::{HistoryDetails, HistoryStatus, HistoryType, LogCategory, ScanResult, ScanType},
         structs::{HistoryItem, StartupScan},
     },
 };
@@ -127,35 +127,26 @@ pub fn run_scan(
 
     let found = threats_count.load(Ordering::Relaxed);
 
-    let (status, scan_result, details) = match exit_code {
+    let (status, scan_result) = match exit_code {
         0 => (
             HistoryStatus::Success,
             ScanResult::Clean,
-            "Scan completed successfully, no threats found".to_string(),
         ),
         1 => (
             HistoryStatus::Warning,
             ScanResult::ThreatsFound,
-            format!(
-                "Scan completed successfully, {} threat{} found",
-                found,
-                if found == 1 { "" } else { "s" }
-            ),
         ),
         2 if found > 0 => (
             HistoryStatus::Warning,
             ScanResult::Partial,
-            "Scan completed with errors; some files may not have been scanned".to_string(),
         ),
         2 => (
             HistoryStatus::Error,
-            ScanResult::Failed,
-            "Scan failed due to a ClamAV error".to_string(),
+            ScanResult::ClamavError,
         ),
         _ => (
             HistoryStatus::Error,
             ScanResult::Failed,
-            format!("Scan failed (exit code {})", exit_code),
         ),
     };
 
@@ -165,7 +156,7 @@ pub fn run_scan(
             id: new_id(),
             timestamp: chrono::Utc::now().to_rfc3339(),
             action: Some(HistoryType::ScanFinish),
-            details,
+            details: Some(HistoryDetails::ScanFinish { result: scan_result, exit_code, found_threats: found }),
             status,
             category: Some(LogCategory::Scan),
             log_id: Some(log_id),

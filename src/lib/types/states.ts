@@ -38,7 +38,9 @@ export interface IFinishScanState{
 export interface IHistoryPageState{
      clearAll: boolean,
      clearAcknowledged: boolean,
-     clearErrors: boolean
+     clearErrors: boolean,
+     showDetails: boolean,
+     details: string | null
      data: IHistoryData<"state">[]
 }
 export interface IQuarantineState{

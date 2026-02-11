@@ -8,7 +8,7 @@ use crate::{
         new_id, resolve_command, silent_command,
     },
     types::{
-        enums::{HistoryStatus, LogCategory, HistoryType},
+        enums::{HistoryDetails, HistoryStatus, HistoryType, LogCategory},
         structs::HistoryItem,
     },
 };
@@ -26,7 +26,7 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
             id: new_id(),
             timestamp: chrono::Utc::now().to_rfc3339(),
             action: Some(HistoryType::DefUpdateStart),
-            details: "ClamAV database update has started".into(),
+            details: Some(HistoryDetails::DefUpdateStart),
             status: HistoryStatus::Success,
             category: Some(LogCategory::Update),
             log_id: Some(log_id.clone()),
@@ -61,19 +61,10 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
                     log_err(&log_file, &stderr_str);
                 }
 
-                let (status, details) = match exit_code {
-                    0 => (
-                        HistoryStatus::Success,
-                        "Definitions are already up to date".to_string(),
-                    ),
-                    1 => (
-                        HistoryStatus::Warning,
-                        "Update completed with warnings".to_string(),
-                    ),
-                    _ => (
-                        HistoryStatus::Error,
-                        format!("Update failed with exit code {}", exit_code),
-                    ),
+                let status = match exit_code {
+                    0 => HistoryStatus::Success,
+                    1 => HistoryStatus::Warning,
+                    _ => HistoryStatus::Error,
                 };
                 append_update_history(
                     &app,
@@ -81,7 +72,7 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
                         id: new_id(),
                         timestamp: chrono::Utc::now().to_rfc3339(),
                         action: Some(HistoryType::DefUpdateFinish),
-                        details,
+                        details: Some(HistoryDetails::DefUpdateFinish { exit_code }),
                         status,
                         category: Some(LogCategory::Update),
                         log_id: Some(log_id),
@@ -108,7 +99,7 @@ pub fn update_definitions(app: tauri::AppHandle) -> Result<(), String> {
                         id: new_id(),
                         timestamp: chrono::Utc::now().to_rfc3339(),
                         action: Some(HistoryType::DefUpdateError),
-                        details: error_msg,
+                        details: Some(HistoryDetails::DefUpdateError { err: error_msg }),
                         status: HistoryStatus::Error,
                         category: Some(LogCategory::Update),
                         log_id: Some(log_id),

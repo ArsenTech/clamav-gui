@@ -1,6 +1,7 @@
 import { HistoryType, ScanType } from "./enums"
 import { DAYS_OF_THE_WEEK, INTERVALS } from "../constants"
 import { LogCategory } from "./enums";
+import { HistoryDetails } from ".";
 
 export type ThreatStatus = "quarantined" | "deleted" | "detected";
 export type HistoryStatus = "success" | "warning" | "error" | "acknowledged";
@@ -11,16 +12,17 @@ interface HistoryDataBase{
      id: string,
      timestamp: string,
      action: HistoryType,
-     details: string
      status: HistoryStatus,
      category: LogCategory | null
 }
 export type IHistoryData<T extends DataType> =
      T extends "type" ? HistoryDataBase & {
           log_id?: string
+          details: HistoryDetails
      }
      : HistoryDataBase & {
-          logId?: string
+          logId?: string;
+          details: string
      }
 export interface IThreatsData{
      id: string,

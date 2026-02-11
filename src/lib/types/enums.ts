@@ -109,3 +109,10 @@ export enum HistoryType{
      FileDelete = "file-delete",
      FileDeleteError = "file-delete-error"
 }
+export enum ScanResult {
+    Clean = "clean",
+    ThreatsFound = "threats-found",
+    Partial = "partial",
+    Failed = "failed",
+    ClamavError = "clamav-error"
+}

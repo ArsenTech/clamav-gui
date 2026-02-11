@@ -5,7 +5,7 @@ use std::{
     sync::{Arc, Mutex},
 };
 use crate::types::enums::{
-    ComputerVirusType, DayOfTheWeek, HistoryStatus, HistoryType, LogCategory, ScanResult, ScanType, SchedulerInterval, ThreatStatus
+    ComputerVirusType, DayOfTheWeek, HistoryStatus, HistoryType, LogCategory, ScanResult, ScanType, SchedulerInterval, ThreatStatus, HistoryDetails
 };
 
 #[derive(Debug, Serialize, Type, Deserialize)]
@@ -46,7 +46,7 @@ pub struct HistoryItem {
     pub id: String,
     pub timestamp: String,
     pub action: Option<HistoryType>,
-    pub details: String,
+    pub details: Option<HistoryDetails>,
     pub status: HistoryStatus,
     pub category: Option<LogCategory>,
     pub log_id: Option<String>,

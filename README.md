@@ -80,7 +80,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
   - [X] Notification Translation
   - [ ] Backend Translation
   - [X] No ClamAV Page Translation
-  - [ ] System Tray Translation
+  - [X] System Tray Translation
 - [X] Quick access to Feature Request and Bug Report links as buttons
 
 ### To Do List

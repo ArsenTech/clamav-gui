@@ -48,7 +48,7 @@ pub fn aggregate_activity(history: &[HistoryItem]) -> Vec<ActivityStat> {
             ScanResult::Clean | ScanResult::ThreatsFound | ScanResult::Partial => {
                 entry.1 += c;
             }
-            ScanResult::Failed => {
+            ScanResult::Failed | ScanResult::ClamavError => {
                 entry.0 += c;
             }
         }

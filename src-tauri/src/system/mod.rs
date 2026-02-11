@@ -10,7 +10,7 @@ use crate::{
         history::append_history, i18n::{TRANSLATIONS, load_translations}, log::{initialize_log_with_id, log_err, log_info}, new_id, path::get_clamav_path, sys_tray::generate_system_tray
     },
     types::{
-        enums::{HistoryStatus, HistoryType, LogCategory},
+        enums::{HistoryDetails, HistoryStatus, HistoryType, LogCategory},
         structs::{AppLanguage, HistoryItem},
     },
 };
@@ -41,7 +41,7 @@ pub fn remove_file(
                     id: new_id(),
                     timestamp: chrono::Utc::now().to_rfc3339(),
                     action: Some(HistoryType::FileDelete),
-                    details: message,
+                    details: Some(HistoryDetails::FileDelete { file_path }),
                     status: HistoryStatus::Success,
                     log_id: Some(log_id),
                     category: Some(LogCategory::Quarantine),
@@ -65,7 +65,7 @@ pub fn remove_file(
                     id: new_id(),
                     timestamp: chrono::Utc::now().to_rfc3339(),
                     action: Some(HistoryType::FileDeleteError),
-                    details: error_msg.clone(),
+                    details: Some(HistoryDetails::FileDeleteError { err: error_msg.clone(), file_path }),
                     status: HistoryStatus::Error,
                     log_id: Some(log_id),
                     category: Some(LogCategory::Quarantine),

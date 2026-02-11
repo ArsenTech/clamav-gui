@@ -2,12 +2,13 @@ use serde::{Deserialize, Serialize};
 use specta::Type;
 
 #[derive(Serialize, Deserialize, Type, Debug, PartialEq, Eq, Hash, Copy, Clone)]
-#[serde(rename_all = "lowercase")]
+#[serde(rename_all = "kebab-case")]
 pub enum ScanResult {
     Clean,
     ThreatsFound,
     Partial,
     Failed,
+    ClamavError
 }
 
 #[derive(Serialize, Deserialize, Type, Debug, PartialEq, Eq, Hash, Copy, Clone)]
@@ -138,4 +139,26 @@ pub enum HistoryType{
     SchedulerTrigger,
     FileDelete,
     FileDeleteError
+}
+
+#[derive(Debug, Serialize, Deserialize, Type)]
+#[serde(tag = "type", content = "details", rename_all = "kebab-case")]
+pub enum HistoryDetails{
+    RealTimeError {err: String},
+    RealTimeStart {behavior: BehaviorMode, paths: usize},
+    RealTimeStop,
+    QuarantineThreat {threat: String},
+    RestoreThreat {threat: String},
+    DeleteThreat {threat: String},
+    ScanStart {scan_type: ScanType},
+    ScanFinish {result: ScanResult, exit_code: i32, found_threats: usize},
+    DefUpdateStart,
+    DefUpdateFinish {exit_code: i32},
+    DefUpdateError {err: String},
+    SchedulerCreate {task_name: String},
+    SchedulerDelete {task_name: String},
+    SchedulerTrigger {task_name: String},
+    SchedulerTriggerError {task_name: String},
+    FileDelete {file_path: String},
+    FileDeleteError {err: String, file_path: String}
 }

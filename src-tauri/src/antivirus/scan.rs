@@ -9,7 +9,7 @@ use crate::{
         }, silent_command
     },
     types::{
-        enums::{HistoryStatus, LogCategory, ScanType, HistoryType},
+        enums::{HistoryDetails, HistoryStatus, HistoryType, LogCategory, ScanType},
         structs::{HistoryItem, StartupScan},
     },
 };
@@ -34,7 +34,7 @@ pub fn start_main_scan(app: tauri::AppHandle, args: Option<Vec<String>>) -> Resu
             id: new_id(),
             timestamp: chrono::Utc::now().to_rfc3339(),
             action: Some(HistoryType::ScanStart),
-            details: "The main scan has been started".into(),
+            details: Some(HistoryDetails::ScanStart { scan_type: ScanType::Main }),
             status: HistoryStatus::Success,
             category: Some(LogCategory::Scan),
             log_id: Some(log_id.clone()),
@@ -102,7 +102,7 @@ pub fn start_full_scan(app: tauri::AppHandle) -> Result<(), String> {
             id: new_id(),
             timestamp: chrono::Utc::now().to_rfc3339(),
             action: Some(HistoryType::ScanStart),
-            details: "The full scan has been started".into(),
+            details: Some(HistoryDetails::ScanStart { scan_type: ScanType::Full }),
             status: HistoryStatus::Success,
             category: Some(LogCategory::Scan),
             log_id: Some(log_id.clone()),
@@ -172,22 +172,6 @@ pub fn start_custom_scan(
     } else {
         ScanType::File
     };
-    append_scan_history(
-        &app,
-        HistoryItem {
-            id: new_id(),
-            timestamp: chrono::Utc::now().to_rfc3339(),
-            action: Some(HistoryType::ScanStart),
-            details: "The custom scan has been started".into(),
-            status: HistoryStatus::Success,
-            category: Some(LogCategory::Scan),
-            log_id: Some(log_id.clone()),
-            scan_type: Some(scan_type),
-            threat_count: None,
-            scan_result: None,
-        },
-        &log_file,
-    );
     let app_clone = app.clone();
     let mut scan_args: Vec<String> = fetch_custom_scan_args(args, has_directory);
     apply_exclusions(&app, &mut scan_args)?;
@@ -198,6 +182,22 @@ pub fn start_custom_scan(
             arg
         );
     }
+    append_scan_history(
+        &app,
+        HistoryItem {
+            id: new_id(),
+            timestamp: chrono::Utc::now().to_rfc3339(),
+            action: Some(HistoryType::ScanStart),
+            details: Some(HistoryDetails::ScanStart { scan_type: if has_directory {ScanType::Custom} else {ScanType::File} }),
+            status: HistoryStatus::Success,
+            category: Some(LogCategory::Scan),
+            log_id: Some(log_id.clone()),
+            scan_type: Some(scan_type),
+            threat_count: None,
+            scan_result: None,
+        },
+        &log_file,
+    );
     std::thread::spawn(move || {
         let scanner = match get_clamav_path() {
             Ok(cmd) => cmd,

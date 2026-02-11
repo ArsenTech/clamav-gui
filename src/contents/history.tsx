@@ -19,6 +19,7 @@ import { INITIAL_HISTORY_STATE } from "@/lib/constants/states";
 import { useSettings } from "@/context/settings";
 import { useTranslation } from "react-i18next";
 import { HistoryClearType } from "@/lib/types/enums"
+import { translateDetails } from "@/lib/helpers/history";
 
 export default function HistoryContent(){
      const {settings} = useSettings();
@@ -28,13 +29,15 @@ export default function HistoryContent(){
      const setState = (overrides: Partial<IHistoryPageState>) => setHistoryState(prev=>({ ...prev, ...overrides }))
      const {t} = useTranslation("history")
      const {t: messageTxt} = useTranslation("messages")
+     const {t: tableTxt} = useTranslation("table")
      const fetchData = () => {
           startTransition(async()=>{
                try {
-                    const fetched = await invoke<IHistoryData<"type">[]>("load_history", {days: 7})
+                    const fetched = await invoke<IHistoryData<"type">[]>("load_history", {days: 7});
                     const newData: IHistoryData<"state">[] = fetched.map(val=>({
                          ...val,
-                         logId: val.log_id
+                         logId: val.log_id,
+                         details: translateDetails(val.details,t)
                     }))
                     setState({ data: newData })
                } catch (err){
@@ -90,7 +93,7 @@ export default function HistoryContent(){
      useEffect(()=>{
           fetchData()
      },[])
-     const {data, clearAcknowledged, clearAll, clearErrors} = historyState
+     const {data, clearAcknowledged, clearAll, clearErrors, showDetails, details} = historyState
      const isEmpty = useMemo(()=>data.length<=0,[data])
      return (
           <>
@@ -162,6 +165,14 @@ export default function HistoryContent(){
                submitEvent={()=>clearHistory(HistoryClearType.Error)}
                type="danger"
           />
+          <Popup
+               open={showDetails}
+               onOpen={showDetails=>setState({showDetails})}
+               title={tableTxt("heading.history.details")}
+               hideButtons
+          >
+               {details}
+          </Popup>
           </>
      )
 }

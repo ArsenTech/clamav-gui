@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowUp, ArrowUpDown, CheckCircle, FileText, MoreHorizontal, ScrollText } from "lucide-react";
+import { ArrowDown, ArrowUp, ArrowUpDown, CheckCircle, Eye, FileText, MoreHorizontal, ScrollText } from "lucide-react";
 import { IHistoryData, HistoryStatus } from "@/lib/types/data";
 import { Badge } from "@/components/ui/badge";
 import { getHistoryStatusBadges } from "@/lib/helpers";
@@ -61,7 +61,7 @@ export const GET_HISTORY_COLS = (
                     return t("heading.history.details")
                },
                cell: ({ getValue }) => (
-                    <div className="max-w-[420px] truncate">
+                    <div className="max-w-xs truncate">
                          {getValue() as string}
                     </div>
                )
@@ -111,6 +111,14 @@ export const GET_HISTORY_COLS = (
                               <DropdownMenuContent align="end">
                                    <DropdownMenuLabel>{t("heading.actions")}</DropdownMenuLabel>
                                    <DropdownMenuSeparator/>
+                                   <DropdownMenuItem disabled={!item.logId || !item.category} onClick={()=>setHistoryState(prev=>({
+                                        ...prev,
+                                        showDetails: true,
+                                        details: item.details
+                                   }))}>
+                                        <Eye/>
+                                        {t("actions.view-details")}
+                                   </DropdownMenuItem>
                                    <DropdownMenuItem disabled={!item.logId || !item.category} asChild>
                                         <Link to={`/history/${item.logId}?category=${item.category}`}>
                                              <ScrollText/>

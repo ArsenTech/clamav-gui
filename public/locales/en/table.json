@@ -64,7 +64,8 @@
           "view-log": "View Log",
           "reveal-log": "Reveal Log File",
           "restore": "Restore",
-          "remove-job": "Remove Job"
+          "remove-job": "Remove Job",
+          "view-details": "View Details"
      },
      "status": {
           "threats": {

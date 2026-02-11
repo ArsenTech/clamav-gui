@@ -38,6 +38,8 @@ export const INITIAL_HISTORY_STATE: IHistoryPageState = {
      clearAll: false,
      clearAcknowledged: false,
      clearErrors: false,
+     showDetails: false,
+     details: null,
      data: []
 }
 export const INITIAL_QUARANTINE_STATE: IQuarantineState = {

@@ -54,5 +54,47 @@
           "scheduler-trigger": "Scheduled Scan Job Triggered",
           "file-delete": "File Deleted",
           "file-delete-error": "File Deletion Failed"
+     },
+     "behavior": {
+          "balanced": "Balanced",
+          "safe": "Safe",
+          "strict": "Strict",
+          "expert": "Expert"
+     },
+     "details": {
+          "real-time-error": "Failed to start real-time scan: {{err}}",
+          "real-time-start_one": "Real-time scan started in {{behavior}} mode, monitoring one path",
+          "real-time-start_two": "Real-time scan started in {{behavior}} mode, monitoring two paths",
+          "real-time-start_few": "Real-time scan started in {{behavior}} mode, monitoring {{count}} paths",
+          "real-time-start_many": "Real-time scan started in {{behavior}} mode, monitoring {{count}} paths",
+          "real-time-start_other": "Real-time scan started in {{behavior}} mode, monitoring {{count}} paths",
+          "real-time-stop": "Real-time scan has been stopped",
+          "quarantine-threat": "{{threat}} was moved to quarantine",
+          "restore-threat": "{{threat}} was restored from quarantine",
+          "delete-threat": "{{threat}} was deleted from quarantine",
+          "scan-start": "The {{scanType}} scan has been started",
+          "scan-finish": {
+               "state_zero": "Scan completed successfully, no threats found",
+               "state_one": "Scan completed successfully, one threat found",
+               "state_two": "Scan completed successfully, two threats found",
+               "state_few": "Scan completed successfully, {{count}} threats found",
+               "state_many": "Scan completed successfully, {{count}} threats found",
+               "state_other": "Scan completed successfully, {{count}} threats found",
+               "partial": "Scan completed with errors; some files may not have been scanned",
+               "clamav-error": "Scan failed due to a ClamAV error",
+               "error": "Scan failed (exit code {{code}})"
+          },
+          "def-update-start": "ClamAV database update has started",
+          "def-update-finish": {
+               "success": "Definitions are already up to date",
+               "warning": "Update completed with warnings",
+               "error": "Update failed with exit code {{code}}"
+          },
+          "scheduler-create": "New Scheduled Job Created Successfully: {{task}}",
+          "scheduler-delete": "Scan Job Deleted Successfully: {{task}}",
+          "scheduler-trigger-error": "Failed to run scheduled task: {{task}}",
+          "scheduler-trigger": "Scheduled job triggered manually: {{task}}",
+          "file-delete": "The file was deleted: {{path}}",
+          "file-delete-error": "Failed to delete file: {{path}} ({{err}})"
      }
 }
