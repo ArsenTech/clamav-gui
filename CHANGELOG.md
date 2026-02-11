@@ -26,6 +26,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Added
 - Danger Zone Settings
 - Error Message when the scan failed to start
+- Internationalization support
 ### Changed
 - Organized some files and Updated Imports
 - Optimized some parts of the Frontend
@@ -37,10 +38,10 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Stats UI
 - Scheduler UI
 - Log Viewer UI
-### Added Translations
-- Armenian (Հայերեն)
-- Russian (Русский)
-- English
+### Core Languages
+- 🇦🇲 Armenian (Հայերեն)
+- 🇷🇺 Russian (Русский)
+- 🇺🇸 English
 ### Improved
 - Some Enums used in frontend
 - The `clamscan` resolving function
