@@ -8,9 +8,11 @@ export default function CreditsSection(){
      const {t} = useTranslation("credits");
      const creditsData = t("credits-data",{returnObjects: true})
      return (
-          <ScrollArea className="max-h-[810px]">
-               <div className="prose dark:prose-invert">
-                    <h2 className="text-2xl md:text-3xl font-medium border-b pb-1.5 w-fit border-primary/50">{t("titles")}</h2>
+          <ScrollArea className="max-h-[820px]">
+               <div className="prose dark:prose-invert relative">
+                    <div className="w-full sticky top-0 left-0 bg-background mt-0">
+                         <h2 className="mt-0 text-2xl md:text-3xl font-medium border-b pb-1.5 w-fit border-primary/50">{t("titles")}</h2>
+                    </div>
                     {Object.entries(creditsData).map(([key,{title,entries}])=>(
                          <div key={key} className="space-y-1">
                               <p className="text-lg md:text-xl font-medium border-b w-fit pb-1 mb-1.5">{title}</p>

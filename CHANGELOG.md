@@ -28,6 +28,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Improved
 - Some more Enums used in frontend
 - `console.error()` in some places into `toast.error(...,{description})`
+- Credits Section
 
 ## [1.0.0-2] - 2026-02-09 (v1 Beta #2)
 ### Added
