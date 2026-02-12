@@ -143,14 +143,12 @@ jobs:
         with:
           pattern: updater-fragments-*
           path: fragments
-
-      - name: Install GitHub CLI
-        if: matrix.platform == 'windows-latest'
-        uses: cli/cli@v3
           
       - name: Assemble latest.json
         if: matrix.platform == 'windows-latest'
         shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
           RELEASE_BODY=$(gh api repos/${{ github.repository }}/releases/tags/v$VERSION --jq '.body')
@@ -160,7 +158,7 @@ jobs:
           jq -n \
             --arg version "$VERSION" \
             --arg date "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
-            --arg notes $RELEASE_BODY \
+            --arg notes "$RELEASE_BODY" \
             --slurpfile platforms platforms.json \
             '{
               version: $version,
