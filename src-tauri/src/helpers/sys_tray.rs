@@ -33,7 +33,6 @@ pub fn generate_system_tray(app: &tauri::AppHandle) -> Result<TrayIcon, tauri::E
         .separator()
         .item(&quit)
         .build()?;
-
     TrayIconBuilder::with_id("main_tray")
         .tooltip(t("tray.tooltip"))
         .icon(app.default_window_icon().unwrap().clone())

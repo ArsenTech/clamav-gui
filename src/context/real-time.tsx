@@ -17,9 +17,11 @@ export function RealtimeProvider({ children }: { children: React.ReactNode }) {
      const [enabled, setEnabled] = useState(settings.realTime);
      const start = async (paths: string[]) => {
           await invoke("start_real_time_scan", { paths, behavior: settings.behavior || "balanced" });
+          await invoke("update_tray_icon",{state: "enabled"})
      };
      const stop = async () => {
           await invoke("stop_real_time_scan");
+          await invoke("update_tray_icon",{state: "disabled"})
      };
      useEffect(()=>{
           (async()=>{

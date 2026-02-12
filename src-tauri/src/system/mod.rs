@@ -4,13 +4,15 @@ pub mod sysinfo;
 
 use specta::specta;
 use tauri::command;
+use tauri::Manager;
+use tauri::image::Image;
 
 use crate::{
     helpers::{
         history::append_history, i18n::{TRANSLATIONS, load_translations}, log::{initialize_log_with_id, log_err, log_info}, new_id, path::get_clamav_path, sys_tray::generate_system_tray
     },
     types::{
-        enums::{HistoryDetails, HistoryStatus, HistoryType, LogCategory},
+        enums::{HistoryDetails, HistoryStatus, HistoryType, LogCategory, RealTimeState},
         structs::{AppLanguage, HistoryItem},
     },
 };
@@ -109,8 +111,26 @@ pub fn set_language(
 #[command]
 #[specta(result)]
 pub fn rebuild_tray(app: tauri::AppHandle) -> Result<(), String> {
-
     app.remove_tray_by_id("main_tray");
     generate_system_tray(&app).map_err(|e|e.to_string())?;
+    Ok(())
+}
+
+#[command]
+#[specta(result)]
+pub fn update_tray_icon(app: tauri::AppHandle, state: RealTimeState) -> Result<(),String> {
+    let path = app.path();
+    let icon_path = match state{
+        RealTimeState::Enabled => path.resolve("icons/green.png", tauri::path::BaseDirectory::Resource)
+            .expect("Failed to load the icon"),
+        RealTimeState::Disabled => path.resolve("icons/red.png", tauri::path::BaseDirectory::Resource)
+            .expect("Failed to load the icon"),
+        _ => path.resolve("icons/blue.png", tauri::path::BaseDirectory::Resource)
+            .expect("Failed to load the icon"),
+    };
+    let icon = Image::from_path(icon_path).map_err(|e|e.to_string())?;
+    if let Some(tray) = app.tray_by_id("main_tray"){
+        tray.set_icon(Some(icon)).map_err(|e|e.to_string())?
+    }
     Ok(())
 }

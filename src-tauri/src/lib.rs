@@ -34,6 +34,7 @@ use crate::{
         check_availability,
         set_language,
         rebuild_tray,
+        update_tray_icon,
         logs::{read_log, reveal_log},
         remove_file,
         scheduler::{
@@ -88,7 +89,8 @@ pub fn run() {
         start_real_time_scan,
         stop_real_time_scan,
         set_language,
-        rebuild_tray
+        rebuild_tray,
+        update_tray_icon
     ]);
 
     tauri::Builder::default()

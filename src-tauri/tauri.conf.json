@@ -33,7 +33,7 @@
     ],
     "resources": {
       "assets/icon-variants/*.png": "icons/",
-      "i18n/*.json": "i18n/"
+      "assets/i18n/*.json": "i18n/"
     },
     "createUpdaterArtifacts": true,
     "windows": {

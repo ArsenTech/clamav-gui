@@ -18,6 +18,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - The System Tray
 ### Improved
 - Credits Section
+- System Tray Icon based on a real-time scan setting
 
 ## [1.0.0-3] - 2026-02-10 (v1 Beta #3)
 ### Translated
