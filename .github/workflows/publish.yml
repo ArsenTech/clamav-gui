@@ -110,6 +110,8 @@ jobs:
           }
 
           PLATFORMS=()
+          echo "Bundle directory contents:"
+          ls -R src-tauri/target/release/bundle || true
 
           for f in \
             src-tauri/target/release/bundle/msi/*.msi \
@@ -165,6 +167,11 @@ jobs:
           else
             echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
           fi
+
+      - name: Debug fragments
+        run: |
+          echo "Listing fragments directory:"
+          ls -R fragments
 
       - name: Assemble latest.json
         shell: bash
