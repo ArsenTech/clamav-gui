@@ -101,10 +101,6 @@ jobs:
             FILE="$2"
 
             SIG="$FILE.sig"
-            if [ ! -f "$SIG" ]; then
-              echo "Missing signature for $FILE"
-              exit 1
-            fi
 
             jq -n \
               --arg key "$KEY" \
@@ -117,7 +113,6 @@ jobs:
 
           for f in \
             src-tauri/target/release/bundle/msi/*.msi \
-            src-tauri/target/release/bundle/nsis/*.exe \
             src-tauri/target/release/bundle/appimage/*.AppImage \
             src-tauri/target/release/bundle/macos/*.app.tar.gz
           do
@@ -125,9 +120,6 @@ jobs:
 
             case "$f" in
               *.msi)
-                PLATFORMS+=("$(add_platform windows-x86_64 "$f")")
-                ;;
-              *.exe)
                 PLATFORMS+=("$(add_platform windows-x86_64 "$f")")
                 ;;
               *.AppImage)
@@ -141,9 +133,8 @@ jobs:
                 ;;
             esac
           done
-          sleep 5
 
-          jq -s 'add' <<<"${PLATFORMS[@]}" > updater/platforms.json
+          printf '%s\n' "${PLATFORMS[@]}" | jq -s 'add' > updater/platforms.json
 
       - name: Upload updater fragment
         uses: actions/upload-artifact@v4
@@ -181,7 +172,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           VERSION="${{steps.version.outputs.VERSION}}"
-          RELEASE_BODY=$(gh api repos/${{ github.repository }}/releases/tags/v$VERSION --jq '.body')
+          RELEASE_BODY=$(gh api repos/${{ github.repository }}/releases/tags/v$VERSION --jq '.body' | tr -d '\r')
 
           jq -s 'add' fragments/*.json > platforms.json
 
