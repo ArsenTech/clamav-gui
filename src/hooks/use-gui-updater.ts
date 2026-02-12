@@ -4,10 +4,13 @@ import { INITIAL_UPDATER_STATE } from "@/lib/constants/states";
 import { IUpdaterState } from "@/lib/types/states";
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { GuiUpdaterStatus } from "@/lib/types/enums";
+import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 export function useGuiUpdater(){
      const [isChecking, startChecking] = useTransition();
      const [isUpdating, startUpdating] = useTransition();
+     const {t} = useTranslation("update")
      const [guiUpdate, setGuiUpdate] = useState<IUpdaterState>(INITIAL_UPDATER_STATE)
      const setUpdaterState = (overrides: Partial<IUpdaterState>) => setGuiUpdate(prev=>({...prev, ...overrides}))
      const checkForUpdates = async () => {
@@ -30,7 +33,9 @@ export function useGuiUpdater(){
                          })
                     }
                } catch (err){
-                    console.error(err)
+                    toast.error(t("gui.failed-check.main"),{
+                         description: String(err)
+                    })
                     setUpdaterState({
                          status: GuiUpdaterStatus.CheckError,
                     })
@@ -73,7 +78,9 @@ export function useGuiUpdater(){
                          });
                     }
                } catch (err){
-                    console.error(err)
+                    toast.error(t("gui.failed-update.main"),{
+                         description: String(err)
+                    })
                     setUpdaterState({
                          status: GuiUpdaterStatus.UpdateError,
                          total: 0,

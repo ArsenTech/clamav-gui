@@ -41,7 +41,6 @@ export default function HistoryContent(){
                     }))
                     setState({ data: newData })
                } catch (err){
-                    console.error(err)
                     toast.error(messageTxt("fetch-error.history",{
                          description: String(err)
                     }))

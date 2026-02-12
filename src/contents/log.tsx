@@ -6,6 +6,7 @@ import { ChevronLeft, ScrollText } from "lucide-react";
 import { useEffect, useState, useTransition } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useParams, useSearchParams } from "react-router";
+import { toast } from "sonner";
 
 interface Props{
      returnUrl: string
@@ -30,8 +31,11 @@ export default function LogContent({returnUrl}: Props){
                     })
                     setLogs(logs.split("\n").filter(Boolean))
                } catch (err) {
-                    setLogs([`[ERROR] Failed to load the log (Log ID: ${logId})`])
-                    console.error(err)
+                    const msg = [`[ERROR] Failed to load the log (Log ID: ${logId})`]
+                    setLogs(msg)
+                    toast.error(msg,{
+                         description: String(err)
+                    })
                }
           })
      },[])

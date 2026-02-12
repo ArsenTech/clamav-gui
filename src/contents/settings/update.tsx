@@ -160,9 +160,11 @@ export default function UpdateSettings(){
                          (status==="checking" || status==="updating") && "text-muted-foreground"
                     )}>{t(`gui.${status}.main`)}</h2>
                     <p className="text-muted-foreground">{t(`gui.${status}.secondary`)}</p>
-                    {status==="needs-update" && (
+                    {(status==="needs-update" || status==="updating") && (
                          <div className="flex items-center justify-center w-full max-w-md gap-3">
-                              <span className="font-medium">{currProgress.toFixed(0)}%</span>
+                              {!isNaN(currProgress) && (
+                                   <span className="font-medium">{currProgress.toFixed(0)}%</span>
+                              )}
                               <Progress value={currProgress}/>
                          </div>
                     )}

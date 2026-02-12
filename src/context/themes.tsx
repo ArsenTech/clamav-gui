@@ -2,6 +2,7 @@ import { useSettings } from "@/context/settings";
 import { COLORS } from "@/lib/constants/colors";
 import { Color, ResolvedTheme, Theme } from "@/lib/types/settings";
 import { createContext, useContext, useEffect, useState } from "react";
+import { toast } from "sonner";
 
 type ThemeProviderProps = {
      children: React.ReactNode;
@@ -44,7 +45,7 @@ export function ThemeProvider({
           if (!resolvedTheme) return;
           const colorDef = COLORS[settings.color];
           if (!colorDef) {
-               console.error(`Invalid color "${settings.color}". Available: ${Object.keys(COLORS).join(", ")}`);
+               toast.error(`Invalid color "${settings.color}". Available: ${Object.keys(COLORS).join(", ")}`);
                return;
           }
           const { charts, ...uiColor } = colorDef;
