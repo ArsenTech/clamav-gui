@@ -113,7 +113,7 @@ If your changes affect the updater, release notes, or update flow, please test u
 ### Steps
 1. Download base language files from [here][link-to-base-lang]
 2. Translate all strings with your preferred tool.
-3. Save it as `[lang-code]/[ns].json` (e.g. `fr/translations.json`, `el/scan.json`).
+3. Save it as `[lang-code]/[ns].json` (e.g. `fr/translations.json`, `el/scan.json`, `tr/quarantine.json`).
 4. Add your files to the `public/locales/` folder.
 5. Add the language entry in `src/i18n/config.ts`.
       ```ts
