@@ -54,7 +54,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 ### Features
 - **State-gated UI** - Detects the ClamAV installation path before launching the software
 - **Main and Full Scan** - Scan the entire device for malicious files and malware
-- **Custom and File Scan** - Scan the mentioned folder / file for malware
+- **Custom and File Scan** - Scan the mentioned folder/file for malware
 - **Resolving infected files after scan** - It includes actions like **Quarantine** and **Delete**
 - **Definitions Updater** - Update the definitions database directly from the GUI
 - **Quarantine** - Manage infected threats after scanning
@@ -67,9 +67,9 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - **Settings** - Tweak some options on ClamAV GUI if needed (Such as Scan Options, Appearance, and others)
 
 ### Other Features
-- **Skeleton Loader** - A separate Skeleton loading on some pages for clean UX
+- **Skeleton Loader** - A separate Skeleton loading on some pages for a clean UX
 - **Notifications** - Be informed when the scan is started or finished, or a new threat has been detected
-- **System Tray** - Quick Access through some actions all by using a system tray
+- **System Tray** - Quick Access through some actions, all by using a system tray
 - **Multilingual Support** - Use the ClamAV GUI in your native language besides English
 
 ### To Do List
@@ -77,6 +77,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - [ ] Backend Error Translation
 - [ ] Write the Usage Guide on the `docs/`
 - [ ] Limit `helpers::scheduler::windows::get_last_run_time` only for Windows Users
+- [ ] Scheduler support for Linux and MacOS
 
 ### Built With
 - [![Tauri][tauri-shield]][tauri-url]
