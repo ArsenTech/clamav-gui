@@ -5,6 +5,11 @@ on:
     tags:
       - 'v*'
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (without v)'
+        required: true
+        type: string
 
 jobs:
   publish-tauri:
@@ -61,14 +66,24 @@ jobs:
       - name: install frontend dependencies
         run: npm install
 
+      - name: Resolve version
+        id: version
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
+          fi
+
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
-          tagName: v__VERSION__
-          releaseName: "ClamAV GUI v__VERSION__"
+          tagName: v${{ steps.version }}
+          releaseName: "ClamAV GUI v${{ steps.version }}"
           releaseBody: '### Full Changelog: [`clamav-gui/CHANGELOG.md`](https://github.com/ArsenTech/clamav-gui/blob/main/CHANGELOG.md)'
           releaseDraft: false
           prerelease: false
@@ -77,7 +92,7 @@ jobs:
       - name: Generate updater fragment
         shell: bash
         run: |
-          VERSION="${GITHUB_REF_NAME#v}"
+          VERSION="${{ steps.version }}"
           REPO="${{ github.repository }}"
           mkdir -p updater
 
@@ -149,13 +164,23 @@ jobs:
           pattern: updater-fragments-*
           path: fragments
           merge-multiple: true
+      
+      - name: Resolve version
+        id: version
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
+          fi
 
       - name: Assemble latest.json
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          VERSION="${GITHUB_REF_NAME#v}"
+          VERSION="${{steps.version}}"
           RELEASE_BODY=$(gh api repos/${{ github.repository }}/releases/tags/v$VERSION --jq '.body')
 
           jq -s 'add' fragments/**/platforms.json > platforms.json
@@ -175,7 +200,7 @@ jobs:
       - name: Upload latest.json
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.ref_name }}
+          tag_name: v${{ steps.version }}
           files: latest.json
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
