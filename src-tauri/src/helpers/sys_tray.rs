@@ -4,9 +4,10 @@ use tauri::{
     menu::{MenuBuilder, MenuItem, SubmenuBuilder},
     tray::{TrayIcon, TrayIconBuilder},
     Emitter, Manager,
+    image::Image
 };
 use tauri_plugin_dialog::DialogExt;
-use crate::{helpers::i18n::t};
+use crate::helpers::{i18n::t, real_time::REALTIME_ENABLED};
 
 pub static SHOULD_QUIT: AtomicBool = AtomicBool::new(false);
 
@@ -33,8 +34,18 @@ pub fn generate_system_tray(app: &tauri::AppHandle) -> Result<TrayIcon, tauri::E
         .separator()
         .item(&quit)
         .build()?;
+
+    let icon_path = if REALTIME_ENABLED.load(Ordering::Relaxed){
+        "icons/green.png"
+    } else {
+        "icons/red.png"
+    };
+    let image_path = app.path().resolve(icon_path, tauri::path::BaseDirectory::Resource)?;
+    let icon = Image::from_path(image_path).unwrap_or(app.default_window_icon().unwrap().clone());
+
     TrayIconBuilder::with_id("main_tray")
         .tooltip(t("tray.tooltip"))
+        .icon(icon)
         .menu(&menu)
         .show_menu_on_left_click(true)
         .on_menu_event(|app_handle, event| match event.id.as_ref() {

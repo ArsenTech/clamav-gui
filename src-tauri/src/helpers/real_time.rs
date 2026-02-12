@@ -13,7 +13,7 @@ use std::{
 use tauri_plugin_notification::NotificationExt;
 
 static NOTIFIED: Lazy<Mutex<HashSet<PathBuf>>> = Lazy::new(|| Mutex::new(HashSet::new()));
-static REALTIME_ENABLED: AtomicBool = AtomicBool::new(false);
+pub static REALTIME_ENABLED: AtomicBool = AtomicBool::new(false);
 static SCAN_QUEUE: Lazy<Arc<Mutex<HashSet<PathBuf>>>> =
     Lazy::new(|| Arc::new(Mutex::new(HashSet::new())));
 static BEHAVIOR: Lazy<Arc<Mutex<BehaviorConfig>>> =
