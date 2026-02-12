@@ -195,3 +195,12 @@ jobs:
           files: latest.json
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Ensure release is marked as latest
+        run: |
+          gh api \
+            -X PATCH \
+            repos/${{ github.repository }}/releases/tags/v${{ steps.version.outputs.VERSION }} \
+            -f make_latest=true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
