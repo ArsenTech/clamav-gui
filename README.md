@@ -75,6 +75,8 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 ### To Do List
 - [ ] YARA Rules and YARA Scan Type + YARA Real-Time Scan Type
 - [ ] Backend Error Translation
+- [ ] Write the Usage Guide on the `docs/`
+- [ ] Limit `helpers::scheduler::windows::get_last_run_time` only for Windows Users
 
 ### Built With
 - [![Tauri][tauri-shield]][tauri-url]
