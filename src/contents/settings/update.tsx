@@ -173,7 +173,7 @@ export default function UpdateSettings(){
                               <RotateCcw/>
                               {t("gui.buttons.relaunch")}
                          </Button>
-                    ) : status==="needs-update" ? (
+                    ) : (status==="needs-update" || status==="updating") ? (
                          <ButtonGroup>
                               <Button disabled={isUpdating} onClick={updateGUI}>
                                    <RotateCw className={cn(isUpdating && "animate-spin")}/>
