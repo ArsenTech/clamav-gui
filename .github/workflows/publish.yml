@@ -82,8 +82,8 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
-          tagName: v${{ steps.version }}
-          releaseName: "ClamAV GUI v${{ steps.version }}"
+          tagName: v${{ steps.version.outputs.VERSION }}
+          releaseName: "ClamAV GUI v${{ steps.version.outputs.VERSION }}"
           releaseBody: '### Full Changelog: [`clamav-gui/CHANGELOG.md`](https://github.com/ArsenTech/clamav-gui/blob/main/CHANGELOG.md)'
           releaseDraft: false
           prerelease: false
@@ -92,7 +92,7 @@ jobs:
       - name: Generate updater fragment
         shell: bash
         run: |
-          VERSION="${{ steps.version }}"
+          VERSION="${{ steps.version.outputs.VERSION }}"
           REPO="${{ github.repository }}"
           mkdir -p updater
 
@@ -180,10 +180,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          VERSION="${{steps.version}}"
+          VERSION="${{steps.version.outputs.VERSION}}"
           RELEASE_BODY=$(gh api repos/${{ github.repository }}/releases/tags/v$VERSION --jq '.body')
 
-          jq -s 'add' fragments/**/platforms.json > platforms.json
+          jq -s 'add' fragments/*.json > platforms.json
 
           jq -n \
             --arg version "$VERSION" \
@@ -200,7 +200,7 @@ jobs:
       - name: Upload latest.json
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v${{ steps.version }}
+          tag_name: v${{ steps.version.outputs.VERSION }}
           files: latest.json
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
