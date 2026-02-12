@@ -4,12 +4,8 @@ on:
   push:
     tags:
       - 'v*'
+    branches: '*'
   workflow_dispatch:
-    inputs:
-      version:
-        description: 'Release version (without v)'
-        required: true
-        type: string
 
 jobs:
   publish-tauri:
@@ -66,25 +62,16 @@ jobs:
       - name: install frontend dependencies
         run: npm install
 
-      - name: Resolve version
-        id: version
-        shell: bash
-        run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
-          else
-            echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
-          fi
-
-      - uses: tauri-apps/tauri-action@v0
+      - name: "Build a Tauri App"
+        uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
-          tagName: v${{ steps.version.outputs.VERSION }}
-          releaseName: "ClamAV GUI v${{ steps.version.outputs.VERSION }}"
+          tagName: v__VERSION__
+          releaseName: "ClamAV GUI v__VERSION__"
           releaseBody: '### Full Changelog: [`clamav-gui/CHANGELOG.md`](https://github.com/ArsenTech/clamav-gui/blob/main/CHANGELOG.md)'
-          releaseDraft: false
+          releaseDraft: true
           prerelease: false
           args: ${{ matrix.args }}
