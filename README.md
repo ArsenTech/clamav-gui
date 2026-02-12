@@ -78,7 +78,6 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - [ ] Write the Usage Guide on the `docs/`
 - [ ] Limit `helpers::scheduler::windows::get_last_run_time` only for Windows Users
 - [ ] Scheduler support for Linux and MacOS
-- [ ] Fix the updater
 - [ ] Fix the ARM64 build workflow
 
 ### Built With
