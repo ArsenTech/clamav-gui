@@ -71,7 +71,7 @@ jobs:
           tagName: v__VERSION__
           releaseName: "ClamAV GUI v__VERSION__"
           releaseBody: '### Full Changelog: [`clamav-gui/CHANGELOG.md`](https://github.com/ArsenTech/clamav-gui/blob/main/CHANGELOG.md)'
-          releaseDraft: true
+          releaseDraft: false
           prerelease: false
           args: ${{ matrix.args }}
 
