@@ -17,16 +17,12 @@ jobs:
         include:
           - platform: 'macos-latest'
             args: '--target aarch64-apple-darwin'
-            id: macos-arm64
           - platform: 'macos-latest'
             args: '--target x86_64-apple-darwin'
-            id: macos-x64
           - platform: 'ubuntu-22.04'
             args: ''
-            id: ubuntu
           - platform: 'windows-latest'
             args: ''
-            id: windows
 
     runs-on: ${{ matrix.platform }}
     steps:
