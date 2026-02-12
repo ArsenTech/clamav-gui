@@ -1,4 +1,4 @@
-import { isDescKey, SCAN_SETTINGS } from "@/lib/constants/settings/scan-options";
+import { SCAN_SETTINGS } from "@/lib/constants/settings/scan-options";
 import { Switch } from "@/components/ui/switch";
 import { useSettings } from "@/context/settings";
 import { DEFAULT_SETTINGS, FILE_SCAN_WHITELIST, MAX_LONG_LINES_CHOICES, SCAN_OPTION_ICON } from "@/lib/constants/settings";
@@ -25,6 +25,7 @@ import { ScanOptionKeys } from "@/lib/types/settings";
 import { ObjectEntries } from "@/lib/helpers";
 import { ChoiceOption } from "@/components/settings-item/scan-option";
 import { ActionType } from "@/lib/types";
+import { isDescKey } from "@/lib/helpers/scan";
 
 export default function AdvancedSettings({scanProfile}: SettingsProps){
      const {settings, setSettings} = useSettings();

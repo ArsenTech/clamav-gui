@@ -1,5 +1,5 @@
 import { FILE_SCAN_WHITELIST } from "../constants/settings";
-import { SCAN_SETTINGS } from "../constants/settings/scan-options";
+import { DESC_WHITELIST, SCAN_SETTINGS } from "../constants/settings/scan-options";
 import { Mutable } from "../types";
 import { ScanOptionKeys, ScanProfileValues } from "../types/settings";
 
@@ -56,4 +56,9 @@ export function hydrateProfile(profile: ScanProfileValues, isFile = false) {
       result[key as ScanOptionKeys] = opt.value.default;
   }
   return { ...result, ...profile };
+}
+
+const DESC_KEYS: Set<ScanOptionKeys> = new Set(DESC_WHITELIST)
+export function isDescKey(key: ScanOptionKeys): key is typeof DESC_WHITELIST[number] {
+  return DESC_KEYS.has(key as ScanOptionKeys);
 }

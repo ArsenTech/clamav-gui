@@ -70,21 +70,11 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - **Skeleton Loader** - A separate Skeleton loading on some pages for clean UX
 - **Notifications** - Be informed when the scan is started or finished, or a new threat has been detected
 - **System Tray** - Quick Access through some actions all by using a system tray
-
-### Currently In Progress
-- [X] Finishing touches and optimization before v1
-- [ ] Translate the GUI into mentioned languages
-  - [X] UI Translation
-  - [X] Messages Translation (used in toaster)
-  - [X] Validation message Translation
-  - [X] Notification Translation
-  - [ ] Backend Translation
-  - [X] No ClamAV Page Translation
-  - [X] System Tray Translation
-- [X] Quick access to Feature Request and Bug Report links as buttons
+- **Multilingual Support** - Use the ClamAV GUI in your native language besides English
 
 ### To Do List
 - [ ] YARA Rules and YARA Scan Type + YARA Real-Time Scan Type
+- [ ] Backend Error Translation
 
 ### Built With
 - [![Tauri][tauri-shield]][tauri-url]
@@ -100,8 +90,9 @@ You can find the latest stable version of the ClamAV GUI right here
 
 [![GitHub Downloads (all assets, latest release)][download-shield]][download-url]
 
+<!-- TODO: Write the Usage Guide on the docs/
 ## Usage
-<!-- TODO: Write the Usage Guide on the docs/ -->
+-->
 
 ## Versioning
 This website follows [Semantic Versioning](https://semver.org/). You can view the full [Changelog][changelog-url] for details on each website version.

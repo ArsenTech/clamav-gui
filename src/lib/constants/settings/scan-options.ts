@@ -322,10 +322,5 @@ export const SCAN_SETTINGS_GROUPED = Object.groupBy(
   ...obj,
   optionKey: key as ScanOptionKeys
 })),({group})=>group)
-const DESC_WHITELIST = ["debug","heuristicAlerts","bytecodeUnsigned"] as const
 
-// TODO: Move
-const DESC_KEYS: Set<ScanOptionKeys> = new Set(DESC_WHITELIST)
-export function isDescKey(key: ScanOptionKeys): key is typeof DESC_WHITELIST[number] {
-  return DESC_KEYS.has(key as ScanOptionKeys);
-}
+export const DESC_WHITELIST = ["debug","heuristicAlerts","bytecodeUnsigned"] as const
