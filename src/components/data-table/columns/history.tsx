@@ -51,7 +51,7 @@ export const GET_HISTORY_COLS = (
                },
                cell: ({getValue}) => {
                     const {t} = useTranslation("history");
-                    return t(`history-type.${getValue() as HistoryType}`)
+                    return t(`events.${getValue() as HistoryType}`)
                }
           },
           {

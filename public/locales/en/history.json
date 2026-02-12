@@ -37,7 +37,7 @@
           "acknowledged": "Acknowledged Entries Cleared!",
           "error": "All errors Cleared!"
      },
-     "history-type": {
+     "events": {
           "real-time-error": "Real-time Scan Failed",
           "real-time-start": "Real-time Scan Started",
           "real-time-stop": "Real-time Scan Stopped",
