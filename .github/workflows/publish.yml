@@ -137,15 +137,21 @@ jobs:
           name: updater-fragments-${{ matrix.id }}
           path: updater/platforms.json
 
+  update-json:
+    needs: publish-tauri
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    permissions:
+      contents: write
+    steps:
       - name: Download updater fragments
-        if: matrix.platform == 'windows-latest'
         uses: actions/download-artifact@v4
         with:
           pattern: updater-fragments-*
           path: fragments
-          
+          merge-multiple: true
+
       - name: Assemble latest.json
-        if: matrix.platform == 'windows-latest'
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -166,9 +172,8 @@ jobs:
               pub_date: $date,
               platforms: $platforms[0]
             }' > latest.json
-            
+
       - name: Upload latest.json
-        if: matrix.platform == 'windows-latest' && startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
