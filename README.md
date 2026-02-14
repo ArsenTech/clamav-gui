@@ -72,13 +72,13 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - **System Tray** - Quick Access through some actions, all by using a system tray
 - **Multilingual Support** - Use the ClamAV GUI in your native language besides English
 
-### To Do List
-- [ ] YARA Rules and YARA Scan Type + YARA Real-Time Scan Type
+### Planned Improvements
 - [ ] Backend Error Translation
 - [ ] Write the Usage Guide on the `docs/`
 - [ ] Limit `helpers::scheduler::windows::get_last_run_time` only for Windows Users
-- [ ] Scheduler support for Linux and MacOS
 - [ ] Fix the ARM64 build workflow
+- [ ] Scheduler support for Linux and MacOS
+- [ ] YARA Rules and YARA Scan Type + YARA Real-Time Scan Type
 
 ### Built With
 - [![Tauri][tauri-shield]][tauri-url]
