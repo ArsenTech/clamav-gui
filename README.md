@@ -74,6 +74,10 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 
 ### Planned Improvements
 #### v1.0.4 (Next)
+- [X] Fix the ARM64 build workflow
+- [X] Improve the date returning function
+- [ ] Optimize and clean few things
+#### v1.0.5 (Planned)
 - [ ] GUI Updater
   - [ ] Add a feature to log the updater actions into the history
 - [ ] New Clear History Options
@@ -81,13 +85,10 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
   - [ ] Clear last 7 days
   - [ ] Clear last 30 days
   - [ ] Clear by date
-- [X] Fix the ARM64 build workflow
-- [X] Improve the date returning function
-- [ ] Optimize and clean few things
-#### v1.0.5 (Planned)
+#### v1.0.6 (Planned)
 - [ ] Backend Error Translation
 - [ ] Add a macOS Guide inside the **No ClamAV** Page
-#### v1.0.6 (Stability)
+#### v1.0.7 (Stability)
 - [ ] Scheduler support for Linux and MacOS
 #### v1.1.x (Major)
 - [ ] Limit `helpers::scheduler::windows::get_last_run_time` only for Windows Users
