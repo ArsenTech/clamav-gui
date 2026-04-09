@@ -10,10 +10,11 @@ import {
 import { useEffect, useState, lazy, Suspense } from "react";
 import { useSystemStats } from "@/hooks/use-stats";
 import { NoData } from "@/components/charts/no-data";
-import { RealTimeChartProps } from "@/lib/types/props";
+import { useTranslation } from "react-i18next";
 const CPUChart = lazy(()=>import("@/components/charts/cpu"));
 
-export function CPUStats({t}: RealTimeChartProps) {
+export function CPUStats() {
+  const {t} = useTranslation("stats")
   const [data, setData] = useState<{ util: number }[]>([]);
   const [currStats, setCurrStats] = useState<{ util: number; freq: number }>({ util: 0, freq: 0 });
   const cpu = useSystemStats("cpu_frequency", "cpu_usage");
@@ -36,7 +37,7 @@ export function CPUStats({t}: RealTimeChartProps) {
       </CardHeader>
       <CardContent>
         <Suspense fallback={<NoData label={t("loading")}/>}>
-          <CPUChart data={data} t={t}/>
+          <CPUChart data={data}/>
         </Suspense>
       </CardContent>
       <CardFooter>

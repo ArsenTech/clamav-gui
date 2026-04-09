@@ -12,10 +12,10 @@ import { useSystemStats } from "@/hooks/use-stats";
 import { formatBytes } from "@/lib/helpers/formating";
 import { NoData } from "@/components/charts/no-data";
 import { useTranslation } from "react-i18next";
-import { RealTimeChartProps } from "@/lib/types/props";
 const DiskChart = lazy(()=>import("@/components/charts/disk"));
 
-export function DiskStats({t}: RealTimeChartProps) {
+export function DiskStats() {
+  const {t} = useTranslation("stats")
   const prevRef = useRef<{
     read: number;
     write: number;
@@ -66,7 +66,7 @@ export function DiskStats({t}: RealTimeChartProps) {
       </CardHeader>
       <CardContent>
         <Suspense fallback={<NoData label={t("loading")}/>}>
-          <DiskChart data={data} t={t}/>
+          <DiskChart data={data}/>
         </Suspense>
       </CardContent>
       <CardFooter>

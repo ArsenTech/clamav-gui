@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button"
 import { GET_HISTORY_COLS } from "@/components/data-table/columns/history";
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { invoke } from "@tauri-apps/api/core";
-import { IHistoryData } from "@/lib/types/data";
 import { Download, Trash2 } from "lucide-react"
 import { ButtonGroup } from "@/components/ui/button-group"
 import { cn } from "@/lib/utils";
@@ -18,11 +17,11 @@ import { INITIAL_HISTORY_STATE } from "@/lib/constants/states";
 import { useSettings } from "@/context/settings";
 import { useTranslation } from "react-i18next";
 import { HistoryClearType } from "@/lib/types/enums"
-import { translateDetails } from "@/lib/helpers/history";
 import LoadingButton from "@/components/loading-button";
 import ConfirmationMessage from "@/components/popup/confirm";
 import { HistoryConfirmationState } from "@/lib/types";
 import { getErrorMessage } from "@/lib/helpers";
+import { fetchHistoryData } from "@/data/history";
 
 export default function HistoryContent(){
      const {settings} = useSettings();
@@ -35,20 +34,8 @@ export default function HistoryContent(){
      const {t: tableTxt} = useTranslation("table")
      const fetchData = () => {
           startTransition(async()=>{
-               try {
-                    const fetched = await invoke<IHistoryData<"type">[]>("load_history", {days: 7});
-                    const newData: IHistoryData<"state">[] = fetched.map(val=>({
-                         ...val,
-                         logId: val.log_id,
-                         details: translateDetails(val.details,t)
-                    }))
-                    setState({ data: newData })
-               } catch (err){
-                    toast.error(messageTxt("fetch-error.history"),{
-                         description: getErrorMessage(err)
-                    })
-                    setState({ data: [] })
-               }
+               const newData = await fetchHistoryData(t,messageTxt)
+               setState({ data: newData })
           })
      }
      const clearHistory = (mode = HistoryClearType.All) => {

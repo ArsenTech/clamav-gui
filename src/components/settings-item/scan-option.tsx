@@ -1,15 +1,15 @@
+import { useTranslation } from "react-i18next";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-import { TFunction } from "i18next";
 
 interface ChoiceOptionProps{
      value: string,
      onValueChange: (val: string) => void,
      label: string,
      choiceKey: "sym-links" | "ssn-formats",
-     scanTxt: TFunction<"scan-settings">,
 }
-export function ChoiceOption({value,onValueChange,label,choiceKey,scanTxt}: ChoiceOptionProps){
-     const choices = scanTxt(`choices.${choiceKey}`,{returnObjects: true}).map((val,i)=>({
+export function ChoiceOption({value,onValueChange,label,choiceKey}: ChoiceOptionProps){
+     const {t} = useTranslation("scan-settings")
+     const choices = t(`choices.${choiceKey}`,{returnObjects: true}).map((val,i)=>({
           value: i,
           label: val
      }))

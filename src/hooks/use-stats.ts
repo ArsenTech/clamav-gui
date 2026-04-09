@@ -59,8 +59,5 @@ export function useAntivirusStats(startTransition: React.TransitionStartFunction
      useEffect(()=>{
           refresh()
      },[]);
-     return {
-          stats,
-          refresh
-     }
+     return { stats, refresh }
 }

@@ -12,10 +12,10 @@ import { useSystemStats } from "@/hooks/use-stats";
 import { formatBytes } from "@/lib/helpers/formating";
 import { NoData } from "@/components/charts/no-data";
 import { useTranslation } from "react-i18next";
-import { RealTimeChartProps } from "@/lib/types/props";
 const RAMChart = lazy(()=>import("@/components/charts/ram"))
 
-export function RAMStats({t}: RealTimeChartProps) {
+export function RAMStats() {
+  const {t} = useTranslation("stats")
   const [data, setData] = useState<{ usage: number }[]>([]);
   const [total, setTotal] = useState("");
   const ram = useSystemStats("ram_total", "ram_used");
@@ -38,7 +38,7 @@ export function RAMStats({t}: RealTimeChartProps) {
       </CardHeader>
       <CardContent>
         <Suspense fallback={<NoData label={t("loading")}/>}>
-          <RAMChart data={data} t={t}/>
+          <RAMChart data={data}/>
         </Suspense>
       </CardContent>
       <CardFooter>

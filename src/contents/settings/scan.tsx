@@ -104,7 +104,6 @@ export default function ScanSettings({scanProfile}: SettingsProps){
                                                        value={String(values[option.optionKey] ?? option.value.default)}
                                                        onValueChange={val=>setValue(option.optionKey, typeof option.value.default === "number" ? Number(val) : val)}
                                                        label={scanTxt(`labels.${option.optionKey}`)}
-                                                       scanTxt={scanTxt}
                                                        choiceKey={option.optionKey==="structuredSSNFormat" ? "ssn-formats" : "sym-links"}
                                                   />
                                              )

@@ -6,9 +6,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { IDeviceInfo } from "@/lib/types/states";
 import { INITIAL_DEIVCE_INFO } from "@/lib/constants/states";
 import { WindowIcon } from "../app-icon";
-import { RealTimeChartProps } from "@/lib/types/props";
+import { useTranslation } from "react-i18next";
 
-export default function DeviceInfo({t}: RealTimeChartProps) {
+export default function DeviceInfo() {
+  const {t} = useTranslation("stats")
   const [info, setInfo] = useState<IDeviceInfo>(INITIAL_DEIVCE_INFO);
   const [isPending, startTransition] = useTransition();
   useEffect(() => {

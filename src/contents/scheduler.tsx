@@ -18,6 +18,7 @@ import { useSettings } from "@/context/settings";
 import { useTranslation } from "react-i18next";
 import ConfirmationMessage from "@/components/popup/confirm";
 import { getErrorMessage } from "@/lib/helpers";
+import { fetchSchedulerData } from "@/data/scheduler";
 
 export default function SchedulerContent(){
      const {settings} = useSettings();
@@ -84,36 +85,8 @@ export default function SchedulerContent(){
      const refresh = () => {
           if(!settings.enableSchedulerUI) return;
           startTransition(async()=>{
-               try{
-                    const data = await invoke<ISchedulerData<"type">[]>("list_scheduler");
-                    const newData: ISchedulerData<"state">[] = data.map(({id,interval,scan_type,time,log_id, last_run})=>{
-                         const [hours, minutes] = time.split(":");
-                         const nextScan = new Date();
-                         nextScan.setHours(Number(hours));
-                         nextScan.setMinutes(Number(minutes));
-                         nextScan.setSeconds(0);
-                         if (interval === "daily") 
-                              if (nextScan < new Date()) nextScan.setDate(nextScan.getDate() + 1);
-                         if (interval === "weekly") 
-                              nextScan.setDate(nextScan.getDate() + 7);
-                         if (interval === "monthly") 
-                              nextScan.setMonth(nextScan.getMonth() + 1);
-                         return ({
-                              id,
-                              interval,
-                              scanType: scan_type,
-                              lastScan: last_run ? new Date(last_run) : null,
-                              nextScan,
-                              log_id
-                         })
-                    })
-                    setState({data: newData})
-               } catch (err){
-                    toast.error(messageTxt("fetch-error.scheduler"),{
-                         description: getErrorMessage(err)
-                    });
-                    setState({data: []})
-               }
+               const newData = await fetchSchedulerData(messageTxt);
+               setState({data: newData})
           })
      }
      const ACTIONS = {

@@ -2,26 +2,26 @@ import { getErrorMessage } from "@/lib/helpers";
 import { fetchPaths } from "@/lib/helpers/fs";
 import { store } from "@/lib/store";
 import { IBackendSettings } from "@/lib/types/settings";
-import { useEffect } from "react";
+import { cache, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 export function useBackendSettings(){
      const {t: messageTxt} = useTranslation("messages")
-     async function getSettingsBySection<
+     const getSettingsBySection = cache(async<
           S extends keyof IBackendSettings,
           K extends keyof IBackendSettings[S]
      >(
           section: S,
           key: K
-     ): Promise<IBackendSettings[S][K] | undefined> {
+     ): Promise<IBackendSettings[S][K] | undefined> => {
           const data = await store.get<IBackendSettings[S]>(section);
           return data?.[key];
-     }
-     async function fetchSettingsbySection<S extends keyof IBackendSettings>(section: S): Promise<IBackendSettings[S] | undefined> {
+     })
+     const fetchSettingsbySection = cache(async<S extends keyof IBackendSettings>(section: S): Promise<IBackendSettings[S] | undefined> => {
           const data = await store.get<IBackendSettings[S]>(section);
           return data;
-     }
+     })
      async function setSettingsbySection<
           S extends keyof IBackendSettings,
           K extends keyof IBackendSettings[S]
@@ -42,10 +42,10 @@ export function useBackendSettings(){
                });
           }
      }
-     async function getSettingsByKey<K extends keyof IBackendSettings>(key: K): Promise<IBackendSettings[K] | undefined> {
+     const getSettingsByKey = cache(async<K extends keyof IBackendSettings>(key: K): Promise<IBackendSettings[K] | undefined> => {
           const data = await store.get<IBackendSettings[K]>(key);
           return data;
-     }
+     })
      async function setSettingsbyKey<K extends keyof IBackendSettings>(key: K,value: IBackendSettings[K]) {
           try{
                const current = await store.get<IBackendSettings[K]>(key)

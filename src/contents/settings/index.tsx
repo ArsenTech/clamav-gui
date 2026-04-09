@@ -19,6 +19,7 @@ import { readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 import { toast } from "sonner";
 import { useBackendSettings } from "@/hooks/use-settings";
 import { getErrorMessage } from "@/lib/helpers";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function SettingsContent(){
      const [searchParams] = useSearchParams();
@@ -84,6 +85,7 @@ export default function SettingsContent(){
                })
           }
      }
+     const isMobile = useIsMobile()
      return (
           <>
           <h1 className="inline-flex justify-between items-center gap-2 w-full">
@@ -131,7 +133,7 @@ export default function SettingsContent(){
                     {SETTINGS_TABS.map(({page,Icon})=>(
                          <TabsTrigger key={page} value={page}>
                               <Icon/>
-                              {t(`tabs.${page}`)}
+                              {!isMobile && t(`tabs.${page}`)}
                          </TabsTrigger>
                     ))}
                </TabsList>
