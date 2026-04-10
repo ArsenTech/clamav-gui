@@ -5,13 +5,9 @@ import { invoke } from "@tauri-apps/api/core";
 import { cache } from "react";
 
 export const getAppVersions = cache(async(): Promise<IVersion> => {
-     try{
-          const app = await getVersion();
-          const tauri = await getTauriVersion();
-          return {app, tauri}
-     } catch {
-          return {app: "", tauri: ""}
-     }
+     const app = await getVersion();
+     const tauri = await getTauriVersion();
+     return {app, tauri}
 })
 
 export const getClamAvVersion = cache(async() => {

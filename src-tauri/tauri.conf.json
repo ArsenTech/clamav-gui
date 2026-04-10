@@ -1,16 +1,13 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "ClamAV GUI",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "identifier": "com.arsentech.clamav-gui",
   "build": {
     "beforeDevCommand": "npm run dev",
     "devUrl": "http://localhost:1420",
     "beforeBuildCommand": "npm run build",
     "frontendDist": "../dist"
-  },
-  "bundle": {
-    "publisher": "ArsenTech"
   },
   "app": {
     "windows": [
@@ -25,6 +22,7 @@
     }
   },
   "bundle": {
+    "publisher": "ArsenTech",
     "active": true,
     "targets": "all",
     "icon": [
