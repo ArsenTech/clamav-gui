@@ -23,11 +23,11 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - History
 - Logs
 - Scheduler
-- `fetchPaths()`
+- `fetchPaths()` function
 - Quarantine
 - Stats
 - Versions
-- Other functions
+- Other possible backend functions
 
 ## [1.0.3] - 2026-03-22
 ### Added
