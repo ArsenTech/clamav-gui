@@ -83,6 +83,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
   - [ ] Clear by date
 - [ ] Test the new Workflow change
 - [ ] Replace alert boxes from `Dialog` and `Drawer` components into `AlertDialog` component from ShadCN UI
+- [ ] Convert each data table cell into a reusable component in `/data-table/cell/[table]/[cell].tsx`
 #### v1.0.6 (Planned)
 - [ ] Backend Error Translation
 - [ ] Add a macOS Guide inside the **No ClamAV** Page
