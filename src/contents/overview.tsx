@@ -3,12 +3,12 @@ import { useNavigate } from "react-router";
 import { QUICK_ACCESS_LINKS } from "@/lib/constants/links";
 import { open } from "@tauri-apps/plugin-dialog";
 import { useEffect, useState } from "react";
-import { normalizePaths, parseClamVersion } from "@/lib/helpers";
-import { invoke } from "@tauri-apps/api/core";
+import { normalizePaths } from "@/lib/helpers";
 import { useSettings } from "@/context/settings";
 import { FsOption } from "@/lib/types";
 import { useTranslation } from "react-i18next";
 import { DefinitionStatus, Indicator } from "@/lib/types/enums";
+import { checkDefinitionStatus } from "@/data/versions";
 
 export default function OverviewContent(){
      const navigate = useNavigate();
@@ -31,10 +31,8 @@ export default function OverviewContent(){
      useEffect(()=>{
           (async()=>{
                try{
-                    const raw = await invoke<string>("get_clamav_version");
-                    const parsed = parseClamVersion(raw);
-                    if(!parsed) return;
-                    setDefinitionStatus(parsed.isOutdated ? DefinitionStatus.Outdated : DefinitionStatus.Updated)
+                    const isOutdated = await checkDefinitionStatus()
+                    setDefinitionStatus(isOutdated ? DefinitionStatus.Outdated : DefinitionStatus.Updated)
                } catch {
                     setDefinitionStatus(DefinitionStatus.Outdated)
                }

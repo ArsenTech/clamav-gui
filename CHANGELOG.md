@@ -13,10 +13,19 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Optimized the function that returns date by a preferred format
 - Alignment on the Definitions Updater part of the Update Settings Tab
 - Optimized the Translation function + Settings Tab
-- Cached some getter functions for performance
 ### Fixed
 - The Build workflow bug
 - System Tray ID name bug - Thanks [@frju365](https://github.com/frju365)!
+### Cached for performance (getter functions)
+- Backend Settings
+- History
+- Logs
+- Scheduler
+- `fetchPaths()`
+- Quarantine
+- Stats
+- Versions
+- Other functions
 
 ## [1.0.3] - 2026-03-22
 ### Added

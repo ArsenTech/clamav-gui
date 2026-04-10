@@ -9,9 +9,11 @@ import { IVirusTypeStat } from "@/lib/types/stats"
 import { ChartProps } from "@/lib/types/props"
 import { NoData } from "@/components/charts/no-data"
 import { Suspense, lazy } from "react"
+import { useTranslation } from "react-i18next"
 const VirusTypesChart = lazy(()=>import("@/components/charts/virus-type"))
 
-export function VirusTypes({data,t}: ChartProps<IVirusTypeStat[]>) {
+export function VirusTypes({data}: ChartProps<IVirusTypeStat[]>) {
+  const {t} = useTranslation("stats")
   return (
     <Card className="flex flex-col w-full">
       <CardHeader className="items-center pb-0">
@@ -22,7 +24,7 @@ export function VirusTypes({data,t}: ChartProps<IVirusTypeStat[]>) {
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <Suspense fallback={<NoData label={t("loading")}/>}>
-          <VirusTypesChart data={data} t={t}/>
+          <VirusTypesChart data={data}/>
         </Suspense>
       </CardContent>
     </Card>

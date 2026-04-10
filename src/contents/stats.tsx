@@ -28,18 +28,18 @@ export default function StatsContent(){
                </Button>
                <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-2 w-full">
                     <div className="flex flex-col items-center gap-2 w-full">
-                         <DeviceInfo t={t}/>
-                         <ScanActivity data={stats.activity} t={t}/>
-                         <ScanTypes data={stats.scanTypes} t={t}/>
+                         <DeviceInfo/>
+                         <ScanActivity data={stats.activity}/>
+                         <ScanTypes data={stats.scanTypes}/>
                          <div className="grid gris-cols-1 xl:grid-cols-2 w-full gap-2">
-                              <VirusTypes data={stats.virusTypes} t={t}/>
-                              <ThreatsStats data={stats.threatStatus} t={t}/>
+                              <VirusTypes data={stats.virusTypes}/>
+                              <ThreatsStats data={stats.threatStatus}/>
                          </div>
                     </div>
                     <div className="flex flex-col items-center gap-2 w-full">
-                         <CPUStats t={t}/>
-                         <RAMStats t={t}/>
-                         <DiskStats t={t}/>
+                         <CPUStats/>
+                         <RAMStats/>
+                         <DiskStats/>
                     </div>
                </div>
           </>

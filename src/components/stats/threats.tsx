@@ -9,9 +9,11 @@ import { IThreatStatusStat } from "@/lib/types/stats"
 import { ChartProps } from "@/lib/types/props"
 import { NoData } from "@/components/charts/no-data"
 import { Suspense, lazy } from "react"
+import { useTranslation } from "react-i18next"
 const ThreatsChart = lazy(()=>import("@/components/charts/threats"))
 
-export function ThreatsStats({data,t}: ChartProps<IThreatStatusStat[]>) {
+export function ThreatsStats({data}: ChartProps<IThreatStatusStat[]>) {
+  const {t} = useTranslation("stats")
   return (
     <Card className="flex flex-col w-full">
       <CardHeader className="items-center pb-0">
@@ -22,7 +24,7 @@ export function ThreatsStats({data,t}: ChartProps<IThreatStatusStat[]>) {
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <Suspense fallback={<NoData label={t("loading")}/>}>
-          <ThreatsChart data={data} t={t}/>
+          <ThreatsChart data={data}/>
         </Suspense>
       </CardContent>
     </Card>

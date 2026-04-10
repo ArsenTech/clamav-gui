@@ -1,5 +1,5 @@
 import { getErrorMessage } from "@/lib/helpers";
-import { fetchPaths } from "@/lib/helpers/fs";
+import { fetchPaths } from "@/data/paths"
 import { store } from "@/lib/store";
 import { IBackendSettings } from "@/lib/types/settings";
 import { cache, useEffect } from "react";

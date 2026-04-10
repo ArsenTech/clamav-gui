@@ -10,9 +10,11 @@ import { IActivityStat } from "@/lib/types/stats"
 import { ChartProps } from "@/lib/types/props"
 import { NoData } from "@/components/charts/no-data"
 import { Suspense, lazy  } from "react"
+import { useTranslation } from "react-i18next"
 const ActivityChart = lazy(()=>import("@/components/charts/activity"))
 
-export function ScanActivity({data,t}: ChartProps<IActivityStat[]>) {
+export function ScanActivity({data}: ChartProps<IActivityStat[]>) {
+  const {t} = useTranslation("stats")
   return (
     <Card className="w-full">
       <CardHeader>
@@ -24,7 +26,7 @@ export function ScanActivity({data,t}: ChartProps<IActivityStat[]>) {
       </CardHeader>
       <CardContent>
         <Suspense fallback={<NoData label={t("loading")}/>}>
-          <ActivityChart data={data} t={t}/>
+          <ActivityChart data={data}/>
         </Suspense>
       </CardContent>
     </Card>

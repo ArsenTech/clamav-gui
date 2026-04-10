@@ -9,8 +9,10 @@ import { GET_THREAT_STATUS_CONFIG } from "@/lib/constants/chart"
 import { IThreatStatusStat } from "@/lib/types/stats"
 import { ChartProps } from "@/lib/types/props"
 import { NoData } from "./no-data"
+import { useTranslation } from "react-i18next"
 
-export default function ThreatsChart({data,t}: ChartProps<IThreatStatusStat[]>) {
+export default function ThreatsChart({data}: ChartProps<IThreatStatusStat[]>) {
+  const {t} = useTranslation("stats")
   const totalThreats = React.useMemo(() => data.reduce((acc, curr) => acc + curr.threats, 0), [data])
   return (!data.length || totalThreats===0) ? (
     <NoData label={t("no-data")}/>

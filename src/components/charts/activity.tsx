@@ -11,8 +11,10 @@ import { IActivityStat } from "@/lib/types/stats"
 import { ChartProps } from "@/lib/types/props"
 import { useMemo } from "react"
 import { NoData } from "./no-data"
+import { useTranslation } from "react-i18next"
 
-export default function ActivityChart({data,t}: ChartProps<IActivityStat[]>) {
+export default function ActivityChart({data}: ChartProps<IActivityStat[]>) {
+  const {t} = useTranslation("stats")
   const hasData = useMemo(()=>data.some(d => d.resolved > 0 || d.unresolved > 0),[data]);
   const month = t("month",{returnObjects: true})
   return (!data.length || !hasData) ? (

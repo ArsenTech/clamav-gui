@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 import { SettingsTab, ScanProfile } from "@/lib/types/enums";
 import { store } from "@/lib/store"
 import { IBackendSettings, ISettingsMetadata, ScanProfileValues } from "@/lib/types/settings";
-import { getName, getVersion } from "@tauri-apps/api/app"
+import { getName } from "@tauri-apps/api/app"
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Button } from "@/components/ui/button";
 import { open, save } from "@tauri-apps/plugin-dialog";
@@ -20,6 +20,7 @@ import { toast } from "sonner";
 import { useBackendSettings } from "@/hooks/use-settings";
 import { getErrorMessage } from "@/lib/helpers";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { getAppVersions } from "@/data/versions";
 
 export default function SettingsContent(){
      const [searchParams] = useSearchParams();
@@ -42,9 +43,10 @@ export default function SettingsContent(){
                })
                if(!path) return;
                const backendEntries = await store.entries<ScanProfileValues|string[]>()
+               const appVersions = await getAppVersions()
                const data: ISettingsMetadata = {
                     name: await getName(),
-                    version: await getVersion(),
+                    version: appVersions.app,
                     frontend: settings,
                     backend: Object.fromEntries(backendEntries) as unknown as IBackendSettings
                }

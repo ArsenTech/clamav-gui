@@ -6,8 +6,10 @@ import {
 } from "@/components/ui/chart";
 import { GET_DISK_USAGE_CONFIG } from "@/lib/constants/chart";
 import { ChartProps } from "@/lib/types/props";
+import { useTranslation } from "react-i18next";
 
-export default function DiskChart({data,t}: ChartProps<{read: number; write: number }[]>) {
+export default function DiskChart({data}: ChartProps<{read: number; write: number }[]>) {
+  const {t} = useTranslation("stats")
   return (
     <ChartContainer config={GET_DISK_USAGE_CONFIG(t)}>
       <AreaChart

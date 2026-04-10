@@ -6,8 +6,10 @@ import {
 } from "@/components/ui/chart";
 import { GET_RAM_USAGE_CONFIG } from "@/lib/constants/chart";
 import { ChartProps } from "@/lib/types/props";
+import { useTranslation } from "react-i18next";
 
-export default function RAMChart({data,t}: ChartProps<{ usage: number }[]>) {
+export default function RAMChart({data}: ChartProps<{ usage: number }[]>) {
+  const {t} = useTranslation("stats")
   return (
     <ChartContainer config={GET_RAM_USAGE_CONFIG(t)}>
       <AreaChart

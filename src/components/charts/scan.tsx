@@ -8,8 +8,10 @@ import { GET_SCAN_TYPE_CONFIG } from "@/lib/constants/chart"
 import { IScanTypeStat } from "@/lib/types/stats"
 import { ChartProps } from "@/lib/types/props"
 import { NoData } from "./no-data"
+import { useTranslation } from "react-i18next"
 
-export default function ScanChart({data,t}: ChartProps<IScanTypeStat[]>) {
+export default function ScanChart({data}: ChartProps<IScanTypeStat[]>) {
+  const {t} = useTranslation("stats")
   const config = GET_SCAN_TYPE_CONFIG(t)
   return !data.length ? (
     <NoData label={t("no-data")}/>

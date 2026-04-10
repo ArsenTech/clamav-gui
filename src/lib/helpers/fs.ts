@@ -1,6 +1,5 @@
 import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { IHistoryData } from "../types/data";
-import {audioDir, desktopDir, documentDir, downloadDir, homeDir, localDataDir, pictureDir, publicDir, tempDir, videoDir} from "@tauri-apps/api/path"
 
 export const exportJSON = async (path: string, historyData: IHistoryData<"state">[]) => {
      const jsonData = JSON.stringify(historyData,null,2);
@@ -19,19 +18,3 @@ export const exportCSV = async (path: string, historyData: IHistoryData<"state">
      const rows = historyData.map(item =>headers.map(h => escapeCSV(item[h as keyof typeof item])).join(","));
      await writeTextFile(path, [headers.join(","), ...rows].join("\n"));
 };
-
-export const fetchPaths = async (): Promise<string[]> => {
-     const paths = await Promise.all([
-          audioDir(),
-          desktopDir(),
-          documentDir(),
-          downloadDir(),
-          homeDir(),
-          localDataDir(),
-          pictureDir(),
-          publicDir(),
-          tempDir(),
-          videoDir(),
-     ]);
-     return [...new Set(paths.filter(Boolean))];
-}

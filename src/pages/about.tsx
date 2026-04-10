@@ -2,13 +2,11 @@ import CreditsSection from "@/components/credits";
 import { AppLayout } from "@/components/layout";
 import Logo from "@/components/logo";
 import { Button } from "@/components/ui/button";
+import { getAppVersions, getClamAvVersion } from "@/data/versions";
 import { COMPONENTS } from "@/lib/constants/md-components";
 import { INITIAL_VERSION_INFO } from "@/lib/constants/states";
-import { parseClamVersion } from "@/lib/helpers";
 import { IClamAvVersion } from "@/lib/types";
 import { IVersion } from "@/lib/types/states";
-import {getTauriVersion, getVersion} from "@tauri-apps/api/app"
-import { invoke } from "@tauri-apps/api/core";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { Code, Grid2X2Plus, Languages, MessageCircleWarning } from "lucide-react";
 import Markdown from "markdown-to-jsx";
@@ -21,22 +19,19 @@ export default function AboutPage(){
      const {t} = useTranslation("about")
      useEffect(()=>{
           (async()=>{
-               const app = await getVersion();
-               const tauri = await getTauriVersion();
-               const newVersions: IVersion = {app, tauri,}
+               const newVersions = await getAppVersions()
                setVersions(prev=>({...prev,...newVersions}));
                localStorage.setItem("versions",JSON.stringify(newVersions));
-               const clamAVraw = await invoke<string>("get_clamav_version");
-               const parsed = parseClamVersion(clamAVraw);
-               if(parsed){
+               const clamAvVersion = await getClamAvVersion()
+               if(clamAvVersion!==null){
                     setClamavVersion(prev=>({
                     ...prev,
-                         engine: parsed.engine,
-                         dbVersion: parsed.dbVersion
+                         engine: clamAvVersion.engine,
+                         dbVersion: clamAvVersion.dbVersion
                     }))
                     localStorage.setItem("clamav-version", JSON.stringify({
-                         engine: parsed.engine,
-                         dbVersion: parsed.dbVersion
+                         engine: clamAvVersion.engine,
+                         dbVersion: clamAvVersion.dbVersion
                     }));
                }
           })();

@@ -17,6 +17,7 @@ import {useGuiUpdater} from "@/hooks/use-gui-updater";
 import { useTranslation } from "react-i18next";
 import { useLocale } from "@/i18n/locale";
 import { IClamAvVersion } from "@/lib/types";
+import { getClamAvVersion } from "@/data/versions";
 
 export default function UpdateSettings(){
      const [updateState, setUpdateState] = useState<IDefsUpdaterState>(INITIAL_DEF_UPDATE_STATE);
@@ -40,17 +41,16 @@ export default function UpdateSettings(){
      useEffect(()=>{
           (async()=>{
                try{
-                    const raw = await invoke<string>("get_clamav_version");
-                    const parsed = parseClamVersion(raw);
-                    if(!parsed) return;
+                    const clamAvVersion = await getClamAvVersion();
+                    if(!clamAvVersion) return;
                     const stored = localStorage.getItem("last-updated");
                     setState({
                          lastUpdated: stored
                               ? new Date(stored)
-                              : parsed.dbDate ?? null,
-                         isRequired: parsed.isOutdated,
+                              : clamAvVersion.dbDate ?? null,
+                         isRequired: clamAvVersion.isOutdated,
                     });
-                    updateVersions(parsed);
+                    updateVersions(clamAvVersion);
                } catch {
                     setState({
                          isRequired: true,
@@ -81,9 +81,7 @@ export default function UpdateSettings(){
                               exitMsg: e.payload,
                               isUpdatingDefs: false,
                          });
-                         const raw = await invoke<string>("get_clamav_version");
-                         const parsed = parseClamVersion(raw);
-                         updateVersions(parsed);
+                         updateVersions(await getClamAvVersion());
                     } catch (err) {
                          toast.error(messageTxt("def-update-error"),{
                               description: getErrorMessage(err)

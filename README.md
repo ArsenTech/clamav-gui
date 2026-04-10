@@ -76,15 +76,15 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 #### v1.0.4 (Next)
 - [X] Fix the ARM64 build workflow
 - [X] Improve the date returning function
-- [ ] Optimize and clean few things
-- [ ] Cache some getter functions
+- [X] Optimize and clean few things
+- [X] Cache some getter functions
   - [X] Backend Settings
   - [X] History
   - [X] Logs
   - [X] Scheduler
-  - [ ] Quarantine
-  - [ ] Stats
-  - [ ] Others if possible
+  - [X] Quarantine
+  - [X] Stats
+  - [X] Others if possible
 #### v1.0.5 (Planned)
 - [ ] GUI Updater
   - [ ] Add a feature to log the updater actions into the history

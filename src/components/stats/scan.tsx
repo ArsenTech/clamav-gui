@@ -9,9 +9,11 @@ import { IScanTypeStat } from "@/lib/types/stats"
 import { ChartProps } from "@/lib/types/props"
 import { NoData } from "@/components/charts/no-data"
 import { Suspense, lazy } from "react"
+import { useTranslation } from "react-i18next"
 const ScanChart = lazy(()=>import("@/components/charts/scan"))
 
-export function ScanTypes({data,t}: ChartProps<IScanTypeStat[]>) {
+export function ScanTypes({data}: ChartProps<IScanTypeStat[]>) {
+  const {t} = useTranslation("stats")
   return (
     <Card className="w-full">
       <CardHeader>
@@ -22,7 +24,7 @@ export function ScanTypes({data,t}: ChartProps<IScanTypeStat[]>) {
       </CardHeader>
       <CardContent>
         <Suspense fallback={<NoData label={t("loading")}/>}>
-          <ScanChart data={data} t={t}/>
+          <ScanChart data={data}/>
         </Suspense>
       </CardContent>
     </Card>

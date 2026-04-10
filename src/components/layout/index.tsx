@@ -12,6 +12,7 @@ import { useSettings } from "@/context/settings";
 import { isPermissionGranted, requestPermission, } from '@tauri-apps/plugin-notification';
 import { listen, UnlistenFn } from "@tauri-apps/api/event";
 import { useLocale } from "@/i18n/locale";
+import { checkAvailability } from "@/data/versions";
 
 const NoClamAVPage = lazy(()=>import("./no-clamav"));
 
@@ -30,7 +31,7 @@ export function AppLayout({children, className}: Props){
      const handleCheck = () => {
           startTransition(async() => {
                try{
-                    const isAvailable = await invoke<boolean>("check_availability");
+                    const isAvailable = await checkAvailability()
                     const next: ClamAVState = isAvailable ? ClamAVState.Available : ClamAVState.Missing;
                     setStatus(next);
                     localStorage.setItem("clamav",next);

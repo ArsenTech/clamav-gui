@@ -1,12 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Monitor, PcCase } from "lucide-react";
 import { useEffect, useState, useTransition } from "react";
-import { invoke } from "@tauri-apps/api/core";
 import { Skeleton } from "@/components/ui/skeleton";
 import { IDeviceInfo } from "@/lib/types/states";
 import { INITIAL_DEIVCE_INFO } from "@/lib/constants/states";
 import { WindowIcon } from "../app-icon";
 import { useTranslation } from "react-i18next";
+import { getDeviceInfo } from "@/data/stats";
 
 export default function DeviceInfo() {
   const {t} = useTranslation("stats")
@@ -14,7 +14,7 @@ export default function DeviceInfo() {
   const [isPending, startTransition] = useTransition();
   useEffect(() => {
     startTransition(async () => {
-      const info = await invoke<IDeviceInfo>("get_sys_info");
+      const info = getDeviceInfo()
       setInfo((prev) => ({ ...prev, ...info }));
     });
   }, []);

@@ -7,7 +7,6 @@ import { toast } from "sonner";
 import { IQuarantineState } from "@/lib/types/states";
 import { INITIAL_QUARANTINE_STATE } from "@/lib/constants/states";
 import QuarantineLoader from "@/loaders/quarantine";
-import { IQuarantineData } from "@/lib/types/data";
 import { useSettings } from "@/context/settings";
 import { GET_QUARANTINE_COLS } from "@/components/data-table/columns/quarantine";
 import { ActionType, QuarantineConfirmationState } from "@/lib/types";
@@ -15,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import { useQuarantineCount } from "@/context/quarantine-count";
 import ConfirmationMessage from "@/components/popup/confirm";
 import { getErrorMessage } from "@/lib/helpers";
+import { fetchQuarantine } from "@/data/quarantine";
 const QuarantineTable = lazy(()=>import("@/contents/quarantine"))
 
 export default function QuarantinePage(){
@@ -23,17 +23,11 @@ export default function QuarantinePage(){
      const [isRefreshing, startTransition] = useTransition();
      const {setCount, decreaseBy} = useQuarantineCount();
      const fetchData = () => {
-          startTransition(()=>invoke<IQuarantineData[]>("list_quarantine").then(data=>{
-               const newData: IQuarantineData[] = data.map(({id,threat_name,file_path,quarantined_at,size})=>({
-                    id,
-                    threat_name,
-                    file_path,
-                    quarantined_at: new Date(quarantined_at),
-                    size: isNaN(size) ? 0 : size
-               }))
+          startTransition(async()=>{
+               const newData = await fetchQuarantine();
                setCount(newData.length)
                setState({ data: newData });
-          }).catch(() => setState({ data: [] })));
+          });
      }
      useEffect(()=>fetchData(),[])
      const setState = (overrides: Partial<IQuarantineState>) => setQuarantineState(prev=>({ ...prev, ...overrides }))

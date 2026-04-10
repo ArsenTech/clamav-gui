@@ -8,8 +8,10 @@ import { GET_VIRUS_TYPE_CONFIG } from "@/lib/constants/chart"
 import { IVirusTypeStat } from "@/lib/types/stats"
 import { ChartProps } from "@/lib/types/props"
 import { NoData } from "./no-data"
+import { useTranslation } from "react-i18next"
 
-export default function VirusTypesChart({data,t}: ChartProps<IVirusTypeStat[]>) {
+export default function VirusTypesChart({data}: ChartProps<IVirusTypeStat[]>) {
+  const {t} = useTranslation("stats")
   return !data.length ? (
     <NoData label={t("no-data")}/>
   ) : (
