@@ -1,22 +1,15 @@
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { DesignType } from "@/lib/types";
+import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 interface Props{
      open: boolean,
      onOpen: (open: boolean) => void,
      title: string,
      description?: string,
-     submitTxt?: string
-     submitEvent?: () => void,
-     children?: React.ReactNode,
-     closeText?: string
-     hideButtons?: boolean,
-     type?: DesignType
+     children: React.ReactNode,
 }
-export default function Popup({open, onOpen, title, description, submitTxt = "Submit", submitEvent, children, closeText = "Close", hideButtons=false, type="default"}: Props){
+export default function Popup({open, onOpen, title, description, children}: Props){
      const isMobile = useIsMobile();
      return isMobile ? (
           <Drawer open={open} onOpenChange={onOpen}>
@@ -32,14 +25,6 @@ export default function Popup({open, onOpen, title, description, submitTxt = "Su
                               {children}
                          </div>
                     )}
-                    {!hideButtons &&(
-                         <DrawerFooter>
-                              <Button type="button" onClick={submitEvent}>{submitTxt}</Button>
-                              <DrawerClose asChild>
-                                   <Button variant="outline" type="button">{closeText}</Button>
-                              </DrawerClose>
-                         </DrawerFooter>
-                    )}
                </DrawerContent>
           </Drawer>
      ) : (
@@ -52,14 +37,6 @@ export default function Popup({open, onOpen, title, description, submitTxt = "Su
                          )}
                     </DialogHeader>
                     {children}
-                    {!hideButtons && (
-                         <DialogFooter>
-                              <Button variant={type==="danger" ? "destructive" : "default"} type="button" onClick={submitEvent}>{submitTxt}</Button>
-                              <DialogClose asChild>
-                                   <Button variant="outline" type="button">{closeText}</Button>
-                              </DialogClose>
-                         </DialogFooter>
-                    )}
                </DialogContent>
           </Dialog>
      )

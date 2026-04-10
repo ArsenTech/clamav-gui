@@ -2,8 +2,8 @@ import { useSettings } from "@/context/settings";
 import { Switch } from "../ui/switch";
 import { useRealtimeScan } from "@/context/real-time";
 import { useState } from "react";
-import Popup from "../popup";
 import { useTranslation } from "react-i18next";
+import AlertBox from "../popup/alert";
 
 export function RealTimeToggle(){
      const [isOpen, setIsOpen] = useState(false)
@@ -29,14 +29,14 @@ export function RealTimeToggle(){
                checked={settings.realTime}
                onCheckedChange={handleToggle}
           />
-          <Popup
+          <AlertBox
                open={isOpen}
-               onOpen={setIsOpen}
+               setOpen={setIsOpen}
                title={t("real-time-scan.title")}
                description={t("real-time-scan.desc")}
-               submitTxt={t("actions.turn-off")}
+               submitText={t("actions.turn-off")}
                submitEvent={confirmDisable}
-               closeText={t("actions.cancel")}
+               cancelText={t("actions.cancel")}
                type="danger"
           />
           </>

@@ -8,7 +8,7 @@ import { useEffect, useMemo, useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { Spinner } from "@/components/ui/spinner";
 import { invoke } from "@tauri-apps/api/core";
-import { getErrorMessage, parseClamVersion } from "@/lib/helpers";
+import { getErrorMessage } from "@/lib/helpers";
 import { toast } from "sonner";
 import SettingsItem from "@/components/settings-item";
 import { ButtonGroup } from "@/components/ui/button-group";
@@ -29,7 +29,7 @@ export default function UpdateSettings(){
           if (updateState.isUpdatingDefs) return;
           await invoke("update_definitions")
      }
-     const updateVersions = (parsed: ReturnType<typeof parseClamVersion>) => {
+     const updateVersions = (parsed: Awaited<ReturnType<typeof getClamAvVersion>>) => {
           if(!parsed) return;
           const version: IClamAvVersion = {
                engine: parsed.engine,

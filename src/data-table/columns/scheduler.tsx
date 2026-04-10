@@ -1,19 +1,13 @@
-import { Button } from "@/components/ui/button";
-import { ArrowDown, ArrowUp, ArrowUpDown, CalendarSearch, FileText, MoreHorizontal, ScrollText, Search, Trash2 } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ScanType } from "@/lib/types/enums";
 import { IntervalType, ISchedulerData } from "@/lib/types/data";
-import { Badge } from "@/components/ui/badge";
-import { SCAN_TYPES } from "@/lib/constants";
-import { invoke } from "@tauri-apps/api/core";
-import { toast } from "sonner";
-import { Link } from "react-router";
 import { ISchedulerState } from "@/lib/types/states";
 import { useSettings } from "@/context/settings";
 import { useTranslation } from "react-i18next";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { getErrorMessage } from "@/lib/helpers";
+import SortableHeader from "../cells/sortable-header";
+import IntervalCell from "../cells/scheduler/interval";
+import ScanTypeCell from "../cells/scheduler/scan-type";
+import ActionsCell from "../cells/scheduler/actions";
 
 export const GET_SCHEDULER_COLS = (
      setState:  (overrides: Partial<ISchedulerState>) => void,
@@ -31,18 +25,7 @@ export const GET_SCHEDULER_COLS = (
                const {t} = useTranslation("table");
                return t("heading.scheduler.interval")
           },
-          cell: ({getValue}) => {
-               const {t} = useTranslation("table");
-               const {settings} = useSettings();
-               return (
-                    <Badge>
-                         {settings.badgeVisibility==="icon-text" && (
-                              <CalendarSearch />
-                         )}
-                         {t(`interval.${getValue() as IntervalType}`)}
-                    </Badge>
-               )
-          }
+          cell: ({getValue}) => <IntervalCell type={getValue<IntervalType>()}/>
      },
      {
           accessorKey: "scanType",
@@ -50,48 +33,22 @@ export const GET_SCHEDULER_COLS = (
                const {t} = useTranslation("table");
                return t("heading.scheduler.scan-type")
           },
-          cell: ({getValue}) => {
-               const scanInfo = SCAN_TYPES.find(item=>item.type===getValue() as ScanType);
-               const {t} = useTranslation("scan");
-               const {settings} = useSettings();
-               if(!scanInfo) return null;
-               return scanInfo.type!==ScanType.None && (
-                    settings.badgeVisibility==="icon" ? (
-                         <Tooltip>
-                              <TooltipTrigger asChild>
-                                   <scanInfo.Icon/>
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                   {t(`scan-type.${scanInfo.type}.name`)}
-                              </TooltipContent>
-                         </Tooltip>
-                    ) : (
-                         <Badge variant="outline">
-                              {settings.badgeVisibility==="icon-text" && (
-                                   <scanInfo.Icon/>
-                              )}
-                              {t(`scan-type.${scanInfo.type}.name`)}
-                         </Badge>
-                    )
-               )
-          }
+          cell: ({getValue}) => <ScanTypeCell scanType={getValue<ScanType>()}/>
      },
      {
           accessorKey: "lastScan",
           header: ({column}) => {
                const {t} = useTranslation("table");
                return (
-                    <div className="flex items-center justify-between gap-2">
-                         <span>{t("heading.scheduler.last-scan")}</span>
-                         <Button variant="ghost" onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")} size="icon-sm">
-                              {column.getIsSorted()==="asc" ? <ArrowUp className="h-4 w-4" /> : column.getIsSorted()==="desc" ? <ArrowDown className="h-4 w-4" /> : <ArrowUpDown className="h-4 w-4" />}
-                         </Button>
-                    </div>
+                    <SortableHeader
+                         column={column}
+                         title={t("heading.scheduler.last-scan")}
+                    />
                )
           },
           cell: ({getValue}) => {
                const {formatDate} = useSettings();
-               return formatDate(getValue() as string)
+               return formatDate(getValue<string>())
           }
      },
      {
@@ -99,85 +56,24 @@ export const GET_SCHEDULER_COLS = (
           header: ({column}) => {
                const {t} = useTranslation("table");
                return (
-                    <div className="flex items-center justify-between gap-2">
-                         <span>{t("heading.scheduler.next-scan")}</span>
-                         <Button variant="ghost" onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")} size="icon-sm">
-                              {column.getIsSorted()==="asc" ? <ArrowUp className="h-4 w-4" /> : column.getIsSorted()==="desc" ? <ArrowDown className="h-4 w-4" /> : <ArrowUpDown className="h-4 w-4" />}
-                         </Button>
-                    </div>
+                    <SortableHeader
+                         column={column}
+                         title={t("heading.scheduler.next-scan")}
+                    />
                )
           },
           cell: ({getValue}) => {
                const {formatDate} = useSettings();
-               return formatDate(getValue() as string)
+               return formatDate(getValue<string>())
           }
      },
      {
           id: "actions",
-          cell: ({row}) => {
-               const {t} = useTranslation("table")
-               const item = row.original
-               const {t: messageTxt} = useTranslation("messages")
-               const revealLog = async()=>{
-                    if(!item.log_id) return;
-                    try{
-                         await invoke("reveal_log",{
-                              category: "scheduler",
-                              id: item.log_id
-                         })
-                    } catch(err){
-                         toast.error(messageTxt("log-reveal-error"),{
-                              description: getErrorMessage(err)
-                         });
-                    }
-               }
-               const handleRunScan = async()=>{
-                    try{
-                         await invoke("run_job_now",{
-                              taskName: item.id
-                         });
-                         toast.success(messageTxt("trigger-scan.success"))
-                    } catch (err){
-                         toast.error(messageTxt("trigger-scan.error"),{
-                              description: getErrorMessage(err)
-                         });
-                    }
-               }
-               return (
-                    <DropdownMenu>
-                         <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" className="h-8 w-8 p-0">
-                                   <span className="sr-only">{t("actions.open-menu")}</span>
-                                   <MoreHorizontal className="h-4 w-4" />
-                              </Button>
-                         </DropdownMenuTrigger>
-                         <DropdownMenuContent align="end">
-                              <DropdownMenuLabel>{t("heading.actions")}</DropdownMenuLabel>
-                              <DropdownMenuSeparator/>
-                              <DropdownMenuItem onClick={handleRunScan}>
-                                   <Search/>
-                                   {t("actions.scan-now")}
-                              </DropdownMenuItem>
-                              <DropdownMenuItem disabled={!item.log_id} asChild>
-                                   <Link to={`/scheduler/${item.log_id}?category=scheduler`}>
-                                        <ScrollText/>
-                                        {t("actions.view-log")}
-                                   </Link>
-                              </DropdownMenuItem>
-                              <DropdownMenuItem disabled={!item.log_id} onClick={revealLog}>
-                                   <FileText />
-                                   {t("actions.reveal-log")}
-                              </DropdownMenuItem>
-                              <DropdownMenuItem className="text-destructive" onClick={()=>setState({
-                                   popupState: "delete-job",
-                                   job_id: item.id
-                              })}>
-                                   <Trash2 className="text-destructive"/>
-                                   {t("actions.remove-job")}
-                              </DropdownMenuItem>
-                         </DropdownMenuContent>
-                    </DropdownMenu>
-               )
-          },
+          cell: ({row}) => (
+               <ActionsCell
+                    item={row.original}
+                    setState={setState}
+               />
+          ),
      }
 ]

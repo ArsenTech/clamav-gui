@@ -14,8 +14,8 @@ export default function DeviceInfo() {
   const [isPending, startTransition] = useTransition();
   useEffect(() => {
     startTransition(async () => {
-      const info = getDeviceInfo()
-      setInfo((prev) => ({ ...prev, ...info }));
+      const info = await getDeviceInfo()
+      if(info) setInfo((prev) => ({ ...prev, ...info }));
     });
   }, []);
   return (

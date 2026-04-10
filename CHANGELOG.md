@@ -5,6 +5,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 ## [1.0.5] - Unreleased
+### Changed
+- Converted each data table cell into a reusable component
+- Replaced alert boxes from `Dialog` and `Drawer` components into `AlertDialog` component from ShadCN UI
 ### Improved
 - **Caching** - Cached the app name with app version into the `getAppDetails()` function
 

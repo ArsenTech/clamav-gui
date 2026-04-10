@@ -1,17 +1,16 @@
 import { DangerZoneConfState, DesignType, HistoryConfirmationState, QuarantineConfirmationState, ScanFinishConfState, SchedulerConfState } from "@/lib/types"
 import { useTranslation } from "react-i18next"
-import Popup from "@/components/popup"
+import AlertBox from "./alert"
 
 type ConfirmationType = "" | HistoryConfirmationState | QuarantineConfirmationState | DangerZoneConfState | ScanFinishConfState | SchedulerConfState
 
 interface ConfirmationMessageProps{
      state: ConfirmationType
      submitAction: "" | "clear" | "delete" | "restore" | DangerZoneConfState | SchedulerConfState
-     submitEvent?: () => void
+     submitEvent: () => void
      type?: DesignType
      onOpenChange: (state: ConfirmationType) => void
 }
-
 export default function ConfirmationMessage({
      state,
      submitAction,
@@ -20,17 +19,16 @@ export default function ConfirmationMessage({
      onOpenChange
 }: ConfirmationMessageProps){
      const {t} = useTranslation("confirmation")
-     if (state==="") return null
-     return (
-          <Popup
+     return state!=="" ? (
+          <AlertBox
                open
-               onOpen={(open)=>onOpenChange(open ? state : "")}
+               setOpen={(open)=>onOpenChange(open ? state : "")}
                title={t(`${state}.title`)}
                description={t(`${state}.desc`)}
-               submitTxt={submitAction==="" ? undefined : t(`actions.${submitAction}`)}
-               closeText={t("actions.cancel")}
+               submitText={submitAction==="" ? undefined : t(`actions.${submitAction}`)}
+               cancelText={t("actions.cancel")}
                submitEvent={submitEvent}
                type={type}
           />
-     )
+     ) : null
 }

@@ -1,20 +1,11 @@
-import { Button } from "@/components/ui/button";
-import { ArrowDown, ArrowUp, ArrowUpDown, Bug, BugOff, FolderOpen, MoreHorizontal, ShieldCheck, Trash } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { IThreatsData, ThreatStatus } from "@/lib/types/data";
-import { invoke } from "@tauri-apps/api/core";
-import { toast } from "sonner";
-import { revealItemInDir } from "@tauri-apps/plugin-opener";
-import { useMemo } from "react";
-import { getErrorMessage, getThreatStatusBadges } from "@/lib/helpers";
-import { Badge } from "@/components/ui/badge";
 import { IFinishScanState, IScanPageState } from "@/lib/types/states";
 import { useSettings } from "@/context/settings";
 import { useTranslation } from "react-i18next";
-import { useQuarantineCount } from "@/context/quarantine-count";
-import { cn } from "@/lib/utils";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import SortableHeader from "../cells/sortable-header";
+import StatusCell from "../cells/threats/status";
+import ActionsCell from "../cells/threats/actions";
 
 export const GET_THREATS_COLS = (
      setScanState: React.Dispatch<React.SetStateAction<IScanPageState>>,
@@ -27,12 +18,10 @@ export const GET_THREATS_COLS = (
                header: ({column}) => {
                     const {t} = useTranslation("table")
                     return (
-                         <div className="flex items-center justify-between gap-2">
-                              <span>{t("heading.threats.threat")}</span>
-                              <Button variant="ghost" onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")} size="icon-sm">
-                                   {column.getIsSorted()==="asc" ? <ArrowUp className="h-4 w-4" /> : column.getIsSorted()==="desc" ? <ArrowDown className="h-4 w-4" /> : <ArrowUpDown className="h-4 w-4" />}
-                              </Button>
-                         </div>
+                         <SortableHeader
+                              column={column}
+                              title={t("heading.threats.threat")}
+                         />
                     )
                }
           },
@@ -51,7 +40,7 @@ export const GET_THREATS_COLS = (
                },
                cell: ({getValue}) => {
                     const {formatDate} = useSettings();
-                    return formatDate(getValue() as string)
+                    return formatDate(getValue<string>())
                }
           },
           {
@@ -60,98 +49,17 @@ export const GET_THREATS_COLS = (
                     const {t} = useTranslation("table");
                     return t("heading.status")
                },
-               cell: ({getValue}) => {
-                    const {t} = useTranslation("table");
-                    const threatStatus = getValue() as ThreatStatus;
-                    const {settings} = useSettings();
-                    const iconClassName = cn(
-                         threatStatus === "deleted" && "text-primary",
-                         threatStatus === "detected" && "text-destructive",
-                         threatStatus === "quarantined" && "text-muted-foreground",
-                         "text-center"
-                    )
-                    const icon = threatStatus === "deleted" ? (
-                         <ShieldCheck/>
-                    ) : threatStatus === "detected" ? (
-                         <Bug/>
-                    ) : (
-                         <BugOff/>
-                    )
-                    return settings.badgeVisibility === "icon" ? (
-                         <Tooltip>
-                              <TooltipTrigger className={iconClassName} asChild>
-                                   {icon}
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                   {t(`status.threats.${threatStatus}`)}
-                              </TooltipContent>
-                         </Tooltip>
-                    ) : (
-                         <Badge variant={getThreatStatusBadges(threatStatus)} className="gap-1.5">
-                              {settings.badgeVisibility==="icon-text" && icon}
-                              {t(`status.threats.${threatStatus}`)}
-                         </Badge>
-                    )
-               }
+               cell: ({getValue}) => <StatusCell threatStatus={getValue<ThreatStatus>()}/>
           },
           {
                id: "actions",
-               cell: ({ row }) => {
-                    const {increaseBy} = useQuarantineCount();
-                    const {t} = useTranslation("table");
-                    const threat = row.original
-                    const {t: messageTxt} = useTranslation("messages")
-                    const handleQuarantine = async() => {
-                         try{
-                              const {filePath, displayName} = threat
-                              await invoke("quarantine_file",{
-                                   filePath,
-                                   threatName: displayName,
-                                   logId: null,
-                              })
-                              increaseBy(1)
-                              setScanState(prev=>({
-                                   ...prev,
-                                   threats: prev.threats.map(val => val.filePath === filePath && val.displayName === displayName ? { ...val, status: "quarantined" } : val)
-                              }))
-                              toast.success(messageTxt("quarantine.success"))
-                         } catch (err){
-                              toast.error(messageTxt("quarantine.error"),{
-                                   description: getErrorMessage(err)
-                              });
-                         }
-                    }
-                    const handleRevealPath = async() => await revealItemInDir(threat.filePath)
-                    const isResolved = useMemo(()=>["quarantined", "deleted", "safe"].includes(threat.status),[threat.status]);
-                    return (
-                         <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                   <Button variant="ghost" className="h-8 w-8 p-0">
-                                        <span className="sr-only">{t("actions.open-menu")}</span>
-                                        <MoreHorizontal className="h-4 w-4" />
-                                   </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                   <DropdownMenuLabel>{t("heading.actions")}</DropdownMenuLabel>
-                                   <DropdownMenuSeparator/>
-                                   <DropdownMenuItem disabled={isResolved} onClick={handleQuarantine}>
-                                        <BugOff/>
-                                        {t("actions.quarantine")}
-                                   </DropdownMenuItem>
-                                   <DropdownMenuItem className="text-destructive" onClick={()=>setState({
-                                        popupState: "delete-threats",
-                                        currThreat: threat
-                                   })} disabled={isResolved} >
-                                        <Trash className="text-destructive"/> {t("actions.delete")}
-                                   </DropdownMenuItem>
-                                   <DropdownMenuItem onClick={handleRevealPath} disabled={isResolved} >
-                                        <FolderOpen/>
-                                        {t("actions.open")}
-                                   </DropdownMenuItem>
-                              </DropdownMenuContent>
-                         </DropdownMenu>
-                    )
-               },
+               cell: ({ row }) => (
+                    <ActionsCell
+                         threat={row.original}
+                         setScanState={setScanState}
+                         setState={setState}
+                    />
+               ),
           }
      ];
      return isDevMode ? [

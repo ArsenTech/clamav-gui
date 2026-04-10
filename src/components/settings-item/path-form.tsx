@@ -12,6 +12,7 @@ import { Input } from "../ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { open } from "@tauri-apps/plugin-dialog";
 import { useTranslation } from "react-i18next";
+import AlertBox from "../popup/alert";
 
 interface Props{
      data: string[];
@@ -85,7 +86,6 @@ export default function FolderPathForm({data, onSubmit, onDelete, title, addButt
                open={isOpen}
                onOpen={setIsOpen}
                title={formTitle}
-               hideButtons
           >
                <Form {...form}>
                     <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-3">
@@ -124,13 +124,13 @@ export default function FolderPathForm({data, onSubmit, onDelete, title, addButt
                     </form>
                </Form>
           </Popup>
-          <Popup
+          <AlertBox
                open={isOpenDelete}
-               onOpen={setIsOpenDelete}
+               setOpen={setIsOpenDelete}
                title={confirmationTitle}
                description={confirmMsg("folder-path-form-desc")}
-               submitTxt={confirmMsg("actions.remove")}
-               closeText={confirmMsg("actions.cancel")}
+               submitText={confirmMsg("actions.remove")}
+               cancelText={confirmMsg("actions.cancel")}
                submitEvent={()=>{
                     setIsOpenDelete(false);
                     onDelete(currPath);

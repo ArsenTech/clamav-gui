@@ -150,7 +150,6 @@ export default function HistoryContent(){
                open={showDetails}
                onOpen={showDetails=>setState({showDetails})}
                title={tableTxt("heading.history.details")}
-               hideButtons
           >
                {details}
           </Popup>

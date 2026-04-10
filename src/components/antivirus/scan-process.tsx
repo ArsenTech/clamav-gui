@@ -1,4 +1,3 @@
-import Popup from "@/components/popup";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Spinner } from "@/components/ui/spinner";
@@ -15,6 +14,7 @@ import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
+import AlertBox from "../popup/alert";
 
 interface Props{
      scanState: IScanPageState,
@@ -123,13 +123,13 @@ export default function ScanProcess({scanState, handleReset, isStartup}: Props){
                     </div>
                     <Button className="flex-1" onClick={()=>settings.confirmStopScan ? setIsOpen(true) : handleStopScan()}><Square/> {t("stop-scan")}</Button>
                </div>
-               <Popup
+               <AlertBox
                     open={isOpen}
-                    onOpen={setIsOpen}
+                    setOpen={setIsOpen}
                     title={confTxt("scan.title",{scanName: scanType!=="" ? t(`scan-type.${scanType}.name`) : ""})}
                     description={confTxt("scan.desc")}
-                    submitTxt={confTxt("actions.stop")}
-                    closeText={confTxt("actions.cancel")}
+                    submitText={confTxt("actions.stop")}
+                    cancelText={confTxt("actions.cancel")}
                     submitEvent={handleStopScan}
                     type="danger"
                />
