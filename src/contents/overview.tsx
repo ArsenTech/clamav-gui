@@ -8,7 +8,7 @@ import { useSettings } from "@/context/settings";
 import { FsOption } from "@/lib/types";
 import { useTranslation } from "react-i18next";
 import { DefinitionStatus, Indicator } from "@/lib/types/enums";
-import { checkDefinitionStatus } from "@/data/versions";
+import { checkDefinitionStatus } from "@/data/app";
 
 export default function OverviewContent(){
      const navigate = useNavigate();

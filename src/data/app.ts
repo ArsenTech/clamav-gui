@@ -1,6 +1,6 @@
 import { parseClamVersion } from "@/lib/helpers";
 import { IVersion } from "@/lib/types/states";
-import { getVersion, getTauriVersion } from "@tauri-apps/api/app";
+import { getVersion, getTauriVersion, getName } from "@tauri-apps/api/app";
 import { invoke } from "@tauri-apps/api/core";
 import { cache } from "react";
 
@@ -31,3 +31,9 @@ export const checkDefinitionStatus = cache(async() => {
 })
 
 export const checkAvailability = cache(async() =>await invoke<boolean>("check_availability"))
+
+export const getAppDetails = cache(async() => {
+     const name = await getName();
+     const version = await getVersion();
+     return {name, version}
+})

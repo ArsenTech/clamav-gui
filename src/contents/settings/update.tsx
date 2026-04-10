@@ -17,7 +17,7 @@ import {useGuiUpdater} from "@/hooks/use-gui-updater";
 import { useTranslation } from "react-i18next";
 import { useLocale } from "@/i18n/locale";
 import { IClamAvVersion } from "@/lib/types";
-import { getClamAvVersion } from "@/data/versions";
+import { getClamAvVersion } from "@/data/app";
 
 export default function UpdateSettings(){
      const [updateState, setUpdateState] = useState<IDefsUpdaterState>(INITIAL_DEF_UPDATE_STATE);

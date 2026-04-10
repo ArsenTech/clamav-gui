@@ -32,7 +32,7 @@ export default function SchedulerContent(){
           startSubmitTransition(async()=>{
                try{
                     const currDay = new Date().getDay();
-                    await invoke<SchedulerType>("schedule_task",{
+                    await invoke("schedule_task",{
                          ...values,
                          days: values.days || DAYS_OF_THE_WEEK[currDay]
                     })

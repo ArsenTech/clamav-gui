@@ -2,7 +2,7 @@ import CreditsSection from "@/components/credits";
 import { AppLayout } from "@/components/layout";
 import Logo from "@/components/logo";
 import { Button } from "@/components/ui/button";
-import { getAppVersions, getClamAvVersion } from "@/data/versions";
+import { getAppVersions, getClamAvVersion } from "@/data/app";
 import { COMPONENTS } from "@/lib/constants/md-components";
 import { INITIAL_VERSION_INFO } from "@/lib/constants/states";
 import { IClamAvVersion } from "@/lib/types";

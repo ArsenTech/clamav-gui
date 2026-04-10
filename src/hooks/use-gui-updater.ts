@@ -1,5 +1,5 @@
 import { relaunch } from "@tauri-apps/plugin-process";
-import {check} from "@tauri-apps/plugin-updater"
+import { check } from "@tauri-apps/plugin-updater"
 import { INITIAL_UPDATER_STATE } from "@/lib/constants/states";
 import { IUpdaterState } from "@/lib/types/states";
 import { useEffect, useMemo, useState, useTransition } from "react";

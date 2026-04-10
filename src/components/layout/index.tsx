@@ -12,7 +12,7 @@ import { useSettings } from "@/context/settings";
 import { isPermissionGranted, requestPermission, } from '@tauri-apps/plugin-notification';
 import { listen, UnlistenFn } from "@tauri-apps/api/event";
 import { useLocale } from "@/i18n/locale";
-import { checkAvailability } from "@/data/versions";
+import { checkAvailability } from "@/data/app";
 
 const NoClamAVPage = lazy(()=>import("./no-clamav"));
 
