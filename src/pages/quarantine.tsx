@@ -8,7 +8,7 @@ import { IQuarantineState } from "@/lib/types/states";
 import { INITIAL_QUARANTINE_STATE } from "@/lib/constants/states";
 import QuarantineLoader from "@/loaders/quarantine";
 import { useSettings } from "@/context/settings";
-import { GET_QUARANTINE_COLS } from "@/components/data-table/columns/quarantine";
+import { GET_QUARANTINE_COLS } from "@/data-table/columns/quarantine";
 import { ActionType, QuarantineConfirmationState } from "@/lib/types";
 import { useTranslation } from "react-i18next";
 import { useQuarantineCount } from "@/context/quarantine-count";

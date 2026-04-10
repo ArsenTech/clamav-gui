@@ -1,7 +1,7 @@
-import { HistoryTable } from "@/components/data-table/tables/history";
+import { HistoryTable } from "@/data-table/tables/history";
 import { RotateCw } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { GET_HISTORY_COLS } from "@/components/data-table/columns/history";
+import { GET_HISTORY_COLS } from "@/data-table/columns/history";
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { Download, Trash2 } from "lucide-react"

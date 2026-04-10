@@ -1,6 +1,6 @@
-import FolderPathFormLoader from "@/components/loaders/path-form";
-import SettingsItemLoader from "@/components/loaders/settings-item";
-import SettingsOptionLoader from "@/components/loaders/settings-options";
+import FolderPathFormLoader from "@/loaders/components/path-form";
+import SettingsItemLoader from "@/loaders/components/settings-item";
+import SettingsOptionLoader from "@/loaders/components/settings-options";
 import { SCAN_SETTINGS } from "@/lib/constants/settings/scan-options";
 
 export default function AdvancedSettingsLoader(){

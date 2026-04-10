@@ -1,4 +1,4 @@
-import SettingsItemLoader from "@/components/loaders/settings-item"
+import SettingsItemLoader from "@/loaders/components/settings-item"
 
 export default function UpdateSettingsLoader(){
      return (

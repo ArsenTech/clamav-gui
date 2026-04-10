@@ -1,9 +1,9 @@
-import { ThreatsTable } from "@/components/data-table/tables/threats";
+import { ThreatsTable } from "@/data-table/tables/threats";
 import { Button } from "@/components/ui/button";
 import { BugOff, LogOut, ShieldAlert, ShieldCheck, Timer, Trash } from "lucide-react";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { GET_THREATS_COLS } from "@/components/data-table/columns/threats";
+import { GET_THREATS_COLS } from "@/data-table/columns/threats";
 import { useMemo, useTransition } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { toast } from "sonner";

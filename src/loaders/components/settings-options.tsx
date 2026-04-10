@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils"
-import { Skeleton } from "../ui/skeleton"
+import { Skeleton } from "../../components/ui/skeleton"
 
 interface Props{
      optionType: "switch" | "input" | "choice",

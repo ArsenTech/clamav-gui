@@ -1,4 +1,4 @@
-import { ThreatsTable } from "@/components/data-table/tables/threats";
+import { ThreatsTable } from "@/data-table/tables/threats";
 import { RotateCcw, RotateCw, Trash2 } from "lucide-react"
 import { IQuarantineData } from "@/lib/types/data";
 import { ButtonGroup } from "@/components/ui/button-group";

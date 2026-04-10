@@ -12,7 +12,7 @@ import { SettingsProps } from "@/lib/types/props";
 import FolderPathForm from "@/components/settings-item/path-form";
 import { useBackendSettings } from "@/hooks/use-settings";
 import { IBackendSettings } from "@/lib/types/settings";
-import FolderPathFormLoader from "@/components/loaders/path-form";
+import FolderPathFormLoader from "@/loaders/components/path-form";
 import { useTransition, useState, useEffect, useMemo } from "react";
 import { toast } from "sonner";
 import SettingsOption from "@/components/settings-item/settings-option";

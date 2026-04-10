@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { TableLoaderProps } from "@/lib/types/props";
-import TableLoader from "@/components/loaders/table";
+import TableLoader from "@/loaders/components/table";
 
 export default function ScanFinishedTableLoader({rows}: TableLoaderProps){
      return (

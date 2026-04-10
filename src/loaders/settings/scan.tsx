@@ -1,8 +1,8 @@
 import { SCAN_SETTINGS_GROUPED } from "@/lib/constants/settings/scan-options";
 import { ScanOptionGroup } from "@/lib/types/enums";
-import FolderPathFormLoader from "@/components/loaders/path-form";
-import SettingsOptionLoader from "@/components/loaders/settings-options";
-import SettingsItemLoader from "@/components/loaders/settings-item";
+import FolderPathFormLoader from "@/loaders/components/path-form";
+import SettingsOptionLoader from "@/loaders/components/settings-options";
+import SettingsItemLoader from "@/loaders/components/settings-item";
 
 export default function ScanSettingsLoader(){
      return (

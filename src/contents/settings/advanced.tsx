@@ -22,7 +22,7 @@ import { getErrorMessage, ObjectEntries } from "@/lib/helpers";
 import { ChoiceOption } from "@/components/settings-item/scan-option";
 import { ActionType, DangerZoneConfState } from "@/lib/types";
 import { isDescKey } from "@/lib/helpers/scan";
-import FolderPathFormLoader from "@/components/loaders/path-form";
+import FolderPathFormLoader from "@/loaders/components/path-form";
 import FolderPathForm from "@/components/settings-item/path-form";
 import { useBackendSettings } from "@/hooks/use-settings";
 import ConfirmationMessage from "@/components/popup/confirm";

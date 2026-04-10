@@ -1,5 +1,5 @@
-import SettingsItemLoader from "@/components/loaders/settings-item"
-import SettingsOptionLoader from "@/components/loaders/settings-options"
+import SettingsItemLoader from "@/loaders/components/settings-item"
+import SettingsOptionLoader from "@/loaders/components/settings-options"
 import { DATE_TIME_FORMATS, THEME_SETTINGS } from "@/lib/constants/settings"
 
 export default function GeneralSettingsLoader(){
