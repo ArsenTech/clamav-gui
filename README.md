@@ -73,19 +73,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - **Multilingual Support** - Use the ClamAV GUI in your native language besides English
 
 ### Planned Improvements
-#### v1.0.4 (Next)
-- [X] Fix the ARM64 build workflow
-- [X] Improve the date returning function
-- [X] Optimize and clean few things
-- [X] Cache some getter functions
-  - [X] Backend Settings
-  - [X] History
-  - [X] Logs
-  - [X] Scheduler
-  - [X] Quarantine
-  - [X] Stats
-  - [X] Others if possible
-#### v1.0.5 (Planned)
+#### v1.0.5 (Next)
 - [ ] GUI Updater
   - [ ] Add a feature to log the updater actions into the history
 - [ ] New Clear History Options
@@ -93,6 +81,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
   - [ ] Clear last 7 days
   - [ ] Clear last 30 days
   - [ ] Clear by date
+- [ ] Test the new Workflow change
 #### v1.0.6 (Planned)
 - [ ] Backend Error Translation
 - [ ] Add a macOS Guide inside the **No ClamAV** Page
