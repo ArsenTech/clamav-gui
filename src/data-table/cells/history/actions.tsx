@@ -40,7 +40,7 @@ export default function ActionsCell({item, setHistoryState}: ActionsCellProps){
                <DropdownMenuContent align="end">
                     <DropdownMenuLabel>{t("heading.actions")}</DropdownMenuLabel>
                     <DropdownMenuSeparator/>
-                    <DropdownMenuItem disabled={!item.logId || !item.category || !item.details} onClick={()=>setHistoryState(prev=>({
+                    <DropdownMenuItem disabled={!item.category || !item.details} onClick={()=>setHistoryState(prev=>({
                          ...prev,
                          showDetails: true,
                          details: item.details

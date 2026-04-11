@@ -40,7 +40,13 @@
           "scheduler-delete": "Usunięto zaplanowane zadanie skanowania",
           "scheduler-trigger": "Uruchomiono zaplanowane zadanie skanowania",
           "file-delete": "Plik usunięty",
-          "file-delete-error": "Nie udało się usunąć pliku"
+          "file-delete-error": "Nie udało się usunąć pliku",
+          "gui-updater-check-error": "",
+          "gui-updater-started": "",
+          "gui-updater-finished": "",
+          "gui-updater-error": "",
+          "gui-updater-updated": "",
+          "gui-updater-needed": ""
      },
      "behavior": {
           "balanced": "Zrównoważony",
@@ -82,6 +88,12 @@
           "scheduler-trigger-error": "Nie udało się uruchomić zaplanowanego zadania: {{task}}",
           "scheduler-trigger": "Zaplanowane zadanie uruchomione ręcznie: {{task}}",
           "file-delete": "Plik został usunięty: {{path}}",
-          "file-delete-error": "Nie udało się usunąć pliku: {{path}} ({{err}})"
+          "file-delete-error": "Nie udało się usunąć pliku: {{path}} ({{err}})",
+          "gui-updater-check-error": "",
+          "gui-updater-started": "",
+          "gui-updater-finished": "",
+          "gui-updater-error": "",
+          "gui-updater-updated": "",
+          "gui-updater-needed": ""
      }
 }

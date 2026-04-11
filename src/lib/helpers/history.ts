@@ -3,7 +3,7 @@ import { HistoryDetails } from "../types";
 import { ScanResult } from "../types/enums";
 
 export function translateDetails(d: HistoryDetails, t: TFunction<"history">) {
-     if (d.details === null) return t(`details.${d.type}`);
+     if (!d.details || d.details===null) return t(`details.${d.type}`);
      switch (d.type) {
           case "real-time-error":
                return t("details.real-time-error", { err: d.details.err });
@@ -43,7 +43,11 @@ export function translateDetails(d: HistoryDetails, t: TFunction<"history">) {
                return t("details.file-delete", { path: d.details.file_path });
           case "file-delete-error":
                return t("details.file-delete-error", { path: d.details.file_path, err: d.details.err });
-          default:
-               return ""
+          case "gui-updater-check-error":
+               return t("details.gui-updater-check-error", {err: d.details.err})
+          case "gui-updater-error":
+               return t("details.gui-updater-error", {err: d.details.err})
+          case "gui-updater-updated":
+               return t("details.gui-updater-updated", {version: d.details.version})
      }
 }

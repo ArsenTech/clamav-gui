@@ -40,7 +40,13 @@
           "scheduler-delete": "Запланированное задание удалено",
           "scheduler-trigger": "Запущено запланированное задание",
           "file-delete": "Файл удален",
-          "file-delete-error": "Удаление файла не удалось"
+          "file-delete-error": "Удаление файла не удалось",
+          "gui-updater-check-error": "Проверка обновления граф․ интерфейса не удалась",
+          "gui-updater-started": "Обновление граф․ интерфейса начато",
+          "gui-updater-finished": "Обновление граф․ интерфейса завершено",
+          "gui-updater-error": "Обновление граф․ интерфейса не удалось",
+          "gui-updater-updated": "Графический интерфейс обновлен",
+          "gui-updater-needed": "Доступно обновление графического интерфейса"
      },
      "behavior": {
           "balanced": "Сбалансированный",
@@ -82,6 +88,12 @@
           "scheduler-trigger-error": "Не удалось запустить запланированное задание: {{task}}",
           "scheduler-trigger": "Запланированное задание запущено вручную: {{task}}",
           "file-delete": "Файл удален: {{path}}",
-          "file-delete-error": "Не удалось удалить файл: {{path}} ({{err}})"
+          "file-delete-error": "Не удалось удалить файл: {{path}} ({{err}})",
+          "gui-updater-check-error": "Не удалось проверить наличие обновлений: {{err}}",
+          "gui-updater-started": "В данный момент ClamAV GUI обновляется до новой версии",
+          "gui-updater-finished": "ClamAV GUI успешно обновлен до новой версии",
+          "gui-updater-error": "Не удалось обновить графический интерфейс: {{err}}",
+          "gui-updater-updated": "Вы используете последнюю версию ClamAV GUI: v{{version}}",
+          "gui-updater-needed": "Доступна новая версия ClamAV GUI"
      }
 }

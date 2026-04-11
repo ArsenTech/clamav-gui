@@ -49,6 +49,9 @@ export interface IDetailsData {
      "scheduler-trigger": { task_name: string };
      "file-delete": { file_path: string };
      "file-delete-error": { err: string; file_path: string };
+     "gui-updater-check-error": { err: string },
+     "gui-updater-error": { err: string }
+     "gui-updater-updated": { version: string }
 }
 export type HistoryDetails = {
      [K in keyof IDetailsData]: {

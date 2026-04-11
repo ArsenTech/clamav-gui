@@ -8,6 +8,8 @@ import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { getErrorMessage } from "@/lib/helpers";
+import { invoke } from "@tauri-apps/api/core";
+import { getVersion } from "@tauri-apps/api/app";
 
 export function useGuiUpdater(){
      const [isChecking, startChecking] = useTransition();
@@ -25,10 +27,14 @@ export function useGuiUpdater(){
                try {
                     const update = await check();
                     if(update){
+                         await invoke("append_updater_needed_log")
                          setUpdaterState({
                               status: GuiUpdaterStatus.NeedsUpdate,
                          })
                     } else {
+                         await invoke("append_updater_updated_log",{
+                              version: await getVersion()
+                         })
                          setUpdaterState({
                               status: GuiUpdaterStatus.Updated,
                          })
@@ -36,6 +42,10 @@ export function useGuiUpdater(){
                } catch (err){
                     toast.error(t("gui.failed-check.main"),{
                          description: getErrorMessage(err)
+                    })
+                    await invoke("append_updater_error",{
+                         error: getErrorMessage(err),
+                         errorType: "check-error"
                     })
                     setUpdaterState({
                          status: GuiUpdaterStatus.CheckError,
@@ -58,10 +68,12 @@ export function useGuiUpdater(){
                          await update.downloadAndInstall((event) => {
                               switch (event.event) {
                                    case 'Started':
-                                        contentLength = event.data.contentLength || 0;
-                                        setUpdaterState({
-                                             total: contentLength,
-                                             downloaded
+                                        invoke("append_updater_start_log").then(()=>{
+                                             contentLength = event.data.contentLength || 0;
+                                             setUpdaterState({
+                                                  total: contentLength,
+                                                  downloaded
+                                             })
                                         })
                                         break;
                                    case 'Progress':
@@ -72,8 +84,10 @@ export function useGuiUpdater(){
                                         })
                                         break;
                                    case 'Finished':
-                                        setUpdaterState({
-                                             status: GuiUpdaterStatus.Completed
+                                        invoke("append_updater_finish_log").then(()=>{
+                                             setUpdaterState({
+                                                  status: GuiUpdaterStatus.Completed
+                                             })
                                         })
                                         break;
                               }
@@ -82,6 +96,10 @@ export function useGuiUpdater(){
                } catch (err){
                     toast.error(t("gui.failed-update.main"),{
                          description: getErrorMessage(err)
+                    })
+                    await invoke("append_updater_error",{
+                         error: getErrorMessage(err),
+                         errorType: "update-error"
                     })
                     setUpdaterState({
                          status: GuiUpdaterStatus.UpdateError,

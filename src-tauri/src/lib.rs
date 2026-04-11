@@ -23,6 +23,7 @@ use crate::{
         stats::get_stats,
         stop_real_time_scan,
         update::{get_clamav_version, update_definitions},
+        gui_updater::{append_updater_error,append_updater_finish_log,append_updater_start_log,append_updater_updated_log,append_updater_needed_log}
     },
     helpers::{
         flags::parse_startup_flags,
@@ -90,7 +91,12 @@ pub fn run() {
         stop_real_time_scan,
         set_language,
         rebuild_tray,
-        update_tray_icon
+        update_tray_icon,
+        append_updater_error,
+        append_updater_finish_log,
+        append_updater_start_log,
+        append_updater_updated_log,
+        append_updater_needed_log
     ]);
 
     tauri::Builder::default()

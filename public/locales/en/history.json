@@ -40,7 +40,13 @@
           "scheduler-delete": "Scheduled Scan Job Deleted",
           "scheduler-trigger": "Scheduled Scan Job Triggered",
           "file-delete": "File Deleted",
-          "file-delete-error": "File Deletion Failed"
+          "file-delete-error": "File Deletion Failed",
+          "gui-updater-check-error": "GUI update check failed",
+          "gui-updater-started": "GUI update has been started",
+          "gui-updater-finished": "GUI update has been finished",
+          "gui-updater-error": "GUI update failed",
+          "gui-updater-updated": "GUI is up to date",
+          "gui-updater-needed": "GUI Update Available"
      },
      "behavior": {
           "balanced": "Balanced",
@@ -82,6 +88,12 @@
           "scheduler-trigger-error": "Failed to run scheduled task: {{task}}",
           "scheduler-trigger": "Scheduled job triggered manually: {{task}}",
           "file-delete": "The file was deleted: {{path}}",
-          "file-delete-error": "Failed to delete file: {{path}} ({{err}})"
+          "file-delete-error": "Failed to delete file: {{path}} ({{err}})",
+          "gui-updater-check-error": "Failed to check for updates: {{err}}",
+          "gui-updater-started": "The ClamAV GUI is now updating to the new version",
+          "gui-updater-finished": "The ClamAV GUI successfully updated to the new version",
+          "gui-updater-error": "Failed to update the GUI: {{err}}",
+          "gui-updater-updated": "You are using the latest version of the ClamAV GUI: v{{version}}",
+          "gui-updater-needed": "The new version of the ClamAV GUI is available"
      }
 }

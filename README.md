@@ -74,14 +74,14 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 
 ### Planned Improvements
 #### v1.0.5 (Next)
-- [ ] GUI Updater
-  - [ ] Add a feature to log the updater actions into the history
 - [ ] New Clear History Options
   - [ ] Clear last 24 hours
   - [ ] Clear last 7 days
   - [ ] Clear last 30 days
   - [ ] Clear by date
 - [ ] Test the new Workflow change
+- [X] GUI Updater
+  - [X] Add a feature to log the updater actions into the history
 - [X] Replace alert boxes from `Dialog` and `Drawer` components into `AlertDialog` component from ShadCN UI
 - [X] Convert each data table cell into a reusable component
 #### v1.0.6 (Planned)

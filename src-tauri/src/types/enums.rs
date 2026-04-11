@@ -50,13 +50,14 @@ pub enum HistoryStatus {
 }
 
 #[derive(Serialize, Deserialize, Type, Debug, Clone, Copy, PartialEq, Eq, Hash)]
-#[serde(rename_all = "lowercase")]
+#[serde(rename_all = "kebab-case")]
 pub enum LogCategory {
     Scan,
     Update,
     Quarantine,
     Realtime,
     Scheduler,
+    GuiUpdater
 }
 impl LogCategory {
     pub fn as_str(&self) -> &'static str {
@@ -66,6 +67,7 @@ impl LogCategory {
             LogCategory::Quarantine => "quarantine",
             LogCategory::Realtime => "realtime",
             LogCategory::Scheduler => "scheduler",
+            LogCategory::GuiUpdater => "gui-updater"
         }
     }
 }
@@ -139,7 +141,13 @@ pub enum HistoryType{
     SchedulerDelete,
     SchedulerTrigger,
     FileDelete,
-    FileDeleteError
+    FileDeleteError,
+    GuiUpdaterCheckError,
+    GuiUpdaterStarted,
+    GuiUpdaterFinished,
+    GuiUpdaterError,
+    GuiUpdaterUpdated,
+    GuiUpdaterNeeded
 }
 
 #[derive(Debug, Serialize, Deserialize, Type)]
@@ -161,7 +169,13 @@ pub enum HistoryDetails{
     SchedulerTrigger {task_name: String},
     SchedulerTriggerError {task_name: String},
     FileDelete {file_path: String},
-    FileDeleteError {err: String, file_path: String}
+    FileDeleteError {err: String, file_path: String},
+    GuiUpdaterCheckError {err: String},
+    GuiUpdaterStarted,
+    GuiUpdaterFinished,
+    GuiUpdaterError {err: String},
+    GuiUpdaterUpdated {version: String},
+    GuiUpdaterNeeded
 }
 
 #[derive(Serialize, Deserialize, Type, Debug, PartialEq, Eq, Hash, Copy, Clone)]
@@ -177,4 +191,11 @@ impl SettingKeyArray {
             SettingKeyArray::MonitoringPaths => "monitoringPaths"
         }
     }
+}
+
+#[derive(Serialize, Deserialize, Type, Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[serde(rename_all = "kebab-case")]
+pub enum AppendUpdaterErrorType{
+    UpdateError,
+    CheckError
 }

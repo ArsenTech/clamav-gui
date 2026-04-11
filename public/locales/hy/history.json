@@ -40,7 +40,13 @@
           "scheduler-delete": "Պլանավորված աշխատանքը ջնջվել է",
           "scheduler-trigger": "Պլանավորված աշխատանքը գործարկվել է",
           "file-delete": "Ֆայլը ջնջված է",
-          "file-delete-error": "Ֆայլի ջնջումը չստացվեց"
+          "file-delete-error": "Ֆայլի ջնջումը չստացվեց",
+          "gui-updater-check-error": "Գրաֆ․ ինտերֆեյսի թարմացման ստուգումը չստացվեց",
+          "gui-updater-started": "Գրաֆ․ ինտերֆեյսի թարմացումը սկսվել է",
+          "gui-updater-finished": "Գրաֆ․ ինտերֆեյսի թարմացումն ավարտվել է",
+          "gui-updater-error": "Գրաֆ․ ինտերֆեյս թարմացումը չստացվեց",
+          "gui-updater-updated": "Գրաֆ․ ինտերֆեյսը թարմացված է",
+          "gui-updater-needed": "Գրաֆ․ ինտերֆեյսի թարմացումը հասանելի է"
      },
      "behavior": {
           "balanced": "Հավասարակշռված",
@@ -82,6 +88,12 @@
           "scheduler-trigger-error": "Չհաջողվեց կատարել պլանավորված առաջադրանքը՝ {{task}}",
           "scheduler-trigger": "Պլանավորված աշխատանքը գործարկվեց՝ {{task}}",
           "file-delete": "Ֆայլը ջնջվել է՝ {{path}}",
-          "file-delete-error": "Չհաջողվեց ջնջել ֆայլը՝ {{path}} ({{err}})"
+          "file-delete-error": "Չհաջողվեց ջնջել ֆայլը՝ {{path}} ({{err}})",
+          "gui-updater-check-error": "Չհաջողվեց ստուգել թարմացումները՝ {{err}}",
+          "gui-updater-started": "ClamAV GUI-ն այժմ թարմացվում է նոր տարբերակով",
+          "gui-updater-finished": "ClamAV GUI-ն հաջողությամբ թարմացվել է նոր տարբերակով",
+          "gui-updater-error": "Չհաջողվեց թարմացնել ClamAV GUI-ն՝ {{err}}",
+          "gui-updater-updated": "Դուք օգտագործում եք ClamAV GUI-ի նորագույն տարբերակը՝ v{{version}}",
+          "gui-updater-needed": "ClamAV GUI-ի նոր տարբերակը հասանելի է"
      }
 }

@@ -5,12 +5,17 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 ## [1.0.5] - Unreleased
+### Added
+- Feature to log the GUI updater actions into the history
 ### Changed
 - Converted each data table cell into a reusable component
 - Replaced alert boxes from `Dialog` and `Drawer` components into `AlertDialog` component from ShadCN UI
 ### Improved
 - **Caching** - Cached the app name with app version into the `getAppDetails()` function
 - **The Sidebar Design** - Only icons will show if it's collapsed
+### Fixed
+- The History Details action greying out bug
+- The bug of showing nothing on the Device Details stat after caching
 
 ## [1.0.4] - 2026-04-10
 ### Added Languages

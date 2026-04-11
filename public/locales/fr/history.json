@@ -40,7 +40,13 @@
           "scheduler-delete": "Tâche d'analyse planifiée supprimée",
           "scheduler-trigger": "Tâche d'analyse planifiée déclenchée",
           "file-delete": "Fichier supprimé",
-          "file-delete-error": "Échec de la suppression du fichier"
+          "file-delete-error": "Échec de la suppression du fichier",
+          "gui-updater-check-error": "",
+          "gui-updater-started": "",
+          "gui-updater-finished": "",
+          "gui-updater-error": "",
+          "gui-updater-updated": "",
+          "gui-updater-needed": ""
      },
      "behavior": {
           "balanced": "Équilibré",
@@ -82,6 +88,12 @@
           "scheduler-trigger-error": "Échec de l'exécution de la tâche planifiée : {{task}}",
           "scheduler-trigger": "Tâche planifiée déclenchée manuellement : {{task}}",
           "file-delete": "Le fichier a été supprimé : {{path}}",
-          "file-delete-error": "Échec de la suppression du fichier : {{path}} ({{err}})"
+          "file-delete-error": "Échec de la suppression du fichier : {{path}} ({{err}})",
+          "gui-updater-check-error": "",
+          "gui-updater-started": "",
+          "gui-updater-finished": "",
+          "gui-updater-error": "",
+          "gui-updater-updated": "",
+          "gui-updater-needed": ""
      }
 }
