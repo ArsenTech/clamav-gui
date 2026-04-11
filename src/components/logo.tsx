@@ -3,19 +3,20 @@ import { useMemo } from "react";
 
 interface Props{
      width: number,
-     height: number
+     height: number,
+     state?: "collapsed" | "expanded"
 }
-export default function Logo({width, height}: Props){
+export default function Logo({width, height, state="expanded"}: Props){
      const {resolvedTheme, color} = useTheme();
      const imgPath = useMemo(()=>{
           const isDark = resolvedTheme==="dark"
-          return `/logo-${color}${isDark ? "-dark" : ""}.webp`.trim()
-     },[resolvedTheme, color])
+          return state==="collapsed" ? `/icons/${color}.webp` : `/logo-${color}${isDark ? "-dark" : ""}.webp`.trim()
+     },[resolvedTheme, color, state])
      return (
           <img
                src={imgPath}
                alt="ClamAV GUI"
-               width={width}
+               width={state==="collapsed" ? height : width}
                height={height}
                className="object-contain"
           />

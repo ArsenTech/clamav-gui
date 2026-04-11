@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Replaced alert boxes from `Dialog` and `Drawer` components into `AlertDialog` component from ShadCN UI
 ### Improved
 - **Caching** - Cached the app name with app version into the `getAppDetails()` function
+- **The Sidebar Design** - Only icons will show if it's collapsed
 
 ## [1.0.4] - 2026-04-10
 ### Added Languages
