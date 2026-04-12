@@ -106,12 +106,15 @@ impl DayOfTheWeek {
 }
 
 #[derive(Serialize, Deserialize, Type, Debug, Clone, Copy, PartialEq, Eq, Hash)]
-#[serde(rename_all = "lowercase")]
+#[serde(rename_all = "kebab-case")]
 pub enum ClearHistoryMode {
     All,
     Acknowledged,
     Error,
-    Warning
+    Warning,
+    Last24Hours,
+    Last7Days,
+    Last30Days,
 }
 
 #[derive(Serialize, Deserialize, Type, Debug, PartialEq, Eq, Hash, Copy, Clone)]

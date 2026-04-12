@@ -94,3 +94,18 @@ pub fn clear_by_status(
 
     Ok(())
 }
+
+fn parse_date_from_path(path: &std::path::PathBuf) -> Option<chrono::NaiveDate> {
+    let stem = path.file_stem()?.to_str()?;
+    chrono::NaiveDate::parse_from_str(stem, "%Y-%m-%d").ok()
+}
+
+pub fn clear_by_days(path: &PathBuf, days: i64) -> Result<(), String>{
+    if let Some(file_date) = parse_date_from_path(path) {
+        let cutoff = (chrono::Utc::now() - chrono::Duration::days(days)).date_naive();
+        if file_date >= cutoff {
+            std::fs::remove_file(path).map_err(|e| e.to_string())?;
+        }
+    }
+    Ok(())
+}

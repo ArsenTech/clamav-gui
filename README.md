@@ -74,10 +74,13 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 
 ### Planned Improvements
 #### v1.0.5 (Next)
+- [ ] Translate new parts (on those JSON translations which value is `""`) on
+  - 🇫🇷 French
+  - 🇵🇱 Polish
 - [ ] New Clear History Options
-  - [ ] Clear last 24 hours
-  - [ ] Clear last 7 days
-  - [ ] Clear last 30 days
+  - [X] Clear last 24 hours
+  - [X] Clear last 7 days
+  - [X] Clear last 30 days
   - [ ] Clear by date
 - [ ] Test the new Workflow change
 - [X] GUI Updater

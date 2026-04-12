@@ -10,6 +10,9 @@
           "acknowledged": "Effacer les événements traités",
           "errors": "Effacer les erreurs",
           "warnings": "Effacer les avertissements",
+          "last-24-hours": "",
+          "last-7-days": "",
+          "last-30-days": "",
           "loading": "Effacement en cours..."
      },
      "export": {
@@ -22,7 +25,10 @@
           "all": "Historique effacé !",
           "acknowledged": "Entrées traitées effacées !",
           "error": "Toutes les erreurs effacées !",
-          "warning": "Tous les avertissements effacés !"
+          "warning": "Tous les avertissements effacés !",
+          "last24-hours": "",
+          "last7-days": "",
+          "last30-days": ""
      },
      "events": {
           "real-time-error": "Échec de l'analyse en temps réel",

@@ -10,6 +10,9 @@
           "acknowledged": "Wyczyść potwierdzone",
           "errors": "Wyczyść błędy",
           "warnings": "Wyczyść ostrzeżenia",
+          "last-24-hours": "",
+          "last-7-days": "",
+          "last-30-days": "",
           "loading": "Czyszczenie..."
      },
      "export": {
@@ -22,7 +25,10 @@
           "all": "Historia została wyczyszczona!",
           "acknowledged": "Potwierdzone wpisy zostały wyczyszczone!",
           "error": "Wszystkie błędy zostały wyczyszczone!",
-          "warning": "Wszystkie ostrzeżenia zostały wyczyszczone!"
+          "warning": "Wszystkie ostrzeżenia zostały wyczyszczone!",
+          "last24-hours": "",
+          "last7-days": "",
+          "last30-days": ""
      },
      "events": {
           "real-time-error": "Błąd skanowania w czasie rzeczywistym",

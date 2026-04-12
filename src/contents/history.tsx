@@ -11,7 +11,7 @@ import { toast } from "sonner";
 import { save } from "@tauri-apps/plugin-dialog";
 import { exportCSV, exportJSON } from "@/lib/helpers/fs";
 import Popup from "@/components/popup";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { IHistoryPageState } from "@/lib/types/states";
 import { INITIAL_HISTORY_STATE } from "@/lib/constants/states";
 import { useSettings } from "@/context/settings";
@@ -22,6 +22,7 @@ import ConfirmationMessage from "@/components/popup/confirm";
 import { HistoryConfirmationState } from "@/lib/types";
 import { getErrorMessage } from "@/lib/helpers";
 import { fetchHistoryData } from "@/data/history";
+import { getTimeBasedCutoff } from "@/lib/helpers/history";
 
 export default function HistoryContent(){
      const {settings} = useSettings();
@@ -43,9 +44,12 @@ export default function HistoryContent(){
           startClearTransition(async()=>{
                try {
                     await invoke("clear_history",{mode});
+                    const cutoff = getTimeBasedCutoff(mode);
                     setHistoryState(prev=>({
                          ...prev,
-                         data: mode==="all" ? [] : prev.data.filter(val=>val.status!==mode)
+                         data: mode==="all" ? [] :
+                         cutoff !== null ? prev.data.filter(val => new Date(val.timestamp).getTime() < cutoff) :
+                         prev.data.filter(val=>val.status!==mode)
                     }))
                     toast.success(t(`clear-messages.${mode}`))
                } catch (err){
@@ -78,14 +82,20 @@ export default function HistoryContent(){
                });
           }
      }
-     const CLEAR_ACTIONS = {
-          "clear-all": () => clearHistory(HistoryClearType.All),
-          "clear-acknowledged": () => clearHistory(HistoryClearType.Acknowledged),
-          "clear-errors": () => clearHistory(HistoryClearType.Error),
-          "clear-warnings": () => clearHistory(HistoryClearType.Warning),
-     } as const
+     const CLEAR_ACTIONS: Record<HistoryConfirmationState,HistoryClearType> = {
+          "clear-all": HistoryClearType.All,
+          "clear-acknowledged": HistoryClearType.Acknowledged,
+          "clear-errors": HistoryClearType.Error,
+          "clear-warnings": HistoryClearType.Warning,
+          "clear-last-24h": HistoryClearType.Last24Hours,
+          "clear-last-7d": HistoryClearType.Last7Days,
+          "clear-last-30d": HistoryClearType.Last30Days
+     }
      const handleConfirm = () => {
-          if(popupState) CLEAR_ACTIONS[popupState]()
+          if(popupState) {
+               const action = CLEAR_ACTIONS[popupState];
+               clearHistory(action)
+          }
      }
      useEffect(()=>{
           fetchData()
@@ -120,6 +130,7 @@ export default function HistoryContent(){
                                         <DropdownMenuItem onClick={()=>setState({popupState: "clear-all"})} disabled={isEmpty}>
                                              {t("clear.all")}
                                         </DropdownMenuItem>
+                                        <DropdownMenuSeparator/>
                                         <DropdownMenuItem onClick={()=>setState({popupState: "clear-acknowledged"})} disabled={isEmpty}>
                                              {t("clear.acknowledged")}
                                         </DropdownMenuItem>
@@ -128,6 +139,16 @@ export default function HistoryContent(){
                                         </DropdownMenuItem>
                                         <DropdownMenuItem onClick={()=>setState({popupState: "clear-warnings"})} disabled={isEmpty} >
                                              {t("clear.warnings")}
+                                        </DropdownMenuItem>
+                                        <DropdownMenuSeparator/>
+                                        <DropdownMenuItem onClick={()=>setState({popupState: "clear-last-24h"})} disabled={isEmpty}>
+                                             {t("clear.last-24-hours")}
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem onClick={()=>setState({popupState: "clear-last-7d"})} disabled={isEmpty}>
+                                             {t("clear.last-7-days")}
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem onClick={()=>setState({popupState: "clear-last-30d"})} disabled={isEmpty} >
+                                             {t("clear.last-30-days")}
                                         </DropdownMenuItem>
                                    </DropdownMenuContent>
                               </DropdownMenu>

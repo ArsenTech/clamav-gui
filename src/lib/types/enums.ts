@@ -95,7 +95,10 @@ export enum HistoryClearType {
      All = "all",
      Acknowledged = "acknowledged",
      Error = "error",
-     Warning = "warning"
+     Warning = "warning",
+     Last24Hours = "last24-hours",
+     Last7Days = "last7-days",
+     Last30Days = "last30-days",
 }
 export enum HistoryType {
      RealTimeError = "real-time-error",

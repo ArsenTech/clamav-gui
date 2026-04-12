@@ -3,8 +3,7 @@ use tauri::command;
 
 use crate::{
     helpers::history::{
-        history_dir,
-        clear_by_status
+        clear_by_days, clear_by_status, history_dir
     },
     types::{
         enums::{ClearHistoryMode, HistoryStatus},
@@ -111,6 +110,15 @@ pub fn clear_history(app: tauri::AppHandle, mode: ClearHistoryMode) -> Result<()
             }
             ClearHistoryMode::Warning => {
                 clear_by_status(&path, |i| i.status != HistoryStatus::Warning)?;
+            },
+            ClearHistoryMode::Last24Hours => {
+                clear_by_days(&path, 1)?;
+            }
+            ClearHistoryMode::Last7Days => {
+                clear_by_days(&path, 7)?;
+            }
+            ClearHistoryMode::Last30Days => {
+                clear_by_days(&path, 30)?;
             }
         }
     }

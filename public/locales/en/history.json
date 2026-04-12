@@ -10,6 +10,9 @@
           "acknowledged": "Clear Acknowledged",
           "errors": "Clear Errors",
           "warnings": "Clear Warnings",
+          "last-24-hours": "Clear Last 24 hours",
+          "last-7-days": "Clear Last 7 days",
+          "last-30-days": "Clear Last 30 days",
           "loading": "Clearing..."
      },
      "export": {
@@ -22,7 +25,10 @@
           "all": "History Cleared!",
           "acknowledged": "Acknowledged Entries Cleared!",
           "error": "All Errors Cleared!",
-          "warning": "All Warnings Cleared!"
+          "warning": "All Warnings Cleared!",
+          "last24-hours": "Entries in last 24 hours Cleared!",
+          "last7-days": "Entries in last 7 days Cleared!",
+          "last30-days": "Entries in last 30 days Cleared!"
      },
      "events": {
           "real-time-error": "Real-time Scan Failed",

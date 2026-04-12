@@ -28,6 +28,18 @@
           "title": "Clear all warnings?",
           "desc": "This will remove all warnings in the history table. Rest of these events will remain."
      },
+     "clear-last-24h": {
+          "title": "Clear all entries in last 24 hours?",
+          "desc": "This will remove those entries, which have been added 24 hours ago. Rest of these events will remain."
+     },
+     "clear-last-7d": {
+          "title": "Clear all entries in last 7 days",
+          "desc": "This will remove those entries, which have been added 7 days ago. Rest of these events will remain."
+     },
+     "clear-last-30d": {
+          "title": "Clear all entries in last 30 days?",
+          "desc": "This will remove those entries, which have been added 30 days ago. Rest of these events will remain."
+     },
      "restore": {
           "title": "This will restore the file from quarantine.",
           "desc": "Continue?"

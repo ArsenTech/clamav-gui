@@ -83,12 +83,15 @@ export default function AdvancedSettings({scanProfile}: SettingsProps){
                }
           })
      }
-     const CLEAR_ACTIONS = {
-          "delete-settings": ()=>handleDangerZoneAction("delete"),
-          "restore-defaults": ()=>handleDangerZoneAction("restore")
-     } as const
+     const CLEAR_ACTIONS: Record<DangerZoneConfState,ActionType> = {
+          "delete-settings": "delete",
+          "restore-defaults": "restore"
+     }
      const handleConfirm = () => {
-          if(popupState) CLEAR_ACTIONS[popupState]()
+          if(popupState) {
+               const action = CLEAR_ACTIONS[popupState];
+               handleDangerZoneAction(action)
+          }
      }
      const {t: scanTxt} = useTranslation("scan-settings")
      const {t} = useTranslation("settings")

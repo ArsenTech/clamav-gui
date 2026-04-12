@@ -1,6 +1,6 @@
 import { TFunction } from "i18next";
 import { HistoryDetails } from "../types";
-import { ScanResult } from "../types/enums";
+import { HistoryClearType, ScanResult } from "../types/enums";
 
 export function translateDetails(d: HistoryDetails, t: TFunction<"history">) {
      if (!d.details || d.details===null) return t(`details.${d.type}`);
@@ -51,3 +51,11 @@ export function translateDetails(d: HistoryDetails, t: TFunction<"history">) {
                return t("details.gui-updater-updated", {version: d.details.version})
      }
 }
+
+export const getTimeBasedCutoff = (mode: HistoryClearType): number | null => {
+    const day = 24 * 60 * 60 * 1000;
+    if (mode === HistoryClearType.Last24Hours) return Date.now() - day;
+    if (mode === HistoryClearType.Last7Days)  return Date.now() - 7 * day;
+    if (mode === HistoryClearType.Last30Days) return Date.now() - 30 * day;
+    return null;
+};

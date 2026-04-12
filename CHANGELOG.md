@@ -7,6 +7,10 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [1.0.5] - Unreleased
 ### Added
 - Feature to log the GUI updater actions into the history
+- New Clear History Options
+  - Clear last 24 hours
+  - Clear last 7 days
+  - Clear last 30 days
 ### Changed
 - Converted each data table cell into a reusable component
 - Replaced alert boxes from `Dialog` and `Drawer` components into `AlertDialog` component from ShadCN UI

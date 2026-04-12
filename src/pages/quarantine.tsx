@@ -70,12 +70,12 @@ export default function QuarantinePage(){
                });
           }
      }
-     const CLEAR_ACTIONS = {
+     const CLEAR_ACTIONS: Record<QuarantineConfirmationState,()=>void> = {
           "bulk-restore": () => bulkAction("restore"),
           "bulk-delete": () => bulkAction("delete"),
           "restore": () => quarantineAction("restore"),
           "delete": () => quarantineAction("delete"),
-     } as const
+     }
      const handleConfirm = () => {
           if(popupState) CLEAR_ACTIONS[popupState]()
      }

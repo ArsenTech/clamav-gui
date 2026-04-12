@@ -28,6 +28,18 @@
           "title": "Effacer tous les avertissements ?",
           "desc": "Cela supprimera tous les avertissements dans le tableau d'historique. Le reste de ces événements restera."
      },
+     "clear-last-24h": {
+          "title": "",
+          "desc": ""
+     },
+     "clear-last-7d": {
+          "title": "",
+          "desc": ""
+     },
+     "clear-last-30d": {
+          "title": "",
+          "desc": ""
+     },
      "restore": {
           "title": "Cette opération restaurera les fichiers présents en quarantaine.",
           "desc": "Continuer ?"
