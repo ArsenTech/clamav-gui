@@ -32,15 +32,18 @@
      },
      "heading": {
           "threats": {
+               "id": "Threat ID",
                "threat": "Threat",
                "path": "Path",
                "detected-at": "Detected At"
           },
           "quarantine": {
+               "id": "Infected threat ID",
                "quarantined-at": "Quarantined At",
                "size": "Size"
           },
           "history": {
+               "id": "Entry ID",
                "timestamp": "Timestamp",
                "event": "Event",
                "details": "Details"

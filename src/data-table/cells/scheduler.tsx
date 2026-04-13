@@ -1,14 +1,25 @@
-import { ScanType } from "@/lib/types/enums";
+import { CalendarSearch } from "lucide-react";
+import { IntervalType } from "@/lib/types/data";
 import { Badge } from "@/components/ui/badge";
-import { SCAN_TYPES } from "@/lib/constants";
 import { useSettings } from "@/context/settings";
 import { useTranslation } from "react-i18next";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { SCAN_TYPES } from "@/lib/constants";
+import { ScanType } from "@/lib/types/enums";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@radix-ui/react-tooltip";
 
-interface ScanTypeCellProps{
-     scanType: ScanType
+export function IntervalCell({type}: {type: IntervalType}){
+     const {t} = useTranslation("table");
+     const {settings} = useSettings();
+     return (
+          <Badge>
+               {settings.badgeVisibility==="icon-text" && (
+                    <CalendarSearch />
+               )}
+               {t(`interval.${type}`)}
+          </Badge>
+     )
 }
-export default function ScanTypeCell({scanType}: ScanTypeCellProps){
+export function ScanTypeCell({scanType}: {scanType: ScanType}){
      const scanInfo = SCAN_TYPES.find(item=>item.type===scanType);
      const {t} = useTranslation("scan");
      const {settings} = useSettings();

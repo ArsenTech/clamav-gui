@@ -1,11 +1,9 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { IQuarantineData } from "@/lib/types/data";
 import { IQuarantineState } from "@/lib/types/states";
-import { useSettings } from "@/context/settings";
-import { useTranslation } from "react-i18next";
-import { formatBytes } from "@/lib/helpers/formating";
-import SortableHeader from "../cells/sortable-header";
-import ActionsCell from "../cells/quarantine/actions";
+import ActionsCell from "../actions/quarantine";
+import { FilePathHeader, IdHeader, QuarantineDateHeader, SizeHeader, ThreatNameHeader } from "../headers/quarantine";
+import { DateCell, SizeCell } from "../cells";
 
 export const GET_QUARANTINE_COLS = (
      setState: (overrides: Partial<IQuarantineState>) => void,
@@ -14,54 +12,21 @@ export const GET_QUARANTINE_COLS = (
      const baseCols: ColumnDef<IQuarantineData>[] = [
           {
                accessorKey: "threat_name",
-               header: ({column}) => {
-                    const {t} = useTranslation("table")
-                    return (
-                         <SortableHeader
-                              column={column}
-                              title={t("heading.threats.threat")}
-                         />
-                    )
-               }
+               header: ({column}) => <ThreatNameHeader column={column}/>
           },
           {
                accessorKey: "file_path",
-               header: ()=>{
-                    const {t} = useTranslation("table");
-                    return t("heading.threats.path")
-               }
+               header: () => <FilePathHeader/>
           },
           {
                accessorKey: "quarantined_at",
-               header: ({column}) => {
-                    const {t} = useTranslation("table")
-                    return (
-                         <SortableHeader
-                              column={column}
-                              title={t("heading.quarantine.quarantined-at")}
-                         />
-                    )
-               },
-               cell: ({getValue}) => {
-                    const {formatDate} = useSettings();
-                    return formatDate(getValue<string>())
-               }
+               header: ({column}) => <QuarantineDateHeader column={column}/>,
+               cell: ({getValue}) => <DateCell value={getValue<string>()}/>
           },
           {
                accessorKey: "size",
-               header: ({column}) => {
-                    const {t} = useTranslation("table")
-                    return (
-                         <SortableHeader
-                              column={column}
-                              title={t("heading.quarantine.size")}
-                         />
-                    )
-               },
-               cell: ({getValue}) => {
-                    const {t} = useTranslation()
-                    return formatBytes(getValue<number>(),t)
-               }
+               header: ({column}) => <SizeHeader column={column}/>,
+               cell: ({getValue}) => <SizeCell value={getValue<number>()}/>
           },
           {
                id: "actions",
@@ -76,7 +41,7 @@ export const GET_QUARANTINE_COLS = (
      return isDevMode ? [
           {
                accessorKey: "id",
-               header: "Threat ID"
+               header: () => <IdHeader/>
           },
           ...baseCols
      ] : baseCols;

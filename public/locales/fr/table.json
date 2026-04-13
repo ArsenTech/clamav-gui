@@ -32,15 +32,18 @@
      },
      "heading": {
           "threats": {
+               "id": "",
                "threat": "Menace",
                "path": "Chemin",
                "detected-at": "Date de détection"
           },
           "quarantine": {
+               "id": "",
                "quarantined-at": "Date de mise en quarantaine",
                "size": "Taille"
           },
           "history": {
+               "id": "",
                "timestamp": "Horodatage",
                "event": "Événement",
                "details": "Détails"

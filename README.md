@@ -86,7 +86,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - [X] GUI Updater
   - [X] Add a feature to log the updater actions into the history
 - [X] Replace alert boxes from `Dialog` and `Drawer` components into `AlertDialog` component from ShadCN UI
-- [X] Convert each data table cell into a reusable component
+- [X] Convert each data table cell into a reusable component + Organize it
 #### v1.0.6 (Planned)
 - [ ] Backend Error Translation
 - [ ] Add a macOS Guide inside the **No ClamAV** Page

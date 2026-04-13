@@ -2,70 +2,37 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ScanType } from "@/lib/types/enums";
 import { IntervalType, ISchedulerData } from "@/lib/types/data";
 import { ISchedulerState } from "@/lib/types/states";
-import { useSettings } from "@/context/settings";
-import { useTranslation } from "react-i18next";
-import SortableHeader from "../cells/sortable-header";
-import IntervalCell from "../cells/scheduler/interval";
-import ScanTypeCell from "../cells/scheduler/scan-type";
-import ActionsCell from "../cells/scheduler/actions";
+import {IntervalCell, ScanTypeCell} from "../cells/scheduler";
+import ActionsCell from "../actions/scheduler";
+import { IntervalHeader, JobNameHeader, LastScanHeader, NextScanHeader, ScanTypeHeader } from "../headers/scheduler";
+import { DateCell } from "../cells";
 
 export const GET_SCHEDULER_COLS = (
      setState:  (overrides: Partial<ISchedulerState>) => void,
 ): ColumnDef<ISchedulerData<"state">>[] => [
      {
           accessorKey: "id",
-          header: ()=>{
-               const {t} = useTranslation("table");
-               return t("heading.scheduler.job-name")
-          },
+          header: () => <JobNameHeader/>,
      },
      {
           accessorKey: "interval",
-          header: ()=>{
-               const {t} = useTranslation("table");
-               return t("heading.scheduler.interval")
-          },
+          header: () => <IntervalHeader/>,
           cell: ({getValue}) => <IntervalCell type={getValue<IntervalType>()}/>
      },
      {
           accessorKey: "scanType",
-          header: ()=>{
-               const {t} = useTranslation("table");
-               return t("heading.scheduler.scan-type")
-          },
+          header: () => <ScanTypeHeader/>,
           cell: ({getValue}) => <ScanTypeCell scanType={getValue<ScanType>()}/>
      },
      {
           accessorKey: "lastScan",
-          header: ({column}) => {
-               const {t} = useTranslation("table");
-               return (
-                    <SortableHeader
-                         column={column}
-                         title={t("heading.scheduler.last-scan")}
-                    />
-               )
-          },
-          cell: ({getValue}) => {
-               const {formatDate} = useSettings();
-               return formatDate(getValue<string>())
-          }
+          header: ({column}) => <LastScanHeader column={column}/>,
+          cell: ({getValue}) => <DateCell value={getValue<string>()}/>
      },
      {
           accessorKey: "nextScan",
-          header: ({column}) => {
-               const {t} = useTranslation("table");
-               return (
-                    <SortableHeader
-                         column={column}
-                         title={t("heading.scheduler.next-scan")}
-                    />
-               )
-          },
-          cell: ({getValue}) => {
-               const {formatDate} = useSettings();
-               return formatDate(getValue<string>())
-          }
+          header: ({column}) => <NextScanHeader column={column}/>,
+          cell: ({getValue}) => <DateCell value={getValue<string>()}/>
      },
      {
           id: "actions",

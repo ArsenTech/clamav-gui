@@ -32,15 +32,18 @@
      },
      "heading": {
           "threats": {
+               "id": "Սպառնալիքի ID",
                "threat": "Սպառնալիք",
                "path": "Տեղանք",
                "detected-at": "Հայտնաբերվել է"
           },
           "quarantine": {
+               "id": "Վարակված սպառնալիքի ID",
                "quarantined-at": "Տեղափոխվել է կարանտին",
                "size": "Չափս"
           },
           "history": {
+               "id": "Գրառման ID",
                "timestamp": "Ժամանակահատված",
                "event": "Իրադարձություն",
                "details": "Մանրամասն"

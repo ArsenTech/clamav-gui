@@ -1,11 +1,10 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { IThreatsData, ThreatStatus } from "@/lib/types/data";
 import { IFinishScanState, IScanPageState } from "@/lib/types/states";
-import { useSettings } from "@/context/settings";
-import { useTranslation } from "react-i18next";
-import SortableHeader from "../cells/sortable-header";
-import StatusCell from "../cells/threats/status";
-import ActionsCell from "../cells/threats/actions";
+import ActionsCell from "../actions/threats";
+import StatusCell from "../cells/threats";
+import { DetectedHeader, DisplayNameHeader, FilePathHeader, IdHeader, StatusHeader } from "../headers/threats";
+import { DateCell } from "../cells";
 
 export const GET_THREATS_COLS = (
      setScanState: React.Dispatch<React.SetStateAction<IScanPageState>>,
@@ -15,40 +14,20 @@ export const GET_THREATS_COLS = (
      const baseCols: ColumnDef<IThreatsData>[] = [
           {
                accessorKey: "displayName",
-               header: ({column}) => {
-                    const {t} = useTranslation("table")
-                    return (
-                         <SortableHeader
-                              column={column}
-                              title={t("heading.threats.threat")}
-                         />
-                    )
-               }
+               header: ({column}) => <DisplayNameHeader column={column}/>
           },
           {
                accessorKey: "filePath",
-               header: ()=>{
-                    const {t} = useTranslation("table");
-                    return t("heading.threats.path")
-               }
+               header: () => <FilePathHeader/>
           },
           {
                accessorKey: "detectedAt",
-               header: ()=>{
-                    const {t} = useTranslation("table");
-                    return t("heading.threats.detected-at")
-               },
-               cell: ({getValue}) => {
-                    const {formatDate} = useSettings();
-                    return formatDate(getValue<string>())
-               }
+               header: () => <DetectedHeader/>,
+               cell: ({getValue}) => <DateCell value={getValue<string>()}/>
           },
           {
                accessorKey: "status",
-               header: ()=>{
-                    const {t} = useTranslation("table");
-                    return t("heading.status")
-               },
+               header: () => <StatusHeader/>,
                cell: ({getValue}) => <StatusCell threatStatus={getValue<ThreatStatus>()}/>
           },
           {
@@ -65,7 +44,7 @@ export const GET_THREATS_COLS = (
      return isDevMode ? [
           {
                accessorKey: "id",
-               header: "Threat ID"
+               header: () => <IdHeader/>
           },
           ...baseCols
      ] : baseCols;
