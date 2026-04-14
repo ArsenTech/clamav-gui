@@ -77,6 +77,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - [ ] Translate new parts (on those JSON translations which value is `""`) on
   - 🇫🇷 French
   - 🇵🇱 Polish
+- [ ] Settings to change the sidebar collapsible state (Options: `Off-Canvas` and `Icon`)
 - [ ] New Clear History Options
   - [X] Clear last 24 hours
   - [X] Clear last 7 days
