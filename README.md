@@ -74,7 +74,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 
 ### Planned Improvements
 #### v1.0.5 (Next)
-- [ ] Translate new parts (on those JSON translations which value is `""`) on
+- [ ] Translate new parts (on those JSON translations whose value is `""`) on
   - 🇫🇷 French
   - 🇵🇱 Polish
 - [X] Settings to change the sidebar collapsible state (Options: `Off-Canvas` and `Icon`)
@@ -86,13 +86,13 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - [ ] Test the new Workflow change
 - [X] GUI Updater
   - [X] Add a feature to log the updater actions into the history
-- [X] Replace alert boxes from `Dialog` and `Drawer` components into `AlertDialog` component from ShadCN UI
+- [X] Replace alert boxes from `Dialog` and `Drawer` components with `AlertDialog` component from ShadCN UI
 - [X] Convert each data table cell into a reusable component + Organize it
 #### v1.0.6 (Planned)
 - [ ] Backend Error Translation
 - [ ] Add a macOS Guide inside the **No ClamAV** Page
 #### v1.0.7 (Stability)
-- [ ] Silend Scheduled Scans Settings (Another Attempt)
+- [ ] Silent Scheduled Scans Settings (Another Attempt)
 - [ ] Scheduler support for Linux and MacOS
 #### v1.1.x (Major)
 - [ ] Limit `helpers::scheduler::windows::get_last_run_time` only for Windows Users
@@ -102,7 +102,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
   - [ ] YARA Configuration in settings
 - [ ] Feature to submit suspicious signatures to ClamAV
 #### Maybe
-- [ ] Write the Documentation on the `docs/` folder.
+- [ ] Write the documentation in the `docs/` folder.
   - [ ] Usage Guide
   - [X] Installation Guide
   - [X] Troubleshooting
