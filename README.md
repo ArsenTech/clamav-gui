@@ -91,6 +91,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - [ ] Backend Error Translation
 - [ ] Add a macOS Guide inside the **No ClamAV** Page
 #### v1.0.7 (Stability)
+- [ ] Silend Scheduled Scans Settings (Another Attempt)
 - [ ] Scheduler support for Linux and MacOS
 #### v1.1.x (Major)
 - [ ] Limit `helpers::scheduler::windows::get_last_run_time` only for Windows Users
