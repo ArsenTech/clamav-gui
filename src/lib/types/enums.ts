@@ -83,6 +83,10 @@ export enum BadgeVisibility {
      IconText = "icon-text",
      Text = "text"
 }
+export enum SidebarCollapsible{
+     OffCanvas = "offcanvas",
+     Icon = "icon"
+}
 export enum ScanOptionGroup {
      Detection = "detection",
      FileTypes = "file-types",

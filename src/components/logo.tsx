@@ -1,22 +1,25 @@
 import { useTheme } from "@/context/themes"
+import { SidebarCollapsible } from "@/lib/types/enums";
 import { useMemo } from "react";
 
 interface Props{
      width: number,
      height: number,
-     state?: "collapsed" | "expanded"
+     state?: "collapsed" | "expanded",
+     collapsibleState: SidebarCollapsible
 }
-export default function Logo({width, height, state="expanded"}: Props){
+export default function Logo({width, height, state="expanded", collapsibleState}: Props){
      const {resolvedTheme, color} = useTheme();
+     const isCollapsed = useMemo(()=>collapsibleState==="icon" && state==="collapsed",[collapsibleState,state])
      const imgPath = useMemo(()=>{
           const isDark = resolvedTheme==="dark"
-          return state==="collapsed" ? `/icons/${color}.webp` : `/logo-${color}${isDark ? "-dark" : ""}.webp`.trim()
+          return isCollapsed ? `/icons/${color}.webp` : `/logo-${color}${isDark ? "-dark" : ""}.webp`.trim()
      },[resolvedTheme, color, state])
      return (
           <img
                src={imgPath}
                alt="ClamAV GUI"
-               width={state==="collapsed" ? height : width}
+               width={isCollapsed ? height : width}
                height={height}
                className="object-contain"
           />

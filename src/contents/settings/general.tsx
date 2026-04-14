@@ -3,7 +3,7 @@ import { useTheme } from "@/context/themes";
 import { useSettings } from "@/context/settings";
 import { DATE_TIME_FORMATS, DEFAULT_SETTINGS, THEME_SETTINGS } from "@/lib/constants/settings";
 import { cn } from "@/lib/utils";
-import { Calendar, Palette, Bell, Type, Star, AArrowUp } from "lucide-react";
+import { Calendar, Palette, Bell, Type, Star, AArrowUp, PanelRightOpen } from "lucide-react";
 import SettingsItem from "@/components/settings-item";
 import { Switch } from "@/components/ui/switch";
 import { lazy, Suspense } from "react";
@@ -12,7 +12,7 @@ import {WindowIcon} from "@/components/app-icon";
 import { useTranslation } from "react-i18next";
 import SettingsOption from "@/components/settings-item/settings-option"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { BadgeVisibility } from "@/lib/types/enums";
+import { BadgeVisibility, SidebarCollapsible } from "@/lib/types/enums";
 
 const LanguageSelector = lazy(()=>import("@/i18n/languages"))
 
@@ -100,7 +100,6 @@ export default function GeneralSettings(){
                          description={t("ui.badge.desc")}
                     >
                          <Select
-                              defaultValue={settings.badgeVisibility || DEFAULT_SETTINGS.badgeVisibility}
                               value={settings.badgeVisibility}
                               onValueChange={value=>setSettings({badgeVisibility: value as BadgeVisibility})}
                          >
@@ -119,6 +118,29 @@ export default function GeneralSettings(){
                                    <SelectItem value="text">
                                         <Type/>
                                         {t("ui.badge.options.text")}
+                                   </SelectItem>
+                              </SelectContent>
+                         </Select>
+                    </SettingsOption>
+                    <SettingsOption
+                         title={t("ui.sidebar.title")}
+                         description={t("ui.sidebar.desc")}
+                    >
+                         <Select
+                              value={settings.sidebarCollapsible}
+                              onValueChange={value=>setSettings({sidebarCollapsible: value as SidebarCollapsible})}
+                         >
+                              <SelectTrigger>
+                                   <SelectValue placeholder={t("ui.sidebar.placeholder")}/>
+                              </SelectTrigger>
+                              <SelectContent>
+                                   <SelectItem value="offcanvas">
+                                        <PanelRightOpen/>
+                                        {t("ui.sidebar.options.off-canvas")}
+                                   </SelectItem>
+                                   <SelectItem value="icon">
+                                        <Star/>
+                                        {t("ui.sidebar.options.icon")}
                                    </SelectItem>
                               </SelectContent>
                          </Select>

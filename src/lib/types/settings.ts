@@ -1,6 +1,6 @@
 import { LucideProps } from "lucide-react";
 import { SchedulerType } from ".";
-import { BadgeVisibility, ScanProfile, ScanType } from "./enums";
+import { BadgeVisibility, ScanProfile, ScanType, SidebarCollapsible } from "./enums";
 import { COLORS } from "../constants/colors";
 import { SCAN_SETTINGS } from "../constants/settings/scan-options";
 import { DateFormatType, BehaviorMode } from "./enums";
@@ -48,7 +48,8 @@ export interface ISettings{
      notifOnScanFinish: boolean,
      notifPermitted: boolean,
      behavior: BehaviorMode,
-     badgeVisibility: BadgeVisibility
+     badgeVisibility: BadgeVisibility,
+     sidebarCollapsible: SidebarCollapsible
 }
 export type ScanProfilesType = Record<ScanProfile,ScanProfileValues>
 export interface IBackendSettings{

@@ -1,6 +1,6 @@
 import { Files, Folder, Monitor, Moon, Sun, Gauge, ChevronsLeftRightEllipsis, ShieldCheck, SearchCode, LucideProps } from "lucide-react";
 import { IBackendSettings, IDateFormatSettings, ISettings, IThemeSettings, ScanOptionKeys } from "@/lib/types/settings";
-import { DateFormatType, ScanProfile, ScanOptionGroup, BehaviorMode, BadgeVisibility } from "@/lib/types/enums";
+import { DateFormatType, ScanProfile, ScanOptionGroup, BehaviorMode, BadgeVisibility, SidebarCollapsible } from "@/lib/types/enums";
 
 export const SCAN_OPTION_ICON: Record<ScanOptionGroup,React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>> = {
      detection: ShieldCheck,
@@ -25,7 +25,8 @@ export const DEFAULT_SETTINGS: ISettings = {
      notifOnScanFinish: true,
      notifPermitted: false,
      behavior: BehaviorMode.Balanced,
-     badgeVisibility: BadgeVisibility.IconText
+     badgeVisibility: BadgeVisibility.IconText,
+     sidebarCollapsible: SidebarCollapsible.Icon
 }
 export const DEFAULT_BACKEND_SETTINGS: IBackendSettings = {
      scanProfiles: {

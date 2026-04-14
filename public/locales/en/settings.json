@@ -75,6 +75,15 @@
                     "icon-text": "Icon and Text",
                     "text": "Text Only"
                }
+          },
+          "sidebar": {
+               "title": "Sidebar Collapsible State",
+               "desc": "Control how the sidebar collapses using this option",
+               "placeholder": "Choose a collapsible state",
+               "options": {
+                    "off-canvas": "Off Window",
+                    "icon": "Up to icon"
+               }
           }
      },
      "notifs": {

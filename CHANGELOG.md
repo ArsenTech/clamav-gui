@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   - Clear last 24 hours
   - Clear last 7 days
   - Clear last 30 days
+- Settings to change the sidebar collapsible state (`Off-Canvas` or `Icon`)
 ### Changed
 - Converted each data table cell into a reusable component
 - Replaced alert boxes from `Dialog` and `Drawer` components into `AlertDialog` component from ShadCN UI

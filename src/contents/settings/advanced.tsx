@@ -125,7 +125,6 @@ export default function AdvancedSettings({scanProfile}: SettingsProps){
                          description={t("advanced.behavior.desc")}
                     >
                          <Select
-                              defaultValue={settings.behavior || DEFAULT_SETTINGS.behavior}
                               value={settings.behavior}
                               onValueChange={value=>setSettings({behavior: value as BehaviorMode})}
                          >
@@ -173,7 +172,7 @@ export default function AdvancedSettings({scanProfile}: SettingsProps){
                          description={t("logs.max-lines.desc")}
                     >
                          <Select
-                              defaultValue={String(settings.maxLogLines || DEFAULT_SETTINGS.maxLogLines)}
+                              value={settings.maxLogLines.toString()}
                               onValueChange={lines=>setSettings({maxLogLines: parseInt(lines)})}
                          >
                               <SelectTrigger>

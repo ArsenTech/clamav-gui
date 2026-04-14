@@ -30,9 +30,14 @@ export default function MainSidebar(){
      const {state} = useSidebar()
      const isMobile = useIsMobile()
      return (
-          <Sidebar collapsible="icon">
+          <Sidebar collapsible={settings.sidebarCollapsible}>
                <SidebarHeader>
-                    <Logo width={isMobile ? 370 : 240} height={isMobile ? 100 : 64} state={state}/>
+                    <Logo
+                         width={isMobile ? 370 : 240}
+                         height={isMobile ? 100 : 64}
+                         state={state}
+                         collapsibleState={settings.sidebarCollapsible}
+                    />
                </SidebarHeader>
                <SidebarContent>
                     <SidebarGroup>
