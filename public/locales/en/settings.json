@@ -81,7 +81,7 @@
                "desc": "Control how the sidebar collapses using this option",
                "placeholder": "Choose a collapsible state",
                "options": {
-                    "off-canvas": "Off Window",
+                    "off-canvas": "Offcanvas Window",
                     "icon": "Up to icon"
                }
           }
