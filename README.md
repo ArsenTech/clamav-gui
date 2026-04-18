@@ -94,6 +94,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 #### v1.0.7 (Stability)
 - [ ] Silent Scheduled Scans Settings (Another Attempt)
 - [ ] Scheduler support for Linux and MacOS
+- [ ] ClamAV Engine Updater
 #### v1.1.x (Major)
 - [ ] Limit `helpers::scheduler::windows::get_last_run_time` only for Windows Users
 - [ ] YARA Related Features
