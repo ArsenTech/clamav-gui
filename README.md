@@ -83,7 +83,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
   - [X] Clear last 7 days
   - [X] Clear last 30 days
   - [ ] Clear by date
-- [ ] Test the new Workflow change
+- [X] Test the new Workflow change
 - [X] GUI Updater
   - [X] Add a feature to log the updater actions into the history
 - [X] Replace alert boxes from `Dialog` and `Drawer` components with `AlertDialog` component from ShadCN UI
