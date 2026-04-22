@@ -24,6 +24,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Fixed
 - The History Details action greying out bug
 - The bug of showing nothing on the Device Details stat after caching
+- The build workflow bug
 
 ## [1.0.4] - 2026-04-10
 ### Added Languages
