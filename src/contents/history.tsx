@@ -130,6 +130,9 @@ export default function HistoryContent(){
                                         <DropdownMenuItem onClick={()=>setState({popupState: "clear-all"})} disabled={isEmpty}>
                                              {t("clear.all")}
                                         </DropdownMenuItem>
+                                        <DropdownMenuItem disabled={isEmpty}>
+                                             {t("clear.by-date")}
+                                        </DropdownMenuItem>
                                         <DropdownMenuSeparator/>
                                         <DropdownMenuItem onClick={()=>setState({popupState: "clear-acknowledged"})} disabled={isEmpty}>
                                              {t("clear.acknowledged")}
