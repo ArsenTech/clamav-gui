@@ -6,9 +6,13 @@ interface Props{
      width: number,
      height: number,
      state?: "collapsed" | "expanded",
-     collapsibleState: SidebarCollapsible
+     collapsibleState?: SidebarCollapsible
 }
-export default function Logo({width, height, state="expanded", collapsibleState}: Props){
+export default function Logo({
+     width, height,
+     state="expanded",
+     collapsibleState=SidebarCollapsible.OffCanvas
+}: Props){
      const {resolvedTheme, color} = useTheme();
      const isCollapsed = useMemo(()=>collapsibleState==="icon" && state==="collapsed",[collapsibleState,state])
      const imgPath = useMemo(()=>{
