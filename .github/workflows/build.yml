@@ -92,7 +92,7 @@ jobs:
             - **AppImage** - [ClamAV.GUI___VERSION___amd64.AppImage][linux-amd-appimage]
             - **deb** - [ClamAV.GUI___VERSION___amd64.deb][linux-amd-deb]
 
-            ### :penguin: Linux (ARM)
+            ### :penguin: Linux (ARM64)
             - **rpm** - [ClamAV.GUI-__VERSION__-1.aarch64.rpm][linux-arm-rpm]
             - **AppImage** - [CClamAV.GUI___VERSION___aarch64.AppImage][linux-arm-appimage]
             - **deb** - [ClamAV.GUI___VERSION___arm64.deb][linux-arm-deb]
@@ -101,13 +101,13 @@ jobs:
             - **exe** - [ClamAV.GUI___VERSION___x64-setup.exe][windows-exe]
             - **msi** - [ClamAV.GUI___VERSION___x64_en-US.msi][windows-msi]
 
+            ### :apple: macOS
+            - **dmg** - [ClamAV.GUI___VERSION___x64.dmg][mac-x64-dmg]
+            - **app.tar.gz** - [ClamAV.GUI_x64.app.tar.gz][mac-x64-tar]
+
             ### :green_apple: macOS (ARM64)
             - **dmg** - [ClamAV.GUI___VERSION___aarch64.dmg][mac-arm64-dmg]
             - **app.tar.gz** - [ClamAV.GUI_aarch64.app.tar.gz][mac-arm64-tar]
-
-            ### :apple: macOS (x86)
-            - **dmg** - [ClamAV.GUI___VERSION___x64.dmg][mac-x64-dmg]
-            - **app.tar.gz** - [ClamAV.GUI_x64.app.tar.gz][mac-x64-tar]
 
             [mac-arm64-dmg]: https://github.com/ArsenTech/clamav-gui/releases/download/v__VERSION__/ClamAV.GUI___VERSION___aarch64.dmg
             [mac-x64-dmg]: https://github.com/ArsenTech/clamav-gui/releases/download/v__VERSION__/ClamAV.GUI___VERSION___x64.dmg
