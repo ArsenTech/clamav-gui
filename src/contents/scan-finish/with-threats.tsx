@@ -130,8 +130,9 @@ export default function ScanFinishedTable({setScanState, isStartup, scanState, h
                               <DropdownMenuItem onClick={handleBulkQuarantine}>
                                    <BugOff/> {t("resolve.quarantine")}
                               </DropdownMenuItem>
-                              <DropdownMenuItem className="text-destructive" onClick={()=>setState({popupState: "clear-threats"})}>
-                                   <Trash className="text-destructive"/> {t("resolve.delete")}
+                              <DropdownMenuItem variant="destructive" onClick={()=>setState({popupState: "clear-threats"})}>
+                                   <Trash/>
+                                   {t("resolve.delete")}
                               </DropdownMenuItem>
                          </DropdownMenuContent>
                     </DropdownMenu>

@@ -29,11 +29,11 @@ export default function ActionsCell({threat, setState}: ActionsCellProps){
                          <RotateCcw/>
                          {t("actions.restore")}
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="text-destructive" onClick={()=>setState({
+                    <DropdownMenuItem variant="destructive" onClick={()=>setState({
                          id: threat.id,
                          popupState: "delete"
                     })}>
-                         <Trash className="text-destructive"/>
+                         <Trash/>
                          {t("actions.delete")}
                     </DropdownMenuItem>
                </DropdownMenuContent>

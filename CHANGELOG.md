@@ -21,10 +21,12 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - **Caching** - Cached the app name with app version into the `getAppDetails()` function
 - **The Sidebar Design** - Only icons will show if it's collapsed
 - Organized Headers and cells of data tables
+- Dropdown Menu Destructive design
 ### Fixed
 - The History Details action greying out bug
 - The bug of showing nothing on the Device Details stat after caching
 - The build workflow bug
+- **The Date fetch error** - Added a try-catch inside `formatDate()`
 
 ## [1.0.4] - 2026-04-10
 ### Added Languages

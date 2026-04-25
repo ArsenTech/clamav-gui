@@ -57,7 +57,7 @@ export default function ActionsCell({item, setState}: ActionsCellProps){
                          {t("actions.scan-now")}
                     </DropdownMenuItem>
                     <DropdownMenuItem disabled={!item.log_id} asChild>
-                         <Link to={`/scheduler/${item.log_id}?category=scheduler`}>
+                         <Link to={`/scheduler/${item.log_id}`}>
                               <ScrollText/>
                               {t("actions.view-log")}
                          </Link>
@@ -66,11 +66,11 @@ export default function ActionsCell({item, setState}: ActionsCellProps){
                          <FileText />
                          {t("actions.reveal-log")}
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="text-destructive" onClick={()=>setState({
+                    <DropdownMenuItem variant="destructive" onClick={()=>setState({
                          popupState: "delete-job",
                          job_id: item.id
                     })}>
-                         <Trash2 className="text-destructive"/>
+                         <Trash2/>
                          {t("actions.remove-job")}
                     </DropdownMenuItem>
                </DropdownMenuContent>

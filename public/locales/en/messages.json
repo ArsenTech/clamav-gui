@@ -7,7 +7,8 @@
           "history": "Failed to load the recent history data",
           "scheduler": "Failed to load scheduled scans",
           "exclusions": "Failed to load existing exclusions",
-          "realtime-paths": "Failed to load paths for real-time scan"
+          "realtime-paths": "Failed to load paths for real-time scan",
+          "date": "Failed to fetch the date"
      },
      "scan-stop-error": "Failed to stop the scan",
      "scan-start-error": "Failed to start the scan",

@@ -1,7 +1,10 @@
 import { DEFAULT_SETTINGS } from "@/lib/constants/settings";
+import { getErrorMessage } from "@/lib/helpers";
 import { ISettings } from "@/lib/types/settings";
 import { format } from "date-fns";
 import { createContext, useContext, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 
 interface SettingsContextValue{
      settings: ISettings,
@@ -11,6 +14,7 @@ interface SettingsContextValue{
 const SettingsContext = createContext<SettingsContextValue | null>(null)
 
 export function SettingsProvider({ children }: { children: React.ReactNode }){
+     const {t} = useTranslation("messages")
      const [settings, setSettings] = useState<ISettings>(()=>{
           try {
                const raw = localStorage.getItem("clamav-settings")
@@ -21,8 +25,15 @@ export function SettingsProvider({ children }: { children: React.ReactNode }){
           }
      });
      const formatDate = (date?: string) => {
-          if(!date || date.trim()==="") return "Never"
-          return format(date,settings.dateFormat)
+          try {
+               if(!date || (typeof date==="string" && date.trim()==="")) return "Never"
+               return format(date,settings.dateFormat)
+          } catch (err) {
+               toast.error(t("fetch-error.date"),{
+                    description: getErrorMessage(err)
+               })
+               return "Invalid Date"
+          }
      }
      const values: SettingsContextValue = {
           settings,

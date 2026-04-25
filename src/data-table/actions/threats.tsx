@@ -57,11 +57,12 @@ export default function ActionsCell({threat, setScanState, setState}: ActionsCel
                          <BugOff/>
                          {t("actions.quarantine")}
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="text-destructive" onClick={()=>setState({
+                    <DropdownMenuItem variant="destructive" onClick={()=>setState({
                          popupState: "delete-threats",
                          currThreat: threat
                     })} disabled={isResolved} >
-                         <Trash className="text-destructive"/> {t("actions.delete")}
+                         <Trash/>
+                         {t("actions.delete")}
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={handleRevealPath} disabled={isResolved} >
                          <FolderOpen/>

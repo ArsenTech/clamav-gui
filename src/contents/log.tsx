@@ -8,15 +8,16 @@ import { useTranslation } from "react-i18next";
 import { Link, useParams, useSearchParams } from "react-router";
 
 interface Props{
-     returnUrl: string
+     returnUrl: string,
+     categoryParam?: string
 }
-export default function LogContent({returnUrl}: Props){
+export default function LogContent({returnUrl, categoryParam}: Props){
      const {settings} = useSettings()
      const {logId} = useParams<{ logId: string }>();
      const [logs, setLogs] = useState<string[]>([]);
      const [isLoading, startTransition] = useTransition();
      const [searchParams] = useSearchParams();
-     const category = searchParams.get("category");
+     const category = categoryParam ?? searchParams.get("category");
      useEffect(()=>{
           startTransition(async()=>{
                const fetched = await fetchLogs(logId,category);

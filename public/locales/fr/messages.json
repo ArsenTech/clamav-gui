@@ -7,7 +7,8 @@
           "history": "Échec du chargement des données d'historique récentes",
           "scheduler": "Échec du chargement des analyses planifiées",
           "exclusions": "Échec du chargement des exclusions existantes",
-          "realtime-paths": "Échec du chargement des chemins pour l'analyse en temps réel"
+          "realtime-paths": "Échec du chargement des chemins pour l'analyse en temps réel",
+          "date": ""
      },
      "scan-stop-error": "Échec de l'arrêt de l'analyse",
      "scan-start-error": "Échec du démarrage de l'analyse",

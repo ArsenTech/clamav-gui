@@ -53,7 +53,7 @@ export const router = createBrowserRouter([
                     element: <Outlet />,
                     children: [
                          { index: true, element: <HistoryPage /> },
-                         { path: ":logId", element: <LogPage returnUrl="/history"/> }
+                         { path: ":logId", element: <LogPage returnUrl="/history" category="scheduler"/> }
                     ]
                }
           ]
