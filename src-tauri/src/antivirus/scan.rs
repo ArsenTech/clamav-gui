@@ -10,7 +10,7 @@ use crate::{
     },
     types::{
         enums::{HistoryDetails, HistoryStatus, HistoryType, LogCategory, ScanType},
-        structs::{HistoryItem, StartupScan},
+        structs::{HistoryItem, ScanStatus, StartupScan},
     },
 };
 
@@ -253,5 +253,16 @@ pub fn stop_scan() -> Result<(), String> {
         Ok(())
     } else {
         Err("No scan is currently running".into())
+    }
+}
+
+#[command]
+#[specta]
+pub fn get_scan_status() -> ScanStatus {
+    let guard = SCAN_PROCESS.lock().unwrap();
+
+    ScanStatus {
+        is_running: guard.is_some(),
+        pid: *guard,
     }
 }

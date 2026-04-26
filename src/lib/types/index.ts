@@ -22,6 +22,10 @@ export interface IClamAvVersion{
      engine: string,
      dbVersion: string
 }
+export interface IScanStatus{
+     is_running: boolean,
+     pid: number,
+}
 
 // Schemas
 export type SchedulerType = z.infer<
