@@ -88,7 +88,8 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
   - [X] Add a feature to log the updater actions into the history
 - [X] Replace alert boxes from `Dialog` and `Drawer` components with `AlertDialog` component from ShadCN UI
 - [X] Convert each data table cell into a reusable component + Organize it
-- [ ] Fix the scan state desynchronization bug - See issue #11
+- [ ] Fix the scan state desynchronization bug - See issue [#11](https://github.com/ArsenTech/clamav-gui/issues/11)
+- [ ] Minimized Auto Start Setting - See issue [#12](https://github.com/ArsenTech/clamav-gui/issues/12)
 #### v1.0.6 (Planned)
 - [ ] Backend Error Translation
 - [ ] Add a macOS Guide inside the **No ClamAV** Page
