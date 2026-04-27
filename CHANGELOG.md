@@ -25,8 +25,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Fixed
 - The History Details action greying out bug
 - The bug of showing nothing on the Device Details stat after caching
-- The build workflow bug
+- **The build workflow bug** - Fixed the Linux ARM64 part
 - **The Date fetch error** - Added a try-catch inside `formatDate()`
+- **The Scan Lifecycle Bug** - Rewrote the Scan Logic for stability
 
 ## [1.0.4] - 2026-04-10
 ### Added Languages

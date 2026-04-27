@@ -144,10 +144,7 @@ export default function ScanPage(){
                                    ...prev,
                                    status: "reconnecting",
                                    isReconnected: true,
-                                   logs: [],
-                                   threats: [],
                                    scannedFiles: 0,
-                                   totalFiles: 0,
                               };
                          });
                          return;
@@ -179,6 +176,24 @@ export default function ScanPage(){
                })
           }
      },[isDone, settings.notifOnScanFinish, scanState.errMsg, scanState.threats, t])
+     useEffect(() => {
+          const checkRunning = async () => {
+               try {
+                    const isRunning = await invoke<boolean>("get_scan_status")
+                    if (isRunning) {
+                         setScanState(prev => ({
+                              ...prev,
+                              status: "reconnecting",
+                              isReconnected: true,
+                              scannedFiles: 0,
+                         }));
+                    }
+               } catch {
+                    toast.warning(messageTxt("scan-status-error"))
+               }
+          };
+          checkRunning();
+     }, []);
      useEffect(() => {
           if(scanState.scanType===null || scanState.scanType===undefined) return;
           if (scanState.status !== "starting") return;

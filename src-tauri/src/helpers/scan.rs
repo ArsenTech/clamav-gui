@@ -46,14 +46,12 @@ pub fn run_scan(
     scan_type: ScanType,
 ) -> Result<(), String> {
     {
-        let mut guard = SCAN_PROCESS.lock().unwrap();
+        let guard = SCAN_PROCESS.lock().unwrap();
         if guard.is_some() {
             #[cfg(debug_assertions)]
             println!("Scan Process Already running: {:?}", *guard);
-
             return Err("SCAN_ALREADY_RUNNING".into());
         }
-        *guard = Some(0);
     }
 
     let log_path = log_path(&app, LogCategory::Scan, &log_id);

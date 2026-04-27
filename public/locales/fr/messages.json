@@ -10,6 +10,7 @@
           "realtime-paths": "Échec du chargement des chemins pour l'analyse en temps réel",
           "date": ""
      },
+     "scan-status-error": "",
      "scan-stop-error": "Échec de l'arrêt de l'analyse",
      "scan-start-error": "Échec du démarrage de l'analyse",
      "log-reveal-error": "Échec de l'affichage du fichier journal",

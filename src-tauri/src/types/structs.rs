@@ -131,9 +131,3 @@ pub struct BehaviorConfig {
 }
 
 pub struct AppLanguage(pub Mutex<String>);
-
-#[derive(Debug, Serialize, Type)]
-pub struct ScanStatus {
-    pub is_running: bool,
-    pub pid: Option<u32>,
-}

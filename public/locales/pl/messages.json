@@ -10,6 +10,7 @@
           "realtime-paths": "Nie udało się załadować ścieżek dla skanowania w czasie rzeczywistym",
           "date": ""
      },
+     "scan-status-error": "",
      "scan-stop-error": "Nie udało się zatrzymać skanowania",
      "scan-start-error": "Nie udało się uruchomić skanowania",
      "log-reveal-error": "Nie udało się otworzyć pliku logów",

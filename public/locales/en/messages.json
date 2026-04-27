@@ -10,6 +10,7 @@
           "realtime-paths": "Failed to load paths for real-time scan",
           "date": "Failed to fetch the date"
      },
+     "scan-status-error": "Failed to get the scan status",
      "scan-stop-error": "Failed to stop the scan",
      "scan-start-error": "Failed to start the scan",
      "log-reveal-error": "Failed to reveal log file",
