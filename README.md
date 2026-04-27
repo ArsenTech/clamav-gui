@@ -74,9 +74,6 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 
 ### Planned Improvements
 #### v1.0.5 (Next)
-- [ ] Translate new parts after running `npm run i18n:missing-keys` and typing
-  - 🇫🇷 French - `fr`
-  - 🇵🇱 Polish - `pl`
 - [X] Settings to change the sidebar collapsible state (Options: `Off-Canvas` and `Icon`)
 - [ ] New Clear History Options
   - [X] Clear last 24 hours
@@ -90,6 +87,9 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - [X] Convert each data table cell into a reusable component + Organize it
 - [X] Fix the scan state desynchronization bug - fixes [#11](https://github.com/ArsenTech/clamav-gui/issues/11)
 #### v1.0.6 (Planned)
+- [ ] Translate new parts after running `npm run i18n:missing-keys` and typing
+  - 🇫🇷 French - `fr`
+  - 🇵🇱 Polish - `pl`
 - [ ] Minimized Auto Start Setting ([#12](https://github.com/ArsenTech/clamav-gui/issues/12))
 - [ ] Expanded approach of the Bug fix for the issue [#11](https://github.com/ArsenTech/clamav-gui/issues/11)
    - [ ] True scan restoration (no reset of progress)
