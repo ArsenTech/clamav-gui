@@ -22,10 +22,19 @@ export interface IClamAvVersion{
      engine: string,
      dbVersion: string
 }
+
+// Scan-related
 export interface IScanStatus{
      is_running: boolean,
      pid: number,
 }
+export type ScanUIStatus =
+  | "idle"
+  | "starting"
+  | "running"
+  | "reconnecting"
+  | "finished"
+  | "error"
 
 // Schemas
 export type SchedulerType = z.infer<

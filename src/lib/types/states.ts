@@ -1,7 +1,7 @@
 import { ScanType } from "./enums";
 import { IHistoryData, IQuarantineData, ISchedulerData, IThreatsData } from "./data"
 import { GuiUpdaterStatus } from "./enums";
-import { HistoryConfirmationState, QuarantineConfirmationState, ScanFinishConfState, SchedulerConfState } from ".";
+import { HistoryConfirmationState, QuarantineConfirmationState, ScanFinishConfState, ScanUIStatus, SchedulerConfState } from ".";
 
 export interface IDeviceInfo {
      sys_name: string;
@@ -13,17 +13,18 @@ export interface IVersion{
      tauri: string,
 }
 export interface IScanPageState{
-     scanType: ScanType,
+     status: ScanUIStatus
      logs: string[],
-     currLocation: string,
-     isFinished: boolean,
-     duration: number,
+     threats: IThreatsData[],
      scannedFiles: number,
      totalFiles: number,
-     paths: string[],
-     exitCode: number,
      errMsg?: string,
-     threats: IThreatsData[]
+     exitCode: number,
+     scanType: ScanType,
+     currLocation: string,
+     duration: number,
+     paths: string[],
+     isReconnected: boolean
 }
 export interface IDefsUpdaterState{
      isRequired: boolean,

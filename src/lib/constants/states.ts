@@ -14,14 +14,15 @@ export const GET_INITIAL_SCAN_STATE = (type: ScanType, path: string[] | null): I
      scanType: type,
      logs: [],
      currLocation: "",
-     isFinished: false,
      duration: 0,
      scannedFiles: 0,
      totalFiles: 0,
      paths: path ?? [],
      exitCode: 0,
      errMsg: undefined,
-     threats: []
+     threats: [],
+     status: type===ScanType.None ? "idle" : "starting",
+     isReconnected: false
 })
 export const INITIAL_DEF_UPDATE_STATE: IDefsUpdaterState = {
      exitMsg: null,
