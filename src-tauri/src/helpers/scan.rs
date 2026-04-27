@@ -48,7 +48,10 @@ pub fn run_scan(
     {
         let mut guard = SCAN_PROCESS.lock().unwrap();
         if guard.is_some() {
-            return Err("Scan already running".into());
+            #[cfg(debug_assertions)]
+            println!("Scan Process Already running: {:?}", *guard);
+
+            return Err("SCAN_ALREADY_RUNNING".into());
         }
         *guard = Some(0);
     }

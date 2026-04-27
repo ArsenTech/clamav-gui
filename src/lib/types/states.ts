@@ -25,7 +25,6 @@ export interface IScanPageState{
      duration: number,
      paths: string[],
      isReconnected: boolean,
-     isFinished: boolean
 }
 export interface IDefsUpdaterState{
      isRequired: boolean,

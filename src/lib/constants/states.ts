@@ -23,7 +23,6 @@ export const GET_INITIAL_SCAN_STATE = (type: ScanType, path: string[] | null): I
      threats: [],
      status: type===ScanType.None ? "idle" : "starting",
      isReconnected: false,
-     isFinished: false
 })
 export const INITIAL_DEF_UPDATE_STATE: IDefsUpdaterState = {
      exitMsg: null,

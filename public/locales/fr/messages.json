@@ -77,7 +77,6 @@
           "success": "Toutes les menaces supprimées",
           "error": "Échec de la suppression de toutes les menaces"
      },
-     "no-scan-command": "Commande d'analyse introuvable",
      "form-validations": {
           "interval": "Veuillez définir le type d'intervalle",
           "scanType": "Veuillez choisir le type d'analyse",

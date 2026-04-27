@@ -77,7 +77,6 @@
           "success": "All Threats deleted",
           "error": "Failed to delete all threats"
      },
-     "no-scan-command": "Scan command not found",
      "form-validations": {
           "interval": "Please set the interval type",
           "scanType": "Please choose the scan type",

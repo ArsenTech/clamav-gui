@@ -46,11 +46,19 @@ export default function ScanProcess({scanState, handleReset, isStartup}: Props){
                navigate("/scan");
           }
      }
-     const percentage = useMemo(()=>totalFiles>0 ? Math.min(100,Math.floor((scannedFiles/totalFiles)*100)) : 0,[scannedFiles,totalFiles]);
+     const hasTotal = totalFiles > 0;
+     const percentage = useMemo(()=>hasTotal ? Math.min(100,Math.floor((scannedFiles/totalFiles)*100)) : undefined,[scannedFiles,totalFiles]);
      const {t} = useTranslation("scan");
      const {locale} = useLocale();
      const {t: numSuffixTxt} = useTranslation()
      const {t: confTxt} = useTranslation("confirmation")
+     const scannedFilesStatus = useMemo(()=>hasTotal ? t("process.percentage",{
+          percentage: percentage ?? 0,
+          scanned: formatNumber(scannedFiles,numSuffixTxt,locale),
+          total: formatNumber(totalFiles,numSuffixTxt,locale)
+     }) : t("process.files",{
+          scanned: formatNumber(scannedFiles,numSuffixTxt,locale)
+     }),[hasTotal, scannedFiles, totalFiles, locale, t])
      return (
           <>
                <p className="text-muted-foreground font-medium">{t("scan-type.title",{
@@ -58,14 +66,10 @@ export default function ScanProcess({scanState, handleReset, isStartup}: Props){
                })}</p>
                {scanType!=="full" ? (
                     <>
-                    <Progress value={percentage}/>
+                    <Progress value={percentage ?? 0}/>
                     <p className="text-2xl font-semibold text-center flex justify-center items-center gap-1.5">
                          <Spinner className="size-9 text-muted-foreground"/> 
-                         {scannedFiles<=0 ? t("process.preparing") : t("process.percentage",{
-                              percentage,
-                              scanned: formatNumber(scannedFiles,numSuffixTxt,locale),
-                              total: formatNumber(totalFiles,numSuffixTxt,locale)
-                         })}
+                         {scannedFiles<=0 ? t("process.preparing") : scannedFilesStatus}
                     </p>
                     </>
                ) : (
@@ -73,9 +77,7 @@ export default function ScanProcess({scanState, handleReset, isStartup}: Props){
                     <p className="text-2xl font-semibold text-center flex justify-center items-center gap-1.5">
                          <Spinner className="size-9 text-muted-foreground"/> 
                          {scannedFiles<=0 ? t("process.preparing") : (
-                              <>{t("process.scanning")} <Dot/> {t("process.files",{
-                                   scanned: formatNumber(scannedFiles,numSuffixTxt,locale)
-                              })}</>
+                              <>{t("process.scanning")} <Dot/> {scannedFilesStatus}</>
                          )}
                     </p>
                     <p className="text-muted-foreground">{t("full-scan-warn")}</p>

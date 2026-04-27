@@ -23,6 +23,10 @@ pub fn get_startup_scan(state: tauri::State<StartupScan>) -> StartupScan {
 #[command]
 #[specta(result)]
 pub fn start_main_scan(app: tauri::AppHandle, args: Option<Vec<String>>) -> Result<(), String> {
+    #[cfg(debug_assertions)]{
+        println!("Running Main Scan");
+        println!("-----------------")
+    }
     let log_id = new_id();
     let log =
         initialize_log_with_id(&app, LogCategory::Scan, &log_id).map_err(|e| e.to_string())?;
@@ -92,6 +96,10 @@ pub fn start_main_scan(app: tauri::AppHandle, args: Option<Vec<String>>) -> Resu
 #[command]
 #[specta(result)]
 pub fn start_full_scan(app: tauri::AppHandle) -> Result<(), String> {
+    #[cfg(debug_assertions)]{
+        println!("Running Full Scan");
+        println!("-----------------")
+    }
     let log_id = new_id();
     let log =
         initialize_log_with_id(&app, LogCategory::Scan, &log_id).map_err(|e| e.to_string())?;
@@ -149,6 +157,10 @@ pub fn start_custom_scan(
     paths: Vec<String>,
     args: Option<Vec<String>>,
 ) -> Result<(), String> {
+    #[cfg(debug_assertions)]{
+        println!("Running Custom / File Scan");
+        println!("-----------------")
+    }
     if paths.is_empty() {
         return Err("No scan targets provided".into());
     }

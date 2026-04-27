@@ -77,7 +77,6 @@
           "success": "Wszystkie zagrożenia zostały usunięte",
           "error": "Nie udało się usunąć wszystkich zagrożeń"
      },
-     "no-scan-command": "Nie znaleziono polecenia skanowania",
      "form-validations": {
           "interval": "Wybierz typ interwału",
           "scanType": "Wybierz typ skanowania",
