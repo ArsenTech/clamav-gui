@@ -28,7 +28,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - **The build workflow bug** - Fixed the Linux ARM64 part
 - **The Date fetch error** - Added a try-catch inside `formatDate()`
 - **The Scan Lifecycle Bug** - Rewrote the Scan Logic for stability
-- **The scan state desynchronization bug** - Used the minimal stable fix
+- **The scan state desynchronization bug** - Fixes [#11](https://github.com/ArsenTech/clamav-gui/issues/11), Used the minimal stable fix
 
 ## [1.0.4] - 2026-04-10
 ### Added Languages
