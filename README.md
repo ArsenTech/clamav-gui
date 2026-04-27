@@ -74,9 +74,9 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 
 ### Planned Improvements
 #### v1.0.5 (Next)
-- [ ] Translate new parts (on those JSON translations whose value is `""`) on
-  - 🇫🇷 French
-  - 🇵🇱 Polish
+- [ ] Translate new parts after running `npm run i18n:missing-keys` and typing
+  - 🇫🇷 French - `fr`
+  - 🇵🇱 Polish - `pl`
 - [X] Settings to change the sidebar collapsible state (Options: `Off-Canvas` and `Icon`)
 - [ ] New Clear History Options
   - [X] Clear last 24 hours
