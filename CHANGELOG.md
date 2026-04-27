@@ -44,7 +44,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Optimized the Translation function + Settings Tab
 ### Fixed
 - The Build workflow bug
-- System Tray ID name bug - Thanks [@frju365](https://github.com/frju365)!
+- System Tray ID name bug - Fixes [#9](https://github.com/ArsenTech/clamav-gui/issues/9), Thanks [@frju365](https://github.com/frju365)!
 ### Cached for performance (getter functions)
 - Backend Settings
 - History
