@@ -10,10 +10,6 @@
           "acknowledged": "Effacer les événements traités",
           "errors": "Effacer les erreurs",
           "warnings": "Effacer les avertissements",
-          "last-24-hours": "",
-          "last-7-days": "",
-          "last-30-days": "",
-          "by-date": "",
           "loading": "Effacement en cours..."
      },
      "export": {
@@ -26,10 +22,7 @@
           "all": "Historique effacé !",
           "acknowledged": "Entrées traitées effacées !",
           "error": "Toutes les erreurs effacées !",
-          "warning": "Tous les avertissements effacés !",
-          "last24-hours": "",
-          "last7-days": "",
-          "last30-days": ""
+          "warning": "Tous les avertissements effacés !"
      },
      "events": {
           "real-time-error": "Échec de l'analyse en temps réel",
@@ -47,13 +40,7 @@
           "scheduler-delete": "Tâche d'analyse planifiée supprimée",
           "scheduler-trigger": "Tâche d'analyse planifiée déclenchée",
           "file-delete": "Fichier supprimé",
-          "file-delete-error": "Échec de la suppression du fichier",
-          "gui-updater-check-error": "",
-          "gui-updater-started": "",
-          "gui-updater-finished": "",
-          "gui-updater-error": "",
-          "gui-updater-updated": "",
-          "gui-updater-needed": ""
+          "file-delete-error": "Échec de la suppression du fichier"
      },
      "behavior": {
           "balanced": "Équilibré",
@@ -95,12 +82,6 @@
           "scheduler-trigger-error": "Échec de l'exécution de la tâche planifiée : {{task}}",
           "scheduler-trigger": "Tâche planifiée déclenchée manuellement : {{task}}",
           "file-delete": "Le fichier a été supprimé : {{path}}",
-          "file-delete-error": "Échec de la suppression du fichier : {{path}} ({{err}})",
-          "gui-updater-check-error": "",
-          "gui-updater-started": "",
-          "gui-updater-finished": "",
-          "gui-updater-error": "",
-          "gui-updater-updated": "",
-          "gui-updater-needed": ""
+          "file-delete-error": "Échec de la suppression du fichier : {{path}} ({{err}})"
      }
 }

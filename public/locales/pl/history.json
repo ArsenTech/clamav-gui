@@ -10,10 +10,6 @@
           "acknowledged": "Wyczyść potwierdzone",
           "errors": "Wyczyść błędy",
           "warnings": "Wyczyść ostrzeżenia",
-          "last-24-hours": "",
-          "last-7-days": "",
-          "last-30-days": "",
-          "by-date": "",
           "loading": "Czyszczenie..."
      },
      "export": {
@@ -26,10 +22,7 @@
           "all": "Historia została wyczyszczona!",
           "acknowledged": "Potwierdzone wpisy zostały wyczyszczone!",
           "error": "Wszystkie błędy zostały wyczyszczone!",
-          "warning": "Wszystkie ostrzeżenia zostały wyczyszczone!",
-          "last24-hours": "",
-          "last7-days": "",
-          "last30-days": ""
+          "warning": "Wszystkie ostrzeżenia zostały wyczyszczone!"
      },
      "events": {
           "real-time-error": "Błąd skanowania w czasie rzeczywistym",
@@ -47,13 +40,7 @@
           "scheduler-delete": "Usunięto zaplanowane zadanie skanowania",
           "scheduler-trigger": "Uruchomiono zaplanowane zadanie skanowania",
           "file-delete": "Plik usunięty",
-          "file-delete-error": "Nie udało się usunąć pliku",
-          "gui-updater-check-error": "",
-          "gui-updater-started": "",
-          "gui-updater-finished": "",
-          "gui-updater-error": "",
-          "gui-updater-updated": "",
-          "gui-updater-needed": ""
+          "file-delete-error": "Nie udało się usunąć pliku"
      },
      "behavior": {
           "balanced": "Zrównoważony",
@@ -95,12 +82,6 @@
           "scheduler-trigger-error": "Nie udało się uruchomić zaplanowanego zadania: {{task}}",
           "scheduler-trigger": "Zaplanowane zadanie uruchomione ręcznie: {{task}}",
           "file-delete": "Plik został usunięty: {{path}}",
-          "file-delete-error": "Nie udało się usunąć pliku: {{path}} ({{err}})",
-          "gui-updater-check-error": "",
-          "gui-updater-started": "",
-          "gui-updater-finished": "",
-          "gui-updater-error": "",
-          "gui-updater-updated": "",
-          "gui-updater-needed": ""
+          "file-delete-error": "Nie udało się usunąć pliku: {{path}} ({{err}})"
      }
 }

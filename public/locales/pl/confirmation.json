@@ -28,18 +28,6 @@
           "title": "Wyczyścić wszystkie ostrzeżenia?",
           "desc": "Spowoduje to usunięcie wszystkich ostrzeżeń z tabeli historii. Pozostałe zdarzenia pozostaną."
      },
-     "clear-last-24h": {
-          "title": "",
-          "desc": ""
-     },
-     "clear-last-7d": {
-          "title": "",
-          "desc": ""
-     },
-     "clear-last-30d": {
-          "title": "",
-          "desc": ""
-     },
      "restore": {
           "title": "Spowoduje to przywrócenie pliku z kwarantanny.",
           "desc": "Kontynuować?"

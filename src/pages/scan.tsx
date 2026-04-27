@@ -144,7 +144,6 @@ export default function ScanPage(){
                                    ...prev,
                                    status: "reconnecting",
                                    isReconnected: true,
-                                   scannedFiles: 0,
                               };
                          });
                          return;
@@ -185,7 +184,6 @@ export default function ScanPage(){
                               ...prev,
                               status: "reconnecting",
                               isReconnected: true,
-                              scannedFiles: 0,
                          }));
                     }
                } catch {

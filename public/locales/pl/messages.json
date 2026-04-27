@@ -7,10 +7,8 @@
           "history": "Nie udało się załadować ostatniej historii",
           "scheduler": "Nie udało się załadować zaplanowanych skanów",
           "exclusions": "Nie udało się załadować istniejących wykluczeń",
-          "realtime-paths": "Nie udało się załadować ścieżek dla skanowania w czasie rzeczywistym",
-          "date": ""
+          "realtime-paths": "Nie udało się załadować ścieżek dla skanowania w czasie rzeczywistym"
      },
-     "scan-status-error": "",
      "scan-stop-error": "Nie udało się zatrzymać skanowania",
      "scan-start-error": "Nie udało się uruchomić skanowania",
      "log-reveal-error": "Nie udało się otworzyć pliku logów",

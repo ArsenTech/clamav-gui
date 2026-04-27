@@ -32,18 +32,15 @@
      },
      "heading": {
           "threats": {
-               "id": "",
                "threat": "Zagrożenie",
                "path": "Ścieżka",
                "detected-at": "Wykryto"
           },
           "quarantine": {
-               "id": "",
                "quarantined-at": "W kwarantannie od",
                "size": "Rozmiar"
           },
           "history": {
-               "id": "",
                "timestamp": "Znacznik czasu",
                "event": "Zdarzenie",
                "details": "Szczegóły"

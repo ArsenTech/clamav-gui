@@ -75,15 +75,6 @@
                     "icon-text": "Ikona i tekst",
                     "text": "Tylko tekst"
                }
-          },
-          "sidebar": {
-               "title": "",
-               "desc": "",
-               "placeholder": "",
-               "options": {
-                    "off-canvas": "",
-                    "icon": ""
-               }
           }
      },
      "notifs": {
