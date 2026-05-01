@@ -90,6 +90,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - [ ] Translate new parts after running `npm run i18n:missing-keys` and typing
   - 🇫🇷 French - `fr`
   - 🇵🇱 Polish - `pl`
+- [ ] Dynamic App Window Title for pages
 - [ ] Minimized Auto Start Setting ([#12](https://github.com/ArsenTech/clamav-gui/issues/12))
 - [ ] Expanded approach of the Bug fix for the issue [#11](https://github.com/ArsenTech/clamav-gui/issues/11)
    - [ ] True scan restoration (no reset of progress)
