@@ -100,6 +100,10 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - [ ] Backend Error Translation
   - [ ] Normalize Error Handling
 - [ ] Add a macOS Guide inside the **No ClamAV** Page
+- [ ] Minimum OS requirement tab (first step)
+  - Detect OS + version
+  - Show supported / not supported
+  - Disable incompatible actions
 #### v1.0.7 (Stability)
 - [ ] Silent Scheduled Scans Settings (Another Attempt)
 - [ ] Scheduler support for Linux and MacOS
