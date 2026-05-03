@@ -1,7 +1,7 @@
 import * as z from "zod"
 import { LucideProps } from "lucide-react";
 import { SettingsProps } from "./props";
-import { getPathFormSchema, getSchedulerSchema } from "../schemas";
+import { getClearByDateSchema, getPathFormSchema, getSchedulerSchema } from "../schemas";
 import { SettingsTab, ScanType, BehaviorMode, ScanResult } from "./enums";
 
 export type Mutable<T> = {
@@ -32,6 +32,9 @@ export type SchedulerType = z.infer<
 >
 export type PathFormType = z.infer<
      Awaited<ReturnType<typeof getPathFormSchema>>
+>
+export type ClearByDateType = z.infer<
+     Awaited<ReturnType<typeof getClearByDateSchema>>
 >
 
 export interface IDetailsData {

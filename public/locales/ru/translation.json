@@ -30,5 +30,6 @@
           "please-wait": "Пожалуйста, подождите..."
      },
      "splash-screen-text": "Загрузка...",
-     "copy-command": "Скопируйте команду"
+     "copy-command": "Скопируйте команду",
+     "date-picker-label": "Выберите дату"
 }

@@ -3,7 +3,7 @@ use tauri::command;
 
 use crate::{
     helpers::history::{
-        clear_by_days, clear_by_status, history_dir
+        clear_by_days, clear_by_status, history_dir, parse_date_from_path
     },
     types::{
         enums::{ClearHistoryMode, HistoryStatus},
@@ -119,6 +119,29 @@ pub fn clear_history(app: tauri::AppHandle, mode: ClearHistoryMode) -> Result<()
             }
             ClearHistoryMode::Last30Days => {
                 clear_by_days(&path, 30)?;
+            }
+        }
+    }
+    Ok(())
+}
+
+#[command]
+#[specta(result)]
+pub fn clear_by_date(app: tauri::AppHandle, date: String) -> Result<(), String> {
+    use chrono::{DateTime, Utc};
+    let dir = history_dir(&app);
+    let cutoff = DateTime::parse_from_rfc3339(&date).map_err(|e| e.to_string())?.with_timezone(&Utc).date_naive();
+    if !dir.try_exists().unwrap_or(false) {
+        return Ok(());
+    }
+    for entry in std::fs::read_dir(&dir).map_err(|e| e.to_string())? {
+        let path = entry.map_err(|e| e.to_string())?.path();
+        if path.extension().and_then(|e| e.to_str()) != Some("json") {
+            continue;
+        }
+        if let Some(item_date) = parse_date_from_path(&path) {
+            if item_date <= cutoff {
+                std::fs::remove_file(path).map_err(|e| e.to_string())?;
             }
         }
     }

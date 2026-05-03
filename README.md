@@ -75,11 +75,11 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 ### Planned Improvements
 #### v1.0.5 (Next)
 - [X] Settings to change the sidebar collapsible state (Options: `Off-Canvas` and `Icon`)
-- [ ] New Clear History Options
+- [X] New Clear History Options
   - [X] Clear last 24 hours
   - [X] Clear last 7 days
   - [X] Clear last 30 days
-  - [ ] Clear by date
+  - [X] Clear up to the date
 - [X] Test the new Workflow change
 - [X] GUI Updater
   - [X] Add a feature to log the updater actions into the history
@@ -87,6 +87,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - [X] Convert each data table cell into a reusable component + Organize it
 - [X] Fix the scan state desynchronization bug - fixes [#11](https://github.com/ArsenTech/clamav-gui/issues/11)
 #### v1.0.6 (Planned)
+- [ ] The "Clear by range" Clear History Option
 - [ ] Translate new parts after running `npm run i18n:missing-keys` and typing
   - 🇫🇷 French - `fr`
   - 🇵🇱 Polish - `pl`

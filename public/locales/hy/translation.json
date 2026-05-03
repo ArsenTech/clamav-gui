@@ -30,5 +30,6 @@
           "please-wait": "Խնդրում ենք սպասել..."
      },
      "splash-screen-text": "Բեռնվում է...",
-     "copy-command": "Պատճենել հրամանը"
+     "copy-command": "Պատճենել հրամանը",
+     "date-picker-label": "Ընտրել ամսաթիվը"
 }

@@ -30,5 +30,6 @@
           "please-wait": "Please wait..."
      },
      "splash-screen-text": "Loading...",
-     "copy-command": "Copy the Command"
+     "copy-command": "Copy the Command",
+     "date-picker-label": "Choose a date"
 }

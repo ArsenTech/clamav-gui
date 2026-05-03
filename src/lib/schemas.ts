@@ -12,3 +12,8 @@ export const getSchedulerSchema = (t: TFunction<"messages">) => z.object({
 export const getPathFormSchema = (t: TFunction<"messages">) => z.object({
      path: z.string().min(1,t("form-validations.directory-path.required")).max(300,t("form-validations.directory-path.too-long"))
 })
+export const getClearByDateSchema = (t: TFunction<"messages">) => z.object({
+     date: z.date().refine(date => date < new Date(),{
+          error: t("form-validations.date-no-future")
+     })
+})

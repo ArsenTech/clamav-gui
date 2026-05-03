@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   - Clear last 24 hours
   - Clear last 7 days
   - Clear last 30 days
+  - Clear up to the date
 - Sidebar collapsible behavior setting
   - Up to Icon (Default)
   - Offcanvas Window

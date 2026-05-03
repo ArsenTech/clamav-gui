@@ -23,12 +23,14 @@ import { HistoryConfirmationState } from "@/lib/types";
 import { getErrorMessage } from "@/lib/helpers";
 import { fetchHistoryData } from "@/data/history";
 import { getTimeBasedCutoff } from "@/lib/helpers/history";
+import ClearDatePopup from "@/components/popup/clear-date-popup";
 
 export default function HistoryContent(){
      const {settings} = useSettings();
      const [isRefreshing, startTransition] = useTransition();
      const [isClearing, startClearTransition] = useTransition();
      const [historyState, setHistoryState] = useState<IHistoryPageState>(INITIAL_HISTORY_STATE)
+     const [showClearDate, setShowClearDate] = useState(false)
      const setState = (overrides: Partial<IHistoryPageState>) => setHistoryState(prev=>({ ...prev, ...overrides }))
      const {t} = useTranslation("history")
      const {t: messageTxt} = useTranslation("messages")
@@ -60,6 +62,18 @@ export default function HistoryContent(){
                     setState({popupState: ""})
                }
           })
+     }
+     const updateValues = (selectedDate: Date) => {
+          if (!selectedDate) return;
+          const cutoff = new Date(selectedDate);
+          cutoff.setHours(23, 59, 59, 999);
+          setHistoryState(prev => ({
+               ...prev,
+               data: prev.data.filter(item => {
+                    const itemDate = new Date(item.timestamp);
+                    return itemDate.getTime() > cutoff.getTime();
+               })
+          }));
      }
      const exportDataAs = async () => {
           try{
@@ -130,7 +144,7 @@ export default function HistoryContent(){
                                         <DropdownMenuItem onClick={()=>setState({popupState: "clear-all"})} disabled={isEmpty}>
                                              {t("clear.all")}
                                         </DropdownMenuItem>
-                                        <DropdownMenuItem disabled={isEmpty}>
+                                        <DropdownMenuItem disabled={isEmpty} onClick={()=>setShowClearDate(true)}>
                                              {t("clear.by-date")}
                                         </DropdownMenuItem>
                                         <DropdownMenuSeparator/>
@@ -177,6 +191,11 @@ export default function HistoryContent(){
           >
                {details}
           </Popup>
+          <ClearDatePopup
+               open={showClearDate}
+               onOpen={setShowClearDate}
+               onSuccess={updateValues}
+          />
           </>
      )
 }
