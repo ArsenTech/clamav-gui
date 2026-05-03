@@ -92,6 +92,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
   - Detect OS + version
   - Show supported / not supported
   - Disable incompatible actions
+- [ ] Fix translation placeholders (like `{{code}}`)
 #### v1.0.7 (Planned, Stability)
 - [ ] Silent Scheduled Scans Settings (Another Attempt)
 - [ ] Scheduler support for Linux and MacOS
