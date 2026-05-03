@@ -1,5 +1,4 @@
-import { LucideProps } from "lucide-react";
-import { SchedulerType } from ".";
+import { LucideIconType, SchedulerType } from ".";
 import { BadgeVisibility, ScanProfile, ScanType, SidebarCollapsible } from "./enums";
 import { COLORS } from "../constants/colors";
 import { SCAN_SETTINGS } from "../constants/settings/scan-options";
@@ -20,7 +19,7 @@ export type ResolvedTheme = Exclude<Theme, "system">;
 export type Color = keyof typeof COLORS;
 export interface IThemeSettings{
      theme: {
-          Icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>,
+          Icon: LucideIconType,
           theme: Theme
      }[],
      color: {

@@ -1,11 +1,10 @@
-import { LucideProps } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
 import { cn } from "@/lib/utils";
-import { DesignType } from "@/lib/types";
+import { DesignType, LucideIconType } from "@/lib/types";
 
 interface Props{
-     Icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>,
+     Icon: LucideIconType,
      title: string,
      children: React.ReactNode,
      className?: string,

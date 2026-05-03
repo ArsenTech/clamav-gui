@@ -12,9 +12,11 @@ export type ActionType = "restore" | "delete"
 export type FsOption = "file" | "folder";
 export type DesignType = "default" | "danger";
 
+export type LucideIconType = React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>
+
 export interface ISettingsTab{
      page: SettingsTab
-     Icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>,
+     Icon: LucideIconType,
      Loader: React.FC,
      LazyComponent: React.LazyExoticComponent<React.FC<SettingsProps>>
 }

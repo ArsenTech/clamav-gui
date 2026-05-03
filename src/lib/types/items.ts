@@ -1,20 +1,20 @@
-import { LucideProps } from "lucide-react";
 import { QuickAccessLink, SidebarLink, ScanType } from "./enums";
+import { LucideIconType } from ".";
 
 export interface IScanMenuItem{
      type: ScanType,
-     Icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>
+     Icon: LucideIconType
 }
 export interface IQuickAccessItem{
      type: QuickAccessLink
      href: string,
-     Icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>,
+     Icon: LucideIconType,
      openDialogType: "none" | "file" | "folder"
 }
 export interface ISidebarItem{
      name: SidebarLink,
      href: string,
-     Icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>,
+     Icon: LucideIconType,
 }
 export interface ISpecialThanksItem{
      handle: string,
