@@ -137,7 +137,13 @@ If your changes affect the updater, release notes, or update flow, please test u
    - 🇦🇲 Armenian: `Թարգմանությունը՝ ArsenTech-ի - https://github.com/ArsenTech`
    Make sure the credit for the translation is unique :-)
 8. Test by switching to your new language and tweaking some translations.
-9. Submit a PR for review!
+9. Run:
+   ```bash
+   npm run i18n:missing-keys
+   ```
+   Then type a language code like `es`, `tr`, or `ge`.
+   Fix missing keys until you reach 100%.
+10. Submit a PR for review!
 
 Once it's complete, your i18n contribution will be live!
 
