@@ -73,20 +73,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - **Multilingual Support** - Use the ClamAV GUI in your native language besides English
 
 ### Planned Improvements
-#### v1.0.5 (Next)
-- [X] Settings to change the sidebar collapsible state (Options: `Off-Canvas` and `Icon`)
-- [X] New Clear History Options
-  - [X] Clear last 24 hours
-  - [X] Clear last 7 days
-  - [X] Clear last 30 days
-  - [X] Clear up to the date
-- [X] Test the new Workflow change
-- [X] GUI Updater
-  - [X] Add a feature to log the updater actions into the history
-- [X] Replace alert boxes from `Dialog` and `Drawer` components with `AlertDialog` component from ShadCN UI
-- [X] Convert each data table cell into a reusable component + Organize it
-- [X] Fix the scan state desynchronization bug - fixes [#11](https://github.com/ArsenTech/clamav-gui/issues/11)
-#### v1.0.6 (Planned)
+#### v1.0.6 (Next)
 - [ ] The "Clear by range" Clear History Option
 - [ ] Translate new parts after running `npm run i18n:missing-keys` and typing
   - 🇫🇷 French - `fr`
@@ -105,11 +92,11 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
   - Detect OS + version
   - Show supported / not supported
   - Disable incompatible actions
-#### v1.0.7 (Stability)
+#### v1.0.7 (Planned, Stability)
 - [ ] Silent Scheduled Scans Settings (Another Attempt)
 - [ ] Scheduler support for Linux and MacOS
 - [ ] ClamAV Engine Updater
-#### v1.1.x (Major)
+#### v1.1.x (Planned,Major)
 - [ ] Limit `helpers::scheduler::windows::get_last_run_time` only for Windows Users
 - [ ] YARA Related Features
   - [ ] YARA Scan Type
