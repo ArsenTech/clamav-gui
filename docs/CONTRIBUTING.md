@@ -139,7 +139,8 @@ If your changes affect the updater, release notes, or update flow, please test u
 8. Test by switching to your new language and tweaking some translations.
 9. To check for missing keys, run:
    ```bash
-   npm run i18n:missing-keys <lang-code> # Example: `es`, `tr`, or `ge`
+   npm run i18n:missing-keys <lang-codes> # Example: fr pl, ru hy, or ge
+   # Example usage: npm run i18n:missing-keys tr es
    ```
    Fix missing keys until you reach 100%.
 10. Submit a PR for review!

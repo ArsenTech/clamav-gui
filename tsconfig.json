@@ -21,12 +21,15 @@
     "noFallthroughCasesInSwitch": true,
 
     /* Aliases */
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
       "@i18n/*": ["./public/locales/*"]
     }
   },
   "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "exclude": ["scripts"],
+  "references": [
+    { "path": "./tsconfig.node.json" },
+    { "path": "./tsconfig.scripts.json" }
+  ]
 }

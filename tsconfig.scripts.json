@@ -1,0 +1,13 @@
+{
+     "compilerOptions": {
+          "composite": true,
+          "target": "ESNext",
+          "module": "NodeNext",
+          "moduleResolution": "NodeNext",
+          "lib": ["ESNext"],
+          "types": ["node"],
+          "strict": true,
+          "rootDir": "scripts"
+     },
+     "include": ["scripts"]
+}

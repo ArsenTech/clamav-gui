@@ -3,12 +3,11 @@ import { stdin as input, stdout as output } from 'node:process';
 import fs from "node:fs";
 import path from "node:path";
 
-const isObject = (val: any) =>
-  typeof val === "object" && val !== null && !Array.isArray(val);
+const isObject = (val: any) => typeof val === "object" && val !== null && !Array.isArray(val);
 
 function compareKeys(base: any, target: any, path = ""): {
-  untranslated: number,
-  translated: number
+     untranslated: number,
+     translated: number
 } {
      let untranslated = 0, translated = 0;
 
@@ -95,10 +94,13 @@ function printOutput(lang: string){
      }
 }
 
-const langCode = process.argv[2];
+const langCodes = process.argv.slice(2)
 
-if(langCode) {
-     printOutput(langCode)
+if(langCodes.length > 0) {
+     for(const lang of langCodes){
+          console.log(`\n🌍 Checking ${lang}...`)
+          printOutput(lang)
+     }
 } else {
      const rl = readline.createInterface({ input, output });
      rl.question("Enter a lang code (e.g. es, pl, hy, or ru): ",lang=>{
