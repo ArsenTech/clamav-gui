@@ -137,11 +137,10 @@ If your changes affect the updater, release notes, or update flow, please test u
    - 🇦🇲 Armenian: `Թարգմանությունը՝ ArsenTech-ի - https://github.com/ArsenTech`
    Make sure the credit for the translation is unique :-)
 8. Test by switching to your new language and tweaking some translations.
-9. Run:
+9. To check for missing keys, run:
    ```bash
-   npm run i18n:missing-keys
+   npm run i18n:missing-keys <lang-code> # Example: `es`, `tr`, or `ge`
    ```
-   Then type a language code like `es`, `tr`, or `ge`.
    Fix missing keys until you reach 100%.
 10. Submit a PR for review!
 

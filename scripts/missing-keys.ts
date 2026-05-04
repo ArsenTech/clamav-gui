@@ -80,9 +80,7 @@ function compareLocales(baseLang: string, targetLang: string): {
      return {untranslated, translated}
 }
 
-const rl = readline.createInterface({ input, output });
-
-rl.question("Enter a lang code (e.g. es, pl, hy, or ru): ",lang=>{
+function printOutput(lang: string){
      try {
           const {untranslated, translated} = compareLocales("en", lang);
           const total = translated + untranslated;
@@ -95,5 +93,16 @@ rl.question("Enter a lang code (e.g. es, pl, hy, or ru): ",lang=>{
      } catch (err) {
           console.error("❌ Error:", err);
      }
-     rl.close();
-})
+}
+
+const langCode = process.argv[2];
+
+if(langCode) {
+     printOutput(langCode)
+} else {
+     const rl = readline.createInterface({ input, output });
+     rl.question("Enter a lang code (e.g. es, pl, hy, or ru): ",lang=>{
+          printOutput(lang)
+          rl.close();
+     })
+}
