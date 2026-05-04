@@ -75,7 +75,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 ### Planned Improvements
 #### v1.0.6 (Next)
 - [ ] The "Clear by range" Clear History Option
-- [ ] Translate new parts after running `npm run i18n:missing-keys` and typing
+- [ ] Translate new parts after running `npm run i18n:missing-keys [lang-code]` and typing
   - 🇫🇷 French - `fr`
   - 🇵🇱 Polish - `pl`
 - [ ] Dynamic App Window Title for pages
@@ -110,6 +110,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
   - [X] Installation Guide
   - [X] Troubleshooting
   - [ ] FAQs
+  - [ ] Translation Guide
 
 ### Built With
 - [![Tauri][tauri-shield]][tauri-url]
