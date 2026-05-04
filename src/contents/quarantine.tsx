@@ -6,16 +6,16 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
+import { IQuarantineState } from "@/lib/types/states";
 
 interface Props{
      data: IQuarantineData[],
      isRefreshing: boolean,
      onRefresh: () => void,
-     onBulkClear: () => void,
-     onBulkRestore: () => void,
+     onUpdateState: (newState: Partial<IQuarantineState>) => void,
      columns: ColumnDef<IQuarantineData>[]
 }
-export default function QuarantineTable({isRefreshing,data,onRefresh,onBulkClear,onBulkRestore,columns}: Props){
+export default function QuarantineTable({isRefreshing, data, onRefresh, columns, onUpdateState}: Props){
      const {t} = useTranslation("quarantine")
      return (
           <>
@@ -24,10 +24,10 @@ export default function QuarantineTable({isRefreshing,data,onRefresh,onBulkClear
                     <RotateCw className={cn(isRefreshing && "animate-spin")}/>
                     {isRefreshing ? t("bulk-actions.refresh.loading") : t("bulk-actions.refresh.original")}
                </Button>
-               <Button variant="secondary" onClick={onBulkClear}>
+               <Button variant="secondary" onClick={()=>onUpdateState({popupState: "bulk-delete"})}>
                     <Trash2/> {t("bulk-actions.clear")}
                </Button>
-               <Button variant="secondary" onClick={onBulkRestore}>
+               <Button variant="secondary" onClick={()=>onUpdateState({popupState: "bulk-restore"})}>
                     <RotateCcw/> {t("bulk-actions.restore")}
                </Button>
           </ButtonGroup>

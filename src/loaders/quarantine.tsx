@@ -7,8 +7,7 @@ export default function QuarantineLoader({rows}: TableLoaderProps){
      const {settings} = useSettings()
      return (
           <>
-          <Skeleton className="h-6 md:h-[30px] lg:h-9 w-1/5"/>
-          <Skeleton className="h-9 w-[311px]"/>
+          <Skeleton className="h-9 w-[320px]"/>
           <div className="flex items-center justify-between gap-4 w-full">
                <Skeleton className="w-[512px] h-9"/>
                <Skeleton className="w-20 h-9"/>

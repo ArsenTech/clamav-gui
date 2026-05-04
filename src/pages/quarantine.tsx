@@ -92,8 +92,7 @@ export default function QuarantinePage(){
                               data={data}
                               isRefreshing={isRefreshing}
                               onRefresh={fetchData}
-                              onBulkClear={()=>setState({ popupState: "bulk-delete" })}
-                              onBulkRestore={()=>setState({ popupState: "bulk-restore" })}
+                              onUpdateState={setState}
                               columns={GET_QUARANTINE_COLS(setState,settings.developerMode)}
                          />
                     </Suspense>
