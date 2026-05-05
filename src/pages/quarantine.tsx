@@ -23,6 +23,7 @@ export default function QuarantinePage(){
      const [isRefreshing, startTransition] = useTransition();
      const {setCount, decreaseBy} = useQuarantineCount();
      const fetchData = () => {
+          if(isRefreshing) return;
           startTransition(async()=>{
                const newData = await fetchQuarantine();
                setCount(newData.length)
