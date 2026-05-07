@@ -18,22 +18,22 @@ function compareKeys(base: any, target: any, path = ""): {
 
      for (const key in base) {
           const fullPath = path ? `${path}.${key}` : key;
+          const baseVal = base[key];
 
           if (!(key in target)) {
                console.error(`❌ Missing key: ${fullPath}`);
-               untranslated++;
+               if (!isObject(baseVal)) untranslated++;
                continue;
-          } else {
+          } else if (!isObject(baseVal)) {
                translated++;
           }
 
-          const baseVal = base[key];
           const targetVal = target[key];
 
           if (typeof targetVal === "string" && targetVal.trim() === "") {
                console.error(`❌ Empty translation: ${fullPath}`);
-               untranslated++;
-               translated--;
+               if (!isObject(baseVal)) untranslated++;
+               translated = Math.max(0, translated - 1);
           }
 
           if (typeof baseVal !== typeof targetVal) {
@@ -50,6 +50,31 @@ function compareKeys(base: any, target: any, path = ""): {
      return { untranslated, translated };
 }
 
+interface CheckKeysOptions{
+     basePath: string,
+     targetPath: string,
+     targetLang: string,
+     file: string
+}
+function checkKeys({
+     basePath,
+     targetPath,
+     file,
+     targetLang
+}: CheckKeysOptions){
+     if (!fs.existsSync(targetPath)) {
+          console.error(`❌ Missing file: ${targetLang}/${file}`);
+          return { untranslated: 0, translated: 0 };
+     }
+
+     // Public translations
+     const baseJSON = JSON.parse(fs.readFileSync(basePath, "utf-8"));
+     const targetJSON = JSON.parse(fs.readFileSync(targetPath, "utf-8"));
+
+     console.log(`\n🔍 Checking: ${file}`);
+     return compareKeys(baseJSON, targetJSON, file.replace(".json", ""));
+}
+
 function compareLocales(baseLang: string, targetLang: string): {
      untranslated: number,
      translated: number
@@ -62,20 +87,18 @@ function compareLocales(baseLang: string, targetLang: string): {
      for (const file of baseFiles) {
           const basePath = path.join(baseDir, file);
           const targetPath = path.join(targetDir, file);
-
-          if (!fs.existsSync(targetPath)) {
-               console.error(`❌ Missing file: ${targetLang}/${file}`);
-               continue;
-          }
-
-          const baseJSON = JSON.parse(fs.readFileSync(basePath, "utf-8"));
-          const targetJSON = JSON.parse(fs.readFileSync(targetPath, "utf-8"));
-
-          console.log(`\n🔍 Checking: ${file}`);
-          const obj = compareKeys(baseJSON, targetJSON, file.replace(".json", ""));
+          const obj = checkKeys({ basePath, targetPath, targetLang, file });
           untranslated+=obj.untranslated;
           translated+=obj.translated;
      }
+     // System tray translations
+     const sysTrayObj = checkKeys({
+          basePath: path.join(process.cwd(), "src-tauri", "assets", "i18n", `${baseLang}.json`),
+          targetPath: path.join(process.cwd(), "src-tauri", "assets", "i18n", `${targetLang}.json`),
+          targetLang, file: `sys-tray.json (src-tauri/assets/i18n/${targetLang}.json)`
+     })
+     untranslated+=sysTrayObj.untranslated;
+     translated+=sysTrayObj.translated;
      return {untranslated, translated}
 }
 
