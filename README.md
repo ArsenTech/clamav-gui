@@ -75,42 +75,50 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 ### Planned Improvements
 #### v1.0.6 (Next)
 - [ ] The "Clear by range" Clear History Option
-- [ ] Translate new parts after running `npm run i18n:missing-keys [lang-codes]` and typing
-  - 🇫🇷 French - `fr`
-  - 🇵🇱 Polish - `pl`
 - [ ] Dynamic App Window Title for pages
-- [ ] Minimized Auto Start Setting ([#12](https://github.com/ArsenTech/clamav-gui/issues/12))
 - [ ] Expanded approach of the Bug fix for the issue [#11](https://github.com/ArsenTech/clamav-gui/issues/11)
    - [ ] True scan restoration (no reset of progress)
    - [ ] Better scan continuity (UI feedback)
-   - [ ] Backend error translation (frontend mapping)
-   - [ ] Smarter scan awareness (optional scanType in status) the expanded approach
-- [ ] Backend Error Translation
-  - [ ] Normalize Error Handling
+   - [ ] Smarter scan awareness (optional scanType in status)
+- [ ] Error Handling & Translation Improvements
+   - Normalize backend errors
+   - Map to frontend translations
 - [ ] Add a macOS Guide inside the **No ClamAV** Page
 - [ ] Minimum OS requirement tab (first step)
-  - Detect OS + version
-  - Show supported / not supported
-  - Disable incompatible actions
+   - Detect OS + version
+   - Show supported / not supported
+   - Disable incompatible actions
 - [ ] Fix translation placeholders (like `{{code}}`)
+
+> [!NOTE]
+> v1.0.6 is complete when:
+> - scan restoration works reliably
+> - no major UI regressions
+> - error handling is consistent
+
 #### v1.0.7 (Planned, Stability)
+- [ ] Minimized Auto Start Setting ([#12](https://github.com/ArsenTech/clamav-gui/issues/12))
 - [ ] Silent Scheduled Scans Settings (Another Attempt)
+#### v1.0.8 (Platform Expansion)
 - [ ] Scheduler support for Linux and MacOS
-- [ ] ClamAV Engine Updater
-#### v1.1.x (Planned,Major)
 - [ ] Limit `helpers::scheduler::windows::get_last_run_time` only for Windows Users
+#### v1.1.x (Planned, Major)
+- [ ] ClamAV Engine Updater
 - [ ] YARA Related Features
   - [ ] YARA Scan Type
   - [ ] YARA Real-time Option
   - [ ] YARA Configuration in settings
 - [ ] Feature to submit suspicious signatures to ClamAV
-#### Maybe
+#### Nice to have
 - [ ] Write the documentation in the `docs/` folder.
   - [ ] Usage Guide
   - [X] Installation Guide
   - [X] Troubleshooting
   - [ ] FAQs
   - [ ] Translation Guide
+- [ ] Translate new parts after running `npm run i18n:missing-keys [lang-codes]` and typing
+  - 🇫🇷 French - `fr`
+  - 🇵🇱 Polish - `pl`
 
 ### Built With
 - [![Tauri][tauri-shield]][tauri-url]
