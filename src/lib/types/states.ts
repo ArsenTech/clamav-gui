@@ -45,7 +45,8 @@ export interface IHistoryPageState{
 export interface IQuarantineState{
      popupState: "" | QuarantineConfirmationState
      id: string,
-     data: IQuarantineData[]
+     data: IQuarantineData[],
+     isInitializing: boolean
 }
 export interface ISchedulerState{
      popupState: SchedulerConfState | ""

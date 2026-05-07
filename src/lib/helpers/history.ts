@@ -30,7 +30,7 @@ export function translateDetails(d: HistoryDetails, t: TFunction<"history">) {
                     t("details.def-update-finish.success"),
                     t("details.def-update-finish.warning"),
                ];
-               return exits[d.details.exit_code] ?? t("details.def-update-finish.error");
+               return exits[d.details.exit_code] ?? t("details.def-update-finish.error", {code: d.details.exit_code});
           }
           case "def-update-error":
                return d.details.err;

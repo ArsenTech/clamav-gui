@@ -27,7 +27,7 @@ export default function QuarantinePage(){
           startTransition(async()=>{
                const newData = await fetchQuarantine();
                setCount(newData.length)
-               setState({ data: newData });
+               setState({ data: newData, isInitializing: false });
           });
      }
      useEffect(()=>fetchData(),[])
@@ -80,14 +80,16 @@ export default function QuarantinePage(){
      const handleConfirm = () => {
           if(popupState) CLEAR_ACTIONS[popupState]()
      }
-     const {popupState, data} = quarantineState
+     const {popupState, data, isInitializing} = quarantineState
      const isNotEmpty = useMemo(()=>data.length>0,[data]);
      const {t} = useTranslation("quarantine")
      const isRestoreAction = useMemo(()=>popupState==="restore" || popupState==="bulk-restore",[popupState])
      return (
           <AppLayout className="flex justify-center items-center gap-4 flex-col p-4">
                <h1 className="text-2xl md:text-3xl lg:text-4xl font-medium border-b pb-2 w-fit">{t("title")}</h1>
-               {isNotEmpty ? (
+               {isInitializing ? (
+                   <QuarantineLoader rows={10}/>
+               ) : isNotEmpty ? (
                     <Suspense fallback={<QuarantineLoader rows={data.slice(0,10).length}/>}>
                          <QuarantineTable
                               data={data}

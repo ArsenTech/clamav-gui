@@ -43,7 +43,8 @@ export const INITIAL_HISTORY_STATE: IHistoryPageState = {
 export const INITIAL_QUARANTINE_STATE: IQuarantineState = {
      popupState: "",
      id: "",
-     data: []
+     data: [],
+     isInitializing: true
 }
 export const INITIAL_SCHEDULER_STATE: ISchedulerState = {
      popupState: "",

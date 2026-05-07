@@ -6,7 +6,10 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ---
 ## [1.0.6] - Unreleased
 ### Improved
-- Optimized Props of the Quarantine Table + A Loader tweak
+- Optimized Props of the Quarantine Table
+- A Quarantine Page Loader
+### Fixed
+- Translation placeholder error
 
 ## [1.0.5] - 2026-05-03
 ### Added

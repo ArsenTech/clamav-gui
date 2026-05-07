@@ -88,7 +88,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
    - Detect OS + version
    - Show supported / not supported
    - Disable incompatible actions
-- [ ] Fix translation placeholders (like `{{code}}`)
+- [X] Fix translation placeholders (like `{{code}}`)
 
 > [!NOTE]
 > v1.0.6 is complete when:
