@@ -15,6 +15,7 @@
 [![Stargazers][stars-shield]][stars-url]
 [![downloads][downloads-shield]][downloads-url]
 [![project_license][license-shield]][license-url]
+[![sponsors-badge]][sponsors-link]
 
 [![Issues][issues-shield]][issues-url]
 [![build-status][status-shield]][status-url]
@@ -153,9 +154,7 @@ Contributions are Always Welcome! Please read both [Code of Conduct][code-of-con
 
 ## Sponsors ❤️
 Check out our awesome sponsors!
-
-<!-- sponsors -->
-<!-- sponsors -->
+[![Sponsors List][sponsors-list]][sponsors-link]
 
 ## Star History
 [![Star History Chart][star-history-chart]][star-history-url]
@@ -207,6 +206,9 @@ ClamAV is a trademark of Cisco Systems, Inc. This project is an independent, ope
 [changelog-url]: https://github.com/ArsenTech/clamav-gui/blob/main/CHANGELOG.md
 [website-url]: https://arsentech.github.io
 [docs-url]: https://github.com/ArsenTech/clamav-gui/blob/main/docs/usage.md
+[sponsors-list]: https://raw.githubusercontent.com/ArsenTech/clamav-gui/main/public/sponsors/sponsors.svg
+[sponsors-link]: https://github.com/sponsors/ArsenTech
+[sponsors-badge]: https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86&style=for-the-badge
 
 <!-- Languages -->
 [tauri-shield]: https://img.shields.io/badge/Tauri-FFC131?style=for-the-badge&logo=Tauri&logoColor=white
