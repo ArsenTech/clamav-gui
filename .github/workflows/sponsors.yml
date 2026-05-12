@@ -6,6 +6,8 @@ on:
     - cron: 30 15 * * 0-6
 jobs:
   deploy:
+    permissions:
+        contents: write
     runs-on: ubuntu-latest
     steps:
       # Checkout the repository
