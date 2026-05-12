@@ -37,13 +37,13 @@
           </li>
           <li><a href="#usage-manual">Usage Manual</a></li>
           <li><a href="#versioning">Versioning</a></li>
+          <li><a href="#sponsors">Sponsors</a></li>
           <li>
                <a href="#contributing">Contributing</a>
                <ul>
                     <li><a href="#top-contributors">Top Contributors</a></li>
                </ul>
           </li>
-          <li><a href="#sponsors">Sponsors</a></li>
           <li><a href="#star-history">Star History</a></li>
           <li><a href="#license">License</a></li>
      </ol>
@@ -147,14 +147,14 @@ Full documentation is available here:
 ## Versioning
 This website follows [Semantic Versioning](https://semver.org/). You can view the full [Changelog][changelog-url] for details on each website version.
 
+## Sponsors
+Check out our awesome sponsors! ❤️
+[![Sponsors List][sponsors-list]][sponsors-link]
+
 ## Contributing
 Contributions are Always Welcome! Please read both [Code of Conduct][code-of-conduct-url] and [CONTRIBUTING.md][contributing-url] before contributing.
 ### Top Contributors
 [![Top Contributors][top-contributors]][contributors-url]
-
-## Sponsors ❤️
-Check out our awesome sponsors!
-[![Sponsors List][sponsors-list]][sponsors-link]
 
 ## Star History
 [![Star History Chart][star-history-chart]][star-history-url]
