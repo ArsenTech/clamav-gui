@@ -42,6 +42,7 @@
                     <li><a href="#top-contributors">Top Contributors</a></li>
                </ul>
           </li>
+          <li><a href="#sponsors">Sponsors</a></li>
           <li><a href="#star-history">Star History</a></li>
           <li><a href="#license">License</a></li>
      </ol>
@@ -149,6 +150,12 @@ This website follows [Semantic Versioning](https://semver.org/). You can view th
 Contributions are Always Welcome! Please read both [Code of Conduct][code-of-conduct-url] and [CONTRIBUTING.md][contributing-url] before contributing.
 ### Top Contributors
 [![Top Contributors][top-contributors]][contributors-url]
+
+## Sponsors ❤️
+Check out our awesome sponsors!
+
+<!-- sponsors -->
+<!-- sponsors -->
 
 ## Star History
 [![Star History Chart][star-history-chart]][star-history-url]
