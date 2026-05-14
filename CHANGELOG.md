@@ -12,14 +12,14 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - A Quarantine Page Loader
 - Better exit code 2 handling - Fixes [#15](https://github.com/ArsenTech/clamav-gui/issues/15)
 - Added Linux system path exclusions - Fixes [#15](https://github.com/ArsenTech/clamav-gui/issues/15)
-- Settings Page UI
+- Settings Page UI - Fixes [#15](https://github.com/ArsenTech/clamav-gui/issues/15), Used the minimal stable fix
   - Renders only active tab
   - Optimized SettingsContext value
   - Removed suspicious `cache()` inside hooks while keeping those outside the hooks
 ### Fixed
 - Translation placeholder error
-- Profile settings rerender bug
-- Height UI bug (uses Dynamic height)
+- Profile settings rerender bug - Fixes [#15](https://github.com/ArsenTech/clamav-gui/issues/15), Used the minimal stable fix
+- Height UI bug (uses Dynamic height) - Fixes [#15](https://github.com/ArsenTech/clamav-gui/issues/15), Used the minimal stable fix
 
 ## [1.0.5] - 2026-05-03
 ### Added
