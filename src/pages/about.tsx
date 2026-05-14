@@ -3,6 +3,7 @@ import { AppLayout } from "@/components/layout";
 import Logo from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { getAppVersions, getClamAvVersion } from "@/data/app";
+import useWindowTitle from "@/hooks/use-window-title";
 import { COMPONENTS } from "@/lib/constants/md-components";
 import { INITIAL_VERSION_INFO } from "@/lib/constants/states";
 import { IClamAvVersion } from "@/lib/types";
@@ -17,6 +18,7 @@ export default function AboutPage(){
      const [versions, setVersions] = useState<IVersion>(()=>JSON.parse(localStorage.getItem("versions") as string) || INITIAL_VERSION_INFO);
      const [clamavVersion, setClamavVersion] = useState<IClamAvVersion|null>(()=>JSON.parse(localStorage.getItem("clamav-version") as string) || null);
      const {t} = useTranslation("about")
+     useWindowTitle(t("title"))
      useEffect(()=>{
           (async()=>{
                const newVersions = await getAppVersions()

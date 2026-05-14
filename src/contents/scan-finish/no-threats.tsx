@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import useWindowTitle from "@/hooks/use-window-title";
 import { formatDuration } from "@/lib/helpers/formating";
 import { IScanPageState } from "@/lib/types/states";
 import { ShieldX, Timer, LogOut, ShieldCheck, ShieldAlert } from "lucide-react";
@@ -15,6 +16,12 @@ export default function ScanFinishedContent({isStartup, handlePrimaryAction, sca
      const hasErrors = !!errMsg && errMsg.trim() !== "";
      const {t} = useTranslation("scan");
      const exitCodes = t("exit-code",{returnObjects: true})
+     const scanResultTitle = hasErrors
+          ? t("finished.error")
+          : isPartialScan
+               ? t("finished.partial")
+               : t("finished.no-threats");
+     useWindowTitle(scanResultTitle)
      return (
           <>
                {hasErrors ? (
@@ -24,11 +31,7 @@ export default function ScanFinishedContent({isStartup, handlePrimaryAction, sca
                ) : (
                     <ShieldCheck className="size-32 text-emerald-700 dark:text-emerald-500"/>
                )}
-               <h2 className="text-lg sm:text-xl md:text-2xl font-medium">{hasErrors
-                    ? t("finished.error")
-                    : isPartialScan
-                         ? t("finished.partial")
-                         : t("finished.no-threats")}</h2>
+               <h2 className="text-lg sm:text-xl md:text-2xl font-medium">{scanResultTitle}</h2>
                <h2 className="text-lg sm:text-xl font-semibold flex items-center justify-center gap-2.5 w-fit">
                     <Timer className="text-primary"/>
                     {formatDuration(duration)}

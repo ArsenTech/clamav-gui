@@ -5,6 +5,7 @@
           "file": "Выберите файл для сканирования",
           "folder": "Выберите несколько папок для сканирования"
      },
+     "choose-scan-type": "Выберите тип сканирования",
      "scan-type": {
           "title": "Тип сканирования: {{scanType}}",
           "main": {
@@ -28,9 +29,10 @@
      "process": {
           "preparing": "Подготовка к сканированию...",
           "percentage": "{{percentage}}% - {{scanned}}/{{total}} файлов",
-          "files": "{{scanned}} файлов",
+          "files": "Просканировано {{scanned}} файлов",
           "scanning": "Сканирование..."
      },
+     "progress": "{{percentage}}% отсканировано",
      "items": {
           "currently-scanned": "В данный момент сканируется",
           "location": "Место сканирования",

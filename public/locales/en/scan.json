@@ -5,6 +5,7 @@
           "file": "Choose a file to scan",
           "folder": "Choose multiple folders to scan"
      },
+     "choose-scan-type": "Choose a Scan Type",
      "scan-type": {
           "title": "Scan Type: {{scanType}}",
           "main": {
@@ -31,6 +32,7 @@
           "files": "{{scanned}} files scanned",
           "scanning": "Scanning..."
      },
+     "progress": "{{percentage}}% scanned",
      "items": {
           "currently-scanned": "Currently scanned",
           "location": "Scan Location",

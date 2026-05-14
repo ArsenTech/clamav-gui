@@ -15,6 +15,7 @@ import { useQuarantineCount } from "@/context/quarantine-count";
 import ConfirmationMessage from "@/components/popup/confirm";
 import { getErrorMessage } from "@/lib/helpers";
 import { fetchQuarantine } from "@/data/quarantine";
+import useWindowTitle from "@/hooks/use-window-title";
 const QuarantineTable = lazy(()=>import("@/contents/quarantine"))
 
 export default function QuarantinePage(){
@@ -84,6 +85,7 @@ export default function QuarantinePage(){
      const isNotEmpty = useMemo(()=>data.length>0,[data]);
      const {t} = useTranslation("quarantine")
      const isRestoreAction = useMemo(()=>popupState==="restore" || popupState==="bulk-restore",[popupState])
+     useWindowTitle(t("title"))
      return (
           <AppLayout className="flex justify-center items-center gap-4 flex-col p-4">
                <h1 className="text-2xl md:text-3xl lg:text-4xl font-medium border-b pb-2 w-fit">{t("title")}</h1>

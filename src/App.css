@@ -122,25 +122,24 @@
   body {
     @apply bg-background text-foreground;
   }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
 
 @layer utilities {
-  .reduce-motion .animate-in,
-  .reduce-motion .animate-out,
-  .reduce-motion [class*="slide-in-"],
-  .reduce-motion [class*="slide-out-"],
-  .reduce-motion [class*="zoom-in-"],
-  .reduce-motion [class*="zoom-out-"],
-  .reduce-motion [class*="fade-in-"],
-  .reduce-motion [class*="fade-out-"],
-  .reduce-motion [class*="accordion-"],
-  .reduce-motion [data-state="open"],
-  .reduce-motion [data-state="closed"] {
+  /* Also allows manual override via JS class toggle */
+  .reduce-motion *,
+  .reduce-motion *::before,
+  .reduce-motion *::after {
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-  }
-
-  .reduce-motion {
     scroll-behavior: auto !important;
   }
 }

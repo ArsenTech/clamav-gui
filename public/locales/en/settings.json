@@ -1,6 +1,12 @@
 {
      "title": "Settings",
      "json-settings": "JSON Settings",
+     "window-titles": {
+          "general": "General Settings",
+          "advanced": "Advanced Settings",
+          "scan": "Scan Settings",
+          "update": "Updates"
+     },
      "export": {
           "button-title": "Export Settings",
           "title": "Export ClamAV GUI Settings",

@@ -6,8 +6,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ---
 ## [1.0.6] - Unreleased
 ### Added
-- The "Reduce Motion" setting - Uses the minimal approach
+- The "Reduce Motion" setting that reduces transitions and animations
 - macOS Guide inside the **No ClamAV** Page - Fixes [#13](https://github.com/ArsenTech/clamav-gui/issues/13) and [#14](https://github.com/ArsenTech/clamav-gui/issues/14)
+- Dynamic App Window Title for pages
 ### Improved
 - Optimized Props of the Quarantine Table
 - A Quarantine Page Loader

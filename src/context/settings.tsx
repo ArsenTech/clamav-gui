@@ -16,12 +16,16 @@ const SettingsContext = createContext<SettingsContextValue | null>(null)
 export function SettingsProvider({ children }: { children: React.ReactNode }){
      const {t} = useTranslation("messages")
      const [settings, setSettings] = useState<ISettings>(()=>{
+          const newDefaults: ISettings = {
+               ...DEFAULT_SETTINGS,
+               reduceMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          }
           try {
                const raw = localStorage.getItem("clamav-settings")
-               if (!raw) return DEFAULT_SETTINGS
-               return { ...DEFAULT_SETTINGS, ...JSON.parse(raw) }
+               if (!raw) return newDefaults
+               return { ...newDefaults, ...JSON.parse(raw) }
           } catch {
-               return DEFAULT_SETTINGS
+               return newDefaults
           }
      });
      const formatDate = (date?: string) => {

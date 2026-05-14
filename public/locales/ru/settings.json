@@ -1,6 +1,12 @@
 {
      "title": "Настройки",
      "json-settings": "Настройки JSON",
+     "window-titles": {
+          "general": "Общие настройки",
+          "advanced": "Расширенные настройки",
+          "scan": "Настройки сканирования",
+          "update": "Обновления"
+     },
      "export": {
           "button-title": "Экспорт настроек",
           "title": "Экспорт настроек ClamAV GUI",

@@ -21,6 +21,7 @@ import { getErrorMessage } from "@/lib/helpers";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { getAppDetails } from "@/data/app";
 import { DEFAULT_SETTINGS } from "@/lib/constants/settings";
+import useWindowTitle from "@/hooks/use-window-title";
 
 export default function SettingsContent(){
      const [searchParams] = useSearchParams();
@@ -92,6 +93,9 @@ export default function SettingsContent(){
      }
      const isMobile = useIsMobile();
      const activeTab = useMemo(()=>SETTINGS_TABS.find(t => t.page === tab),[tab]);
+     useWindowTitle(!activeTab ? t("window-titles.general") : t(`window-titles.${activeTab.page}`, {
+          defaultValue: t("window-titles.general")
+     }))
      return (
           <>
           <h1 className="inline-flex justify-between items-center gap-2 w-full">

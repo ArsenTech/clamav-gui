@@ -77,7 +77,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 ### Planned Improvements
 #### v1.0.6 (Next)
 - [ ] The "Clear by range" Clear History Option
-- [ ] Dynamic App Window Title for pages
+- [X] Dynamic App Window Title for pages
 - [ ] Expanded approach of the Bug fix for the issue [#11](https://github.com/ArsenTech/clamav-gui/issues/11)
    - [ ] True scan restoration (no reset of progress)
    - [ ] Better scan continuity (UI feedback)

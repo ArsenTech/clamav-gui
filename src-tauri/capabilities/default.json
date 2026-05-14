@@ -27,6 +27,7 @@
     "fs:allow-read-text-file",
     "process:default",
     "store:default",
-    "notification:default"
+    "notification:default",
+    "core:window:allow-set-title"
   ]
 }

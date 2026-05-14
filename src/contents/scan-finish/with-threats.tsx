@@ -17,6 +17,7 @@ import { useQuarantineCount } from "@/context/quarantine-count";
 import ConfirmationMessage from "@/components/popup/confirm";
 import { ScanFinishConfState } from "@/lib/types";
 import { getErrorMessage } from "@/lib/helpers";
+import useWindowTitle from "@/hooks/use-window-title";
 
 interface Props{
      setScanState: React.Dispatch<React.SetStateAction<IScanPageState>>,
@@ -106,6 +107,7 @@ export default function ScanFinishedTable({setScanState, isStartup, scanState, h
      const handleConfirm = async() => {
           if(popupState) await ACTIONS[popupState]()
      }
+     useWindowTitle(t("finished.with-threats",{count: threats.length}))
      return (
           <>
                <ShieldAlert className="size-32 text-destructive"/>

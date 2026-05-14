@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import AlertBox from "../popup/alert";
+import useWindowTitle from "@/hooks/use-window-title";
 
 interface Props{
      scanState: IScanPageState,
@@ -59,6 +60,11 @@ export default function ScanProcess({scanState, handleReset, isStartup}: Props){
      }) : t("process.files",{
           scanned: formatNumber(scannedFiles,numSuffixTxt,locale)
      }),[hasTotal, scannedFiles, totalFiles, locale, t])
+     const progressTitle = useMemo(()=>hasTotal ? t("progress",{percentage}) : t("process.files",{
+          scanned: formatNumber(scannedFiles,numSuffixTxt,locale)
+     }),[hasTotal, scannedFiles, locale, t])
+     const title = ["running", "reconnecting"].includes(scanState.status) ? progressTitle : t("title");
+     useWindowTitle(title)
      return (
           <>
                <p className="text-muted-foreground font-medium">{t("scan-type.title",{
