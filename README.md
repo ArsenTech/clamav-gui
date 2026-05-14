@@ -97,6 +97,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
    - [ ] Investigate settings lag on Wayland/niri
    - [ ] Profile settings rerenders
    - [ ] Linux UI performance pass
+- [ ] The "Disable Animations" setting
 
 > [!NOTE]
 > v1.0.6 is complete when:
