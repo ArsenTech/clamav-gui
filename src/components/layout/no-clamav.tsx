@@ -32,7 +32,7 @@ export default function NoClamAVPage({isPending, handleCheck}: Props){
      }
      const randomImage = useMemo(()=>`/emojis/${getRandomEmoji()}.webp`,[])
      return (
-          <div className="p-8 grid grid-cols-1 md:grid-cols-2 gap-4 h-screen">
+          <div className="p-8 grid grid-cols-1 md:grid-cols-2 gap-4 h-dvh">
                <div className="flex items-center justify-center text-center">
                     <img src={randomImage} alt="Emoji" width={450} height={450}/>
                </div>

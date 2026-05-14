@@ -7,7 +7,7 @@
           "linux-commands": "Recommended Linux Commands"
      },
      "add-to-path": {
-          "title": "Adding to PATH Environment variable",
+          "title": "Making ClamAV detectable",
           "windows": {
                "cmd": "Open the Command Prompt, then type:",
                "if-returns-path": "Once it returns the path (example: <code>C:\\Program Files\\ClamAV</code>):",
@@ -27,7 +27,12 @@
                "kbd-shortcut": "Press <save/>, then <exit/>, reload the terminal by using:",
                "verification": "Verify by typing:"
           },
-          "check-step": "Once you installed ClamAV and added the ClamAV path into the <code>PATH</code> environment variable, click on the <bold>Check Availability</bold> button below to activate the ClamAV GUI for free"
+          "macos": {
+               "info": "Open the macOS terminal, then type:",
+               "symlink-info": "If clamscan is installed but not detected, you may need to create a symbolic link depending on your Homebrew installation path.",
+               "min-requirement": "Minimum OS Requirement: <bold>macOS 10.13 High Sierra</bold>"
+          },
+          "check-step": "Once ClamAV is installed and detectable, click on the <bold>Check Availability</bold> button below to activate the ClamAV GUI for free"
      },
      "buttons": {
           "prev": "Previous",

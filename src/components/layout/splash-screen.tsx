@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 export default function SplashScreen(){
      const {t} = useTranslation()
      return (
-          <div className="flex justify-center items-center gap-3 flex-col h-screen bg-linear-to-bl from-primary via-accent to-background px-4">
+          <div className="flex justify-center items-center gap-3 flex-col h-dvh bg-linear-to-bl from-primary via-accent to-background px-4">
                <Logo width={1000} height={265}/>
                <div className="flex items-center gap-2 md:gap-4">
                     <Spinner className="size-6 sm:size-8 md:size-16"/>

@@ -85,8 +85,8 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - [ ] Error Handling & Translation Improvements
    - Normalize backend errors
    - Map to frontend translations
-- [ ] Add a macOS Guide inside the **No ClamAV** Page
-- [ ] Minimum OS requirement tab (first step)
+- [X] Add a macOS Guide inside the **No ClamAV** Page
+- [X] Minimum OS requirement tab (first step)
    - Detect OS + version
    - Show supported / not supported
    - Disable incompatible actions
