@@ -2,7 +2,7 @@ import { DEFAULT_SETTINGS } from "@/lib/constants/settings";
 import { getErrorMessage } from "@/lib/helpers";
 import { ISettings } from "@/lib/types/settings";
 import { format } from "date-fns";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
@@ -35,7 +35,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }){
                return "Invalid Date"
           }
      }
-     const values: SettingsContextValue = {
+     const values: SettingsContextValue = useMemo(()=>({
           settings,
           setSettings: (overrides: Partial<ISettings>) => {
                const newValues: ISettings = {
@@ -45,7 +45,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }){
                setSettings(newValues)
           },
           formatDate
-     }
+     }),[settings])
      return (
           <SettingsContext.Provider value={values}>
                {children}

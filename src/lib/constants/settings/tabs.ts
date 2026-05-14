@@ -14,24 +14,28 @@ export const SETTINGS_TABS: ISettingsTab[] = [
           page: SettingsTab.General,
           Icon: Cog,
           Loader: GeneralSettingsLoader,
-          LazyComponent: GeneralSettings
+          LazyComponent: GeneralSettings,
+          usesProfile: false
      },
      {
           page: SettingsTab.Scan,
           Icon: Search,
           Loader: ScanSettingsLoader,
-          LazyComponent: ScanSettings
+          LazyComponent: ScanSettings,
+          usesProfile: true
      },
      {
           page: SettingsTab.Advanced,
           Icon: Braces,
           Loader: AdvancedSettingsLoader,
-          LazyComponent: AdvancedSettings
+          LazyComponent: AdvancedSettings,
+          usesProfile: true
      },
      {
           page: SettingsTab.Update,
           Icon: RotateCcw,
           Loader: UpdateSettingsLoader,
-          LazyComponent: UpdateSettings
+          LazyComponent: UpdateSettings,
+          usesProfile: false
      }
 ]

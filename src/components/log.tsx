@@ -19,7 +19,7 @@ export default function LogText({logs, isLoading}: Props){
      },[settings.autoScrollText, logs]);
      const {t} = useTranslation()
      return (
-          <ScrollArea className="min-h-[calc(100vh-200px)]">
+          <ScrollArea className="min-h-dvh">
                <pre className="whitespace-pre-wrap text-sm"> {isLoading ? (
                     <code className="inline-block w-full break-all">{t("log.please-wait")}</code>
                ) : logs.slice(-settings.maxLogLines).map((val,i)=>{

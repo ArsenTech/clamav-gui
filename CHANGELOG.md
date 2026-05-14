@@ -5,11 +5,21 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 ## [1.0.6] - Unreleased
+### Added
+- The "Reduce Motion" setting - Uses the minimal approach
 ### Improved
 - Optimized Props of the Quarantine Table
 - A Quarantine Page Loader
+- Better exit code 2 handling - Fixes [#15](https://github.com/ArsenTech/clamav-gui/issues/15)
+- Added Linux system path exclusions - Fixes [#15](https://github.com/ArsenTech/clamav-gui/issues/15)
+- Settings Page UI
+  - Renders only active tab
+  - Optimized SettingsContext value
+  - Removed suspicious `cache()` inside hooks while keeping those outside the hooks
 ### Fixed
 - Translation placeholder error
+- Profile settings rerender bug
+- Height UI bug (uses Dynamic height)
 
 ## [1.0.5] - 2026-05-03
 ### Added

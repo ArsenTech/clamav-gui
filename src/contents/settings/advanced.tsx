@@ -29,7 +29,7 @@ import ConfirmationMessage from "@/components/popup/confirm";
 
 export default function AdvancedSettings({scanProfile}: SettingsProps){
      const {settings, setSettings} = useSettings();
-     const { values, setValue, isLoading } = useScanProfile(scanProfile);
+     const { values, setValue, isLoading } = useScanProfile(scanProfile ?? DEFAULT_SETTINGS.currScanProfile);
      const [isPending, startTransition] = useTransition();
      const [popupState, setPopupState] = useState<DangerZoneConfState | "">("")
      const [isFetching, startFetching] = useTransition()
@@ -109,7 +109,6 @@ export default function AdvancedSettings({scanProfile}: SettingsProps){
                          description={t("advanced.dev-mode.desc")}
                     >
                          <Switch
-                              defaultChecked={settings.developerMode || DEFAULT_SETTINGS.developerMode}
                               checked={settings.developerMode}
                               onCheckedChange={checked=>setSettings({developerMode: checked})}
                          />
@@ -162,7 +161,6 @@ export default function AdvancedSettings({scanProfile}: SettingsProps){
                          description={t("logs.auto-scroll.desc")}
                     >
                          <Switch
-                              defaultChecked={settings.autoScrollText || DEFAULT_SETTINGS.autoScrollText}
                               checked={settings.autoScrollText}
                               onCheckedChange={autoScrollText=>setSettings({autoScrollText})}
                          />

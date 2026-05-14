@@ -94,10 +94,10 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - [ ] Linux Compatibility / Performance
    - [X] Better exit code 2 handling
    - [X] Linux system path exclusions
-   - [ ] Investigate settings lag on Wayland/niri
-   - [ ] Profile settings rerenders
-   - [ ] Linux UI performance pass
-- [ ] The "Disable Animations" setting
+   - [X] Investigate settings lag on Wayland/niri
+   - [X] Profile settings rerenders
+- [ ] Linux UI performance pass
+- [X] The "Reduce Motion" setting
 
 > [!NOTE]
 > v1.0.6 is complete when:

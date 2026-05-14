@@ -1,7 +1,7 @@
 import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
 import { useTheme } from "@/context/themes";
 import { useSettings } from "@/context/settings";
-import { DATE_TIME_FORMATS, DEFAULT_SETTINGS, THEME_SETTINGS } from "@/lib/constants/settings";
+import { DATE_TIME_FORMATS, THEME_SETTINGS } from "@/lib/constants/settings";
 import { cn } from "@/lib/utils";
 import { Calendar, Palette, Bell, Type, Star, AArrowUp, PanelRightOpen } from "lucide-react";
 import SettingsItem from "@/components/settings-item";
@@ -82,7 +82,6 @@ export default function GeneralSettings(){
                          description={t("ui.scheduler-ui.desc")}
                     >
                          <Switch
-                              defaultChecked={settings.enableSchedulerUI || DEFAULT_SETTINGS.enableSchedulerUI}
                               checked={settings.enableSchedulerUI}
                               onCheckedChange={checked=>setSettings({enableSchedulerUI: checked})}
                          />
@@ -145,6 +144,15 @@ export default function GeneralSettings(){
                               </SelectContent>
                          </Select>
                     </SettingsOption>
+                    <SettingsOption
+                         title={t("ui.reduce-motion.title")}
+                         description={t("ui.reduce-motion.desc")}
+                    >
+                         <Switch
+                              checked={settings.reduceMotion}
+                              onCheckedChange={checked=>setSettings({reduceMotion: checked})}
+                         />
+                    </SettingsOption>
                </SettingsItem>
                <SettingsItem
                     Icon={Bell}
@@ -157,7 +165,6 @@ export default function GeneralSettings(){
                     >
                          <Switch
                               disabled={!settings.notifPermitted}
-                              defaultChecked={settings.notifOnScanStart || DEFAULT_SETTINGS.notifOnScanStart}
                               checked={settings.notifOnScanStart}
                               onCheckedChange={checked=>setSettings({notifOnScanStart: checked})}
                          />
@@ -168,7 +175,6 @@ export default function GeneralSettings(){
                     >
                          <Switch
                               disabled={!settings.notifPermitted}
-                              defaultChecked={settings.notifOnScanFinish || DEFAULT_SETTINGS.notifOnScanFinish}
                               checked={settings.notifOnScanFinish}
                               onCheckedChange={checked=>setSettings({notifOnScanFinish: checked})}
                          />

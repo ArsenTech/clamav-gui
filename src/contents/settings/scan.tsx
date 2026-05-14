@@ -1,7 +1,7 @@
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { useSettings } from "@/context/settings";
-import { DEFAULT_SETTINGS, FILE_SCAN_WHITELIST, SCAN_OPTION_ICON, DEFAULT_BACKEND_SETTINGS } from "@/lib/constants/settings";
+import { FILE_SCAN_WHITELIST, SCAN_OPTION_ICON, DEFAULT_BACKEND_SETTINGS, DEFAULT_SETTINGS } from "@/lib/constants/settings";
 import { SCAN_SETTINGS_GROUPED } from "@/lib/constants/settings/scan-options";
 import { ScanOptionGroup } from "@/lib/types/enums";
 import { Search } from "lucide-react";
@@ -23,7 +23,7 @@ import { getErrorMessage } from "@/lib/helpers";
 
 export default function ScanSettings({scanProfile}: SettingsProps){
      const {settings, setSettings} = useSettings();
-     const { values, setValue, isLoading } = useScanProfile(scanProfile);
+     const { values, setValue, isLoading } = useScanProfile(scanProfile ?? DEFAULT_SETTINGS.currScanProfile);
      const [isFetching, startTransition] = useTransition()
      const {getSettingsByKey,setSettingsbyKey} = useBackendSettings()
      const [exclusions, setExclusions] = useState<IBackendSettings["exclusions"]>(DEFAULT_BACKEND_SETTINGS.exclusions);
@@ -66,7 +66,6 @@ export default function ScanSettings({scanProfile}: SettingsProps){
                          description={t("scan.confirm-stop.desc")}
                     >
                          <Switch
-                              defaultChecked={settings.confirmStopScan || DEFAULT_SETTINGS.confirmStopScan}
                               checked={settings.confirmStopScan}
                               onCheckedChange={checked=>setSettings({confirmStopScan: checked})}
                          />

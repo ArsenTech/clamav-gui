@@ -1,5 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Suspense, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { SETTINGS_TABS } from "@/lib/constants/settings/tabs";
 import { useSearchParams } from "react-router";
@@ -20,11 +20,15 @@ import { useBackendSettings } from "@/hooks/use-settings";
 import { getErrorMessage } from "@/lib/helpers";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { getAppDetails } from "@/data/app";
+import { DEFAULT_SETTINGS } from "@/lib/constants/settings";
 
 export default function SettingsContent(){
      const [searchParams] = useSearchParams();
      const {settings, setSettings} = useSettings();
      const {setSettingsbyKey} = useBackendSettings()
+     const [scanProfile, setScanProfile] = useState<ScanProfile>(
+          settings.currScanProfile || DEFAULT_SETTINGS.currScanProfile
+     );
      const [tab, setTab] = useState(()=>searchParams.get("tab") ?? (localStorage.getItem("settings-tab") || SettingsTab.General));
      const changeTab = (tab: SettingsTab) => {
           setTab(tab);
@@ -86,7 +90,8 @@ export default function SettingsContent(){
                })
           }
      }
-     const isMobile = useIsMobile()
+     const isMobile = useIsMobile();
+     const activeTab = useMemo(()=>SETTINGS_TABS.find(t => t.page === tab),[tab]);
      return (
           <>
           <h1 className="inline-flex justify-between items-center gap-2 w-full">
@@ -97,8 +102,12 @@ export default function SettingsContent(){
                     <div className="flex items-center gap-3">
                          <Label>{t("scan-profile.title")}</Label>
                          <Select
-                              value={settings.currScanProfile || "custom"}
-                              onValueChange={v=>setSettings({currScanProfile: v as ScanProfile})}
+                              value={scanProfile}
+                              onValueChange={v=>{
+                                   const profile = v as ScanProfile;
+                                   setScanProfile(profile);
+                                   setSettings({ currScanProfile: profile });
+                              }}
                          >
                               <SelectTrigger className="w-48">
                                    <SelectValue />
@@ -139,13 +148,13 @@ export default function SettingsContent(){
                     ))}
                </TabsList>
                <ScrollArea className="h-[calc(100vh-185px)]">
-                    {SETTINGS_TABS.map(({page,Loader,LazyComponent})=>(
-                         <TabsContent key={page} value={page}>
-                              <Suspense fallback={<Loader/>}>
-                                   <LazyComponent scanProfile={settings.currScanProfile}/>
+                    {activeTab && (
+                         <TabsContent value={activeTab.page}>
+                              <Suspense fallback={<activeTab.Loader/>}>
+                                   <activeTab.LazyComponent scanProfile={settings.currScanProfile}/>
                               </Suspense>
                          </TabsContent>
-                    ))}
+                    )}
                </ScrollArea>
           </Tabs>
           </>

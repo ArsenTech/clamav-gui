@@ -2,13 +2,13 @@ import { getErrorMessage } from "@/lib/helpers";
 import { fetchPaths } from "@/data/paths"
 import { store } from "@/lib/store";
 import { IBackendSettings } from "@/lib/types/settings";
-import { cache, useEffect } from "react";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 export function useBackendSettings(){
      const {t: messageTxt} = useTranslation("messages")
-     const getSettingsBySection = cache(async<
+     const getSettingsBySection = async<
           S extends keyof IBackendSettings,
           K extends keyof IBackendSettings[S]
      >(
@@ -17,11 +17,11 @@ export function useBackendSettings(){
      ): Promise<IBackendSettings[S][K] | undefined> => {
           const data = await store.get<IBackendSettings[S]>(section);
           return data?.[key];
-     })
-     const fetchSettingsbySection = cache(async<S extends keyof IBackendSettings>(section: S): Promise<IBackendSettings[S] | undefined> => {
+     }
+     const fetchSettingsbySection = async<S extends keyof IBackendSettings>(section: S): Promise<IBackendSettings[S] | undefined> => {
           const data = await store.get<IBackendSettings[S]>(section);
           return data;
-     })
+     }
      async function setSettingsbySection<
           S extends keyof IBackendSettings,
           K extends keyof IBackendSettings[S]
@@ -42,10 +42,10 @@ export function useBackendSettings(){
                });
           }
      }
-     const getSettingsByKey = cache(async<K extends keyof IBackendSettings>(key: K): Promise<IBackendSettings[K] | undefined> => {
+     const getSettingsByKey = async<K extends keyof IBackendSettings>(key: K): Promise<IBackendSettings[K] | undefined> => {
           const data = await store.get<IBackendSettings[K]>(key);
           return data;
-     })
+     }
      async function setSettingsbyKey<K extends keyof IBackendSettings>(key: K,value: IBackendSettings[K]) {
           try{
                const current = await store.get<IBackendSettings[K]>(key)

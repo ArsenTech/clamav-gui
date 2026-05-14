@@ -18,7 +18,7 @@ export const DEFAULT_SETTINGS: ISettings = {
      confirmStopScan: true,
      autoScrollText: true,
      maxLogLines: 500,
-     currScanProfile: ScanProfile.Custom,
+     currScanProfile: ScanProfile.Main,
      realTime: true,
      enableSchedulerUI: true,
      notifOnScanStart: false,
@@ -26,7 +26,8 @@ export const DEFAULT_SETTINGS: ISettings = {
      notifPermitted: false,
      behavior: BehaviorMode.Balanced,
      badgeVisibility: BadgeVisibility.IconText,
-     sidebarCollapsible: SidebarCollapsible.Icon
+     sidebarCollapsible: SidebarCollapsible.Icon,
+     reduceMotion: false
 }
 export const DEFAULT_BACKEND_SETTINGS: IBackendSettings = {
      scanProfiles: {

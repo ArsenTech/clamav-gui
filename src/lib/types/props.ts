@@ -5,7 +5,7 @@ export interface TableLoaderProps{
      rows: number
 }
 export interface SettingsProps{
-     scanProfile: ScanProfile
+     scanProfile?: ScanProfile
 }
 export interface ChartProps<T>{
      data: T,

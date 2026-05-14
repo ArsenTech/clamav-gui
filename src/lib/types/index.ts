@@ -18,7 +18,8 @@ export interface ISettingsTab{
      page: SettingsTab
      Icon: LucideIconType,
      Loader: React.FC,
-     LazyComponent: React.LazyExoticComponent<React.FC<SettingsProps>>
+     LazyComponent: React.LazyExoticComponent<React.FC<SettingsProps>>,
+     usesProfile: boolean
 }
 export interface IClamAvVersion{
      engine: string,

@@ -25,7 +25,7 @@ export function AppLayout({children, className}: Props){
      const [status, setStatus] = useState<ClamAVState>(cached || ClamAVState.Checking);
      const navigate = useNavigate();
      const [isLoading, startTransition] = useTransition();
-     const {setSettings} = useSettings()
+     const {setSettings, settings} = useSettings()
      const startupScan = useStartupScan()
      const {locale: lang} = useLocale()
      const handleCheck = () => {
@@ -66,7 +66,7 @@ export function AppLayout({children, className}: Props){
                navigate(`/scan/${startupScan.scanType}`, { replace: true });
      }, [startupScan]);
      return (
-          <>
+          <main className={cn(settings.reduceMotion && "reduce-motion")}>
                {status==="checking" ? (
                     <SplashScreen/>
                ) : status==="missing" ? (
@@ -98,6 +98,6 @@ export function AppLayout({children, className}: Props){
                     position="top-right"
                     duration={2000}
                />
-          </>
+          </main>
      )
 }

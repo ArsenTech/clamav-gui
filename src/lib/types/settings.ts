@@ -48,7 +48,8 @@ export interface ISettings{
      notifPermitted: boolean,
      behavior: BehaviorMode,
      badgeVisibility: BadgeVisibility,
-     sidebarCollapsible: SidebarCollapsible
+     sidebarCollapsible: SidebarCollapsible,
+     reduceMotion: boolean
 }
 export type ScanProfilesType = Record<ScanProfile,ScanProfileValues>
 export interface IBackendSettings{
