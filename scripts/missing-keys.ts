@@ -106,7 +106,7 @@ function printOutput(lang: string){
      try {
           const {untranslated, translated} = compareLocales("en", lang);
           const total = translated + untranslated;
-          const percentage = total > 0 ? (translated / total) * 100 : 0;
+          const percentage = total > 0 ? Math.min(100,Math.floor((translated / total) * 100)) : 0;
           console.log("\n✅ Done");
           console.log("- - - - - - - - - -");
           console.log(`Translated: ${translated} strings`);
