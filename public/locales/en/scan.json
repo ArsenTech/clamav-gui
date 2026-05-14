@@ -47,6 +47,7 @@
      },
      "finished": {
           "error": "Scan Failed",
+          "partial": "Scan completed with restricted/inaccessible files",
           "no-threats": "No threats detected!",
           "with-threats_one": "One threat requires attention",
           "with-threats_two": "Two threats require attention",

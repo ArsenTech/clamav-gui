@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import { lazy, Suspense, useMemo, useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import { exit } from "@tauri-apps/plugin-process";
 import { IFinishScanState, IScanPageState } from "@/lib/types/states";
 import { INITIAL_FINISH_SCAN_STATE } from "@/lib/constants/states";
@@ -25,9 +25,11 @@ export default function ScanFinishResult({setScanState, isStartup, scanState}: P
                navigate("/");
           }
      };
-     const {errMsg, threats} = scanState;
-     const hasErrors = useMemo(()=>!!errMsg && errMsg.trim()!=="",[errMsg])
-     return (hasErrors || threats.length<=0) ? (
+     const {errMsg, threats, exitCode} = scanState;
+     const isPartialScan = exitCode === 2;
+     const hasErrors = !!errMsg && errMsg.trim() !== "";
+     const hasThreats = threats.length > 0;
+     return (hasErrors || !hasThreats || isPartialScan) ? (
           <Suspense fallback={<ScanFinishedLoader isStartup={isStartup} hasErr={hasErrors}/>}>
                <ScanFinishedContent
                     isStartup={isStartup}

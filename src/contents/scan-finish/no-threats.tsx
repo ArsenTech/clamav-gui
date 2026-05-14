@@ -1,8 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { formatDuration } from "@/lib/helpers/formating";
 import { IScanPageState } from "@/lib/types/states";
-import { ShieldX, Timer, LogOut, ShieldCheck } from "lucide-react";
-import { useMemo } from "react";
+import { ShieldX, Timer, LogOut, ShieldCheck, ShieldAlert } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 interface Props{
@@ -11,18 +10,25 @@ interface Props{
      handlePrimaryAction: () => void
 }
 export default function ScanFinishedContent({isStartup, handlePrimaryAction, scanState}: Props){
-     const {errMsg,duration,exitCode} = scanState
-     const hasErrors = useMemo(()=>!!errMsg && errMsg.trim()!=="",[errMsg])
+     const {errMsg, duration, exitCode} = scanState
+     const isPartialScan = exitCode === 2;
+     const hasErrors = !!errMsg && errMsg.trim() !== "";
      const {t} = useTranslation("scan");
      const exitCodes = t("exit-code",{returnObjects: true})
      return (
           <>
                {hasErrors ? (
                     <ShieldX className="size-32 text-destructive"/>
+               ) : isPartialScan ? (
+                    <ShieldAlert className="size-32 text-amber-600 dark:text-amber-500"/>     
                ) : (
                     <ShieldCheck className="size-32 text-emerald-700 dark:text-emerald-500"/>
                )}
-               <h2 className="text-lg sm:text-xl md:text-2xl font-medium">{hasErrors ? t("finished.error") : t("finished.no-threats")}</h2>
+               <h2 className="text-lg sm:text-xl md:text-2xl font-medium">{hasErrors
+                    ? t("finished.error")
+                    : isPartialScan
+                         ? t("finished.partial")
+                         : t("finished.no-threats")}</h2>
                <h2 className="text-lg sm:text-xl font-semibold flex items-center justify-center gap-2.5 w-fit">
                     <Timer className="text-primary"/>
                     {formatDuration(duration)}

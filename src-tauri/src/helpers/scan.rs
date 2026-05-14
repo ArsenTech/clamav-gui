@@ -185,21 +185,32 @@ pub fn get_main_paths(resolver: &PathResolver<Wry>) -> Vec<PathBuf> {
         resolver.desktop_dir(),
         resolver.document_dir(),
         resolver.download_dir(),
-        resolver.home_dir(),
-        resolver.local_data_dir(),
         resolver.picture_dir(),
-        resolver.public_dir(),
-        resolver.temp_dir(),
         resolver.video_dir(),
     ]
     .into_iter()
     .flatten() // remove None
     .collect();
+
+    #[cfg(windows)]
+    {
+        paths.extend([
+            resolver.home_dir(),
+            resolver.local_data_dir(),
+            resolver.public_dir(),
+            resolver.temp_dir(),
+        ].into_iter().flatten());
+    }
+
     paths.retain(|p| p.exists());
+    paths.sort();
+    paths.dedup();
+
     #[cfg(debug_assertions)]
     for p in &paths {
         println!("Main scan path: {}", p.display());
     }
+
     paths
 }
 
