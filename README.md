@@ -91,7 +91,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
    - Show supported / not supported
    - Disable incompatible actions
 - [X] Fix translation placeholders (like `{{code}}`)
-- Linux Compatibility / Performance
+- [ ] Linux Compatibility / Performance
    - [ ] Better exit code 2 handling
    - [ ] Linux system path exclusions
    - [ ] Investigate settings lag on Wayland/niri
