@@ -94,6 +94,7 @@
                "required": "The directory path is required.",
                "too-long": "The directory path is too long."
           },
-          "date-no-future": "The date input can't be set in the future"
+          "date-no-future": "The date input can't be set in the future",
+          "invalid-range": "Select a full date range"
      }
 }

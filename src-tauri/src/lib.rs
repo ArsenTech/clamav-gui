@@ -16,7 +16,7 @@ use tauri_specta::{collect_commands, Builder};
 use crate::{
     antivirus::{
         bulk_actions::{clear_quarantine, delete_all, quarantine_all, restore_all},
-        history::{clear_history, load_history, mark_as_acknowledged, clear_by_date},
+        history::{clear_history, load_history, mark_as_acknowledged, clear_by_date, clear_by_range},
         quarantine::{delete_quarantine, list_quarantine, quarantine_file, restore_quarantine},
         scan::{get_startup_scan, start_custom_scan, start_full_scan, start_main_scan, stop_scan, get_scan_status},
         start_real_time_scan,
@@ -98,7 +98,8 @@ pub fn run() {
         append_updater_updated_log,
         append_updater_needed_log,
         get_scan_status,
-        clear_by_date
+        clear_by_date,
+        clear_by_range
     ]);
 
     tauri::Builder::default()

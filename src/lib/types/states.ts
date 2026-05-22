@@ -42,6 +42,10 @@ export interface IHistoryPageState{
      details: string | null
      data: IHistoryData<"state">[]
 }
+export interface IClearInputState{
+     date: boolean,
+     range: boolean
+}
 export interface IQuarantineState{
      popupState: "" | QuarantineConfirmationState
      id: string,

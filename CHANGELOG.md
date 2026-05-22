@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - The "Reduce Motion" setting that reduces transitions and animations
 - macOS Guide inside the **No ClamAV** Page - Fixes [#13](https://github.com/ArsenTech/clamav-gui/issues/13) and [#14](https://github.com/ArsenTech/clamav-gui/issues/14)
 - Dynamic App Window Title for pages
+- The "Clear by range" Clear History Option
 ### Improved
 - Optimized Props of the Quarantine Table
 - A Quarantine Page Loader
@@ -18,6 +19,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   - Renders only active tab
   - Optimized SettingsContext value
   - Removed suspicious `cache()` inside hooks while keeping those outside the hooks
+- The "Clear by date" Clear History Option
 ### Fixed
 - Translation placeholder error
 - Profile settings rerender bug - Fixes [#15](https://github.com/ArsenTech/clamav-gui/issues/15), Used the minimal stable fix

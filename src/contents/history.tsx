@@ -12,7 +12,7 @@ import { save } from "@tauri-apps/plugin-dialog";
 import { exportCSV, exportJSON } from "@/lib/helpers/fs";
 import Popup from "@/components/popup";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { IHistoryPageState } from "@/lib/types/states";
+import { IClearInputState, IHistoryPageState } from "@/lib/types/states";
 import { INITIAL_HISTORY_STATE } from "@/lib/constants/states";
 import { useSettings } from "@/context/settings";
 import { useTranslation } from "react-i18next";
@@ -23,14 +23,20 @@ import { HistoryConfirmationState } from "@/lib/types";
 import { getErrorMessage } from "@/lib/helpers";
 import { fetchHistoryData } from "@/data/history";
 import { getTimeBasedCutoff } from "@/lib/helpers/history";
-import ClearDatePopup from "@/components/popup/clear-date-popup";
+import ClearDatePopup from "@/components/popup/clear-date";
+import { DateRange } from "react-day-picker";
+import ClearRangePopup from "@/components/popup/clear-range";
 
 export default function HistoryContent(){
      const {settings} = useSettings();
      const [isRefreshing, startTransition] = useTransition();
      const [isClearing, startClearTransition] = useTransition();
      const [historyState, setHistoryState] = useState<IHistoryPageState>(INITIAL_HISTORY_STATE)
-     const [showClearDate, setShowClearDate] = useState(false)
+     const [showClearInput, setShowClearInput] = useState<IClearInputState>({
+          date: false,
+          range: false
+     })
+     const updateClearInputState = (overrides: Partial<IClearInputState>) => setShowClearInput(prev=>({...prev, ...overrides}))
      const setState = (overrides: Partial<IHistoryPageState>) => setHistoryState(prev=>({ ...prev, ...overrides }))
      const {t} = useTranslation("history")
      const {t: messageTxt} = useTranslation("messages")
@@ -63,7 +69,7 @@ export default function HistoryContent(){
                }
           })
      }
-     const updateValues = (selectedDate: Date) => {
+     const updateDate = (selectedDate: Date) => {
           if (!selectedDate) return;
           const cutoff = new Date(selectedDate);
           cutoff.setHours(23, 59, 59, 999);
@@ -72,6 +78,22 @@ export default function HistoryContent(){
                data: prev.data.filter(item => {
                     const itemDate = new Date(item.timestamp);
                     return itemDate.getTime() > cutoff.getTime();
+               })
+          }));
+     }
+     const updateRange = (selectedRange: DateRange) => {
+          if (!selectedRange?.from || !selectedRange?.to) return;
+          const from = new Date(selectedRange.from);
+          from.setHours(0, 0, 0, 0);
+          const to = new Date(selectedRange.to);
+          to.setHours(23, 59, 59, 999);
+          const fromTime = from.getTime();
+          const toTime = to.getTime();
+          setHistoryState(prev => ({
+               ...prev,
+               data: prev.data.filter(item => {
+                    const itemDate = new Date(item.timestamp).getTime();
+                    return itemDate < fromTime || itemDate > toTime
                })
           }));
      }
@@ -144,8 +166,11 @@ export default function HistoryContent(){
                                         <DropdownMenuItem onClick={()=>setState({popupState: "clear-all"})} disabled={isEmpty}>
                                              {t("clear.all")}
                                         </DropdownMenuItem>
-                                        <DropdownMenuItem disabled={isEmpty} onClick={()=>setShowClearDate(true)}>
+                                        <DropdownMenuItem disabled={isEmpty} onClick={()=>updateClearInputState({date: true})}>
                                              {t("clear.by-date")}
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem disabled={isEmpty} onClick={()=>updateClearInputState({range: true})}>
+                                             {t("clear.by-range")}
                                         </DropdownMenuItem>
                                         <DropdownMenuSeparator/>
                                         <DropdownMenuItem onClick={()=>setState({popupState: "clear-acknowledged"})} disabled={isEmpty}>
@@ -192,9 +217,14 @@ export default function HistoryContent(){
                {details}
           </Popup>
           <ClearDatePopup
-               open={showClearDate}
-               onOpen={setShowClearDate}
-               onSuccess={updateValues}
+               open={showClearInput.date}
+               onOpen={open=>updateClearInputState({date: open})}
+               onSuccess={updateDate}
+          />
+          <ClearRangePopup
+               open={showClearInput.range}
+               onOpen={open=>updateClearInputState({range: open})}
+               onSuccess={updateRange}
           />
           </>
      )

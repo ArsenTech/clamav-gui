@@ -14,6 +14,7 @@
           "last-7-days": "Clear Last 7 days",
           "last-30-days": "Clear Last 30 days",
           "by-date": "Clear up to the date",
+          "by-range": "Clear by date range",
           "loading": "Clearing..."
      },
      "export": {
@@ -30,7 +31,8 @@
           "last24-hours": "Entries in last 24 hours Cleared!",
           "last7-days": "Entries in last 7 days Cleared!",
           "last30-days": "Entries in last 30 days Cleared!",
-          "by-date": "Entries with a specified date Cleared!"
+          "by-date": "Entries with a specified date Cleared!",
+          "by-range": "Entries within a specified range cleared!"
      },
      "events": {
           "real-time-error": "Real-time Scan Failed",
@@ -108,5 +110,10 @@
           "title": "Clear up to the date",
           "desc": "Choose a date to clear events up to the specified date. Rest of these events will remain.",
           "date-label": "Date to clear"
+     },
+     "clear-range": {
+          "title": "Clear by date range",
+          "desc": "Choose a range to clear events within the specified range. Rest of these events will remain.",
+          "range-label": "Date range to clear"
      }
 }

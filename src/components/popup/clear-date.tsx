@@ -14,6 +14,7 @@ import { Spinner } from "../ui/spinner";
 import { invoke } from "@tauri-apps/api/core";
 import { toast } from "sonner";
 import { getErrorMessage } from "@/lib/helpers";
+import LoadingButton from "../loading-button";
 
 interface Props{
      open: boolean,
@@ -30,6 +31,7 @@ export default function ClearDatePopup({open, onOpen, onSuccess}: Props){
                date: new Date()
           }
      })
+     const {t: confTxt} = useTranslation("confirmation")
      const onSubmit = (values: ClearByDateType) => {
           if(isClearing) return;
           startTransition(async() => {
@@ -56,7 +58,7 @@ export default function ClearDatePopup({open, onOpen, onSuccess}: Props){
                description={t("clear-date.desc")}
           >
                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                          <FormField
                               control={form.control}
                               name="date"
@@ -79,6 +81,9 @@ export default function ClearDatePopup({open, onOpen, onSuccess}: Props){
                                    </FormItem>
                               )}
                          />
+                         <LoadingButton isLoading={isClearing} type="submit" variant="destructive">
+                              {confTxt("actions.clear")}
+                         </LoadingButton>
                     </form>
                </Form>
           </Popup>

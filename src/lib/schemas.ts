@@ -13,7 +13,14 @@ export const getPathFormSchema = (t: TFunction<"messages">) => z.object({
      path: z.string().min(1,t("form-validations.directory-path.required")).max(300,t("form-validations.directory-path.too-long"))
 })
 export const getClearByDateSchema = (t: TFunction<"messages">) => z.object({
-     date: z.date().refine(date => date < new Date(),{
-          error: t("form-validations.date-no-future")
+     date: z.date().max(new Date(), {
+          error: t("form-validations.date-no-future"),
+     }),
+})
+export const getClearByRangeSchema = (t: TFunction<"messages">) => z.object({
+     dateRange: z.object({
+          from: z.date(),
+          to: z.date(),
      })
+     .refine(range => range.from <= range.to,{ path: ["to"], error: t("form-validations.invalid-range")}),
 })

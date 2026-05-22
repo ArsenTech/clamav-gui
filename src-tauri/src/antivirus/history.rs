@@ -147,3 +147,31 @@ pub fn clear_by_date(app: tauri::AppHandle, date: String) -> Result<(), String> 
     }
     Ok(())
 }
+
+#[command]
+#[specta(result)]
+pub fn clear_by_range(app: tauri::AppHandle, from: String, to: String) -> Result<(), String> {
+    use chrono::{DateTime, Utc};
+    
+    let dir = history_dir(&app);
+    if !dir.try_exists().unwrap_or(false) {
+        return Ok(());
+    }
+
+    let from = DateTime::parse_from_rfc3339(&from).map_err(|e| e.to_string())?.with_timezone(&Utc).date_naive();
+    let to = DateTime::parse_from_rfc3339(&to).map_err(|e| e.to_string())?.with_timezone(&Utc).date_naive();
+
+    for entry in std::fs::read_dir(&dir).map_err(|e| e.to_string())? {
+        let path = entry.map_err(|e| e.to_string())?.path();
+        if path.extension().and_then(|e| e.to_str()) != Some("json") {
+            continue;
+        }
+        if let Some(file_date) = parse_date_from_path(&path) {
+            if file_date >= from && file_date <= to {
+                std::fs::remove_file(path).map_err(|e| e.to_string())?;
+            }
+        }
+    }
+
+    Ok(())
+}
