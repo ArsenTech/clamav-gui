@@ -78,10 +78,6 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 #### v1.0.6 (Next)
 - [X] The "Clear by range" Clear History Option
 - [X] Dynamic App Window Title for pages
-- [ ] Expanded approach of the Bug fix for the issue [#11](https://github.com/ArsenTech/clamav-gui/issues/11)
-   - [ ] True scan restoration (no reset of progress)
-   - [ ] Better scan continuity (UI feedback)
-   - [ ] Smarter scan awareness (optional scanType in status)
 - [ ] Error Handling & Translation Improvements
    - Normalize backend errors
    - Map to frontend translations
@@ -128,6 +124,10 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - [ ] Translate new parts after running `npm run i18n:missing-keys [lang-codes]` and typing
   - 🇫🇷 French - `fr`
   - 🇵🇱 Polish - `pl`
+- [ ] Expanded approach of the Bug fix for the issue [#11](https://github.com/ArsenTech/clamav-gui/issues/11)
+   - [ ] True scan restoration (no reset of progress)
+   - [ ] Better scan continuity (UI feedback)
+   - [ ] Smarter scan awareness (optional scanType in status)
 
 ### Built With
 - [![Tauri][tauri-shield]][tauri-url]
