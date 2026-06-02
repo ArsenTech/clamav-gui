@@ -1,7 +1,6 @@
 import { HistoryTable } from "@/data-table/tables/history";
 import { RotateCw } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { GET_HISTORY_COLS } from "@/data-table/columns/history";
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { Download, Trash2 } from "lucide-react"
@@ -14,7 +13,6 @@ import Popup from "@/components/popup";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { IClearInputState, IHistoryPageState } from "@/lib/types/states";
 import { INITIAL_HISTORY_STATE } from "@/lib/constants/states";
-import { useSettings } from "@/context/settings";
 import { useTranslation } from "react-i18next";
 import { HistoryClearType } from "@/lib/types/enums"
 import LoadingButton from "@/components/loading-button";
@@ -28,7 +26,6 @@ import { DateRange } from "react-day-picker";
 import ClearRangePopup from "@/components/popup/clear-range";
 
 export default function HistoryContent(){
-     const {settings} = useSettings();
      const [isRefreshing, startTransition] = useTransition();
      const [isClearing, startClearTransition] = useTransition();
      const [historyState, setHistoryState] = useState<IHistoryPageState>(INITIAL_HISTORY_STATE)
@@ -143,7 +140,7 @@ export default function HistoryContent(){
           <div className="space-y-4">
                <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">{t("title")}</h1>
                <HistoryTable
-                    columns={GET_HISTORY_COLS(setHistoryState,settings.developerMode)}
+                    setHistoryState={setHistoryState}
                     data={data}
                     headerElement={(
                          <ButtonGroup>

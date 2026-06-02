@@ -1,36 +1,31 @@
-import {
-  flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  SortingState,
-  useReactTable} from "@tanstack/react-table"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
+import { flexRender, getCoreRowModel, getPaginationRowModel, getSortedRowModel, type SortingState, useReactTable, type VisibilityState } from "@tanstack/react-table"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { useState } from "react"
 import { DataTablePagination } from "../pagination"
 import { ISchedulerData } from "@/lib/types/data"
 import { DataTableProps } from "@/lib/types/props"
 import { DataTableViewOptions } from "../col-toggle"
 import { useTranslation } from "react-i18next"
+import { GET_SCHEDULER_COLS } from "../columns/scheduler"
+import { ISchedulerState } from "@/lib/types/states"
 
-export function SchedulerTable({columns,data,headerElement}: DataTableProps<ISchedulerData<"state">>) {
+export function SchedulerTable({data, headerElement, setState}: DataTableProps<ISchedulerData<"state">> & {
+  setState: (overrides: Partial<ISchedulerState>) => void,
+}) {
   const [sorting, setSorting] = useState<SortingState>([]);
+  const columns = GET_SCHEDULER_COLS(setState)
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const table = useReactTable({
     data,
     columns,
     onSortingChange: setSorting,
+    onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     state: {
       sorting,
+      columnVisibility
     }
   })
   const {t} = useTranslation("table")

@@ -3,7 +3,6 @@ import SchedulerForm from "@/components/antivirus/scheduler-form";
 import { SchedulerConfState, SchedulerType } from "@/lib/types";
 import { useEffect, useState, useTransition } from "react";
 import { ISchedulerData } from "@/lib/types/data";
-import { GET_SCHEDULER_COLS } from "@/data-table/columns/scheduler";
 import { DAYS_OF_THE_WEEK } from "@/lib/constants";
 import { invoke } from "@tauri-apps/api/core";
 import { listen, UnlistenFn } from "@tauri-apps/api/event";
@@ -145,7 +144,7 @@ export default function SchedulerContent(){
                          </Button>
                     </ButtonGroup>
                )}
-               columns={GET_SCHEDULER_COLS(setState)}
+               setState={setState}
                data={data}
           />
           <h2 className="text-xl md:text-2xl font-medium border-b pb-2 w-fit self-start text-left">{t("form.title")}</h2>

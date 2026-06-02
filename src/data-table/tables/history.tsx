@@ -1,22 +1,5 @@
-import {
-  ColumnFiltersState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  SortingState,
-  useReactTable,
-  VisibilityState
-} from "@tanstack/react-table"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
+import { type ColumnFiltersState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, type SortingState, useReactTable, type VisibilityState } from "@tanstack/react-table"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { useState } from "react"
 import { DataTablePagination } from "../pagination"
 import { DataTableProps } from "@/lib/types/props"
@@ -26,11 +9,18 @@ import { ButtonGroup } from "@/components/ui/button-group"
 import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { CheckCheck, CheckCircle, CircleAlert, Shield, TriangleAlert } from "lucide-react"
 import { useTranslation } from "react-i18next"
+import { GET_HISTORY_COLS } from "../columns/history"
+import { IHistoryPageState } from "@/lib/types/states"
+import { useSettings } from "@/context/settings"
 
-export function HistoryTable({columns,data,headerElement}: DataTableProps<IHistoryData<"state">>) {
+export function HistoryTable({data, headerElement, setHistoryState}: DataTableProps<IHistoryData<"state">> & {
+  setHistoryState: React.Dispatch<React.SetStateAction<IHistoryPageState>>,
+}) {
+  const {settings} = useSettings()
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+  const columns = GET_HISTORY_COLS(setHistoryState,settings.developerMode)
   const table = useReactTable({
     data,
     columns,

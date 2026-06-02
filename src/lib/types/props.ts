@@ -11,7 +11,7 @@ export interface ChartProps<T>{
      data: T,
 }
 export interface DataTableProps<TData> {
-     columns: ColumnDef<TData>[]
+     columns?: ColumnDef<TData>[]
      data: TData[],
      searchColumn?: string,
      headerElement?: React.JSX.Element

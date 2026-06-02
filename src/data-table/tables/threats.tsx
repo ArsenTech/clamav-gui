@@ -1,22 +1,5 @@
-import {
-  ColumnFiltersState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  SortingState,
-  useReactTable,
-  VisibilityState
-} from "@tanstack/react-table"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
+import { type ColumnDef, type ColumnFiltersState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, type SortingState, useReactTable, type VisibilityState } from "@tanstack/react-table"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { useState } from "react"
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
 import { SearchIcon } from "lucide-react"
@@ -25,7 +8,9 @@ import { DataTableViewOptions } from "../col-toggle"
 import { DataTableProps } from "@/lib/types/props"
 import { useTranslation } from "react-i18next"
 
-export function ThreatsTable<TData>({ columns, data, searchColumn = "displayName" }: DataTableProps<TData>) {
+export function ThreatsTable<TData>({ columns, data, searchColumn = "displayName" }: Omit<DataTableProps<TData>,"columns"> & {
+  columns: ColumnDef<TData>[]
+}) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})

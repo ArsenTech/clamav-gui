@@ -20,6 +20,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   - Optimized SettingsContext value
   - Removed suspicious `cache()` inside hooks while keeping those outside the hooks
 - The "Clear by date" Clear History Option
+- **Table Columns** - It's refactored and optimized
 ### Fixed
 - Translation placeholder error
 - Profile settings rerender bug - Fixes [#15](https://github.com/ArsenTech/clamav-gui/issues/15), Used the minimal stable fix
