@@ -78,9 +78,6 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 #### v1.0.6 (Next)
 - [X] The "Clear by range" Clear History Option
 - [X] Dynamic App Window Title for pages
-- [ ] Error Handling & Translation Improvements
-   - Normalize backend errors
-   - Map to frontend translations
 - [X] Add a macOS Guide inside the **No ClamAV** Page
 - [X] Minimum OS requirement tab (first step)
    - Detect OS + version
@@ -102,6 +99,9 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 > - error handling is consistent
 
 #### v1.0.7 (Planned, Stability)
+- [ ] Error Handling & Translation Improvements
+   - Normalize backend errors
+   - Map to frontend translations
 - [ ] Minimized Auto Start Setting ([#12](https://github.com/ArsenTech/clamav-gui/issues/12))
 - [ ] Silent Scheduled Scans Settings (Another Attempt)
 #### v1.0.8 (Platform Expansion)
