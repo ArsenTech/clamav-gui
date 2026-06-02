@@ -75,35 +75,16 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - **Multilingual Support** - Use the ClamAV GUI in your native language besides English
 
 ### Planned Improvements
-#### v1.0.6 (Next)
-- [X] The "Clear by range" Clear History Option
-- [X] Dynamic App Window Title for pages
-- [X] Add a macOS Guide inside the **No ClamAV** Page
-- [X] Minimum OS requirement tab (first step)
-   - Detect OS + version
-   - Show supported / not supported
-   - Disable incompatible actions
-- [X] Fix translation placeholders (like `{{code}}`)
-- [X] Linux Compatibility / Performance
-   - [X] Better exit code 2 handling
-   - [X] Linux system path exclusions
-   - [X] Investigate settings lag on Wayland/niri
-   - [X] Profile settings rerenders
-   - [X] Linux UI performance pass
-- [X] The "Reduce Motion" setting
-
-> [!NOTE]
-> v1.0.6 is complete when:
-> - scan restoration works reliably
-> - no major UI regressions
-> - error handling is consistent
-
-#### v1.0.7 (Planned, Stability)
+#### v1.0.7 (Next, Stability)
 - [ ] Error Handling & Translation Improvements
    - Normalize backend errors
    - Map to frontend translations
 - [ ] Minimized Auto Start Setting ([#12](https://github.com/ArsenTech/clamav-gui/issues/12))
 - [ ] Silent Scheduled Scans Settings (Another Attempt)
+> [!NOTE]
+> v1.0.7 is complete when
+> - error handling is consistent
+> - other features work as expected
 #### v1.0.8 (Platform Expansion)
 - [ ] Scheduler support for Linux and MacOS
 - [ ] Limit `helpers::scheduler::windows::get_last_run_time` only for Windows Users
