@@ -4,7 +4,7 @@ All notable changes of ArsenTech's ClamAV GUI will be documented here.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
-## [1.0.6] - 2026-02-06
+## [1.0.6] - 2026-06-02
 > [!NOTE]
 > The Issue #15 reffers to the "bug: Lag & no perms" issue
 ### Added
