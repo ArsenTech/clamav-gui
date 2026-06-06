@@ -81,6 +81,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
    - Map to frontend translations
 - [ ] Minimized Auto Start Setting ([#12](https://github.com/ArsenTech/clamav-gui/issues/12))
 - [ ] Silent Scheduled Scans Settings (Another Attempt)
+- [ ] Move several states into context to reduce rerenders and improve performance
 > [!NOTE]
 > v1.0.7 is complete when
 > - error handling is consistent
