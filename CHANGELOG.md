@@ -367,6 +367,7 @@ This is the first pre-release of the ClamAV GUI. The backend functionality will 
 - The About Page
 - State-gated Layout (It'll show "Oops, No ClamAV found" if ClamAV isn't installed)
 
+[1.0.7]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.7
 [1.0.6]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.6
 [1.0.5]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.5
 [1.0.4]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.4
