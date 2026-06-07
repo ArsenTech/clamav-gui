@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { Link } from "react-router";
 import { useTranslation } from "react-i18next";
 import { getErrorMessage } from "@/lib/helpers";
-import { useAntivirus } from "@/context/antivirus";
+import { useScheduler } from "@/context/antivirus/scheduler";
 
 interface ActionsCellProps{
      item: ISchedulerData<"state">,
@@ -15,7 +15,7 @@ interface ActionsCellProps{
 export default function ActionsCell({item}: ActionsCellProps){
      const {t} = useTranslation("table")
      const {t: messageTxt} = useTranslation("messages")
-     const {updateSchedulerState} = useAntivirus()
+     const {updateSchedulerState} = useScheduler()
      const revealLog = async()=>{
           if(!item.log_id) return;
           try{

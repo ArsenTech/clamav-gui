@@ -15,7 +15,7 @@ import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import AlertBox from "../popup/alert";
 import useWindowTitle from "@/hooks/use-window-title";
-import { useAntivirus } from "@/context/antivirus";
+import { useScan } from "@/context/antivirus/scan";
 
 interface Props{
      handleReset: () => void,
@@ -24,7 +24,7 @@ interface Props{
 export default function ScanProcess({handleReset, isStartup}: Props){
      const navigate = useNavigate();
      const {settings} = useSettings();
-     const {scanState} = useAntivirus()
+     const {scanState} = useScan()
      const {scanType, threats, currLocation, totalFiles, scannedFiles, paths} = scanState
      const [isOpen, setIsOpen] = useState(false);
      const {formatDate} = useSettings()

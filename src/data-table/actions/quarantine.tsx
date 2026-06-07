@@ -3,13 +3,13 @@ import { MoreHorizontal, RotateCcw, Trash } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { IQuarantineData } from "@/lib/types/data";
 import { useTranslation } from "react-i18next";
-import { useAntivirus } from "@/context/antivirus";
+import { useQuarantine } from "@/context/antivirus/quarantine";
 
 interface ActionsCellProps{
      threat: IQuarantineData
 }
 export default function ActionsCell({threat}: ActionsCellProps){
-     const {updateQuarantineState} = useAntivirus()
+     const {updateQuarantineState} = useQuarantine()
      const {t} = useTranslation("table");
      return (
           <DropdownMenu>

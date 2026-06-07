@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
-import { useAntivirus } from "@/context/antivirus";
+import { useQuarantine } from "@/context/antivirus/quarantine";
 
 interface Props{
      data: IQuarantineData[],
@@ -16,7 +16,7 @@ interface Props{
 }
 export default function QuarantineTable({isRefreshing, data, onRefresh, columns}: Props){
      const {t} = useTranslation("quarantine")
-     const {updateQuarantineState} = useAntivirus()
+     const {updateQuarantineState} = useQuarantine()
      return (
           <>
           <ButtonGroup>

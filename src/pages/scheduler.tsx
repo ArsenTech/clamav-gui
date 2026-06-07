@@ -3,7 +3,7 @@ import { Suspense, lazy } from "react";
 import SchedulerLoader from "@/loaders/scheduler";
 import useWindowTitle from "@/hooks/use-window-title";
 import { useTranslation } from "react-i18next";
-import AntivirusProvider from "@/context/antivirus";
+import SchedulerProvider from "@/context/antivirus/scheduler";
 const SchedulerContent = lazy(()=>import("@/contents/scheduler"))
 
 export default function SchedulerPage(){
@@ -11,11 +11,11 @@ export default function SchedulerPage(){
      useWindowTitle(t("title"))
      return (
           <AppLayout className="flex justify-center items-center gap-4 flex-col p-4">
-               <AntivirusProvider>
+               <SchedulerProvider>
                     <Suspense fallback={<SchedulerLoader/>}>
                          <SchedulerContent/>
                     </Suspense>
-               </AntivirusProvider>
+               </SchedulerProvider>
           </AppLayout>
      )
 }

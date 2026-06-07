@@ -1,6 +1,6 @@
 import { useSettings } from "@/context/settings";
 import { Switch } from "../ui/switch";
-import { useRealtimeScan } from "@/context/real-time";
+import { useRealtimeScan } from "@/context/antivirus/real-time";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import AlertBox from "../popup/alert";

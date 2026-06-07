@@ -18,7 +18,7 @@ import { useMemo } from "react";
 import { useSettings } from "@/context/settings";
 import { useTranslation } from "react-i18next";
 import { SidebarLink } from "@/lib/types/enums";
-import { useQuarantineCount } from "@/context/quarantine-count";
+import { useQuarantineCount } from "@/context/antivirus/quarantine-count";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function MainSidebar(){

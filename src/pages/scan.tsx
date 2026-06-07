@@ -1,5 +1,5 @@
 import ScanContent from "@/contents/scan";
-import AntivirusProvider from "@/context/antivirus";
+import ScanProvider from "@/context/antivirus/scan";
 import { ScanType } from "@/lib/types/enums";
 import { useParams, useSearchParams } from "react-router";
 
@@ -8,11 +8,11 @@ export default function ScanPage(){
      const path = searchParams.getAll("path");
      const {type} = useParams<{type: ScanType}>();
      return (
-          <AntivirusProvider
+          <ScanProvider
                type={type}
                path={path}
           >
                <ScanContent/>
-          </AntivirusProvider>
+          </ScanProvider>
      ) 
 }

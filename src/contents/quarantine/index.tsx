@@ -9,17 +9,17 @@ import { useSettings } from "@/context/settings";
 import { GET_QUARANTINE_COLS } from "@/data-table/columns/quarantine";
 import { ActionType, QuarantineConfirmationState } from "@/lib/types";
 import { useTranslation } from "react-i18next";
-import { useQuarantineCount } from "@/context/quarantine-count";
+import { useQuarantineCount } from "@/context/antivirus/quarantine-count";
 import ConfirmationMessage from "@/components/popup/confirm";
 import { getErrorMessage } from "@/lib/helpers";
 import { fetchQuarantine } from "@/data/quarantine";
 import useWindowTitle from "@/hooks/use-window-title";
-import { useAntivirus } from "@/context/antivirus";
+import { useQuarantine } from "@/context/antivirus/quarantine";
 const QuarantineTable = lazy(()=>import("./table"))
 
 export default function QuarantineContent(){
      const {settings} = useSettings();
-     const {quarantineState, updateQuarantineState} = useAntivirus()
+     const {quarantineState, updateQuarantineState} = useQuarantine()
      const [isRefreshing, startTransition] = useTransition();
      const {setCount, decreaseBy} = useQuarantineCount();
      const fetchData = () => {

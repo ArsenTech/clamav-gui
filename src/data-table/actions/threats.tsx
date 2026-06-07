@@ -8,15 +8,15 @@ import { revealItemInDir } from "@tauri-apps/plugin-opener";
 import { useMemo } from "react";
 import { getErrorMessage } from "@/lib/helpers";
 import { useTranslation } from "react-i18next";
-import { useQuarantineCount } from "@/context/quarantine-count";
-import { useAntivirus } from "@/context/antivirus";
+import { useQuarantineCount } from "@/context/antivirus/quarantine-count";
+import { useScan } from "@/context/antivirus/scan";
 
 interface ActionsCellProps{
      threat: IThreatsData,
 }
 export default function ActionsCell({threat}: ActionsCellProps){
      const {increaseBy} = useQuarantineCount();
-     const {updateFinishScanState, setScanState} = useAntivirus()
+     const {updateFinishScanState, setScanState} = useScan()
      const {t} = useTranslation("table");
      const {t: messageTxt} = useTranslation("messages")
      const handleQuarantine = async() => {

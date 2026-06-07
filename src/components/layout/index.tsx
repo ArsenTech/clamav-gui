@@ -7,7 +7,7 @@ import SplashScreen from "./splash-screen";
 import { ClamAVState } from "@/lib/types/enums";
 import { Toaster } from "../ui/sonner";
 import { useNavigate } from "react-router";
-import { useStartupScan } from "@/context/startup-scan";
+import { useStartupScan } from "@/context/antivirus/startup-scan";
 import { useSettings } from "@/context/settings";
 import { isPermissionGranted, requestPermission, } from '@tauri-apps/plugin-notification';
 import { listen, UnlistenFn } from "@tauri-apps/api/event";

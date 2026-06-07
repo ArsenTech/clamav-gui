@@ -7,7 +7,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { listen, UnlistenFn } from "@tauri-apps/api/event";
 import { lazy, Suspense, useEffect, useRef } from "react";
 import { toast } from "sonner";
-import { useStartupScan } from "@/context/startup-scan";
+import { useStartupScan } from "@/context/antivirus/startup-scan";
 import ScanLoader from "@/loaders/scan/index";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useSettings } from "@/context/settings";
@@ -18,12 +18,12 @@ import { ScanProfileValues } from "@/lib/types/settings";
 import { mapScanSettingsToArgs, validateScanSettings } from "@/lib/helpers/scan";
 import { useTranslation } from "react-i18next";
 import { getErrorMessage } from "@/lib/helpers";
-import { useAntivirus } from "@/context/antivirus";
+import { useScan } from "@/context/antivirus/scan";
 
 const ScanProcess = lazy(()=>import("@/components/antivirus/scan-process"))
 
 export default function ScanContent(){
-     const {scanState, setScanState, updateScanState, initialScanState} = useAntivirus()
+     const {scanState, setScanState, updateScanState, initialScanState} = useScan()
      const {isStartup} = useStartupScan();
      const {settings} = useSettings();
      const startTimeRef = useRef<number | null>(null);

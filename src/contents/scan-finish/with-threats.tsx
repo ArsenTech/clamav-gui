@@ -12,12 +12,12 @@ import { formatDuration } from "@/lib/helpers/formating";
 import { INITIAL_FINISH_SCAN_STATE } from "@/lib/constants/states";
 import { useSettings } from "@/context/settings";
 import { useTranslation } from "react-i18next";
-import { useQuarantineCount } from "@/context/quarantine-count";
+import { useQuarantineCount } from "@/context/antivirus/quarantine-count";
 import ConfirmationMessage from "@/components/popup/confirm";
 import { ScanFinishConfState } from "@/lib/types";
 import { getErrorMessage } from "@/lib/helpers";
 import useWindowTitle from "@/hooks/use-window-title";
-import { useAntivirus } from "@/context/antivirus";
+import { useScan } from "@/context/antivirus/scan";
 
 interface Props{
      isStartup: boolean,
@@ -26,7 +26,7 @@ interface Props{
 export default function ScanFinishedTable({isStartup, handlePrimaryAction}: Props){
      const {settings} = useSettings();
      const {increaseBy} = useQuarantineCount()
-     const {updateFinishScanState, finishScanState, setScanState, scanState} = useAntivirus()
+     const {updateFinishScanState, finishScanState, setScanState, scanState} = useScan()
      const [isPending, startTransition] = useTransition()
      const {t: messageTxt} = useTranslation("messages")
      const handleDelete = async() => {

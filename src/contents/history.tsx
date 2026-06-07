@@ -23,12 +23,12 @@ import { getTimeBasedCutoff } from "@/lib/helpers/history";
 import ClearDatePopup from "@/components/popup/clear-date";
 import { DateRange } from "react-day-picker";
 import ClearRangePopup from "@/components/popup/clear-range";
-import { useAntivirus } from "@/context/antivirus";
+import { useAppHistory } from "@/context/antivirus/history";
 
 export default function HistoryContent(){
      const [isRefreshing, startTransition] = useTransition();
      const [isClearing, startClearTransition] = useTransition();
-     const {historyState, setHistoryState, updateHistoryState} = useAntivirus()
+     const {historyState, setHistoryState, updateHistoryState} = useAppHistory()
      const [showClearInput, setShowClearInput] = useState<IClearInputState>({
           date: false,
           range: false

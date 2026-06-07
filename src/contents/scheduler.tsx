@@ -17,13 +17,13 @@ import { useTranslation } from "react-i18next";
 import ConfirmationMessage from "@/components/popup/confirm";
 import { getErrorMessage } from "@/lib/helpers";
 import { fetchSchedulerData } from "@/data/scheduler";
-import { useAntivirus } from "@/context/antivirus";
+import { useScheduler } from "@/context/antivirus/scheduler";
 
 export default function SchedulerContent(){
      const {settings} = useSettings();
      const [isPending, startTransition] = useTransition();
      const [isSubmitting, startSubmitTransition] = useTransition();
-     const {schedulerState, setSchedulerState, updateSchedulerState} = useAntivirus()
+     const {schedulerState, setSchedulerState, updateSchedulerState} = useScheduler()
      const {t: messageTxt} = useTranslation("messages")
      const handleSchedule = (values: SchedulerType) => {
           if(!settings.enableSchedulerUI) return;
