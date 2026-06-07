@@ -1,16 +1,11 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { IThreatsData, ThreatStatus } from "@/lib/types/data";
-import { IFinishScanState, IScanPageState } from "@/lib/types/states";
 import ActionsCell from "../actions/threats";
 import StatusCell from "../cells/threats";
 import { DetectedHeader, DisplayNameHeader, FilePathHeader, IdHeader, StatusHeader } from "../headers/threats";
 import { DateCell } from "../cells";
 
-export const GET_THREATS_COLS = (
-     setScanState: React.Dispatch<React.SetStateAction<IScanPageState>>,
-     setState: (overrides: Partial<IFinishScanState>) => void,
-     isDevMode: boolean
-): ColumnDef<IThreatsData>[] => {
+export const GET_THREATS_COLS = (isDevMode: boolean): ColumnDef<IThreatsData>[] => {
      const baseCols: ColumnDef<IThreatsData>[] = [
           {
                accessorKey: "displayName",
@@ -32,13 +27,7 @@ export const GET_THREATS_COLS = (
           },
           {
                id: "actions",
-               cell: ({ row }) => (
-                    <ActionsCell
-                         threat={row.original}
-                         setScanState={setScanState}
-                         setState={setState}
-                    />
-               ),
+               cell: ({ row }) => <ActionsCell threat={row.original}/>
           }
      ];
      return isDevMode ? [

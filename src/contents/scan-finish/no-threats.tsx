@@ -1,16 +1,16 @@
 import { Button } from "@/components/ui/button";
+import { useAntivirus } from "@/context/antivirus";
 import useWindowTitle from "@/hooks/use-window-title";
 import { formatDuration } from "@/lib/helpers/formating";
-import { IScanPageState } from "@/lib/types/states";
 import { ShieldX, Timer, LogOut, ShieldCheck, ShieldAlert } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 interface Props{
      isStartup: boolean,
-     scanState: IScanPageState
      handlePrimaryAction: () => void
 }
-export default function ScanFinishedContent({isStartup, handlePrimaryAction, scanState}: Props){
+export default function ScanFinishedContent({isStartup, handlePrimaryAction}: Props){
+     const {scanState} = useAntivirus()
      const {errMsg, duration, exitCode} = scanState
      const isPartialScan = exitCode === 2;
      const hasErrors = !!errMsg && errMsg.trim() !== "";

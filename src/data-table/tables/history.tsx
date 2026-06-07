@@ -10,17 +10,14 @@ import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, Sele
 import { CheckCheck, CheckCircle, CircleAlert, Shield, TriangleAlert } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { GET_HISTORY_COLS } from "../columns/history"
-import { IHistoryPageState } from "@/lib/types/states"
 import { useSettings } from "@/context/settings"
 
-export function HistoryTable({data, headerElement, setHistoryState}: DataTableProps<IHistoryData<"state">> & {
-  setHistoryState: React.Dispatch<React.SetStateAction<IHistoryPageState>>,
-}) {
+export function HistoryTable({data, headerElement}: DataTableProps<IHistoryData<"state">>) {
   const {settings} = useSettings()
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
-  const columns = GET_HISTORY_COLS(setHistoryState,settings.developerMode)
+  const columns = GET_HISTORY_COLS(settings.developerMode)
   const table = useReactTable({
     data,
     columns,

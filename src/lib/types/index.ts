@@ -7,6 +7,8 @@ import { SettingsTab, ScanType, BehaviorMode, ScanResult } from "./enums";
 export type Mutable<T> = {
   -readonly [P in keyof T]: T[P];
 };
+export type SetStateType<T> = React.Dispatch<React.SetStateAction<T>>
+export type SetDataFunction<T> = (overrides: Partial<T>) => void
 
 export type ActionType = "restore" | "delete"
 export type FsOption = "file" | "folder";

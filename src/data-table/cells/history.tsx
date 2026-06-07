@@ -13,13 +13,13 @@ import { getErrorMessage } from "@/lib/helpers";
 import { Button } from "@/components/ui/button";
 import { invoke } from "@tauri-apps/api/core";
 import { toast } from "sonner";
-import { IHistoryPageState } from "@/lib/types/states";
+import { useAntivirus } from "@/context/antivirus";
 
 interface MarkAcknowledgedCellProps{
      item: IHistoryData<"state">
-     setHistoryState: React.Dispatch<React.SetStateAction<IHistoryPageState>>,
 }
-export function MarkAcknowledgedCell({item, setHistoryState}: MarkAcknowledgedCellProps){
+export function MarkAcknowledgedCell({item}: MarkAcknowledgedCellProps){
+     const {setHistoryState} = useAntivirus()
      const {t} = useTranslation("table")
      const {t: messageTxt} = useTranslation("messages")
      const markAsAcknowledged = async () => {

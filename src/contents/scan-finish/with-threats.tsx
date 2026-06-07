@@ -9,7 +9,6 @@ import { invoke } from "@tauri-apps/api/core";
 import { toast } from "sonner";
 import LoadingButton from "@/components/loading-button";
 import { formatDuration } from "@/lib/helpers/formating";
-import { IFinishScanState, IScanPageState } from "@/lib/types/states";
 import { INITIAL_FINISH_SCAN_STATE } from "@/lib/constants/states";
 import { useSettings } from "@/context/settings";
 import { useTranslation } from "react-i18next";
@@ -18,18 +17,16 @@ import ConfirmationMessage from "@/components/popup/confirm";
 import { ScanFinishConfState } from "@/lib/types";
 import { getErrorMessage } from "@/lib/helpers";
 import useWindowTitle from "@/hooks/use-window-title";
+import { useAntivirus } from "@/context/antivirus";
 
 interface Props{
-     setScanState: React.Dispatch<React.SetStateAction<IScanPageState>>,
-     scanState: IScanPageState
      isStartup: boolean,
      handlePrimaryAction: () => void
-     setState: (overrides: Partial<IFinishScanState>) => void,
-     finishScanState: IFinishScanState
 }
-export default function ScanFinishedTable({setScanState, isStartup, scanState, handlePrimaryAction, finishScanState, setState}: Props){
+export default function ScanFinishedTable({isStartup, handlePrimaryAction}: Props){
      const {settings} = useSettings();
      const {increaseBy} = useQuarantineCount()
+     const {updateFinishScanState, finishScanState, setScanState, scanState} = useAntivirus()
      const [isPending, startTransition] = useTransition()
      const {t: messageTxt} = useTranslation("messages")
      const handleDelete = async() => {
@@ -50,7 +47,7 @@ export default function ScanFinishedTable({setScanState, isStartup, scanState, h
                     description: getErrorMessage(err)
                });
           } finally {
-               setState(INITIAL_FINISH_SCAN_STATE)
+               updateFinishScanState(INITIAL_FINISH_SCAN_STATE)
           }
      }
      const handleBulkQuarantine = () => {
@@ -91,7 +88,7 @@ export default function ScanFinishedTable({setScanState, isStartup, scanState, h
                          description: getErrorMessage(err)
                     });
                } finally {
-                    setState({popupState: ""})
+                    updateFinishScanState({popupState: ""})
                }
           })
      }
@@ -114,7 +111,7 @@ export default function ScanFinishedTable({setScanState, isStartup, scanState, h
                <h2 className="text-lg md:text-2xl font-medium">{t("finished.with-threats",{count: threats.length})}</h2>
                <h2 className="text-lg sm:text-xl font-semibold flex items-center justify-center gap-2.5 w-fit"><Timer className="text-primary"/>{formatDuration(duration)}</h2>
                <ThreatsTable
-                    columns={GET_THREATS_COLS(setScanState,setState,settings.developerMode)}
+                    columns={GET_THREATS_COLS(settings.developerMode)}
                     data={threats}
                />
                <ButtonGroup>
@@ -132,7 +129,7 @@ export default function ScanFinishedTable({setScanState, isStartup, scanState, h
                               <DropdownMenuItem onClick={handleBulkQuarantine}>
                                    <BugOff/> {t("resolve.quarantine")}
                               </DropdownMenuItem>
-                              <DropdownMenuItem variant="destructive" onClick={()=>setState({popupState: "clear-threats"})}>
+                              <DropdownMenuItem variant="destructive" onClick={()=>updateFinishScanState({popupState: "clear-threats"})}>
                                    <Trash/>
                                    {t("resolve.delete")}
                               </DropdownMenuItem>
@@ -152,7 +149,7 @@ export default function ScanFinishedTable({setScanState, isStartup, scanState, h
                     submitAction={popupState==="clear-threats" ? "clear" : "delete"}
                     submitEvent={handleConfirm}
                     type="danger"
-                    onOpenChange={(state)=>setState({ popupState: state as "" | ScanFinishConfState})}
+                    onOpenChange={(state)=>updateFinishScanState({ popupState: state as "" | ScanFinishConfState})}
                />
           </>
      )

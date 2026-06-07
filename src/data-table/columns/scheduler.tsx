@@ -1,15 +1,12 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { ScanType } from "@/lib/types/enums";
 import { IntervalType, ISchedulerData } from "@/lib/types/data";
-import { ISchedulerState } from "@/lib/types/states";
 import {IntervalCell, ScanTypeCell} from "../cells/scheduler";
 import ActionsCell from "../actions/scheduler";
 import { IntervalHeader, JobNameHeader, LastScanHeader, NextScanHeader, ScanTypeHeader } from "../headers/scheduler";
 import { DateCell } from "../cells";
 
-export const GET_SCHEDULER_COLS = (
-     setState:  (overrides: Partial<ISchedulerState>) => void,
-): ColumnDef<ISchedulerData<"state">>[] => [
+export const SCHEDULER_COLS: ColumnDef<ISchedulerData<"state">>[] = [
      {
           accessorKey: "id",
           header: () => <JobNameHeader/>,
@@ -39,7 +36,6 @@ export const GET_SCHEDULER_COLS = (
           cell: ({row}) => (
                <ActionsCell
                     item={row.original}
-                    setState={setState}
                />
           ),
      }

@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useSettings } from "@/context/settings";
 import { invoke } from "@tauri-apps/api/core";
 
@@ -30,19 +30,20 @@ export function RealtimeProvider({ children }: { children: React.ReactNode }) {
           start();
           setEnabled(true);
      }, [settings.realTime, settings.behavior]);
+     const values: RealtimeContextValue = useMemo(()=>({
+          enabled,
+          start: async () => {
+               await start();
+               setEnabled(true);
+          },
+          stop: async () => {
+               await stop();
+               setEnabled(false);
+          },
+     }),[enabled])
      return (
           <RealtimeContext.Provider
-               value={{
-                    enabled,
-                    start: async () => {
-                         await start();
-                         setEnabled(true);
-                    },
-                    stop: async () => {
-                         await stop();
-                         setEnabled(false);
-                    },
-               }}
+               value={values}
           >
                {children}
           </RealtimeContext.Provider>

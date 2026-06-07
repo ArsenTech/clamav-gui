@@ -6,14 +6,10 @@ import { ISchedulerData } from "@/lib/types/data"
 import { DataTableProps } from "@/lib/types/props"
 import { DataTableViewOptions } from "../col-toggle"
 import { useTranslation } from "react-i18next"
-import { GET_SCHEDULER_COLS } from "../columns/scheduler"
-import { ISchedulerState } from "@/lib/types/states"
+import { SCHEDULER_COLS as columns } from "../columns/scheduler"
 
-export function SchedulerTable({data, headerElement, setState}: DataTableProps<ISchedulerData<"state">> & {
-  setState: (overrides: Partial<ISchedulerState>) => void,
-}) {
+export function SchedulerTable({data, headerElement}: DataTableProps<ISchedulerData<"state">>) {
   const [sorting, setSorting] = useState<SortingState>([]);
-  const columns = GET_SCHEDULER_COLS(setState)
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const table = useReactTable({
     data,

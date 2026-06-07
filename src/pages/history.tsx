@@ -1,4 +1,5 @@
 import { AppLayout } from "@/components/layout";
+import AntivirusProvider from "@/context/antivirus";
 import useWindowTitle from "@/hooks/use-window-title";
 import HistoryLoader from "@/loaders/history";
 import { lazy, Suspense } from "react";
@@ -10,9 +11,11 @@ export default function HistoryPage(){
      useWindowTitle(t("title"))
      return (
           <AppLayout className="space-y-4 p-4">
-               <Suspense fallback={<HistoryLoader/>}>
-                    <HistoryContent/>
-               </Suspense>
+               <AntivirusProvider>
+                    <Suspense fallback={<HistoryLoader/>}>
+                         <HistoryContent/>
+                    </Suspense>
+               </AntivirusProvider>
           </AppLayout>
      )
 }

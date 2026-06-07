@@ -7,17 +7,16 @@ import { toast } from "sonner";
 import { revealItemInDir } from "@tauri-apps/plugin-opener";
 import { useMemo } from "react";
 import { getErrorMessage } from "@/lib/helpers";
-import { IFinishScanState, IScanPageState } from "@/lib/types/states";
 import { useTranslation } from "react-i18next";
 import { useQuarantineCount } from "@/context/quarantine-count";
+import { useAntivirus } from "@/context/antivirus";
 
 interface ActionsCellProps{
      threat: IThreatsData,
-     setScanState: React.Dispatch<React.SetStateAction<IScanPageState>>,
-     setState: (overrides: Partial<IFinishScanState>) => void,
 }
-export default function ActionsCell({threat, setScanState, setState}: ActionsCellProps){
+export default function ActionsCell({threat}: ActionsCellProps){
      const {increaseBy} = useQuarantineCount();
+     const {updateFinishScanState, setScanState} = useAntivirus()
      const {t} = useTranslation("table");
      const {t: messageTxt} = useTranslation("messages")
      const handleQuarantine = async() => {
@@ -57,7 +56,7 @@ export default function ActionsCell({threat, setScanState, setState}: ActionsCel
                          <BugOff/>
                          {t("actions.quarantine")}
                     </DropdownMenuItem>
-                    <DropdownMenuItem variant="destructive" onClick={()=>setState({
+                    <DropdownMenuItem variant="destructive" onClick={()=>updateFinishScanState({
                          popupState: "delete-threats",
                          currThreat: threat
                     })} disabled={isResolved} >

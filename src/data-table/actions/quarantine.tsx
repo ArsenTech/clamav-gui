@@ -2,14 +2,14 @@ import { Button } from "@/components/ui/button";
 import { MoreHorizontal, RotateCcw, Trash } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { IQuarantineData } from "@/lib/types/data";
-import { IQuarantineState } from "@/lib/types/states";
 import { useTranslation } from "react-i18next";
+import { useAntivirus } from "@/context/antivirus";
 
 interface ActionsCellProps{
-     threat: IQuarantineData,
-     setState: (overrides: Partial<IQuarantineState>) => void
+     threat: IQuarantineData
 }
-export default function ActionsCell({threat, setState}: ActionsCellProps){
+export default function ActionsCell({threat}: ActionsCellProps){
+     const {updateQuarantineState} = useAntivirus()
      const {t} = useTranslation("table");
      return (
           <DropdownMenu>
@@ -22,14 +22,14 @@ export default function ActionsCell({threat, setState}: ActionsCellProps){
                <DropdownMenuContent align="end">
                     <DropdownMenuLabel>{t("heading.actions")}</DropdownMenuLabel>
                     <DropdownMenuSeparator/>
-                    <DropdownMenuItem onClick={()=>setState({
+                    <DropdownMenuItem onClick={()=>updateQuarantineState({
                          id: threat.id,
                          popupState: "restore"
                     })}>
                          <RotateCcw/>
                          {t("actions.restore")}
                     </DropdownMenuItem>
-                    <DropdownMenuItem variant="destructive" onClick={()=>setState({
+                    <DropdownMenuItem variant="destructive" onClick={()=>updateQuarantineState({
                          id: threat.id,
                          popupState: "delete"
                     })}>

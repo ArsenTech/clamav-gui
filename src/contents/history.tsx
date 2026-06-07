@@ -11,8 +11,7 @@ import { save } from "@tauri-apps/plugin-dialog";
 import { exportCSV, exportJSON } from "@/lib/helpers/fs";
 import Popup from "@/components/popup";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { IClearInputState, IHistoryPageState } from "@/lib/types/states";
-import { INITIAL_HISTORY_STATE } from "@/lib/constants/states";
+import { IClearInputState } from "@/lib/types/states";
 import { useTranslation } from "react-i18next";
 import { HistoryClearType } from "@/lib/types/enums"
 import LoadingButton from "@/components/loading-button";
@@ -24,24 +23,24 @@ import { getTimeBasedCutoff } from "@/lib/helpers/history";
 import ClearDatePopup from "@/components/popup/clear-date";
 import { DateRange } from "react-day-picker";
 import ClearRangePopup from "@/components/popup/clear-range";
+import { useAntivirus } from "@/context/antivirus";
 
 export default function HistoryContent(){
      const [isRefreshing, startTransition] = useTransition();
      const [isClearing, startClearTransition] = useTransition();
-     const [historyState, setHistoryState] = useState<IHistoryPageState>(INITIAL_HISTORY_STATE)
+     const {historyState, setHistoryState, updateHistoryState} = useAntivirus()
      const [showClearInput, setShowClearInput] = useState<IClearInputState>({
           date: false,
           range: false
      })
      const updateClearInputState = (overrides: Partial<IClearInputState>) => setShowClearInput(prev=>({...prev, ...overrides}))
-     const setState = (overrides: Partial<IHistoryPageState>) => setHistoryState(prev=>({ ...prev, ...overrides }))
      const {t} = useTranslation("history")
      const {t: messageTxt} = useTranslation("messages")
      const {t: tableTxt} = useTranslation("table")
      const fetchData = () => {
           startTransition(async()=>{
                const newData = await fetchHistoryData(t,messageTxt)
-               setState({ data: newData })
+               updateHistoryState({ data: newData })
           })
      }
      const clearHistory = (mode = HistoryClearType.All) => {
@@ -62,7 +61,7 @@ export default function HistoryContent(){
                          description: getErrorMessage(err)
                     })
                } finally {
-                    setState({popupState: ""})
+                    updateHistoryState({popupState: ""})
                }
           })
      }
@@ -140,7 +139,6 @@ export default function HistoryContent(){
           <div className="space-y-4">
                <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">{t("title")}</h1>
                <HistoryTable
-                    setHistoryState={setHistoryState}
                     data={data}
                     headerElement={(
                          <ButtonGroup>
@@ -160,7 +158,7 @@ export default function HistoryContent(){
                                         </LoadingButton>
                                    </DropdownMenuTrigger>
                                    <DropdownMenuContent>
-                                        <DropdownMenuItem onClick={()=>setState({popupState: "clear-all"})} disabled={isEmpty}>
+                                        <DropdownMenuItem onClick={()=>updateHistoryState({popupState: "clear-all"})} disabled={isEmpty}>
                                              {t("clear.all")}
                                         </DropdownMenuItem>
                                         <DropdownMenuItem disabled={isEmpty} onClick={()=>updateClearInputState({date: true})}>
@@ -170,23 +168,23 @@ export default function HistoryContent(){
                                              {t("clear.by-range")}
                                         </DropdownMenuItem>
                                         <DropdownMenuSeparator/>
-                                        <DropdownMenuItem onClick={()=>setState({popupState: "clear-acknowledged"})} disabled={isEmpty}>
+                                        <DropdownMenuItem onClick={()=>updateHistoryState({popupState: "clear-acknowledged"})} disabled={isEmpty}>
                                              {t("clear.acknowledged")}
                                         </DropdownMenuItem>
-                                        <DropdownMenuItem onClick={()=>setState({popupState: "clear-errors"})} disabled={isEmpty}>
+                                        <DropdownMenuItem onClick={()=>updateHistoryState({popupState: "clear-errors"})} disabled={isEmpty}>
                                              {t("clear.errors")}
                                         </DropdownMenuItem>
-                                        <DropdownMenuItem onClick={()=>setState({popupState: "clear-warnings"})} disabled={isEmpty} >
+                                        <DropdownMenuItem onClick={()=>updateHistoryState({popupState: "clear-warnings"})} disabled={isEmpty} >
                                              {t("clear.warnings")}
                                         </DropdownMenuItem>
                                         <DropdownMenuSeparator/>
-                                        <DropdownMenuItem onClick={()=>setState({popupState: "clear-last-24h"})} disabled={isEmpty}>
+                                        <DropdownMenuItem onClick={()=>updateHistoryState({popupState: "clear-last-24h"})} disabled={isEmpty}>
                                              {t("clear.last-24-hours")}
                                         </DropdownMenuItem>
-                                        <DropdownMenuItem onClick={()=>setState({popupState: "clear-last-7d"})} disabled={isEmpty}>
+                                        <DropdownMenuItem onClick={()=>updateHistoryState({popupState: "clear-last-7d"})} disabled={isEmpty}>
                                              {t("clear.last-7-days")}
                                         </DropdownMenuItem>
-                                        <DropdownMenuItem onClick={()=>setState({popupState: "clear-last-30d"})} disabled={isEmpty} >
+                                        <DropdownMenuItem onClick={()=>updateHistoryState({popupState: "clear-last-30d"})} disabled={isEmpty} >
                                              {t("clear.last-30-days")}
                                         </DropdownMenuItem>
                                    </DropdownMenuContent>
@@ -204,11 +202,11 @@ export default function HistoryContent(){
                submitAction="clear"
                submitEvent={handleConfirm}
                type="danger"
-               onOpenChange={(state)=>setState({ popupState: state as "" | HistoryConfirmationState })}
+               onOpenChange={(state)=>updateHistoryState({ popupState: state as "" | HistoryConfirmationState })}
           />
           <Popup
                open={showDetails}
-               onOpen={showDetails=>setState({showDetails})}
+               onOpen={showDetails=>updateHistoryState({showDetails})}
                title={tableTxt("heading.history.details")}
           >
                {details}

@@ -1,14 +1,10 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { IQuarantineData } from "@/lib/types/data";
-import { IQuarantineState } from "@/lib/types/states";
 import ActionsCell from "../actions/quarantine";
 import { FilePathHeader, IdHeader, QuarantineDateHeader, SizeHeader, ThreatNameHeader } from "../headers/quarantine";
 import { DateCell, SizeCell } from "../cells";
 
-export const GET_QUARANTINE_COLS = (
-     setState: (overrides: Partial<IQuarantineState>) => void,
-     isDevMode: boolean
-): ColumnDef<IQuarantineData>[] => {
+export const GET_QUARANTINE_COLS = (isDevMode: boolean): ColumnDef<IQuarantineData>[] => {
      const baseCols: ColumnDef<IQuarantineData>[] = [
           {
                accessorKey: "threat_name",
@@ -33,7 +29,6 @@ export const GET_QUARANTINE_COLS = (
                cell: ({ row }) => (
                     <ActionsCell
                          threat={row.original}
-                         setState={setState}
                     />
                ),
           }

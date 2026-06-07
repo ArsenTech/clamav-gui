@@ -5,17 +5,17 @@ import { ISchedulerData } from "@/lib/types/data";
 import { invoke } from "@tauri-apps/api/core";
 import { toast } from "sonner";
 import { Link } from "react-router";
-import { ISchedulerState } from "@/lib/types/states";
 import { useTranslation } from "react-i18next";
 import { getErrorMessage } from "@/lib/helpers";
+import { useAntivirus } from "@/context/antivirus";
 
 interface ActionsCellProps{
      item: ISchedulerData<"state">,
-     setState:  (overrides: Partial<ISchedulerState>) => void
 }
-export default function ActionsCell({item, setState}: ActionsCellProps){
+export default function ActionsCell({item}: ActionsCellProps){
      const {t} = useTranslation("table")
      const {t: messageTxt} = useTranslation("messages")
+     const {updateSchedulerState} = useAntivirus()
      const revealLog = async()=>{
           if(!item.log_id) return;
           try{
@@ -66,7 +66,7 @@ export default function ActionsCell({item, setState}: ActionsCellProps){
                          <FileText />
                          {t("actions.reveal-log")}
                     </DropdownMenuItem>
-                    <DropdownMenuItem variant="destructive" onClick={()=>setState({
+                    <DropdownMenuItem variant="destructive" onClick={()=>updateSchedulerState({
                          popupState: "delete-job",
                          job_id: item.id
                     })}>

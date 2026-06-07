@@ -6,7 +6,6 @@ import { useLocale } from "@/i18n/locale";
 import { getErrorMessage } from "@/lib/helpers";
 import { formatNumber } from "@/lib/helpers/formating";
 import { ScanType } from "@/lib/types/enums";
-import { IScanPageState } from "@/lib/types/states";
 import { invoke } from "@tauri-apps/api/core";
 import { exit } from "@tauri-apps/plugin-process";
 import { Bug, Clock, Dot, Folder, SearchCheck, ShieldAlert, ShieldCheck, Square } from "lucide-react";
@@ -16,15 +15,16 @@ import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import AlertBox from "../popup/alert";
 import useWindowTitle from "@/hooks/use-window-title";
+import { useAntivirus } from "@/context/antivirus";
 
 interface Props{
-     scanState: IScanPageState,
      handleReset: () => void,
      isStartup: boolean
 }
-export default function ScanProcess({scanState, handleReset, isStartup}: Props){
+export default function ScanProcess({handleReset, isStartup}: Props){
      const navigate = useNavigate();
      const {settings} = useSettings();
+     const {scanState} = useAntivirus()
      const {scanType, threats, currLocation, totalFiles, scannedFiles, paths} = scanState
      const [isOpen, setIsOpen] = useState(false);
      const {formatDate} = useSettings()

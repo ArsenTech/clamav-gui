@@ -1,16 +1,12 @@
 import { IHistoryData, HistoryStatus } from "@/lib/types/data";
 import { ColumnDef } from "@tanstack/react-table";
-import { IHistoryPageState } from "@/lib/types/states";
 import { HistoryType } from "@/lib/types/enums";
 import ActionsCell from "../actions/history";
 import { DetailsHeader, EventHeader, IdHeader, StatusHeader, TimestampHeader } from "../headers/history";
 import { StatusCell, MarkAcknowledgedCell, EventCell, DetailsCell } from "../cells/history";
 import { DateCell } from "../cells";
 
-export const GET_HISTORY_COLS = (
-     setHistoryState: React.Dispatch<React.SetStateAction<IHistoryPageState>>,
-     isDevMode: boolean
-): ColumnDef<IHistoryData<"state">>[] => {
+export const GET_HISTORY_COLS = (isDevMode: boolean): ColumnDef<IHistoryData<"state">>[] => {
      const baseCols: ColumnDef<IHistoryData<"state">>[] = [
           {
                accessorKey: "timestamp",
@@ -34,22 +30,12 @@ export const GET_HISTORY_COLS = (
           },
           {
                id: "actions",
-               cell: ({row}) => (
-                    <ActionsCell
-                         item={row.original}
-                         setHistoryState={setHistoryState}
-                    />
-               )
+               cell: ({row}) => <ActionsCell item={row.original} />
           }
      ];
      const acknowledgeCol: ColumnDef<IHistoryData<"state">> = {
           id: "isAcknowledged",
-          cell: ({row}) => (
-               <MarkAcknowledgedCell
-                    item={row.original}
-                    setHistoryState={setHistoryState}
-               />
-          )
+          cell: ({row}) => <MarkAcknowledgedCell item={row.original} />
      };
      return isDevMode ? [
           acknowledgeCol,

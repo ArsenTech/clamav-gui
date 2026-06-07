@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
 
 interface QuarantineCountContextValue{
      quarantineCount: number
@@ -10,7 +10,7 @@ const QuarantineCountContext = createContext<QuarantineCountContextValue | null>
 
 export function QuarantineCountProvider({ children }: { children: React.ReactNode }){
      const [count, setCount] = useState(()=>parseInt(localStorage.getItem("quarantine-count") as string) || 0)
-     const values: QuarantineCountContextValue = {
+     const values: QuarantineCountContextValue = useMemo(()=>({
           quarantineCount: count,
           increaseBy: (newCount = 0) => {
                const newValue = count+newCount;
@@ -26,7 +26,7 @@ export function QuarantineCountProvider({ children }: { children: React.ReactNod
                localStorage.setItem("quarantine-count",String(newCount));
                setCount(newCount)
           },
-     }
+     }),[count])
      return (
           <QuarantineCountContext.Provider value={values}>
                {children}

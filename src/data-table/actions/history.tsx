@@ -6,15 +6,15 @@ import { invoke } from "@tauri-apps/api/core";
 import { toast } from "sonner";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Link } from "react-router";
-import { IHistoryPageState } from "@/lib/types/states";
 import { useTranslation } from "react-i18next";
+import { useAntivirus } from "@/context/antivirus";
 
 interface ActionsCellProps{
      item: IHistoryData<"state">
-     setHistoryState: React.Dispatch<React.SetStateAction<IHistoryPageState>>,
 }
-export default function ActionsCell({item, setHistoryState}: ActionsCellProps){
+export default function ActionsCell({item}: ActionsCellProps){
      const {t} = useTranslation("table")
+     const {setHistoryState} = useAntivirus()
      const {t: messageTxt} = useTranslation("messages")
      const revealLog = async()=>{
           if(!item.logId || !item.category) return;

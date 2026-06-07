@@ -1,7 +1,7 @@
 import { useSettings } from "@/context/settings";
 import { COLORS } from "@/lib/constants/colors";
 import { Color, ResolvedTheme, Theme } from "@/lib/types/settings";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
 type ThemeProviderProps = {
@@ -70,14 +70,13 @@ export function ThemeProvider({
           root.dataset.themeColor = settings.color;
      }, [settings.color, resolvedTheme]);
 
-     const value: ThemeProviderState = {
+     const value: ThemeProviderState = useMemo(()=>({
           theme: settings.theme,
           resolvedTheme,
           color: settings.color,
           setTheme: t => setSettings({ theme: t }),
           setColor: c => setSettings({ color: c }),
-     };
-
+     }),[settings, resolvedTheme]);
      return (
           <ThemeProviderContext.Provider value={value}>
                {children}
