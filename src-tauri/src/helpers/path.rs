@@ -32,21 +32,36 @@ pub fn path_to_regex(path: &str) -> String {
 //     path_to_regex(&path.to_string_lossy())
 // }
 
+#[cfg(target_os = "macos")]
+const MACOS_CLAMSCAN_PATHS: &[&str] = &[
+    "/opt/homebrew/bin/clamscan",
+    "/usr/local/bin/clamscan",
+];
 pub fn get_clamav_path() -> Result<PathBuf,String>{
     #[cfg(debug_assertions)]
+    println!("PATH={:?}", std::env::var("PATH"));
+    
+    if let Ok(path) = resolve_command("clamscan") {
+        #[cfg(debug_assertions)]
+        println!("clamscan={:?}", path);
+        return Ok(path);
+    }
+    if let Err(err) = resolve_command("clamscan") {
+        #[cfg(debug_assertions)]
+        println!("clamscan lookup failed: {}", err);
+    }
+    #[cfg(target_os = "macos")]
     {
-        println!("PATH={:?}", std::env::var("PATH"));
-    }
-    match resolve_command("clamscan") {
-        Ok(path) => {
-            #[cfg(debug_assertions)]
-            println!("clamscan={:?}", path);
-            Ok(path)
-        }
-        Err(err) => {
-            #[cfg(debug_assertions)]
-            println!("clamscan lookup failed: {}", err);
-            Err("ClamAV not found. Please install ClamAV and ensure clamscan is available in PATH, or report the bug if something went wrong.".into())
+        for path in MACOS_CLAMSCAN_PATHS {
+            let candidate = PathBuf::from(path);
+
+            if candidate.is_file() {
+                #[cfg(debug_assertions)]
+                println!("Found macOS fallback path: {:?}", candidate);
+
+                return Ok(candidate);
+            }
         }
     }
+    Err("ClamAV not found. Please install ClamAV and ensure clamscan is available in PATH, or report the bug if something went wrong.".into(),)
 }

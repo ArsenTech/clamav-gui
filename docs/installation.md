@@ -8,7 +8,7 @@
 
 <h1 align="center">Installing ClamAV GUI</h1>
 
-**ArsenTech's ClamAV GUI version 1.0.6** is a minimal, open-source interface for file scanning and threat detection that makes the Antivirus itself look professional and work exactly like ClamAV (A FOSS CLI Antivirus).
+**ArsenTech's ClamAV GUI version 1.0.7-1** is a minimal, open-source interface for file scanning and threat detection that makes the Antivirus itself look professional and work exactly like ClamAV (A FOSS CLI Antivirus).
 
 This software is provided as-is. No data is collected or transmitted. This GUI uses ClamAV's `clamscan` and `freshclam` engines. Scan types are presets that define which locations and which limits are used.
 
