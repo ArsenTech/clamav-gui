@@ -33,8 +33,20 @@ pub fn path_to_regex(path: &str) -> String {
 // }
 
 pub fn get_clamav_path() -> Result<PathBuf,String>{
-    if let Ok(clamscan) = resolve_command("clamscan"){
-        return Ok(clamscan);
-    };
-    Err("ClamAV not found. Please install ClamAV and ensure clamscan is available in PATH.".into())
+    #[cfg(debug_assertions)]
+    {
+        println!("PATH={:?}", std::env::var("PATH"));
+    }
+    match resolve_command("clamscan") {
+        Ok(path) => {
+            #[cfg(debug_assertions)]
+            println!("clamscan={:?}", path);
+            Ok(path)
+        }
+        Err(err) => {
+            #[cfg(debug_assertions)]
+            println!("clamscan lookup failed: {}", err);
+            Err("ClamAV not found. Please install ClamAV and ensure clamscan is available in PATH, or report the bug if something went wrong.".into())
+        }
+    }
 }

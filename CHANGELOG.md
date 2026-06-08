@@ -6,7 +6,11 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ---
 ## [1.0.7] - Unreleased
 ### Added
-- Antivirus Context for shared instances to replace the `setX={setX}` nested prop
+- App related Contexts for shared instances to replace the `setX={setX}` nested prop
+  - App History
+  - Scan
+  - Scheduler
+  - Quarantine
 ### Improved
 - Memoized some contexts
   - Quarantine Count
