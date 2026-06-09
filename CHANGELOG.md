@@ -5,8 +5,6 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 ## [1.0.7] - Unreleased
-> [!NOTE]
-> Version 1.0.7-1 is a beta release used to validate the macOS Homebrew detection fix before the final 1.0.7 release.
 ### Added
 - Antivirus page contexts to reduce prop drilling and replace nested `setX={setX}` props
   - History
@@ -26,6 +24,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Added additional ClamAV detection logging for debugging and troubleshooting
 
 ## [1.0.7 Beta 1] - 2026-06-08
+> [!NOTE]
+> Version 1.0.7-1 is a beta release used to validate the macOS Homebrew detection fix before the final 1.0.7 release.
 ### Experimental
 - App related Contexts for shared instances to replace the `setX={setX}` nested prop
   - App History
