@@ -4,6 +4,26 @@ All notable changes of ArsenTech's ClamAV GUI will be documented here.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+## [1.0.7] - Unreleased
+> [!NOTE]
+> Version 1.0.7-1 is a beta release used to validate the macOS Homebrew detection fix before the final 1.0.7 release.
+### Added
+- Antivirus page contexts to reduce prop drilling and replace nested `setX={setX}` props
+  - History
+  - Scan
+  - Scheduler
+  - Quarantine
+### Improved
+- Memoized shared contexts
+  - Quarantine Count
+  - Real-Time Scan
+  - Themes
+### Fixed
+- macOS Homebrew ClamAV detection fallback - Fixes [#16](https://github.com/ArsenTech/clamav-gui/issues/16)
+  - `/opt/homebrew/bin/clamscan`
+  - `/usr/local/bin/clamscan`
+- Added additional ClamAV detection logging for debugging and troubleshooting
+
 ## [1.0.7 Beta 1] - 2026-06-08
 ### Experimental
 - App related Contexts for shared instances to replace the `setX={setX}` nested prop
