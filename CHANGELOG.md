@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   - Scan
   - Scheduler
   - Quarantine
+- Additional ClamAV detection logging for debugging and troubleshooting
 ### Improved
 - Memoized shared contexts
   - Quarantine Count
@@ -21,7 +22,6 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - macOS Homebrew ClamAV detection fallback - Fixes [#16](https://github.com/ArsenTech/clamav-gui/issues/16)
   - `/opt/homebrew/bin/clamscan`
   - `/usr/local/bin/clamscan`
-- Added additional ClamAV detection logging for debugging and troubleshooting
 
 ## [1.0.7 Beta 1] - 2026-06-08
 > [!NOTE]
