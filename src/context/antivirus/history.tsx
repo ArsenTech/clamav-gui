@@ -1,7 +1,7 @@
 import { INITIAL_HISTORY_STATE } from "@/lib/constants/states";
 import { SetDataFunction, SetStateType } from "@/lib/types";
 import { IHistoryPageState } from "@/lib/types/states";
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useMemo, useState } from "react";
 
 interface AppHistoryContextValues {
      historyState: IHistoryPageState,
@@ -16,7 +16,7 @@ interface AppHistoryProviderProps{
 }
 export default function AppHistoryProvider({children}: AppHistoryProviderProps){
      const [historyState, setHistoryState] = useState<IHistoryPageState>(INITIAL_HISTORY_STATE)
-     const updateHistoryState: SetDataFunction<IHistoryPageState> = overrides => setHistoryState(prev=>({ ...prev, ...overrides }))
+     const updateHistoryState: SetDataFunction<IHistoryPageState> = useCallback(overrides => setHistoryState(prev=>({ ...prev, ...overrides })),[])
      const values: AppHistoryContextValues = useMemo(()=>({
           historyState, setHistoryState, updateHistoryState
      }),[historyState])

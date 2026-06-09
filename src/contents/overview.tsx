@@ -28,15 +28,16 @@ export default function OverviewContent(){
                params.append("path",path);
           navigate(`${href}?${params.toString()}`)
      }
+     const fetchDefinitionStatus = async()=>{
+          try{
+               const isOutdated = await checkDefinitionStatus()
+               setDefinitionStatus(isOutdated ? DefinitionStatus.Outdated : DefinitionStatus.Updated)
+          } catch {
+               setDefinitionStatus(DefinitionStatus.Outdated)
+          }
+     }
      useEffect(()=>{
-          (async()=>{
-               try{
-                    const isOutdated = await checkDefinitionStatus()
-                    setDefinitionStatus(isOutdated ? DefinitionStatus.Outdated : DefinitionStatus.Updated)
-               } catch {
-                    setDefinitionStatus(DefinitionStatus.Outdated)
-               }
-          })()
+          fetchDefinitionStatus()
      },[])
      return (
           <>

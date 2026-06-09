@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useSettings } from "@/context/settings";
 import { invoke } from "@tauri-apps/api/core";
 
@@ -13,14 +13,14 @@ const RealtimeContext = createContext<RealtimeContextValue | null>(null);
 export function RealtimeProvider({ children }: { children: React.ReactNode }) {
      const { settings } = useSettings();
      const [enabled, setEnabled] = useState(settings.realTime);
-     const start = async () => {
+     const start = useCallback(async () => {
           await invoke("start_real_time_scan", { behavior: settings.behavior || "balanced" });
           await invoke("update_tray_icon",{state: "enabled"})
-     };
-     const stop = async () => {
+     },[settings.behavior]);
+     const stop = useCallback(async () => {
           await invoke("stop_real_time_scan");
           await invoke("update_tray_icon",{state: "disabled"})
-     };
+     },[]);
      useEffect(() => {
           if(!settings.realTime){
                stop();

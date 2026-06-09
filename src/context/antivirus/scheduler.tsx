@@ -1,7 +1,7 @@
 import { INITIAL_SCHEDULER_STATE } from "@/lib/constants/states";
 import { SetDataFunction, SetStateType } from "@/lib/types";
 import { ISchedulerState } from "@/lib/types/states";
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useMemo, useState } from "react";
 
 interface SchedulerContextValues {
      schedulerState: ISchedulerState,
@@ -16,8 +16,7 @@ interface SchedulerProviderProps{
 }
 export default function SchedulerProvider({children}: SchedulerProviderProps){
      const [schedulerState, setSchedulerState] = useState<ISchedulerState>(INITIAL_SCHEDULER_STATE);
-     const updateSchedulerState: SetDataFunction<ISchedulerState> = overrides => setSchedulerState(prev=>({ ...prev, ...overrides }))
-
+     const updateSchedulerState: SetDataFunction<ISchedulerState> = useCallback(overrides => setSchedulerState(prev=>({ ...prev, ...overrides })),[])
      const values: SchedulerContextValues = useMemo(()=>({
           schedulerState, setSchedulerState, updateSchedulerState,
      }),[schedulerState])

@@ -4,7 +4,7 @@ import { IDefsUpdaterState } from "@/lib/types/states";
 import { cn } from "@/lib/utils";
 import { listen, UnlistenFn } from "@tauri-apps/api/event";
 import { AlertCircle, BugOff, CheckCircle, RotateCcw, RotateCw, ScrollText } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { Spinner } from "@/components/ui/spinner";
 import { invoke } from "@tauri-apps/api/core";
@@ -24,11 +24,11 @@ export default function UpdateSettings(){
      const [clamAvVersion, setClamavVersion] = useState<IClamAvVersion|null>(()=>JSON.parse(localStorage.getItem("clamav-version") as string) || null);
      const {t} = useTranslation("update");
      const {dateFns} = useLocale();
-     const setState = (overrides: Partial<IDefsUpdaterState>) => setUpdateState(prev=>({ ...prev, ...overrides }))
-     const handleUpdateDefs = async()=>{
+     const setState = useCallback((overrides: Partial<IDefsUpdaterState>) => setUpdateState(prev=>({ ...prev, ...overrides })),[])
+     const handleUpdateDefs = useCallback(async()=>{
           if (updateState.isUpdatingDefs) return;
           await invoke("update_definitions")
-     }
+     },[updateState.isUpdatingDefs])
      const updateVersions = (parsed: Awaited<ReturnType<typeof getClamAvVersion>>) => {
           if(!parsed) return;
           const version: IClamAvVersion = {

@@ -2,7 +2,7 @@ import { GET_INITIAL_SCAN_STATE, INITIAL_FINISH_SCAN_STATE } from "@/lib/constan
 import { SetDataFunction, SetStateType } from "@/lib/types";
 import { ScanType } from "@/lib/types/enums";
 import { IFinishScanState, IScanPageState } from "@/lib/types/states";
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
 interface ScanContextValues {
      finishScanState: IFinishScanState,
@@ -23,11 +23,11 @@ interface ScanProviderProps{
 }
 export default function ScanProvider({children, type=null, path}: ScanProviderProps){
      const [finishScanState, setFinishScanState] = useState<IFinishScanState>(INITIAL_FINISH_SCAN_STATE)
-     const updateFinishScanState: SetDataFunction<IFinishScanState> = overrides => setFinishScanState(prev=>({ ...prev, ...overrides}));
+     const updateFinishScanState: SetDataFunction<IFinishScanState> = useCallback(overrides => setFinishScanState(prev=>({ ...prev, ...overrides})),[]);
      const initialScanState = GET_INITIAL_SCAN_STATE(type || ScanType.None,path)
      const [scanState, setScanState] = useState<IScanPageState>(initialScanState);
-     const updateScanState: SetDataFunction<IScanPageState> = overrides => setScanState(prev=>({ ...prev, ...overrides }))
-
+     const updateScanState: SetDataFunction<IScanPageState> = useCallback(overrides => setScanState(prev=>({ ...prev, ...overrides })),[])
+     
      useEffect(() => {
           setScanState(prev => {
                if (prev.status !== "idle") return prev;
