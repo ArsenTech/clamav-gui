@@ -79,15 +79,19 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - [ ] Error Handling & Translation Improvements
    - Normalize backend errors
    - Map to frontend translations
+   - Better error messages
 - [ ] Minimized Auto Start Setting ([#12](https://github.com/ArsenTech/clamav-gui/issues/12))
 - [ ] Silent Scheduled Scans Settings (Another Attempt)
 - [X] Move several states into context to reduce rerenders and improve performance
-- [ ] ClamAV Path Settings
+- [ ] Investigate macOS TextToSpeech false positive
+- [ ] Verify detection name and affected ClamAV versions
+- [ ] Determine whether exclusion should be default or optional
 > [!NOTE]
 > v1.0.7 is complete when
 > - error handling is consistent
 > - other features work as expected
 #### v1.0.8 (Platform Expansion)
+- [ ] ClamAV Path Settings
 - [ ] Scheduler support for Linux and MacOS
 - [ ] Limit `helpers::scheduler::windows::get_last_run_time` only for Windows Users
 #### v1.1.x (Planned, Major)
@@ -97,6 +101,14 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
   - [ ] YARA Real-time Option
   - [ ] YARA Configuration in settings
 - [ ] Feature to submit suspicious signatures to ClamAV
+- [ ] Detect clamdscan
+- [ ] Detect clamd
+- [ ] Add backend selector
+- [ ] Use selected backend
+#### Future Improvements
+- [ ] Validate daemon status
+- [ ] Optional multiscan
+- [ ] Advanced clamd configuration
 #### Nice to have
 - [ ] Write the documentation in the `docs/` folder.
   - [ ] Usage Guide
