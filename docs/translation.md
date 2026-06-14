@@ -6,8 +6,8 @@
      </picture>
 </p>
 
-<h1 align="center">Getting Started</h1>
-<!-- TODO: Write the Usage Guide -->
+<h1 align="center">Translating the ClamAV GUI</h1>
+<!-- TODO: Write the Translation Guide -->
 
 ---
 ### Navigation

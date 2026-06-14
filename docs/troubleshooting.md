@@ -67,7 +67,6 @@ That error might happen because of leftover LocalStorage configurations
 
 > [!IMPORTANT]
 > This might delete settings configurations, so make sure to export these settings before cleaning the cache, and once it's finished, import these settings into the GUI
-<!-- TODO: Continue writing the Troubleshooting Guide once it has new info -->
 
 ---
 ### Navigation
@@ -76,6 +75,7 @@ That error might happen because of leftover LocalStorage configurations
   - [Installation Guide](./installation.md)
   - [Troubleshooting](./troubleshooting.md)
   - [FAQs](./faq.md)
+  - [Translation Guide](./translation.md)
   - [Contribution Guide](./CONTRIBUTING.md)
 - [← Back to README](./README.md)
 

@@ -60,8 +60,6 @@ Next, the installer will ask you where you wish to install the GUI. Unless you h
 
 You'll find shortcuts placed on both the Desktop and Start Menu, so launch the GUI by double clicking on the Blue Shield icon.
 
-<!-- TODO: Extend the Installation guide to Mac and Linux Users -->
-
 ---
 ### Navigation
 - Docs
@@ -69,6 +67,7 @@ You'll find shortcuts placed on both the Desktop and Start Menu, so launch the G
   - [Installation Guide](./installation.md)
   - [Troubleshooting](./troubleshooting.md)
   - [FAQs](./faq.md)
+  - [Translation Guide](./translation.md)
   - [Contribution Guide](./CONTRIBUTING.md)
 - [← Back to README](./README.md)
 

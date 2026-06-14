@@ -20,8 +20,8 @@ ClamAV is a trademark of Cisco Systems, Inc. This project is an independent, ope
 ### What platforms does ClamAV GUI run on?
 **ArsenTech's ClamAV GUI** is built with Tauri + React + Typescript and runs on:
 - Windows 10 and later
-- Linux
-- macOS (Apple Silicon / arm64)
+- Linux depending on which distro
+- macOS High Sierra or later (Apple Silicon / arm64)
 
 ### Where is my data stored?
 The ClamAV GUI stores settings and data in a platform-specific data folder (`%appdata%/com.arsentech.clamav-gui` on Windows for example). 
@@ -47,8 +47,6 @@ You can open the issue in following ways:
 2. Write some details about the bug you've encountered (or a new feature proposal)
 3. Once finished, click on **Create**
 
-<!-- TODO: Continue writing the FAQ section once it has new info -->
-
 ---
 ### Navigation
 - Docs
@@ -56,6 +54,7 @@ You can open the issue in following ways:
   - [Installation Guide](./installation.md)
   - [Troubleshooting](./troubleshooting.md)
   - [FAQs](./faq.md)
+  - [Translation Guide](./translation.md)
   - [Contribution Guide](./CONTRIBUTING.md)
 - [← Back to README](./README.md)
   

@@ -113,8 +113,11 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - [ ] Write the documentation in the `docs/` folder.
   - [ ] Usage Guide
   - [X] Installation Guide
+    - [ ] Extend the Installation guide to Mac and Linux Users
   - [X] Troubleshooting
-  - [ ] FAQs
+    - [ ] Continue writing the Troubleshooting Guide once it has new or missing info
+  - [X] FAQs
+    - [ ] Continue writing the FAQ section once it has new or missing info
   - [ ] Translation Guide
 - [ ] Translate new parts after running `npm run i18n:missing-keys [lang-codes]` and typing
   - 🇫🇷 French - `fr`
