@@ -148,6 +148,7 @@ Full documentation is available here:
   - [Installation Guide](./docs/installation.md)
   - [Troubleshooting](./docs/troubleshooting.md)
   - [FAQs](./docs/faq.md)
+  - [Translation Guide](./docs/translation.md)
 
 ## Versioning
 This website follows [Semantic Versioning](https://semver.org/). You can view the full [Changelog][changelog-url] for details on each website version.
@@ -210,7 +211,7 @@ ClamAV is a trademark of Cisco Systems, Inc. This project is an independent, ope
 [contributing-url]: https://github.com/ArsenTech/clamav-gui/blob/main/docs/CONTRIBUTING.md
 [changelog-url]: https://github.com/ArsenTech/clamav-gui/blob/main/CHANGELOG.md
 [website-url]: https://arsentech.github.io
-[docs-url]: https://github.com/ArsenTech/clamav-gui/blob/main/docs/usage.md
+[docs-url]: https://github.com/ArsenTech/clamav-gui/blob/main/docs/README.md
 [sponsors-list]: https://raw.githubusercontent.com/ArsenTech/clamav-gui/main/public/sponsors/sponsors.svg
 [sponsors-link]: https://github.com/sponsors/ArsenTech
 [sponsors-badge]: https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86&style=for-the-badge
