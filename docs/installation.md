@@ -14,7 +14,7 @@
     - AMD Ryzen, Threadripper, or Epyc
     - Intel Core (9th generation and newer) i3, i5, i7, i9, Ultra or equivalent Xeon
     - Apple Silicon M1 and newer
-- Minimum System Memory: **16 GB** for the ClamAV GUI app
+- Minimum System Memory: **8 GB Minimum (16 GB Recommended)**
 - System storage: ~15MB for the ClamAV GUI app
 - Display resolution: 1280x960 minimum, proportionately higher with display scaling.
 
