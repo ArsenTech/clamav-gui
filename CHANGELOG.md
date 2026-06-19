@@ -4,7 +4,7 @@ All notable changes of ArsenTech's ClamAV GUI will be documented here.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
-## [1.0.7] - Unreleased
+<!-- ## [1.0.7] - Unreleased
 ### Added
 - Antivirus page contexts to reduce prop drilling and replace nested `setX={setX}` props
   - History
@@ -24,7 +24,14 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Fixed
 - macOS Homebrew ClamAV detection fallback - Fixes [#16](https://github.com/ArsenTech/clamav-gui/issues/16)
   - `/opt/homebrew/bin/clamscan`
-  - `/usr/local/bin/clamscan`
+  - `/usr/local/bin/clamscan` -->
+
+## [1.0.7 Beta 2] - Unreleased
+### Added
+- Identifier on the about page
+### Improved
+- Skeleton Loaders - Change the background image to a muted color
+- **About Page** - Added Scroll approach on the info also and improved the UI
 
 ## [1.0.7 Beta 1] - 2026-06-08
 > [!NOTE]
@@ -401,6 +408,8 @@ This is the first pre-release of the ClamAV GUI. The backend functionality will 
 - The About Page
 - State-gated Layout (It'll show "Oops, No ClamAV found" if ClamAV isn't installed)
 
+[1.0.7]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.7
+[1.0.7 Beta 2]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.7-2
 [1.0.7 Beta 1]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.7-1
 [1.0.6]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.6
 [1.0.5]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.5
