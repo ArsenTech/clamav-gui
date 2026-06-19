@@ -15,11 +15,11 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
           <SettingsProvider>
                <QuarantineCountProvider>
                     <RealtimeProvider>
-                         <ThemeProvider>
-                              <StartupScanProvider>
+                         <StartupScanProvider>
+                              <ThemeProvider>
                                    <RouterProvider router={router}/>
-                              </StartupScanProvider>
-                         </ThemeProvider>
+                              </ThemeProvider>
+                         </StartupScanProvider>
                     </RealtimeProvider>
                </QuarantineCountProvider>
           </SettingsProvider>
