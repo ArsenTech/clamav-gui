@@ -29,7 +29,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 [1.0.7]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.7 
 
------>
+--- -->
 
 ## [1.0.7 Beta 2] - Unreleased
 ### Added
