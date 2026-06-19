@@ -16,5 +16,7 @@
           "feature-request": "Request a feature",
           "contribute": "Contribute",
           "translate": "Add Your Language"
-     }
+     },
+     "identifier": "Identifier: {{value}}",
+     "tauri-version": "Tauri version: v{{version}}"
 }

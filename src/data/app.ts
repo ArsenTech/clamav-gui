@@ -1,13 +1,16 @@
 import { parseClamVersion } from "@/lib/helpers";
 import { IVersion } from "@/lib/types/states";
-import { getVersion, getTauriVersion, getName } from "@tauri-apps/api/app";
+import { getVersion, getTauriVersion, getName, getIdentifier } from "@tauri-apps/api/app";
 import { invoke } from "@tauri-apps/api/core";
 import { cache } from "react";
 
 export const getAppVersions = cache(async(): Promise<IVersion> => {
-     const app = await getVersion();
-     const tauri = await getTauriVersion();
-     return {app, tauri}
+     const [app, tauri, identifier] = await Promise.all([
+          getVersion(),
+          getTauriVersion(),
+          getIdentifier()
+     ]);
+     return {app, tauri, identifier}
 })
 
 export const getClamAvVersion = cache(async() => {
@@ -22,8 +25,7 @@ export const getClamAvVersion = cache(async() => {
 
 export const checkDefinitionStatus = cache(async() => {
      try{
-          const clamAVraw = await invoke<string>("get_clamav_version");
-          const parsed = parseClamVersion(clamAVraw);
+          const parsed = await getClamAvVersion();
           return parsed ? parsed.isOutdated : false
      } catch {
           return false
@@ -33,7 +35,9 @@ export const checkDefinitionStatus = cache(async() => {
 export const checkAvailability = cache(async() =>await invoke<boolean>("check_availability"))
 
 export const getAppDetails = cache(async() => {
-     const name = await getName();
-     const version = await getVersion();
+     const [name, version] = await Promise.all([
+          getName(),
+          getVersion()
+     ]);
      return {name, version}
 })

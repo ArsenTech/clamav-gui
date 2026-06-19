@@ -12,6 +12,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   - Scheduler
   - Quarantine
 - Additional ClamAV detection logging for debugging and troubleshooting
+- Identifier on the about page
 ### Improved
 - Memoized shared contexts
   - Quarantine Count
@@ -19,6 +20,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   - Themes
 - Memoized functions inside contexts and on definitions updater state to reduce re-rendering
 - Skeleton Loaders - Change the background image to a muted color
+- **About Page** - Added Scroll approach on the info also and improved the UI
 ### Fixed
 - macOS Homebrew ClamAV detection fallback - Fixes [#16](https://github.com/ArsenTech/clamav-gui/issues/16)
   - `/opt/homebrew/bin/clamscan`

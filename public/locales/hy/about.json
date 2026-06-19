@@ -16,5 +16,7 @@
           "feature-request": "Խնդրել նոր ֆունկցիա",
           "contribute": "Մասնակցեք",
           "translate": "Ավելացրեք ձեր լեզուն"
-     }
+     },
+     "identifier": "Նույնականացուցիչ՝ {{value}}",
+     "tauri-version": "Tauri տարբերակ՝ v{{version}}"
 }

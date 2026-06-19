@@ -11,6 +11,7 @@ export interface IDeviceInfo {
 export interface IVersion{
      app: string,
      tauri: string,
+     identifier: string
 }
 export interface IScanPageState{
      status: ScanUIStatus

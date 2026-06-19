@@ -1,17 +1,20 @@
 import { useTheme } from "@/context/themes"
 import { SidebarCollapsible } from "@/lib/types/enums";
+import { cn } from "@/lib/utils";
 import { useMemo } from "react";
 
 interface Props{
      width: number,
      height: number,
      state?: "collapsed" | "expanded",
-     collapsibleState?: SidebarCollapsible
+     collapsibleState?: SidebarCollapsible,
+     className?: string
 }
 export default function Logo({
      width, height,
      state="expanded",
-     collapsibleState=SidebarCollapsible.OffCanvas
+     collapsibleState=SidebarCollapsible.OffCanvas,
+     className
 }: Props){
      const {resolvedTheme, color} = useTheme();
      const isCollapsed = useMemo(()=>collapsibleState==="icon" && state==="collapsed",[collapsibleState,state])
@@ -25,7 +28,7 @@ export default function Logo({
                alt="ClamAV GUI"
                width={isCollapsed ? height : width}
                height={height}
-               className="object-contain"
+               className={cn("object-contain",className)}
           />
      )
 }

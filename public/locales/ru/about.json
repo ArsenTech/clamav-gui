@@ -16,5 +16,7 @@
           "feature-request": "Запросить функцию",
           "contribute": "Примите участие!",
           "translate": "Добавьте свой язык"
-     }
+     },
+     "identifier": "Идентификатор: {{value}}",
+     "tauri-version": "Версия Tauri: v{{version}}"
 }
