@@ -24,7 +24,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Fixed
 - macOS Homebrew ClamAV detection fallback - Fixes [#16](https://github.com/ArsenTech/clamav-gui/issues/16)
   - `/opt/homebrew/bin/clamscan`
-  - `/usr/local/bin/clamscan` -->
+  - `/usr/local/bin/clamscan`
+
+[1.0.7]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.7 -->
 
 ## [1.0.7 Beta 2] - Unreleased
 ### Added
@@ -32,6 +34,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Improved
 - Skeleton Loaders - Change the background image to a muted color
 - **About Page** - Added Scroll approach on the info also and improved the UI
+
+[1.0.7 Beta 2]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.7-2
 
 ## [1.0.7 Beta 1] - 2026-06-08
 > [!NOTE]
@@ -53,6 +57,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   - `/usr/local/bin/clamscan`
 - Additional detection logging for debugging
 - Continued investigation of issue #16
+
+[1.0.7 Beta 1]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.7-1
 
 ## [1.0.6] - 2026-06-02
 > [!NOTE]
@@ -77,6 +83,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Translation placeholder error
 - Profile settings rerender bug - Fixes [#15](https://github.com/ArsenTech/clamav-gui/issues/15), Used the minimal stable fix
 - Height UI bug (uses Dynamic height) - Fixes [#15](https://github.com/ArsenTech/clamav-gui/issues/15), Used the minimal stable fix
+
+[1.0.6]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.6
 
 ## [1.0.5] - 2026-05-03
 ### Added
@@ -108,6 +116,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Completed translations for 🇺🇸 English, 🇦🇲 Armenian, 🇷🇺 Russian
 - Prepared missing keys for community contributions
 
+[1.0.5]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.5
+
 ## [1.0.4] - 2026-04-10
 ### Added Languages
 - **🇵🇱 Polish** - Thanks [@Olek980](https://github.com/Olek980)!
@@ -131,6 +141,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Versions
 - Other possible backend functions
 
+[1.0.4]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.4
+
 ## [1.0.3] - 2026-03-22
 ### Added
 - Feature to Export / Import Some Settings
@@ -147,6 +159,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Popup placements if it has over 2 Popup placements (Experimental)
 - Error Message display in the toaster
 
+[1.0.3]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.3
+
 ## [1.0.2] - 2026-03-07
 ### Added
 - **Badge Visibility Settings** - Icon only, Icon and text, and Text only
@@ -159,6 +173,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Colored dark mode icons of the sidebar instead of the white ones
 - **Accent Color** (Skeleton Loading Color), **Muted Color**, and **Secondary Color**
 
+[1.0.2]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.2
+
 ## [1.0.1] - 2026-02-25
 ### Added
 - Real-time Quarantine Count On the Sidebar
@@ -169,6 +185,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - The **View Details** Icon - Changed back into the List icon
 ### Fixed
 - Some Armenian Translation keys
+
+[1.0.1]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.1
 
 ## [1.0.0] - 2026-02-12 (First Stable Version)
 ### Added
@@ -190,7 +208,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Changed
 - `console.error()` into `toast.error()` across every app
 
-## [1.0.0-3] - 2026-02-10 (v1 Beta #3)
+[1.0.0]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.0
+
+## [1.0.0 Beta 3] - 2026-02-10 (v1 Beta #3)
 ### Translated
 - Settings
   - General Settings UI
@@ -206,7 +226,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Some more Enums used in frontend
 - `console.error()` in some places into `toast.error(...,{description})`
 
-## [1.0.0-2] - 2026-02-09 (v1 Beta #2)
+[1.0.0 Beta 3]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.0-3
+
+## [1.0.0 Beta 2] - 2026-02-09 (v1 Beta #2)
 ### Added
 - Danger Zone Settings
 - Error Message when the scan failed to start
@@ -234,7 +256,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Removed
 - Notification Audio Support (Failed to play a sound)
 
-## [1.0.0-1] - 2026-02-07 (v1 Beta #1)
+[1.0.0 Beta 2]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.0-2
+
+## [1.0.0 Beta 1] - 2026-02-07 (v1 Beta #1)
 ### Added
 - App Updater
 - **Clear All Errors** Option inside the history page
@@ -245,6 +269,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Popup UI
 ### Fixed
 - Exclusions fetch bug
+
+[1.0.0 Beta 1]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.0-1
 
 ## [0.3.3] - 2026-02-06
 > [!NOTE]
@@ -265,6 +291,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Settings:
   - Auto Startup Scan (UI lifecycle conflicts)
   - Silent Scheduled Scans (headless behavior is already default)
+
+[0.3.3]: https://github.com/ArsenTech/clamav-gui/releases/tag/v0.3.3
 
 ## [0.3.2] - 2026-02-01 (February Pre-Release)
 ### Added
@@ -294,6 +322,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Renamed Protection Settings into Exclusion Settings
 - Exclusion Settings Icons
 - Changed the Definition update age from 3 days to 7 days (1 week)
+
+[0.3.2]: https://github.com/ArsenTech/clamav-gui/releases/tag/v0.3.2
 
 ## [0.3.1] - 2026-01-28
 ### Added
@@ -327,6 +357,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Removed
 - Some Buttons that has only a frontend functionality, but not the backend also (Mostly "Mark as safe" buttons)
 
+[0.3.1]: https://github.com/ArsenTech/clamav-gui/releases/tag/v0.3.1
+
 ## [0.3.0] - 2026-01-25
 ### Added
 - Flags for launching GUI for different reasons (`--scan=main` and `--scan=full`)
@@ -341,6 +373,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Separated Scan Menu page from Scan Page to make it work
 - Implemented Code Splitting on every single chart inside the Statistics page
 
+[0.3.0]: https://github.com/ArsenTech/clamav-gui/releases/tag/v0.3.0
+
 ## [0.3.0-1] - 2026-01-23 (Preview 1)
 ### Highlights
 This Preview is focused more on optimization + code splitting.
@@ -351,6 +385,8 @@ This Preview is focused more on optimization + code splitting.
 - Optimized some parts of the Rust Backend + moved helpers to `/helpers/`
 - A Slight cleanup of the Rust code after fixing bugs
 - Implemented Code Splitting to make UI slightly responsive
+
+[0.3.0-1]: https://github.com/ArsenTech/clamav-gui/releases/tag/v0.3.0-1
 
 ## [0.2.1] - 2026-01-23 (Early Build 3)
 ### Added
@@ -372,6 +408,8 @@ This Preview is focused more on optimization + code splitting.
 ### Changed
 - Converted Logs list UI into a Dropdown menu consisting of Log actions inside the History Table
 
+[0.2.1]: https://github.com/ArsenTech/clamav-gui/releases/tag/v0.2.1
+
 ## [0.2.0] - 2026-01-19 (Early Build 2)
 ### Added
 - Scan Types + Spinner in the Scan Process Page
@@ -386,6 +424,8 @@ This Preview is focused more on optimization + code splitting.
 - Definition Updater page UI
 ### Changed
 - Moved Tauri version into the **About ClamAV GUI** section
+
+[0.2.0]: https://github.com/ArsenTech/clamav-gui/releases/tag/v0.2.0
 
 ## [0.1.0] - 2026-01-16 (Early Build 1)
 ### Highlights
@@ -408,24 +448,4 @@ This is the first pre-release of the ClamAV GUI. The backend functionality will 
 - The About Page
 - State-gated Layout (It'll show "Oops, No ClamAV found" if ClamAV isn't installed)
 
-[1.0.7]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.7
-[1.0.7 Beta 2]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.7-2
-[1.0.7 Beta 1]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.7-1
-[1.0.6]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.6
-[1.0.5]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.5
-[1.0.4]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.4
-[1.0.3]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.3
-[1.0.2]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.2
-[1.0.1]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.1
-[1.0.0]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.0
-[1.0.0-3]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.0-3
-[1.0.0-2]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.0-2
-[1.0.0-1]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.0-1
-[0.3.3]: https://github.com/ArsenTech/clamav-gui/releases/tag/v0.3.3
-[0.3.2]: https://github.com/ArsenTech/clamav-gui/releases/tag/v0.3.2
-[0.3.1]: https://github.com/ArsenTech/clamav-gui/releases/tag/v0.3.1
-[0.3.0]: https://github.com/ArsenTech/clamav-gui/releases/tag/v0.3.0
-[0.3.0-1]: https://github.com/ArsenTech/clamav-gui/releases/tag/v0.3.0-1
-[0.2.1]: https://github.com/ArsenTech/clamav-gui/releases/tag/v0.2.1
-[0.2.0]: https://github.com/ArsenTech/clamav-gui/releases/tag/v0.2.0
 [0.1.0]: https://github.com/ArsenTech/clamav-gui/releases/tag/v0.1.0
