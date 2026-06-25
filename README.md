@@ -86,8 +86,9 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - [ ] Investigate macOS TextToSpeech false positive
 - [ ] Verify detection name and affected ClamAV versions
 - [ ] Determine whether exclusion should be default or optional
-- [ ] Make About tab appearance tab or stay as a grid
-- [ ] Lazy-load some heavy components if needed
+- [ ] Make About tab appearance **tab or stay as a grid**
+- [ ] Lazy-load some heavy components
+- [ ] Validations with **Zod** before importing
 > [!NOTE]
 > v1.0.7 is complete when
 > - error handling is consistent
