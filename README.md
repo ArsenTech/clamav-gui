@@ -104,14 +104,14 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
   - [ ] YARA Real-time Option
   - [ ] YARA Configuration in settings
 - [ ] Feature to submit suspicious signatures to ClamAV
-- [ ] Detect clamdscan
-- [ ] Detect clamd
 - [ ] Add backend selector
 - [ ] Use selected backend
 #### Future Improvements
 - [ ] Validate daemon status
 - [ ] Optional multiscan
 - [ ] Advanced clamd configuration
+- [ ] Detect clamdscan
+- [ ] Detect clamd
 #### Nice to have
 - [ ] Write the documentation in the `docs/` folder.
   - [ ] Usage Guide
