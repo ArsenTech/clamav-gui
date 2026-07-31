@@ -107,16 +107,23 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - [ ] Add backend selector
 - [ ] Use selected backend
 #### Future Improvements
-- [ ] Validate daemon status
 - [ ] Optional multiscan
-- [ ] Advanced clamd configuration
-- [ ] Detect clamdscan
-- [ ] Detect clamd
+- [ ] ClamD Setup
+  - [ ] Detect `clamd`
+  - [ ] Configure `clamd.conf`
+  - [ ] Validate daemon status
+  - [ ] Enable `clamdscan` backend
+  - [ ] Advanced clamd configuration
 - [ ] Expanded approach of the Bug fix for the issue [#11](https://github.com/ArsenTech/clamav-gui/issues/11)
    - [ ] True scan restoration (no reset of progress)
    - [ ] Better scan continuity (UI feedback)
    - [ ] Smarter scan awareness (optional scanType in status)
-- [ ] A dedicated `freshclam.conf` setup to initially setup the ClamD config
+- [ ] ClamAV Initial Setup
+  - [ ] Detect missing/unconfigured `freshclam.conf`
+  - [ ] Provide platform-appropriate configuration defaults
+  - [ ] Configure virus definition updates
+  - [ ] Run initial `freshclam` update
+  - [ ] Provide actionable permission/configuration errors
 #### Nice to have
 - [ ] Write the documentation in the `docs/` folder.
   - [ ] Usage Guide
