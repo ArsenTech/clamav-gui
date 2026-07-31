@@ -112,6 +112,11 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - [ ] Advanced clamd configuration
 - [ ] Detect clamdscan
 - [ ] Detect clamd
+- [ ] Expanded approach of the Bug fix for the issue [#11](https://github.com/ArsenTech/clamav-gui/issues/11)
+   - [ ] True scan restoration (no reset of progress)
+   - [ ] Better scan continuity (UI feedback)
+   - [ ] Smarter scan awareness (optional scanType in status)
+- [ ] A dedicated ClamD configuration tab using `freshclam.conf` as a source of truth
 #### Nice to have
 - [ ] Write the documentation in the `docs/` folder.
   - [ ] Usage Guide
@@ -125,10 +130,6 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - [ ] Translate new parts after running `npm run i18n:missing-keys [lang-codes]` and typing
   - 🇫🇷 French - `fr`
   - 🇵🇱 Polish - `pl`
-- [ ] Expanded approach of the Bug fix for the issue [#11](https://github.com/ArsenTech/clamav-gui/issues/11)
-   - [ ] True scan restoration (no reset of progress)
-   - [ ] Better scan continuity (UI feedback)
-   - [ ] Smarter scan awareness (optional scanType in status)
 
 ### Built With
 - [![Tauri][tauri-shield]][tauri-url]
