@@ -116,7 +116,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
    - [ ] True scan restoration (no reset of progress)
    - [ ] Better scan continuity (UI feedback)
    - [ ] Smarter scan awareness (optional scanType in status)
-- [ ] A dedicated ClamD configuration tab using `freshclam.conf` as a source of truth
+- [ ] A dedicated `freshclam.conf` setup to initially setup the ClamD config
 #### Nice to have
 - [ ] Write the documentation in the `docs/` folder.
   - [ ] Usage Guide
