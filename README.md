@@ -89,6 +89,8 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - [ ] Make About tab appearance **tab or stay as a grid**
 - [ ] Lazy-load some heavy components
 - [ ] Validations with **Zod** before importing
+- [ ] Investigation and a possible fix on ClamAV availability detection part
+
 > [!NOTE]
 > v1.0.7 is complete when
 > - error handling is consistent
