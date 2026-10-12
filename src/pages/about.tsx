@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getAppDetails, getClamAvVersion } from "@/data/app";
-import { useIsMobile } from "@/hooks/use-mobile";
 import useWindowTitle from "@/hooks/use-window-title";
 import { COMPONENTS } from "@/lib/constants/md-components";
 import { INITIAL_VERSION_INFO } from "@/lib/constants/states";
@@ -43,15 +42,18 @@ export default function AboutPage(){
      },[])
      const year = new Date().getFullYear();
      const translatedBy: string = t("translated-by");
-     const isMobile = useIsMobile()
      console.log(details)
      return (
-          <AppLayout className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-10 p-4">
+          <AppLayout className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-10 p-4">
                <ScrollArea className="max-h-205">
                     <div className="space-y-4">
                          <div className="w-full sticky top-0 left-0 bg-background mt-0 pb-1.5 flex flex-col items-center">
                               <h1 className="text-2xl md:text-3xl font-medium border-b pb-1 w-fit border-primary/50 self-start">{t("title")}</h1>
-                              <Logo width={isMobile ? 300 : 500} height={isMobile ? 78 : 130} className="pt-1.5"/>
+                              <Logo
+                                   width={500}
+                                   height={130}
+                                   className="pt-1.5 w-full max-w-125 h-auto"
+                              />
                               {details.version.trim()!=="" ? (
                                    <h2 className="text-2xl md:text-3xl text-center font-medium">{t("version",{version: details.version})}</h2>
                               ) : (
