@@ -27,7 +27,7 @@ export default function GeneralSettings(){
                <SettingsItem
                     Icon={Palette}
                     title={t("appearance.title")}
-                    className="space-y-3"
+                    className="space-y-4"
                >
                     <p className="text-muted-foreground font-semibold">{t("appearance.theme.title")}</p>
                     <div className="flex justify-center items-center flex-wrap gap-3">
@@ -51,6 +51,38 @@ export default function GeneralSettings(){
                               </div>
                          ))}
                     </div>
+                    <SettingsOption
+                         title={t("ui.sidebar.title")}
+                         description={t("ui.sidebar.desc")}
+                    >
+                         <Select
+                              value={settings.sidebarCollapsible}
+                              onValueChange={value=>setSettings({sidebarCollapsible: value as SidebarCollapsible})}
+                         >
+                              <SelectTrigger>
+                                   <SelectValue placeholder={t("ui.sidebar.placeholder")}/>
+                              </SelectTrigger>
+                              <SelectContent>
+                                   <SelectItem value="offcanvas">
+                                        <PanelRightOpen/>
+                                        {t("ui.sidebar.options.off-canvas")}
+                                   </SelectItem>
+                                   <SelectItem value="icon">
+                                        <Star/>
+                                        {t("ui.sidebar.options.icon")}
+                                   </SelectItem>
+                              </SelectContent>
+                         </Select>
+                    </SettingsOption>
+                    <SettingsOption
+                         title={t("ui.reduce-motion.title")}
+                         description={t("ui.reduce-motion.desc")}
+                    >
+                         <Switch
+                              checked={settings.reduceMotion}
+                              onCheckedChange={checked=>setSettings({reduceMotion: checked})}
+                         />
+                    </SettingsOption>
                </SettingsItem>
                <SettingsItem
                     Icon={Calendar}
@@ -122,38 +154,6 @@ export default function GeneralSettings(){
                                    </SelectItem>
                               </SelectContent>
                          </Select>
-                    </SettingsOption>
-                    <SettingsOption
-                         title={t("ui.sidebar.title")}
-                         description={t("ui.sidebar.desc")}
-                    >
-                         <Select
-                              value={settings.sidebarCollapsible}
-                              onValueChange={value=>setSettings({sidebarCollapsible: value as SidebarCollapsible})}
-                         >
-                              <SelectTrigger>
-                                   <SelectValue placeholder={t("ui.sidebar.placeholder")}/>
-                              </SelectTrigger>
-                              <SelectContent>
-                                   <SelectItem value="offcanvas">
-                                        <PanelRightOpen/>
-                                        {t("ui.sidebar.options.off-canvas")}
-                                   </SelectItem>
-                                   <SelectItem value="icon">
-                                        <Star/>
-                                        {t("ui.sidebar.options.icon")}
-                                   </SelectItem>
-                              </SelectContent>
-                         </Select>
-                    </SettingsOption>
-                    <SettingsOption
-                         title={t("ui.reduce-motion.title")}
-                         description={t("ui.reduce-motion.desc")}
-                    >
-                         <Switch
-                              checked={settings.reduceMotion}
-                              onCheckedChange={checked=>setSettings({reduceMotion: checked})}
-                         />
                     </SettingsOption>
                </SettingsItem>
                <SettingsItem
