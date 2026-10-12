@@ -8,8 +8,10 @@ interface ChoiceOptionProps{
      choiceKey: "sym-links" | "ssn-formats",
 }
 export function ChoiceOption({value,onValueChange,label,choiceKey}: ChoiceOptionProps){
-     const {t} = useTranslation("scan-settings")
-     const choices = t(`choices.${choiceKey}`,{returnObjects: true}).map((val,i)=>({
+     const {t} = useTranslation("scan-settings",{
+          keyPrefix: "choices"
+     })
+     const choices = t(choiceKey,{returnObjects: true}).map((val,i)=>({
           value: i,
           label: val
      }))

@@ -51,7 +51,9 @@ export default function ScanProcess({handleReset, isStartup}: Props){
      const percentage = useMemo(()=>hasTotal ? Math.min(100,Math.floor((scannedFiles/totalFiles)*100)) : undefined,[scannedFiles,totalFiles]);
      const {t} = useTranslation("scan");
      const {locale} = useLocale();
-     const {t: numSuffixTxt} = useTranslation()
+     const {t: numSuffixTxt} = useTranslation(undefined,{
+          keyPrefix: "num-suffix"
+     })
      const {t: confTxt} = useTranslation("confirmation")
      const scannedFilesStatus = useMemo(()=>hasTotal ? t("process.percentage",{
           percentage: percentage ?? 0,

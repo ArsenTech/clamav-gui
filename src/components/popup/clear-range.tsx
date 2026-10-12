@@ -20,10 +20,13 @@ interface Props{
 }
 export default function ClearRangePopup({open, onOpen, onSuccess}: Props){
      const {t: msgTxt} = useTranslation("messages")
+     const {t: validationTxt} = useTranslation("messages",{
+          keyPrefix: "form-validations"
+     })
      const {t} = useTranslation("history")
      const [isClearing, startTransition] = useTransition()
      const form = useForm<ClearByRangeType>({
-          resolver: zodResolver(getClearByRangeSchema(msgTxt)),
+          resolver: zodResolver(getClearByRangeSchema(validationTxt)),
      })
      const {t: confTxt} = useTranslation("confirmation")
      const onSubmit = (values: ClearByRangeType) => {

@@ -24,17 +24,19 @@ export default function LogContent({returnUrl, categoryParam}: Props){
                setLogs(fetched)
           })
      },[])
-     const {t} = useTranslation()
+     const {t} = useTranslation(undefined,{
+          keyPrefix: "log"
+     })
      return (
           <div className="space-y-4">
-               <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">{t("log.page-name")}</h1>
+               <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">{t("page-name")}</h1>
                {settings.developerMode && (
-                    <p className="text-muted-foreground flex items-center gap-2"><ScrollText className="size-5"/> {t("log.log-id")} {logId}</p>
+                    <p className="text-muted-foreground flex items-center gap-2"><ScrollText className="size-5"/> {t("log-id")} {logId}</p>
                )}
                <Button asChild size="sm" variant="outline">
                     <Link to={returnUrl}>
                          <ChevronLeft/>
-                         {t("log.back")}
+                         {t("back")}
                     </Link>
                </Button>
                <LogText

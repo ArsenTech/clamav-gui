@@ -1,13 +1,13 @@
 import { LangCode, suffixWhitelist } from "@/i18n/config";
 import { TFunction } from "i18next";
 
-export function formatBytes(bytes: number, t: TFunction<"translation">) {
+export function formatBytes(bytes: number, t: TFunction<"translation","size-suffix">) {
   const sizes = [
-    t("size-suffix.byte","Bytes"), 
-    t("size-suffix.kb","KB"), 
-    t("size-suffix.mb","MB"), 
-    t("size-suffix.gb","GB"), 
-    t("size-suffix.tb","TB")
+    t("byte","Bytes"), 
+    t("kb","KB"), 
+    t("mb","MB"), 
+    t("gb","GB"), 
+    t("tb","TB")
   ];
   if (bytes === 0) return `0 ${sizes[0]}`;
   const i = Math.floor(Math.log(bytes) / Math.log(1024));
@@ -24,13 +24,13 @@ const formatSuffix = (text: string, locale: LangCode) => {
   const isInWhiteList = suffixWhitelist.has(locale);
   return !isInWhiteList ? ` ${text}` : text
 }
-export const formatNumber = (n: number,t: TFunction<"translation">, locale: LangCode): string => {
+export const formatNumber = (n: number,t: TFunction<"translation","num-suffix">, locale: LangCode): string => {
   if (n < 1e3) return String(n);
   if (n >= 1e3 && n < 1e6)
-    return +(n / 1e3).toFixed(1) + formatSuffix(t("num-suffix.kilo"),locale);
+    return +(n / 1e3).toFixed(1) + formatSuffix(t("kilo"),locale);
   if (n >= 1e6 && n < 1e9)
-    return +(n / 1e6).toFixed(1) + formatSuffix(t("num-suffix.million"),locale);
+    return +(n / 1e6).toFixed(1) + formatSuffix(t("million"),locale);
   if (n >= 1e9 && n < 1e12)
-    return +(n / 1e9).toFixed(1) + formatSuffix(t("num-suffix.billion"),locale);
-  return +(n / 1e12).toFixed(1) + formatSuffix(t("num-suffix.trillion"),locale);
+    return +(n / 1e9).toFixed(1) + formatSuffix(t("billion"),locale);
+  return +(n / 1e12).toFixed(1) + formatSuffix(t("trillion"),locale);
 }

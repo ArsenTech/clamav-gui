@@ -25,13 +25,15 @@ export default function AddPath(){
                          <MacOSAddPath/>
                     </TabsContent>
                </Tabs>
-               <p className="text-muted-foreground"><Trans
-                    ns="no-clamav-page"
-                    i18nKey="add-to-path.check-step"
-                    components={{
-                         bold: <span className="font-semibold"/>
-                    }}
-               /></p>
+               <p className="text-muted-foreground">
+                    <Trans
+                         ns="no-clamav-page"
+                         i18nKey="add-to-path.check-step"
+                         components={{
+                              bold: <span className="font-semibold"/>
+                         }}
+                    />
+               </p>
           </div>
      )
 }

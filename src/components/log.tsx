@@ -17,11 +17,13 @@ export default function LogText({logs, isLoading}: Props){
                logRef.current.scrollIntoView({behavior: "smooth"})
           }
      },[settings.autoScrollText, logs]);
-     const {t} = useTranslation()
+     const {t} = useTranslation(undefined,{
+          keyPrefix: "log"
+     })
      return (
           <ScrollArea className="min-h-dvh">
                <pre className="whitespace-pre-wrap text-sm"> {isLoading ? (
-                    <code className="inline-block w-full break-all">{t("log.please-wait")}</code>
+                    <code className="inline-block w-full break-all">{t("please-wait")}</code>
                ) : logs.slice(-settings.maxLogLines).map((val,i)=>{
                     const isLast = i === logs.length-1;
                     const line = val.toLowerCase();

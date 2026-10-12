@@ -14,7 +14,9 @@ import { getVersion } from "@tauri-apps/api/app";
 export function useGuiUpdater(){
      const [isChecking, startChecking] = useTransition();
      const [isUpdating, startUpdating] = useTransition();
-     const {t} = useTranslation("update")
+     const {t} = useTranslation("update",{
+          keyPrefix: "gui"
+     })
      const [guiUpdate, setGuiUpdate] = useState<IUpdaterState>(INITIAL_UPDATER_STATE)
      const setUpdaterState = (overrides: Partial<IUpdaterState>) => setGuiUpdate(prev=>({...prev, ...overrides}))
      const checkForUpdates = async () => {
@@ -40,7 +42,7 @@ export function useGuiUpdater(){
                          })
                     }
                } catch (err){
-                    toast.error(t("gui.failed-check.main"),{
+                    toast.error(t("failed-check.main"),{
                          description: getErrorMessage(err)
                     })
                     await invoke("append_updater_error",{
@@ -94,7 +96,7 @@ export function useGuiUpdater(){
                          });
                     }
                } catch (err){
-                    toast.error(t("gui.failed-update.main"),{
+                    toast.error(t("failed-update.main"),{
                          description: getErrorMessage(err)
                     })
                     await invoke("append_updater_error",{

@@ -2,10 +2,12 @@ import CommandSnippetBlock from "@/components/command-snippet";
 import { useTranslation, Trans } from "react-i18next";
 
 export default function MacOSAddPath(){
-     const {t} = useTranslation("no-clamav-page");
+     const {t} = useTranslation("no-clamav-page",{
+          keyPrefix: "add-to-path"
+     });
      return (
           <div className="space-y-3">
-               <p>{t("add-to-path.macos.info")}</p>
+               <p>{t("macos.info")}</p>
                <CommandSnippetBlock
                     command="which clamscan"
                />

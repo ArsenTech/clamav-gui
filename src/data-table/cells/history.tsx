@@ -21,7 +21,9 @@ interface MarkAcknowledgedCellProps{
 export function MarkAcknowledgedCell({item}: MarkAcknowledgedCellProps){
      const {setHistoryState} = useAppHistory()
      const {t} = useTranslation("table")
-     const {t: messageTxt} = useTranslation("messages")
+     const {t: messageTxt} = useTranslation("messages",{
+          keyPrefix: "acknowledge-history"
+     })
      const markAsAcknowledged = async () => {
           try{
                await invoke("mark_as_acknowledged", {
@@ -35,9 +37,9 @@ export function MarkAcknowledgedCell({item}: MarkAcknowledgedCellProps){
                          status: val.id===item.id ? "acknowledged" : val.status
                     }))
                }))
-               toast.success(messageTxt("acknowledge-history.success"))
+               toast.success(messageTxt("success"))
           } catch (err){
-               toast.error(messageTxt("acknowledge-history.error"),{
+               toast.error(messageTxt("error"),{
                     description: getErrorMessage(err)
                });
           }
@@ -49,7 +51,9 @@ export function MarkAcknowledgedCell({item}: MarkAcknowledgedCellProps){
      )
 }
 export function StatusCell({historyStatus}: {historyStatus: HistoryStatus}){
-     const {t} = useTranslation("table");
+     const {t} = useTranslation("table",{
+          keyPrefix: "status.history"
+     });
      const {settings} = useSettings();
      const iconClassName = cn(
           historyStatus==="success" && "text-emerald-600 dark:text-emerald-400",
@@ -73,19 +77,21 @@ export function StatusCell({historyStatus}: {historyStatus: HistoryStatus}){
                     {icon}
                </TooltipTrigger>
                <TooltipContent>
-                    {t(`status.history.${historyStatus}`)}
+                    {t(historyStatus)}
                </TooltipContent>
           </Tooltip>
      ) : (
           <Badge variant={getHistoryStatusBadges(historyStatus)} className="gap-1.5">
                {settings.badgeVisibility==="icon-text" && icon}
-               {t(`status.history.${historyStatus}`)}
+               {t(historyStatus)}
           </Badge>
      )
 }
 export function EventCell({historyType}: {historyType: HistoryType}){
-     const {t} = useTranslation("history");
-     return t(`events.${historyType}`)
+     const {t} = useTranslation("history",{
+          keyPrefix: "events"
+     });
+     return t(historyType)
 }
 export function DetailsCell({value}: {value: string}){
      return (

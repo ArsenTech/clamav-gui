@@ -7,37 +7,47 @@ interface SortableHeaderProps{
      column: Column<IQuarantineData>
 }
 export function ThreatNameHeader({column}: SortableHeaderProps){
-     const {t} = useTranslation("table")
+     const {t} = useTranslation("table",{
+          keyPrefix: "heading.threats"
+     })
      return (
           <SortableHeader
                column={column}
-               title={t("heading.threats.threat")}
+               title={t("threat")}
           />
      )
 }
 export function FilePathHeader(){
-     const {t} = useTranslation("table");
-     return t("heading.threats.path")
+     const {t} = useTranslation("table",{
+          keyPrefix: "heading.threats"
+     });
+     return t("path")
 }
 export function QuarantineDateHeader({column}: SortableHeaderProps){
-     const {t} = useTranslation("table")
+     const {t} = useTranslation("table",{
+          keyPrefix: "heading.quarantine"
+     })
      return (
           <SortableHeader
                column={column}
-               title={t("heading.quarantine.quarantined-at")}
+               title={t("quarantined-at")}
           />
      )
 }
 export function SizeHeader({column}: SortableHeaderProps){
-     const {t} = useTranslation("table")
+     const {t} = useTranslation("table",{
+          keyPrefix: "heading.quarantine"
+     })
      return (
           <SortableHeader
                column={column}
-               title={t("heading.quarantine.size")}
+               title={t("size")}
           />
      )
 }
 export function IdHeader(){
-     const {t} = useTranslation("table");
-     return t("heading.quarantine.id")
+     const {t} = useTranslation("table",{
+          keyPrefix: "heading.quarantine"
+     });
+     return t("id")
 }

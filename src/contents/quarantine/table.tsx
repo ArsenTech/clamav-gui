@@ -15,20 +15,22 @@ interface Props{
      columns: ColumnDef<IQuarantineData>[]
 }
 export default function QuarantineTable({isRefreshing, data, onRefresh, columns}: Props){
-     const {t} = useTranslation("quarantine")
+     const {t} = useTranslation("quarantine",{
+          keyPrefix: "bulk-actions"
+     })
      const {updateQuarantineState} = useQuarantine()
      return (
           <>
           <ButtonGroup>
                <Button onClick={onRefresh} disabled={isRefreshing}>
                     <RotateCw className={cn(isRefreshing && "animate-spin")}/>
-                    {isRefreshing ? t("bulk-actions.refresh.loading") : t("bulk-actions.refresh.original")}
+                    {isRefreshing ? t("refresh.loading") : t("refresh.original")}
                </Button>
                <Button variant="secondary" onClick={()=>updateQuarantineState({popupState: "bulk-delete"})}>
-                    <Trash2/> {t("bulk-actions.clear")}
+                    <Trash2/> {t("clear")}
                </Button>
                <Button variant="secondary" onClick={()=>updateQuarantineState({popupState: "bulk-restore"})}>
-                    <RotateCcw/> {t("bulk-actions.restore")}
+                    <RotateCcw/> {t("restore")}
                </Button>
           </ButtonGroup>
           <ThreatsTable

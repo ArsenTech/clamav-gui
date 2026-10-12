@@ -30,6 +30,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - **Overview Page** - Fixes [#22](https://github.com/ArsenTech/clamav-gui/issues/22)
   - **Buttons** - Made the grid even more responsive by scaling down buttons
   - **Safety Indicator header** - Scaled down the header size and made it even more responsive
+- Optimized Translations
 ### Fixed
 - macOS Homebrew ClamAV detection fallback - Fixes [#16](https://github.com/ArsenTech/clamav-gui/issues/16)
   - `/opt/homebrew/bin/clamscan`

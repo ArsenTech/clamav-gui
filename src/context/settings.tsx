@@ -14,7 +14,9 @@ interface SettingsContextValue{
 const SettingsContext = createContext<SettingsContextValue | null>(null)
 
 export function SettingsProvider({ children }: { children: React.ReactNode }){
-     const {t} = useTranslation("messages")
+     const {t} = useTranslation("messages",{
+          keyPrefix: "fetch-error"
+     })
      const [settings, setSettings] = useState<ISettings>(()=>{
           const newDefaults: ISettings = {
                ...DEFAULT_SETTINGS,
@@ -33,7 +35,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }){
                if(!date || (typeof date==="string" && date.trim()==="")) return "Never"
                return format(date,settings.dateFormat)
           } catch (err) {
-               toast.error(t("fetch-error.date"),{
+               toast.error(t("date"),{
                     description: getErrorMessage(err)
                })
                return "Invalid Date"

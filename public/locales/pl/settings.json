@@ -26,66 +26,68 @@
           "scan": "Skanowanie",
           "update": "Aktualizacja"
      },
-     "appearance": {
-          "title": "Wygląd",
-          "theme": {
-               "title": "Motyw",
-               "system": "Systemowy",
-               "light": "Jasny",
-               "dark": "Ciemny"
-          },
-          "color": {
-               "title": "Kolor",
-               "blue": "Niebieski",
-               "green": "Zielony",
-               "rose": "Różowy"
-          }
-     },
-     "date-format": {
-          "title": "Format daty",
-          "us": {
-               "title": "Amerykański",
-               "format": "mm/dd/yyyy hh:mm:ss"
-          },
-          "eu": {
-               "title": "Europejski",
-               "format": "dd/mm/yyyy hh:mm:ss"
-          },
-          "iso": {
-               "title": "Międzynarodowy",
-               "format": "yyyy-mm-dd hh:mm:ss"
-          }
-     },
-     "ui": {
-          "title": "Interfejs użytkownika",
-          "scheduler-ui": {
-               "title": "Włącz UI Harmonogramu",
-               "desc": "Daje dostęp do strony Harmonogram"
-          },
-          "language": {
-               "title": "Język",
-               "desc": "Język interfejsu GUI ClamAV"
-          },
-          "badge": {
-               "title": "Widoczność odznaki",
-               "desc": "Pokaż ikony lub tekst w odznakach UI",
-               "placeholder": "Wybierz typ widoczności odznaki",
-               "options": {
-                    "icon": "Tylko ikona",
-                    "icon-text": "Ikona i tekst",
-                    "text": "Tylko tekst"
+     "general": {
+          "appearance": {
+               "title": "Wygląd",
+               "theme": {
+                    "title": "Motyw",
+                    "system": "Systemowy",
+                    "light": "Jasny",
+                    "dark": "Ciemny"
+               },
+               "color": {
+                    "title": "Kolor",
+                    "blue": "Niebieski",
+                    "green": "Zielony",
+                    "rose": "Różowy"
                }
-          }
-     },
-     "notifs": {
-          "title": "Powiadomienia",
-          "scan-start": {
-               "title": "Przy rozpoczęciu skanowania",
-               "desc": "Powiadamia po rozpoczęciu skanowania"
           },
-          "scan-finish": {
-               "title": "Po zakończeniu skanowania",
-               "desc": "Powiadamia po zakończeniu skanowania"
+          "date-format": {
+               "title": "Format daty",
+               "us": {
+                    "title": "Amerykański",
+                    "format": "mm/dd/yyyy hh:mm:ss"
+               },
+               "eu": {
+                    "title": "Europejski",
+                    "format": "dd/mm/yyyy hh:mm:ss"
+               },
+               "iso": {
+                    "title": "Międzynarodowy",
+                    "format": "yyyy-mm-dd hh:mm:ss"
+               }
+          },
+          "ui": {
+               "title": "Interfejs użytkownika",
+               "scheduler-ui": {
+                    "title": "Włącz UI Harmonogramu",
+                    "desc": "Daje dostęp do strony Harmonogram"
+               },
+               "language": {
+                    "title": "Język",
+                    "desc": "Język interfejsu GUI ClamAV"
+               },
+               "badge": {
+                    "title": "Widoczność odznaki",
+                    "desc": "Pokaż ikony lub tekst w odznakach UI",
+                    "placeholder": "Wybierz typ widoczności odznaki",
+                    "options": {
+                         "icon": "Tylko ikona",
+                         "icon-text": "Ikona i tekst",
+                         "text": "Tylko tekst"
+                    }
+               }
+          },
+          "notifs": {
+               "title": "Powiadomienia",
+               "scan-start": {
+                    "title": "Przy rozpoczęciu skanowania",
+                    "desc": "Powiadamia po rozpoczęciu skanowania"
+               },
+               "scan-finish": {
+                    "title": "Po zakończeniu skanowania",
+                    "desc": "Powiadamia po zakończeniu skanowania"
+               }
           }
      },
      "scan": {
@@ -95,22 +97,13 @@
                "title": "Potwierdź zatrzymanie",
                "desc": "Pokaż komunikat potwierdzający przy zatrzymywaniu skanowania"
           },
-          "advanced-desc": "Zaawansowane opcje dla każdego profilu skanowania. Może zmniejszyć skuteczność wykrywania"
-     },
-     "exclusions": {
-          "title": "Wykluczenia katalogów",
-          "add-button": "Dodaj wykluczenie",
-          "no-exclusions": "Brak wykluczeń folderów",
-          "form-title": "Dodaj katalog do wykluczeń",
-          "modal-title": "To spowoduje usunięcie ścieżki katalogu z wykluczeń"
-     },
-     "realtime-paths": {
-          "title": "Ścieżki monitorowane przez Skanowanie w Czasie Rzeczywistym",
-          "desc": "Lista folderów aktualnie monitorowanych przez skanowanie w czasie rzeczywistym",
-          "add-button": "Dodaj ścieżkę",
-          "no-paths": "Brak aktualnych ścieżek do monitorowania",
-          "form-title": "Dodaj ścieżkę do monitorowania",
-          "modal-title": "To spowoduje usunięcie folderu z monitorowanych ścieżek, co może narazić folder na zagrożenia."
+          "exclusions": {
+               "title": "Wykluczenia katalogów",
+               "add-button": "Dodaj wykluczenie",
+               "no-exclusions": "Brak wykluczeń folderów",
+               "form-title": "Dodaj katalog do wykluczeń",
+               "modal-title": "To spowoduje usunięcie ścieżki katalogu z wykluczeń"
+          }
      },
      "folder-path-form": {
           "path": "Ścieżka katalogu",
@@ -122,6 +115,7 @@
      "advanced": {
           "title": "Zaawansowane opcje GUI",
           "desc": "Może naruszyć niektóre funkcje i zmniejszyć skuteczność wykrywania",
+          "scan-desc": "Zaawansowane opcje dla każdego profilu skanowania. Może zmniejszyć skuteczność wykrywania",
           "dev-mode": {
                "title": "Tryb deweloperski",
                "desc": "Pokazuje ID przy każdym danych. Idealne dla programistów!"
@@ -140,34 +134,42 @@
                     "strict": "Surowe",
                     "expert": "Ekspert"
                }
+          },
+          "logs": {
+               "title": "Logi",
+               "auto-scroll": {
+                    "title": "Automatyczne przewijanie",
+                    "desc": "Przewija log automatycznie po dodaniu nowego wpisu"
+               },
+               "max-lines": {
+                    "title": "Maksymalna liczba linii logu",
+                    "desc": "Wyświetla log do wybranej maksymalnej liczby linii",
+                    "placeholder": "Wybierz maksymalną liczbę linii",
+                    "lines": "{{lines}} linii"
+               }
+          },
+          "danger-zone": {
+               "title": "Strefa zagrożenia",
+               "desc": "Uważaj przed usunięciem ustawień związanych z GUI ClamAV",
+               "delete": {
+                    "title": "Usuń ustawienia (trwale)",
+                    "desc": "To spowoduje wyczyszczenie wszystkich danych ustawień",
+                    "button": "Usuń ustawienia"
+               },
+               "restore": {
+                    "title": "Przywróć ustawienia domyślne",
+                    "desc": "To spowoduje przywrócenie wszystkich ustawień do wartości domyślnych",
+                    "button": "Przywróć domyślne"
+               },
+               "pending": "Proszę czekać..."
+          },
+          "realtime-paths": {
+               "title": "Ścieżki monitorowane przez Skanowanie w Czasie Rzeczywistym",
+               "desc": "Lista folderów aktualnie monitorowanych przez skanowanie w czasie rzeczywistym",
+               "add-button": "Dodaj ścieżkę",
+               "no-paths": "Brak aktualnych ścieżek do monitorowania",
+               "form-title": "Dodaj ścieżkę do monitorowania",
+               "modal-title": "To spowoduje usunięcie folderu z monitorowanych ścieżek, co może narazić folder na zagrożenia."
           }
-     },
-     "logs": {
-          "title": "Logi",
-          "auto-scroll": {
-               "title": "Automatyczne przewijanie",
-               "desc": "Przewija log automatycznie po dodaniu nowego wpisu"
-          },
-          "max-lines": {
-               "title": "Maksymalna liczba linii logu",
-               "desc": "Wyświetla log do wybranej maksymalnej liczby linii",
-               "placeholder": "Wybierz maksymalną liczbę linii",
-               "lines": "{{lines}} linii"
-          }
-     },
-     "danger-zone": {
-          "title": "Strefa zagrożenia",
-          "desc": "Uważaj przed usunięciem ustawień związanych z GUI ClamAV",
-          "delete": {
-               "title": "Usuń ustawienia (trwale)",
-               "desc": "To spowoduje wyczyszczenie wszystkich danych ustawień",
-               "button": "Usuń ustawienia"
-          },
-          "restore": {
-               "title": "Przywróć ustawienia domyślne",
-               "desc": "To spowoduje przywrócenie wszystkich ustawień do wartości domyślnych",
-               "button": "Przywróć domyślne"
-          },
-          "pending": "Proszę czekać..."
      }
 }

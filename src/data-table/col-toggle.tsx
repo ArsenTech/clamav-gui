@@ -17,7 +17,9 @@ export function DataTableViewOptions<TData>({
 }: {
   table: Table<TData>
 }) {
-  const {t} = useTranslation("table")
+  const {t} = useTranslation("table",{
+    keyPrefix: "view"
+  })
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -26,11 +28,11 @@ export function DataTableViewOptions<TData>({
           className="ml-auto hidden lg:flex"
         >
           <Settings2 />
-          {t("view.title")}
+          {t("title")}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[150px]">
-        <DropdownMenuLabel>{t("view.toggle")}</DropdownMenuLabel>
+        <DropdownMenuLabel>{t("toggle")}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {table
           .getAllColumns()

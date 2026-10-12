@@ -7,27 +7,37 @@ interface SortableHeaderProps{
      column: Column<IThreatsData>
 }
 export function DisplayNameHeader({column}: SortableHeaderProps){
-     const {t} = useTranslation("table")
+     const {t} = useTranslation("table",{
+          keyPrefix: "heading.threats"
+     })
      return (
           <SortableHeader
                column={column}
-               title={t("heading.threats.threat")}
+               title={t("threat")}
           />
      )
 }
 export function FilePathHeader(){
-     const {t} = useTranslation("table");
-     return t("heading.threats.path")
+     const {t} = useTranslation("table",{
+          keyPrefix: "heading.threats"
+     });
+     return t("path")
 }
 export function DetectedHeader(){
-     const {t} = useTranslation("table");
-     return t("heading.threats.detected-at")
+     const {t} = useTranslation("table",{
+          keyPrefix: "heading.threats"
+     });
+     return t("detected-at")
 }
 export function StatusHeader(){
-     const {t} = useTranslation("table");
-     return t("heading.status")
+     const {t} = useTranslation("table",{
+          keyPrefix: "heading"
+     });
+     return t("status")
 }
 export function IdHeader(){
-     const {t} = useTranslation("table");
-     return t("heading.threats.id")
+     const {t} = useTranslation("table",{
+          keyPrefix: "heading.threats"
+     });
+     return t("id")
 }

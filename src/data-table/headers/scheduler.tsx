@@ -7,32 +7,42 @@ interface SortableHeaderProps{
      column: Column<ISchedulerData<"state">>
 }
 export function JobNameHeader(){
-     const {t} = useTranslation("table");
-     return t("heading.scheduler.job-name")
+     const {t} = useTranslation("table",{
+          keyPrefix: "heading.scheduler"
+     });
+     return t("job-name")
 }
 export function IntervalHeader(){
-     const {t} = useTranslation("table");
-     return t("heading.scheduler.interval")
+     const {t} = useTranslation("table",{
+          keyPrefix: "heading.scheduler"
+     });
+     return t("interval")
 }
 export function ScanTypeHeader(){
-     const {t} = useTranslation("table");
-     return t("heading.scheduler.scan-type")
+     const {t} = useTranslation("table",{
+          keyPrefix: "heading.scheduler"
+     });
+     return t("scan-type")
 }
 export function LastScanHeader({column}: SortableHeaderProps){
-     const {t} = useTranslation("table");
+     const {t} = useTranslation("table",{
+          keyPrefix: "heading.scheduler"
+     });
      return (
           <SortableHeader
                column={column}
-               title={t("heading.scheduler.last-scan")}
+               title={t("last-scan")}
           />
      )
 }
 export function NextScanHeader({column}: SortableHeaderProps){
-     const {t} = useTranslation("table");
+     const {t} = useTranslation("table",{
+          keyPrefix: "heading.scheduler"
+     });
      return (
           <SortableHeader
                column={column}
-               title={t("heading.scheduler.next-scan")}
+               title={t("next-scan")}
           />
      )
 }

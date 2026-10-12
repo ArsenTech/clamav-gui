@@ -19,7 +19,9 @@ export function RAMStats() {
   const [data, setData] = useState<{ usage: number }[]>([]);
   const [total, setTotal] = useState("");
   const ram = useSystemStats("ram_total", "ram_used");
-  const {t: mainTxt} = useTranslation()
+  const {t: mainTxt} = useTranslation(undefined,{
+    keyPrefix: "size-suffix"
+  })
   useEffect(() => {
     setData((prev) =>[...prev, { usage: Math.round((ram.ram_used / ram.ram_total) * 100) }].slice(-30));
     setTotal(t("ram.stat",{

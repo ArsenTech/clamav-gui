@@ -94,19 +94,21 @@ export default function AdvancedSettings({scanProfile}: SettingsProps){
           }
      }
      const {t: scanTxt} = useTranslation("scan-settings")
-     const {t} = useTranslation("settings")
+     const {t} = useTranslation("settings",{
+          keyPrefix: "advanced"
+     })
      return (
           <>
           <div className="px-1 py-2 space-y-3">
                <SettingsItem
                     Icon={Braces}
-                    title={t("advanced.title")}
+                    title={t("title")}
                     className="space-y-4"
-                    description={t("advanced.desc")}
+                    description={t("desc")}
                >
                     <SettingsOption
-                         title={t("advanced.dev-mode.title")}
-                         description={t("advanced.dev-mode.desc")}
+                         title={t("dev-mode.title")}
+                         description={t("dev-mode.desc")}
                     >
                          <Switch
                               checked={settings.developerMode}
@@ -114,38 +116,38 @@ export default function AdvancedSettings({scanProfile}: SettingsProps){
                          />
                     </SettingsOption>
                     <SettingsOption
-                         title={t("advanced.real-time-scan.title")}
-                         description={t("advanced.real-time-scan.desc")}
+                         title={t("real-time-scan.title")}
+                         description={t("real-time-scan.desc")}
                     >
                          <RealTimeToggle/>
                     </SettingsOption>
                     <SettingsOption
-                         title={t("advanced.behavior.title")}
-                         description={t("advanced.behavior.desc")}
+                         title={t("behavior.title")}
+                         description={t("behavior.desc")}
                     >
                          <Select
                               value={settings.behavior}
                               onValueChange={value=>setSettings({behavior: value as BehaviorMode})}
                          >
                               <SelectTrigger>
-                                   <SelectValue placeholder={t("advanced.behavior.title")}/>
+                                   <SelectValue placeholder={t("behavior.title")}/>
                               </SelectTrigger>
                               <SelectContent>
                                    <SelectItem value="balanced">
                                         <Scale/>
-                                        {t("advanced.behavior.choices.balanced")}
+                                        {t("behavior.choices.balanced")}
                                    </SelectItem>
                                    <SelectItem value="safe">
                                         <ShieldCheck/>
-                                        {t("advanced.behavior.choices.safe")}
+                                        {t("behavior.choices.safe")}
                                    </SelectItem>
                                    <SelectItem value="strict">
                                         <ShieldAlert/>
-                                        {t("advanced.behavior.choices.strict")}
+                                        {t("behavior.choices.strict")}
                                    </SelectItem>
                                    <SelectItem value="expert">
                                         <FlaskConical/>
-                                        {t("advanced.behavior.choices.expert")}
+                                        {t("behavior.choices.expert")}
                                    </SelectItem>
                               </SelectContent>
                          </Select>
@@ -192,7 +194,7 @@ export default function AdvancedSettings({scanProfile}: SettingsProps){
                     Icon={SCAN_OPTION_ICON.advanced}
                     title={scanTxt("option-group.advanced")}
                     className="space-y-4"
-                    description={t("scan.advanced-desc")}
+                    description={t("scan-desc")}
                >
                     {visibleOptions.map(([key,option])=>{
                          return (
@@ -204,7 +206,7 @@ export default function AdvancedSettings({scanProfile}: SettingsProps){
                               >
                                    {option.value.kind==="yes-no" ? (
                                         isLoading ? (
-                                             <Skeleton className="w-8 h-[18px]"/>
+                                             <Skeleton className="w-8 h-4.5"/>
                                         ): (
                                              <Switch
                                                   checked={(values[key] ?? option.value.default) as boolean}

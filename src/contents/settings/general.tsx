@@ -19,7 +19,9 @@ const LanguageSelector = lazy(()=>import("@/i18n/languages"))
 export default function GeneralSettings(){
      const {setTheme, theme: currTheme, setColor, color: currColor} = useTheme();
      const {setSettings, settings} = useSettings();
-     const {t} = useTranslation("settings")
+     const {t} = useTranslation("settings",{
+          keyPrefix: "general"
+     })
      return (
           <div className="px-1 py-2 space-y-3">
                <SettingsItem

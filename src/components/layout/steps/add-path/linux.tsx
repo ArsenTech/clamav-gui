@@ -3,10 +3,12 @@ import { KbdGroup, Kbd } from "@/components/ui/kbd";
 import { useTranslation, Trans } from "react-i18next";
 
 export default function LinuxAddPath(){
-     const {t} = useTranslation("no-clamav-page");
+     const {t} = useTranslation("no-clamav-page",{
+          keyPrefix: "add-to-path"
+     });
      return (
           <div className="space-y-3">
-               <p>{t("add-to-path.linux.cmd")}</p>
+               <p>{t("linux.cmd")}</p>
                <CommandSnippetBlock
                     command="which clamscan"
                />
@@ -50,7 +52,7 @@ export default function LinuxAddPath(){
                <CommandSnippetBlock
                     command='source ~/.bashrc'
                />
-               <p>{t("add-to-path.linux.verification")}</p>
+               <p>{t("linux.verification")}</p>
                <CommandSnippetBlock
                     command="clamscan --version"
                />

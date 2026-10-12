@@ -20,7 +20,9 @@ interface Props{
 }
 export default function SchedulerForm({handleSubmit, isSubmitting}: Props){
      const [data, setData] = useState<ISchedulerFormValues>({ interval: null, scanType: null })
-     const {t: validationMsg} = useTranslation("messages")
+     const {t: validationMsg} = useTranslation("messages",{
+          keyPrefix: "form-validations"
+     })
      const form = useForm<SchedulerType>({
           resolver: zodResolver(getSchedulerSchema(validationMsg)),
           defaultValues:{
@@ -45,8 +47,12 @@ export default function SchedulerForm({handleSubmit, isSubmitting}: Props){
      }
      const time = `${form.watch("hours").toString().padStart(2,'0')}:${form.watch("minutes").toString().padStart(2,'0')}`
      const interval = form.watch("interval");
-     const {t} = useTranslation("scan");
-     const {t: formTxt} = useTranslation("scheduler")
+     const {t} = useTranslation("scan",{
+          keyPrefix: "scan-type"
+     });
+     const {t: formTxt} = useTranslation("scheduler",{
+          keyPrefix: "form"
+     })
      return (
           <Form {...form}>
                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full">
@@ -57,7 +63,7 @@ export default function SchedulerForm({handleSubmit, isSubmitting}: Props){
                               disabled={isSubmitting}
                               render={({field})=>(
                                    <FormItem>
-                                        <FormLabel>{formTxt("form.interval.label")}</FormLabel>
+                                        <FormLabel>{formTxt("interval.label")}</FormLabel>
                                         <Select
                                              onValueChange={val=>{
                                                   field.onChange(val);
@@ -71,13 +77,13 @@ export default function SchedulerForm({handleSubmit, isSubmitting}: Props){
                                         >
                                              <FormControl>
                                                   <SelectTrigger className="w-full">
-                                                       <SelectValue placeholder={formTxt("form.interval.placeholder")} />
+                                                       <SelectValue placeholder={formTxt("interval.placeholder")} />
                                                   </SelectTrigger>
                                              </FormControl>
                                              <SelectContent>
                                                   {INTERVALS.map(interval=>(
                                                        <SelectItem key={interval} value={interval}>
-                                                            {formTxt(`form.interval.values.${interval}`)}
+                                                            {formTxt(`interval.values.${interval}`)}
                                                        </SelectItem>
                                                   ))}
                                              </SelectContent>
@@ -92,7 +98,7 @@ export default function SchedulerForm({handleSubmit, isSubmitting}: Props){
                               disabled={isSubmitting}
                               render={({field})=>(
                                    <FormItem>
-                                        <FormLabel>{formTxt("form.scan-type.label")}</FormLabel>
+                                        <FormLabel>{formTxt("scan-type.label")}</FormLabel>
                                         <Select
                                              onValueChange={val=>{
                                                   field.onChange(val);
@@ -106,14 +112,14 @@ export default function SchedulerForm({handleSubmit, isSubmitting}: Props){
                                         >
                                              <FormControl>
                                                   <SelectTrigger className="w-full">
-                                                       <SelectValue placeholder={formTxt("form.scan-type.placeholder")} />
+                                                       <SelectValue placeholder={formTxt("scan-type.placeholder")} />
                                                   </SelectTrigger>
                                              </FormControl>
                                              <SelectContent>
                                                   {SCAN_OPTIONS.map(option=> option.value !== ScanType.None && (
                                                        <SelectItem key={option.value} value={option.value}>
                                                             <option.icon/>
-                                                            {t(`scan-type.${option.value}.name`)}
+                                                            {t(`${option.value}.name`)}
                                                        </SelectItem>
                                                   ))}
                                              </SelectContent>
@@ -128,7 +134,7 @@ export default function SchedulerForm({handleSubmit, isSubmitting}: Props){
                               disabled={interval!=="weekly" || isSubmitting}
                               render={({field})=>(
                                    <FormItem>
-                                        <FormLabel>{formTxt("form.days.label")}</FormLabel>
+                                        <FormLabel>{formTxt("days.label")}</FormLabel>
                                         <Select
                                              onValueChange={field.onChange}
                                              value={field.value}
@@ -136,13 +142,13 @@ export default function SchedulerForm({handleSubmit, isSubmitting}: Props){
                                         >
                                              <FormControl>
                                                   <SelectTrigger className="w-full">
-                                                       <SelectValue placeholder={formTxt("form.days.placeholder")} />
+                                                       <SelectValue placeholder={formTxt("days.placeholder")} />
                                                   </SelectTrigger>
                                              </FormControl>
                                              <SelectContent>
                                                   {DAYS_OF_THE_WEEK.map(day=>(
                                                        <SelectItem key={day} value={day}>
-                                                            {formTxt(`form.days.values.${day}`)}
+                                                            {formTxt(`days.values.${day}`)}
                                                        </SelectItem>
                                                   ))}
                                              </SelectContent>
@@ -159,7 +165,7 @@ export default function SchedulerForm({handleSubmit, isSubmitting}: Props){
                               disabled={isSubmitting}
                               render={({field})=>(
                                    <FormItem className="flex-1">
-                                        <FormLabel>{formTxt("form.hour")}</FormLabel>
+                                        <FormLabel>{formTxt("hour")}</FormLabel>
                                         <FormControl>
                                              <Input {...field} type="number" onChange={e=>field.onChange(e.target.valueAsNumber)} placeholder="12" min={0} max={23} disabled={isSubmitting}/>
                                         </FormControl>
@@ -174,7 +180,7 @@ export default function SchedulerForm({handleSubmit, isSubmitting}: Props){
                                    <FormItem
                                         className="flex-1"
                                    >
-                                        <FormLabel>{formTxt("form.minute")}</FormLabel>
+                                        <FormLabel>{formTxt("minute")}</FormLabel>
                                         <FormControl>
                                              <Input {...field} type="number" onChange={e=>field.onChange(e.target.valueAsNumber)} placeholder="00" min={0} max={59} disabled={isSubmitting}/>
                                         </FormControl>
@@ -184,16 +190,16 @@ export default function SchedulerForm({handleSubmit, isSubmitting}: Props){
                     </div>
                     {time!==":" && (
                          <p className="text-lg font-semibold text-muted-foreground">
-                              {formTxt("form.scheduled-time",{ time })}
+                              {formTxt("scheduled-time",{ time })}
                          </p>
                     )}
                     <LoadingButton
                          type="submit"
                          isLoading={isSubmitting}
-                         loaderText={formTxt("form.button.pending")}
+                         loaderText={formTxt("button.pending")}
                     >
                          <ClipboardClock/>
-                         {formTxt("form.button.original")}
+                         {formTxt("button.original")}
                     </LoadingButton>
                </form>
           </Form>

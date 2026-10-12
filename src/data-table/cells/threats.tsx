@@ -11,7 +11,9 @@ interface StatusCellProps{
      threatStatus: ThreatStatus
 }
 export default function StatusCell({threatStatus}: StatusCellProps){
-     const {t} = useTranslation("table");
+     const {t} = useTranslation("table",{
+          keyPrefix: "status.threats"
+     });
      const {settings} = useSettings();
      const iconClassName = cn(
           threatStatus === "deleted" && "text-primary",
@@ -32,13 +34,13 @@ export default function StatusCell({threatStatus}: StatusCellProps){
                     {icon}
                </TooltipTrigger>
                <TooltipContent>
-                    {t(`status.threats.${threatStatus}`)}
+                    {t(threatStatus)}
                </TooltipContent>
           </Tooltip>
      ) : (
           <Badge variant={getThreatStatusBadges(threatStatus)} className="gap-1.5">
                {settings.badgeVisibility==="icon-text" && icon}
-               {t(`status.threats.${threatStatus}`)}
+               {t(threatStatus)}
           </Badge>
      )
 }

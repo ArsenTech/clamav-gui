@@ -10,8 +10,10 @@ interface Props{
      category?: string
 }
 export default function LogPage({returnUrl, category}: Props){
-     const {t} = useTranslation()
-     useWindowTitle(t("log.title"))
+     const {t} = useTranslation(undefined,{
+          keyPrefix: "log"
+     })
+     useWindowTitle(t("title"))
      return (
           <AppLayout className="space-y-4 p-4">
                <Suspense fallback={<LogLoader/>}>

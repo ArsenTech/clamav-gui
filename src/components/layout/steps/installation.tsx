@@ -6,14 +6,16 @@ import { openUrl } from "@tauri-apps/plugin-opener";
 import { useTranslation } from "react-i18next";
 
 export default function Installation(){
-     const {t} = useTranslation("no-clamav-page")
+     const {t} = useTranslation("no-clamav-page",{
+          keyPrefix: "installation"
+     })
      return (
           <div className="space-y-3 text-left self-start px-6">
-               <p>{t("installation.info")}</p>
+               <p>{t("info")}</p>
                <Button variant="link" onClick={()=>openUrl("https://docs.clamav.net/manual/Installing.html")}>
                     <ExternalLink/> docs.clamav.net/manual/Installing.html
                </Button>
-               <h2 className="text-xl md:text-2xl lg:text-3xl font-semibold">{t("installation.linux-commands")}</h2>
+               <h2 className="text-xl md:text-2xl lg:text-3xl font-semibold">{t("linux-commands")}</h2>
                <Tabs defaultValue="deb">
                     <TabsList className="w-full">
                          <TabsTrigger value="rpm">Fedora, OpenSUSE, etc</TabsTrigger>

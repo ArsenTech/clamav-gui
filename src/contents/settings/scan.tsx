@@ -29,7 +29,9 @@ export default function ScanSettings({scanProfile}: SettingsProps){
      const {getSettingsByKey,setSettingsbyKey} = useBackendSettings()
      const [exclusions, setExclusions] = useState<IBackendSettings["exclusions"]>(DEFAULT_BACKEND_SETTINGS.exclusions);
      const [includeMacSystemExclusions, setIncludeMacSystemExclusions] = useState(DEFAULT_BACKEND_SETTINGS.includeMacSystemExclusions)
-     const {t: messageTxt} = useTranslation("messages")
+     const {t: messageTxt} = useTranslation("messages",{
+          keyPrefix: "fetch-error"
+     })
      useEffect(()=>{
           startTransition(async()=>{
                try {
@@ -40,7 +42,7 @@ export default function ScanSettings({scanProfile}: SettingsProps){
                     setExclusions(val=>!storedExclusions ? val : storedExclusions)
                     setIncludeMacSystemExclusions(storedIncludeMacExclusions ?? DEFAULT_BACKEND_SETTINGS.includeMacSystemExclusions)
                } catch (err){
-                    toast.error(messageTxt("fetch-error.exclusions"),{
+                    toast.error(messageTxt("exclusions"),{
                          description: getErrorMessage(err)
                     });
                }
@@ -58,19 +60,21 @@ export default function ScanSettings({scanProfile}: SettingsProps){
           await updateExclusions(newArr);
      }
      const {t: scanTxt} = useTranslation("scan-settings")
-     const {t} = useTranslation("settings")
+     const {t} = useTranslation("settings",{
+          keyPrefix: "scan"
+     })
      const currPlatform = platform()
      return (
           <div className="px-1 py-2 space-y-3">
                <SettingsItem
                     Icon={Search}
-                    title={t("scan.title")}
+                    title={t("title")}
                     className="space-y-4"
-                    description={t("scan.desc")}
+                    description={t("desc")}
                >
                     <SettingsOption
-                         title={t("scan.confirm-stop.title")}
-                         description={t("scan.confirm-stop.desc")}
+                         title={t("confirm-stop.title")}
+                         description={t("confirm-stop.desc")}
                     >
                          <Switch
                               checked={settings.confirmStopScan}
@@ -79,8 +83,8 @@ export default function ScanSettings({scanProfile}: SettingsProps){
                     </SettingsOption>
                     {currPlatform==="macos" && (
                          <SettingsOption
-                              title="Include macOS system exclusions"
-                              description="Adds macOS system paths into exclusions"
+                              title={t("mac-os-exclusion.title")}
+                              description={t("mac-os-exclusion.desc")}
                          >
                               <Switch
                                    checked={includeMacSystemExclusions}

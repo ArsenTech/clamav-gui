@@ -32,79 +32,81 @@
           "scan": "Scan",
           "update": "Update"
      },
-     "appearance": {
-          "title": "Appearance",
-          "theme": {
-               "title": "Theme",
-               "system": "System",
-               "light": "Light",
-               "dark": "Dark"
-          },
-          "color": {
-               "title": "Color",
-               "blue": "Blue",
-               "green": "Green",
-               "rose": "Rose"
-          }
-     },
-     "date-format": {
-          "title": "Date Format",
-          "us": {
-               "title": "American",
-               "format": "mm/dd/yyyy hh:mm:ss"
-          },
-          "eu": {
-               "title": "European",
-               "format": "dd/mm/yyyy hh:mm:ss"
-          },
-          "iso": {
-               "title": "International",
-               "format": "yyyy-mm-dd hh:mm:ss"
-          }
-     },
-     "ui": {
-          "title": "User Interface",
-          "scheduler-ui": {
-               "title": "Enable Scheduler UI",
-               "desc": "Gives you an access to the Scheduler page"
-          },
-          "language": {
-               "title": "Language",
-               "desc": "The Language of the ClamAV GUI"
-          },
-          "badge": {
-               "title": "Badge Visibility",
-               "desc": "Show icons or text in UI badges",
-               "placeholder": "Select the badge visibility type",
-               "options": {
-                    "icon": "Icon Only",
-                    "icon-text": "Icon and Text",
-                    "text": "Text Only"
+     "general": {
+          "appearance": {
+               "title": "Appearance",
+               "theme": {
+                    "title": "Theme",
+                    "system": "System",
+                    "light": "Light",
+                    "dark": "Dark"
+               },
+               "color": {
+                    "title": "Color",
+                    "blue": "Blue",
+                    "green": "Green",
+                    "rose": "Rose"
                }
           },
-          "sidebar": {
-               "title": "Sidebar Collapsible State",
-               "desc": "Control how the sidebar collapses using this option",
-               "placeholder": "Choose a collapsible state",
-               "options": {
-                    "off-canvas": "Offcanvas Window",
-                    "icon": "Up to icon"
+          "date-format": {
+               "title": "Date Format",
+               "us": {
+                    "title": "American",
+                    "format": "mm/dd/yyyy hh:mm:ss"
+               },
+               "eu": {
+                    "title": "European",
+                    "format": "dd/mm/yyyy hh:mm:ss"
+               },
+               "iso": {
+                    "title": "International",
+                    "format": "yyyy-mm-dd hh:mm:ss"
                }
           },
-          "reduce-motion": {
-               "title": "Reduce Motion",
-               "desc": "Improves responsiveness by reducing transitions and animations across the app."
-          }
-     },
-     "notifs": {
-          "title": "Notifications",
-          "scan-start": {
-               "title": "On Scan Start",
-               "desc": "Notifies once the scan has been started"
+          "ui": {
+               "title": "User Interface",
+               "scheduler-ui": {
+                    "title": "Enable Scheduler UI",
+                    "desc": "Gives you an access to the Scheduler page"
+               },
+               "language": {
+                    "title": "Language",
+                    "desc": "The Language of the ClamAV GUI"
+               },
+               "badge": {
+                    "title": "Badge Visibility",
+                    "desc": "Show icons or text in UI badges",
+                    "placeholder": "Select the badge visibility type",
+                    "options": {
+                         "icon": "Icon Only",
+                         "icon-text": "Icon and Text",
+                         "text": "Text Only"
+                    }
+               },
+               "sidebar": {
+                    "title": "Sidebar Collapsible State",
+                    "desc": "Control how the sidebar collapses using this option",
+                    "placeholder": "Choose a collapsible state",
+                    "options": {
+                         "off-canvas": "Offcanvas Window",
+                         "icon": "Up to icon"
+                    }
+               },
+               "reduce-motion": {
+                    "title": "Reduce Motion",
+                    "desc": "Improves responsiveness by reducing transitions and animations across the app."
+               }
           },
-          "scan-finish": {
-               "title": "On Scan Finish",
-               "desc": "Notifies once the scan has been finished"
+          "notifs": {
+               "title": "Notifications",
+               "scan-start": {
+                    "title": "On Scan Start",
+                    "desc": "Notifies once the scan has been started"
+               },
+               "scan-finish": {
+                    "title": "On Scan Finish",
+                    "desc": "Notifies once the scan has been finished"
+               }
           }
      },
      "scan": {
@@ -114,22 +116,17 @@
                "title": "Confirm Stop",
                "desc": "Show a Confirm Message when you stop the scan."
           },
-          "advanced-desc": "Advanced options for any scan profile. It may reduce detection accuracy"
-     },
-     "exclusions": {
-          "title": "Directory Exclusions",
-          "add-button": "Add an exclusion",
-          "no-exclusions": "No Folder Exclusions yet",
-          "form-title": "Add a Directory to Exclusions",
-          "modal-title": "This will remove the directory path from exclusions"
-     },
-     "realtime-paths": {
-          "title": "Real-Time Scan Monitored Paths",
-          "desc": "List of folders currently monitored by a Real-Time scan",
-          "add-button": "Add Path",
-          "no-paths": "No current paths to track",
-          "form-title": "Add a path to track",
-          "modal-title": "This will remove the folder from monitored paths, which may expose the folder to threats."
+          "mac-os-exclusion": {
+               "title": "Include macOS system exclusions",
+               "desc": "Adds macOS system paths into exclusions"
+          },
+          "exclusions": {
+               "title": "Directory Exclusions",
+               "add-button": "Add an exclusion",
+               "no-exclusions": "No Folder Exclusions yet",
+               "form-title": "Add a Directory to Exclusions",
+               "modal-title": "This will remove the directory path from exclusions"
+          }
      },
      "folder-path-form": {
           "path": "Directory Path",
@@ -141,6 +138,7 @@
      "advanced": {
           "title": "Advanced GUI Options",
           "desc": "It may break some features and reduce detection accuracy",
+          "scan-desc": "Advanced options for any scan profile. It may reduce detection accuracy",
           "dev-mode": {
                "title": "Developer Mode",
                "desc": "Shows the ID on every data. Perfect for developers!"
@@ -159,34 +157,42 @@
                     "strict": "Strict",
                     "expert": "Expert"
                }
+          },
+          "logs": {
+               "title": "Logs",
+               "auto-scroll": {
+                    "title": "Auto-scroll text",
+                    "desc": "Scrolls the log automatically once the new log is added"
+               },
+               "max-lines": {
+                    "title": "Max Log Lines",
+                    "desc": "Shows the log up to the mentioned maximum line count",
+                    "placeholder": "Select a max line count",
+                    "lines": "{{lines}} lines"
+               }
+          },
+          "danger-zone": {
+               "title": "Danger Zone",
+               "desc": "Be careful before deleting settings related to ClamAV GUI",
+               "delete": {
+                    "title": "Delete Settings (Permanent)",
+                    "desc": "This will clear all settings data",
+                    "button": "Delete Settings"
+               },
+               "restore": {
+                    "title": "Restore Defaults",
+                    "desc": "This will reset all settings into default values",
+                    "button": "Restore Defaults"
+               },
+               "pending": "Please wait..."
+          },
+          "realtime-paths": {
+               "title": "Real-Time Scan Monitored Paths",
+               "desc": "List of folders currently monitored by a Real-Time scan",
+               "add-button": "Add Path",
+               "no-paths": "No current paths to track",
+               "form-title": "Add a path to track",
+               "modal-title": "This will remove the folder from monitored paths, which may expose the folder to threats."
           }
-     },
-     "logs": {
-          "title": "Logs",
-          "auto-scroll": {
-               "title": "Auto-scroll text",
-               "desc": "Scrolls the log automatically once the new log is added"
-          },
-          "max-lines": {
-               "title": "Max Log Lines",
-               "desc": "Shows the log up to the mentioned maximum line count",
-               "placeholder": "Select a max line count",
-               "lines": "{{lines}} lines"
-          }
-     },
-     "danger-zone": {
-          "title": "Danger Zone",
-          "desc": "Be careful before deleting settings related to ClamAV GUI",
-          "delete": {
-               "title": "Delete Settings (Permanent)",
-               "desc": "This will clear all settings data",
-               "button": "Delete Settings"
-          },
-          "restore": {
-               "title": "Restore Defaults",
-               "desc": "This will reset all settings into default values",
-               "button": "Restore Defaults"
-          },
-          "pending": "Please wait..."
      }
 }

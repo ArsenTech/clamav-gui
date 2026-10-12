@@ -2,11 +2,13 @@ import CommandSnippetBlock from "@/components/command-snippet"
 import { useTranslation, Trans } from "react-i18next"
 
 export default function WindowsAddPath(){
-     const {t} = useTranslation("no-clamav-page");
-     const windowsSteps = t("add-to-path.windows.steps",{returnObjects: true})
+     const {t} = useTranslation("no-clamav-page",{
+          keyPrefix: "add-to-path"
+     });
+     const windowsSteps = t("windows.steps",{returnObjects: true})
      return (
           <div className="space-y-3">
-               <p>{t("add-to-path.windows.cmd")}</p>
+               <p>{t("windows.cmd")}</p>
                <CommandSnippetBlock
                     command="where clamscan"
                />
@@ -31,7 +33,7 @@ export default function WindowsAddPath(){
                          </li>
                     ))}
                </ol>
-               <p>{t("add-to-path.windows.verification")}</p>
+               <p>{t("windows.verification")}</p>
                <CommandSnippetBlock
                     command="clamscan --version"
                />

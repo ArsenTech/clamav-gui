@@ -8,20 +8,24 @@ import { ScanType } from "@/lib/types/enums";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@radix-ui/react-tooltip";
 
 export function IntervalCell({type}: {type: IntervalType}){
-     const {t} = useTranslation("table");
+     const {t} = useTranslation("table",{
+          keyPrefix: "interval"
+     });
      const {settings} = useSettings();
      return (
           <Badge>
                {settings.badgeVisibility==="icon-text" && (
                     <CalendarSearch />
                )}
-               {t(`interval.${type}`)}
+               {t(type)}
           </Badge>
      )
 }
 export function ScanTypeCell({scanType}: {scanType: ScanType}){
      const scanInfo = SCAN_TYPES.find(item=>item.type===scanType);
-     const {t} = useTranslation("scan");
+     const {t} = useTranslation("scan",{
+          keyPrefix: "scan-type"
+     });
      const {settings} = useSettings();
      if(!scanInfo) return null;
      return scanInfo.type!==ScanType.None && (
@@ -31,7 +35,7 @@ export function ScanTypeCell({scanType}: {scanType: ScanType}){
                          <scanInfo.Icon/>
                     </TooltipTrigger>
                     <TooltipContent>
-                         {t(`scan-type.${scanInfo.type}.name`)}
+                         {t(`${scanInfo.type}.name`)}
                     </TooltipContent>
                </Tooltip>
           ) : (
@@ -39,7 +43,7 @@ export function ScanTypeCell({scanType}: {scanType: ScanType}){
                     {settings.badgeVisibility==="icon-text" && (
                          <scanInfo.Icon/>
                     )}
-                    {t(`scan-type.${scanInfo.type}.name`)}
+                    {t(`${scanInfo.type}.name`)}
                </Badge>
           )
      )

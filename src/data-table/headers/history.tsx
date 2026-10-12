@@ -7,32 +7,42 @@ interface SortableHeaderProps{
      column: Column<IHistoryData<"state">>
 }
 export function TimestampHeader({column}: SortableHeaderProps) {
-     const {t} = useTranslation("table")
+     const {t} = useTranslation("table",{
+          keyPrefix: "heading.history"
+     })
      return (
           <SortableHeader
                column={column}
-               title={t("heading.history.timestamp")}
+               title={t("timestamp")}
           />
      )
 }
 export function EventHeader({column}: SortableHeaderProps){
-     const {t} = useTranslation("table")
+     const {t} = useTranslation("table",{
+          keyPrefix: "heading.history"
+     })
      return (
           <SortableHeader
                column={column}
-               title={t("heading.history.event")}
+               title={t("event")}
           />
      )
 }
 export function DetailsHeader(){
-     const {t} = useTranslation("table")
-     return t("heading.history.details")
+     const {t} = useTranslation("table",{
+          keyPrefix: "heading.history"
+     })
+     return t("details")
 }
 export function StatusHeader(){
-     const {t} = useTranslation("table");
-     return t("heading.status")
+     const {t} = useTranslation("table",{
+          keyPrefix: "heading"
+     });
+     return t("status")
 }
 export function IdHeader(){
-     const {t} = useTranslation("table");
-     return t("heading.history.id")
+     const {t} = useTranslation("table",{
+          keyPrefix: "heading.history"
+     });
+     return t("id")
 }

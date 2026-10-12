@@ -11,15 +11,17 @@ interface Props{
 export default function CommandSnippetBlock({command}: Props){
      const [isCopied, setIsCopied] = useState(false);
      const {t} = useTranslation();
-     const {t: messageTxt} = useTranslation("messages")
+     const {t: messageTxt} = useTranslation("messages",{
+          keyPrefix: "copy-command"
+     })
      const handleCopy = async () => {
           try{
                await window.navigator.clipboard.writeText(command);
-               toast.success(messageTxt("copy-command.success"))
+               toast.success(messageTxt("success"))
                setIsCopied(true);
                setTimeout(()=>setIsCopied(false),2000)
           } catch (err) {
-               toast.error(messageTxt("copy-command.error"),{
+               toast.error(messageTxt("error"),{
                     description: getErrorMessage(err)
                });
           }

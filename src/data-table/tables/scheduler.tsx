@@ -24,7 +24,9 @@ export function SchedulerTable({data, headerElement}: DataTableProps<ISchedulerD
       columnVisibility
     }
   })
-  const {t} = useTranslation("table")
+  const {t} = useTranslation("table",{
+    keyPrefix: "not-found"
+  })
   return (
     <>
     <div className="flex items-center justify-between gap-4 w-full">
@@ -68,7 +70,7 @@ export function SchedulerTable({data, headerElement}: DataTableProps<ISchedulerD
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                {t("not-found.scheduler")}
+                {t("scheduler")}
               </TableCell>
             </TableRow>
           )}

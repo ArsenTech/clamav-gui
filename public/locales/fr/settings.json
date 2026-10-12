@@ -26,66 +26,68 @@
           "scan": "Analyse",
           "update": "Mise à jour"
      },
-     "appearance": {
-          "title": "Apparence",
-          "theme": {
-               "title": "Thème",
-               "system": "Système",
-               "light": "Clair",
-               "dark": "Sombre"
-          },
-          "color": {
-               "title": "Couleur",
-               "blue": "Bleu",
-               "green": "Vert",
-               "rose": "Rose"
-          }
-     },
-     "date-format": {
-          "title": "Format de date",
-          "us": {
-               "title": "Américain",
-               "format": "mm/jj/aaaa hh:mm:ss"
-          },
-          "eu": {
-               "title": "Européen",
-               "format": "jj/mm/aaaa hh:mm:ss"
-          },
-          "iso": {
-               "title": "International",
-               "format": "aaaa-mm-jj hh:mm:ss"
-          }
-     },
-     "ui": {
-          "title": "Interface Utilisateur",
-          "scheduler-ui": {
-               "title": "Activer l'interface de planification",
-               "desc": "Donne accès à l'interface pour planifier des analyses"
-          },
-          "language": {
-               "title": "Langue",
-               "desc": "La langue de l'interface de ClamAV GUI"
-          },
-          "badge": {
-               "title": "Visibilité du badge",
-               "desc": "Afficher les icônes ou le texte dans les badges de l'interface utilisateur",
-               "placeholder": "Sélectionner le type de visibilité du badge",
-               "options": {
-                    "icon": "Icône uniquement",
-                    "icon-text": "Icône et Texte",
-                    "text": "Texte uniquement"
+     "general": {
+          "appearance": {
+               "title": "Apparence",
+               "theme": {
+                    "title": "Thème",
+                    "system": "Système",
+                    "light": "Clair",
+                    "dark": "Sombre"
+               },
+               "color": {
+                    "title": "Couleur",
+                    "blue": "Bleu",
+                    "green": "Vert",
+                    "rose": "Rose"
                }
-          }
-     },
-     "notifs": {
-          "title": "Notifications",
-          "scan-start": {
-               "title": "Au démarrage du scan",
-               "desc": "Notification quand le scan commence"
           },
-          "scan-finish": {
-               "title": "À la fin du scan",
-               "desc": "Notification quand le scan se termine"
+          "date-format": {
+               "title": "Format de date",
+               "us": {
+                    "title": "Américain",
+                    "format": "mm/jj/aaaa hh:mm:ss"
+               },
+               "eu": {
+                    "title": "Européen",
+                    "format": "jj/mm/aaaa hh:mm:ss"
+               },
+               "iso": {
+                    "title": "International",
+                    "format": "aaaa-mm-jj hh:mm:ss"
+               }
+          },
+          "ui": {
+               "title": "Interface Utilisateur",
+               "scheduler-ui": {
+                    "title": "Activer l'interface de planification",
+                    "desc": "Donne accès à l'interface pour planifier des analyses"
+               },
+               "language": {
+                    "title": "Langue",
+                    "desc": "La langue de l'interface de ClamAV GUI"
+               },
+               "badge": {
+                    "title": "Visibilité du badge",
+                    "desc": "Afficher les icônes ou le texte dans les badges de l'interface utilisateur",
+                    "placeholder": "Sélectionner le type de visibilité du badge",
+                    "options": {
+                         "icon": "Icône uniquement",
+                         "icon-text": "Icône et Texte",
+                         "text": "Texte uniquement"
+                    }
+               }
+          },
+          "notifs": {
+               "title": "Notifications",
+               "scan-start": {
+                    "title": "Au démarrage du scan",
+                    "desc": "Notification quand le scan commence"
+               },
+               "scan-finish": {
+                    "title": "À la fin du scan",
+                    "desc": "Notification quand le scan se termine"
+               }
           }
      },
      "scan": {
@@ -95,22 +97,13 @@
                "title": "Confirmation d'arrêt du scan",
                "desc": "Afficher un message de confirmation quand on souhaite arrêter le scan."
           },
-          "advanced-desc": "Options avancées pour tous les profils d'analyse. Cela peut réduire la fiabilité des détections"
-     },
-     "exclusions": {
-          "title": "Exclusion de répertoires",
-          "add-button": "Ajouter une exclusion",
-          "no-exclusions": "Aucune exclusion de dossier pour le moment",
-          "form-title": "Ajouter un dossier aux exclusions",
-          "modal-title": "Ceci supprimera le dossier des exclusions"
-     },
-     "realtime-paths": {
-          "title": "Chemin surveillés par l'analyse en temps réel",
-          "desc": "Liste des dossiers actuellement surveillés par une analyse en temps réel",
-          "add-button": "Ajouter un chemin",
-          "no-paths": "Aucun chemin actuel à suivre",
-          "form-title": "Ajouter un chemin à suivre",
-          "modal-title": "Ceci supprimera le dossier des chemins surveillés, ce qui peut exposer le dossier aux menaces."
+          "exclusions": {
+               "title": "Exclusion de répertoires",
+               "add-button": "Ajouter une exclusion",
+               "no-exclusions": "Aucune exclusion de dossier pour le moment",
+               "form-title": "Ajouter un dossier aux exclusions",
+               "modal-title": "Ceci supprimera le dossier des exclusions"
+          }
      },
      "folder-path-form": {
           "path": "Chemin du répertoire",
@@ -122,6 +115,7 @@
      "advanced": {
           "title": "Paramètres d'interface avancés",
           "desc": "Cela peut casser certaines fonctionnalités et réduire la précision de détection",
+          "scan-desc": "Options avancées pour tous les profils d'analyse. Cela peut réduire la fiabilité des détections",
           "dev-mode": {
                "title": "Mode développeur",
                "desc": "Affiche l'ID sur chaque donnée. Parfait pour les développeurs !"
@@ -140,34 +134,42 @@
                     "strict": "Strict",
                     "expert": "Expert"
                }
+          },
+          "logs": {
+               "title": "Journaux",
+               "auto-scroll": {
+                    "title": "Défilement automatique du texte",
+                    "desc": "Fait défiler le journal automatiquement lorsqu'une nouvelle entrée est ajoutée"
+               },
+               "max-lines": {
+                    "title": "Nombre maximal de lignes de journal",
+                    "desc": "Affiche le journal jusqu'au nombre maximal de lignes indiqué",
+                    "placeholder": "Sélectionner le nombre maximum de lignes",
+                    "lines": "{{lines}} lignes"
+               }
+          },
+          "danger-zone": {
+               "title": "Zone de danger",
+               "desc": "Soyez attentif avant de supprimer des paramètres relatifs à ClamAV GUI",
+               "delete": {
+                    "title": "Supprimer les paramètres (permanent)",
+                    "desc": "Ceci supprimera TOUS les paramètres",
+                    "button": "Supprimer les paramètres"
+               },
+               "restore": {
+                    "title": "Restaurer aux paramètres par défaut",
+                    "desc": "Cela réinitialisera tous les paramètres aux valeurs par défaut",
+                    "button": "Restaurer"
+               },
+               "pending": "Veuillez patienter..."
+          },
+          "realtime-paths": {
+               "title": "Chemin surveillés par l'analyse en temps réel",
+               "desc": "Liste des dossiers actuellement surveillés par une analyse en temps réel",
+               "add-button": "Ajouter un chemin",
+               "no-paths": "Aucun chemin actuel à suivre",
+               "form-title": "Ajouter un chemin à suivre",
+               "modal-title": "Ceci supprimera le dossier des chemins surveillés, ce qui peut exposer le dossier aux menaces."
           }
-     },
-     "logs": {
-          "title": "Journaux",
-          "auto-scroll": {
-               "title": "Défilement automatique du texte",
-               "desc": "Fait défiler le journal automatiquement lorsqu'une nouvelle entrée est ajoutée"
-          },
-          "max-lines": {
-               "title": "Nombre maximal de lignes de journal",
-               "desc": "Affiche le journal jusqu'au nombre maximal de lignes indiqué",
-               "placeholder": "Sélectionner le nombre maximum de lignes",
-               "lines": "{{lines}} lignes"
-          }
-     },
-     "danger-zone": {
-          "title": "Zone de danger",
-          "desc": "Soyez attentif avant de supprimer des paramètres relatifs à ClamAV GUI",
-          "delete": {
-               "title": "Supprimer les paramètres (permanent)",
-               "desc": "Ceci supprimera TOUS les paramètres",
-               "button": "Supprimer les paramètres"
-          },
-          "restore": {
-               "title": "Restaurer aux paramètres par défaut",
-               "desc": "Cela réinitialisera tous les paramètres aux valeurs par défaut",
-               "button": "Restaurer"
-          },
-          "pending": "Veuillez patienter..."
      }
 }

@@ -23,10 +23,13 @@ interface Props{
 }
 export default function ClearDatePopup({open, onOpen, onSuccess}: Props){
      const {t: msgTxt} = useTranslation("messages")
+     const {t: validationTxt} = useTranslation("messages",{
+          keyPrefix: "form-validations"
+     })
      const {t} = useTranslation("history")
      const [isClearing, startTransition] = useTransition()
      const form = useForm<ClearByDateType>({
-          resolver: zodResolver(getClearByDateSchema(msgTxt)),
+          resolver: zodResolver(getClearByDateSchema(validationTxt)),
           defaultValues: {
                date: new Date()
           }

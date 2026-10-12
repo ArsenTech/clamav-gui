@@ -54,7 +54,9 @@ export function DiskStats() {
       write: Math.max(0, writeDelta),
     }));
   }, [disk]);
-  const {t: mainTxt} = useTranslation();
+  const {t: mainTxt} = useTranslation(undefined,{
+    keyPrefix: "size-suffix"
+  });
   return (
     <Card className="w-full">
       <CardHeader>
