@@ -37,7 +37,8 @@ export const DEFAULT_BACKEND_SETTINGS: IBackendSettings = {
           file: {}
      },
      exclusions: [],
-     monitoringPaths: []
+     monitoringPaths: [],
+     includeMacSystemExclusions: false
 }
 export const FILE_SCAN_WHITELIST: ScanOptionKeys[] = [
      "algorithmicDetection",
@@ -86,3 +87,6 @@ export const DATE_TIME_FORMATS: IDateFormatSettings[] = [
           format: "yyyy-MM-dd HH:mm:ss"
      }
 ]
+export const MACOS_DEFAULT_EXCLUSIONS = [
+  "/System/Library/PrivateFrameworks/TextToSpeech.framework",
+] as const;

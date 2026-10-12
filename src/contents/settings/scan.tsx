@@ -20,6 +20,7 @@ import { useTranslation } from "react-i18next";
 import { ChoiceOption } from "@/components/settings-item/scan-option";
 import { isDescKey } from "@/lib/helpers/scan";
 import { getErrorMessage } from "@/lib/helpers";
+import { platform } from "@tauri-apps/plugin-os";
 
 export default function ScanSettings({scanProfile}: SettingsProps){
      const {settings, setSettings} = useSettings();
@@ -27,12 +28,17 @@ export default function ScanSettings({scanProfile}: SettingsProps){
      const [isFetching, startTransition] = useTransition()
      const {getSettingsByKey,setSettingsbyKey} = useBackendSettings()
      const [exclusions, setExclusions] = useState<IBackendSettings["exclusions"]>(DEFAULT_BACKEND_SETTINGS.exclusions);
+     const [includeMacSystemExclusions, setIncludeMacSystemExclusions] = useState(DEFAULT_BACKEND_SETTINGS.includeMacSystemExclusions)
      const {t: messageTxt} = useTranslation("messages")
      useEffect(()=>{
           startTransition(async()=>{
                try {
-                    const stored = await getSettingsByKey("exclusions")
-                    setExclusions(val=>!stored ? val : stored)
+                    const [storedExclusions,storedIncludeMacExclusions] = await Promise.all([
+                         getSettingsByKey("exclusions"),
+                         getSettingsByKey("includeMacSystemExclusions")
+                    ])
+                    setExclusions(val=>!storedExclusions ? val : storedExclusions)
+                    setIncludeMacSystemExclusions(storedIncludeMacExclusions ?? DEFAULT_BACKEND_SETTINGS.includeMacSystemExclusions)
                } catch (err){
                     toast.error(messageTxt("fetch-error.exclusions"),{
                          description: getErrorMessage(err)
@@ -53,6 +59,7 @@ export default function ScanSettings({scanProfile}: SettingsProps){
      }
      const {t: scanTxt} = useTranslation("scan-settings")
      const {t} = useTranslation("settings")
+     const currPlatform = platform()
      return (
           <div className="px-1 py-2 space-y-3">
                <SettingsItem
@@ -70,6 +77,20 @@ export default function ScanSettings({scanProfile}: SettingsProps){
                               onCheckedChange={checked=>setSettings({confirmStopScan: checked})}
                          />
                     </SettingsOption>
+                    {currPlatform==="macos" && (
+                         <SettingsOption
+                              title="Include macOS system exclusions"
+                              description="Adds macOS system paths into exclusions"
+                         >
+                              <Switch
+                                   checked={includeMacSystemExclusions}
+                                   onCheckedChange={async checked => {
+                                        await setSettingsbyKey("includeMacSystemExclusions", checked)
+                                        setIncludeMacSystemExclusions(checked)
+                                   }}
+                              />
+                         </SettingsOption>
+                    )}
                </SettingsItem>
                {Object.entries(SCAN_SETTINGS_GROUPED).filter(([key])=>key!=="advanced" as ScanOptionGroup).map(([key,options])=>{
                     const visibleOptions = scanProfile === "file" ? options.filter(o =>FILE_SCAN_WHITELIST.includes(o.optionKey)) : options;
@@ -88,7 +109,7 @@ export default function ScanSettings({scanProfile}: SettingsProps){
                                    >
                                         {option.value.kind==="yes-no" ? (
                                              isLoading ? (
-                                                  <Skeleton className="w-8 h-[18px]"/>
+                                                  <Skeleton className="w-8 h-4.5"/>
                                              ): (
                                                   <Switch
                                                        checked={(values[option.optionKey] ?? option.value.default) as boolean}

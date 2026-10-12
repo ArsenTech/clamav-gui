@@ -20,7 +20,7 @@ use tauri_plugin_store::StoreExt;
 #[cfg(windows)]
 use std::os::windows::process::CommandExt;
 
-use crate::types::enums::SettingKeyArray;
+use crate::types::enums::{SettingKeyArray,SettingKeyBool};
 
 const CREATE_NO_WINDOW: u32 = 0x08000000;
 
@@ -82,8 +82,28 @@ pub fn get_settings_as_array(app: &tauri::AppHandle, setting: SettingKeyArray) -
                 .into())
         }
         _ => {
-            eprintln!("Invalid exclusions format, expected array");
+            eprintln!("Invalid settings format, expected array");
             Ok(vec![])
+        }
+    }
+}
+
+pub fn get_settings_as_bool(
+    app: &tauri::AppHandle,
+    setting: SettingKeyBool,
+) -> Result<bool, String> {
+    let store = app.store("settings.json").map_err(|e| e.to_string())?;
+
+    let value = match store.get(setting.as_str()) {
+        Some(v) => v,
+        None => return Ok(false),
+    };
+
+    match value {
+        serde_json::Value::Bool(value) => Ok(value),
+        _ => {
+            eprintln!("Invalid settings format, expected bool");
+            Ok(false)
         }
     }
 }

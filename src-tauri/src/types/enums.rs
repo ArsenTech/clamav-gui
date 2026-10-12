@@ -191,7 +191,7 @@ impl SettingKeyArray {
     pub fn as_str(&self) -> &'static str {
         match self {
             SettingKeyArray::Exclusions => "exclusions",
-            SettingKeyArray::MonitoringPaths => "monitoringPaths"
+            SettingKeyArray::MonitoringPaths => "monitoringPaths",
         }
     }
 }
@@ -201,4 +201,18 @@ impl SettingKeyArray {
 pub enum AppendUpdaterErrorType{
     UpdateError,
     CheckError
+}
+
+#[derive(Serialize, Deserialize, Type, Debug, PartialEq, Eq, Hash, Copy, Clone)]
+#[serde(rename_all = "camelCase")]
+pub enum SettingKeyBool {
+    IncludeMacSystemExclusions,
+}
+
+impl SettingKeyBool {
+    pub fn as_str(&self) -> &'static str {
+        match self {
+            SettingKeyBool::IncludeMacSystemExclusions => "includeMacSystemExclusions",
+        }
+    }
 }

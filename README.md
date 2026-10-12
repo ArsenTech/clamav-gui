@@ -82,10 +82,10 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - [X] Investigate and fix About page runtime error (`trim()` on undefined)
 - [X] Improve Overview page responsiveness on smaller displays
 - [X] Decide whether the About page should use tabs or remain a grid
-- [ ] Investigate macOS TextToSpeech false positive
+- [X] Investigate macOS TextToSpeech false positive
 - [ ] Verify detection name and affected ClamAV versions
 - [ ] Investigate and possibly fix ClamAV availability detection
-- [ ] Determine whether exclusion should be default or optional
+- [X] Determine whether exclusion should be default or optional
 - [ ] Lazy-load some heavy components
 - [ ] Error Handling & Translation Improvements
    - Normalize backend errors

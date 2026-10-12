@@ -57,7 +57,8 @@ export type ScanProfilesType = Record<ScanProfile,ScanProfileValues>
 export interface IBackendSettings{
      scanProfiles: ScanProfilesType
      exclusions: string[],
-     monitoringPaths: string[]
+     monitoringPaths: string[],
+     includeMacSystemExclusions: boolean
 }
 export interface ISettingsMetadata{
      schemaVersion: 1

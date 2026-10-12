@@ -36,7 +36,8 @@ const BackendSchema = z.object({
           file: {},
      }),
      exclusions: z.array(z.string().min(2).trim()).default([]),
-     monitoringPaths: z.array(z.string().min(2).trim()).default([])
+     monitoringPaths: z.array(z.string().min(2).trim()).default([]),
+     includeMacSystemExclusions: z.boolean().default(false),
 })
 
 export const SettingsMetadataSchema = z.object({

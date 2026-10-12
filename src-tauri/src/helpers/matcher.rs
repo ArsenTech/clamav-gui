@@ -6,7 +6,7 @@ use std::{
 use once_cell::sync::Lazy;
 use regex::Regex;
 
-use crate::types::enums::SettingKeyArray;
+use crate::types::enums::{SettingKeyArray, SettingKeyBool};
 
 #[derive(Clone)]
 pub struct ExclusionMatcher {
@@ -32,20 +32,37 @@ pub static EXCLUSIONS: Lazy<Arc<Mutex<Option<ExclusionMatcher>>>> =
 
 
 #[cfg(target_os = "linux")]
-pub const DEFAULT_LINUX_EXCLUDED_DIRS: &[&str] = &[
+const DEFAULT_LINUX_EXCLUDED_DIRS: &[&str] = &[
     "/proc",
     "/sys",
     "/dev",
     "/run",
 ];
+#[cfg(target_os = "macos")]
+pub const DEFAULT_MACOS_EXCLUDED_DIRS: &[&str] = &[
+    "/System/Library/PrivateFrameworks/TextToSpeech.framework",
+];
 
 pub fn apply_exclusions(app: &tauri::AppHandle, args: &mut Vec<String>) -> Result<(), String> {
-    use crate::helpers::get_settings_as_array;
+    use crate::helpers::{get_settings_as_array, get_settings_as_bool};
     use crate::helpers::path::path_to_regex;
 
     #[cfg(target_os = "linux")]
     for dir in DEFAULT_LINUX_EXCLUDED_DIRS {
         args.push(format!("--exclude-dir={}", path_to_regex(dir)));
+    }
+
+    #[cfg(target_os = "macos")]
+    {
+        let include_mac_exclusions =
+            get_settings_as_bool(app, SettingKeyBool::IncludeMacSystemExclusions)
+                .unwrap_or(false);
+
+        if include_mac_exclusions {
+            for dir in DEFAULT_MACOS_EXCLUDED_DIRS {
+                args.push(format!("--exclude-dir={}", path_to_regex(dir)));
+            }
+        }
     }
 
     let exclusions = get_settings_as_array(app,SettingKeyArray::Exclusions)?;

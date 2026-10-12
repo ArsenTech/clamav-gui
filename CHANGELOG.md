@@ -40,6 +40,40 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## [1.0.7 Beta 2] - Unreleased
+
+> [!NOTE]
+> - The macOS TextToSpeech false-positive detection name and affected ClamAV versions are still being verified.
+> - This beta is intended to collect feedback before the final v1.0.7 release.
+
+### Added
+- Added application identifier on the About page.
+- Added **Zod** validation before importing settings.
+- Added optional macOS system exclusions setting for the known TextToSpeech false-positive investigation.
+  - Disabled by default.
+  - Only shown on macOS.
+  - Applies to normal scans and real-time scanning.
+
+### Improved
+- **Skeleton Loaders**
+  - Changed the background image to a muted color.
+- **About Page**
+  - Added scroll behavior to the info section.
+  - Improved layout responsiveness.
+- **Overview Page** - Fixes [#22](https://github.com/ArsenTech/clamav-gui/issues/22)
+  - **Buttons** - Improved responsive scaling.
+  - **Safety Indicator Header** - Reduced header size and improved responsiveness.
+
+### Fixed
+- Fixed About page runtime TypeScript error - Fixes [#25](https://github.com/ArsenTech/clamav-gui/issues/25)
+
+### Investigating
+- macOS TextToSpeech false-positive detection name and affected ClamAV versions.
+
+[1.0.7 Beta 2]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.7-2
+
+---
+
 ## [1.0.7 Beta 1] - 2026-06-08
 > [!NOTE]
 > Version 1.0.7-1 is a beta release used to validate the macOS Homebrew detection fix before the final 1.0.7 release.
