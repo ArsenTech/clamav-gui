@@ -17,6 +17,10 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Additional ClamAV detection logging for debugging and troubleshooting
 - Identifier on the about page
 - Validations with **Zod** before importing settings
+### Changed
+- Moved some UI settings into Appearance settings
+  - Sidebar Collapsible state
+  - Reduce Motion
 ### Improved
 - Memoized shared contexts
   - Quarantine Count
@@ -36,6 +40,10 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   - `/opt/homebrew/bin/clamscan`
   - `/usr/local/bin/clamscan`
 - The About Runtime Typescript error - Fixes [#25](https://github.com/ArsenTech/clamav-gui/issues/25)
+### Documentation
+- Finished the usage guide
+- Finished the translation guide
+- Extended the installation guide to support Linux and macOS
 
 [1.0.7]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.7 
 

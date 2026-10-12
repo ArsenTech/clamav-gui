@@ -34,6 +34,7 @@ certUtil -hashfile <filename> SHA256
 > Alternatively, you may use free third-party apps 7-Zip Compute Hash, ExactFile, and MultiHasher for a GUI-based checksum
 
 ## Installation instructions
+
 ### Windows
 
 ![welcome](https://raw.githubusercontent.com/ArsenTech/clamav-gui/refs/heads/main/.github/docs-images/installation/welcome.png)
@@ -47,6 +48,108 @@ Once you've downloaded the ClamAV GUI installer, double click on it. Next, the s
 ![finish](https://raw.githubusercontent.com/ArsenTech/clamav-gui/refs/heads/main/.github/docs-images/installation/finish.png)
 
 Next, the installer will ask you where you wish to install the GUI. Unless you have a specific reason to change this setting, select `Next` to install the GUI with these initial settings. Once it's complete, select `Finish` to exit the installer.
+
+### macOS
+
+Before launching ClamAV GUI, install the ClamAV engine:
+
+```bash
+brew install clamav
+freshclam
+```
+
+Check that ClamAV is available:
+
+```bash
+which clamscan
+clamscan --version
+```
+
+Common Homebrew paths:
+
+```bash
+/opt/homebrew/bin/clamscan
+/usr/local/bin/clamscan
+```
+
+Download the macOS build from the Releases page, open it, and move **ClamAV GUI** to the Applications folder if needed.
+
+Then launch the app from Applications.
+
+> [!NOTE]
+> On macOS, the GUI checks common Homebrew ClamAV paths if `clamscan` is not found through the normal app environment.
+
+---
+
+### Linux
+
+Before launching ClamAV GUI, install the ClamAV engine using your distribution package manager.
+
+#### Debian / Ubuntu
+
+```bash
+sudo apt update
+sudo apt install clamav
+sudo freshclam
+```
+
+#### Fedora
+
+```bash
+sudo dnf install clamav
+sudo freshclam
+```
+
+#### Arch Linux
+
+```bash
+sudo pacman -S clamav
+sudo freshclam
+```
+
+#### openSUSE
+
+```bash
+sudo zypper install clamav
+sudo freshclam
+```
+
+Check that ClamAV is available:
+
+```bash
+which clamscan
+clamscan --version
+```
+
+Download the Linux package from the Releases page.
+
+For AppImage builds:
+
+```bash
+chmod +x ClamAV-GUI*.AppImage
+./ClamAV-GUI*.AppImage
+```
+
+For Debian-based packages:
+
+```bash
+sudo apt install ./clamav-gui*.deb
+```
+
+For RPM-based packages:
+
+```bash
+sudo dnf install ./clamav-gui*.rpm
+```
+
+On openSUSE:
+
+```bash
+sudo zypper install ./clamav-gui*.rpm
+```
+
+> [!NOTE]
+> Linux tray behavior may depend on the desktop environment and system tray support.
 
 ## Launching the GUI
 

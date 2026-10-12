@@ -53,6 +53,7 @@
 **ArsenTech's ClamAV GUI** is a minimal, open-source interface for file scanning and threat detection that makes the Antivirus itself look professional and work exactly like ClamAV (A FOSS CLI Antivirus).
 
 Built with Tauri, React, and modern desktop and web tools. This software is provided as-is. No data is collected or transmitted. This GUI uses ClamAV's `clamscan` and `freshclam` engines. Scan types are presets that define which locations and which limits are used.
+
 ### Features
 - **State-gated UI** - Detects the ClamAV installation path before launching the software
 - **Main and Full Scan** - Scan the entire device for malicious files and malware
@@ -84,7 +85,6 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - [X] Decide whether the About page should use tabs or remain a grid
 - [X] Investigate macOS TextToSpeech false positive
 - [ ] Verify detection name and affected ClamAV versions
-- [ ] Investigate and possibly fix ClamAV availability detection
 - [X] Determine whether exclusion should be default or optional
 - [ ] Lazy-load some heavy components
 - [ ] Error Handling & Translation Improvements
@@ -107,6 +107,13 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - [ ] Silent Scheduled Scans Settings (Another Attempt)
 - [ ] Tray & Startup Settings
   - [ ] Minimized Auto Start setting ([#12](https://github.com/ArsenTech/clamav-gui/issues/12))
+- [ ] ClamAV Initial Setup
+  - [ ] Detect missing/unconfigured `freshclam.conf`
+  - [ ] Provide platform-appropriate configuration defaults
+  - [ ] Configure virus definition updates
+  - [ ] Run initial `freshclam` update
+  - [ ] Provide actionable permission/configuration errors
+  - [ ] Investigate and possibly fix ClamAV availability detection
 #### v1.1.x (Planned, Major)
 - [ ] ClamAV Engine Updater
 - [ ] YARA Related Features
@@ -130,26 +137,29 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
    - [ ] Smarter scan awareness (optional `scanType` in status)
    - [ ] Return to active scan after navigation
    - [ ] Automatic History refresh after scan completion
-- [ ] ClamAV Initial Setup
-  - [ ] Detect missing/unconfigured `freshclam.conf`
-  - [ ] Provide platform-appropriate configuration defaults
-  - [ ] Configure virus definition updates
-  - [ ] Run initial `freshclam` update
-  - [ ] Provide actionable permission/configuration errors
 #### Nice to have
-- [ ] Write the documentation in the `docs/` folder.
-  - [ ] Usage Guide
+- [X] Write the documentation in the `docs/` folder.
+  - [X] Usage Guide
   - [X] Installation Guide
-    - [ ] Extend the Installation guide to Mac and Linux Users
+    - [X] Extend the Installation guide to Mac and Linux Users
   - [X] Troubleshooting
     - [ ] Continue writing the Troubleshooting Guide once it has new or missing info
   - [X] FAQs
     - [ ] Continue writing the FAQ section once it has new or missing info
-  - [ ] Translation Guide
+  - [X] Translation Guide
 - [ ] Translate new parts after running `npm run i18n:missing-keys [lang-codes]` and typing
   - 🇫🇷 French - `fr`
   - 🇵🇱 Polish - `pl`
   - Other languages possible
+
+<!--
+- [ ] Continue writing the Troubleshooting Guide once it has new or missing info
+- [ ] Continue writing the FAQ section once it has new or missing info
+- [ ] Translate new parts after running `npm run i18n:missing-keys [lang-codes]` and typing
+  - 🇫🇷 French - `fr`
+  - 🇵🇱 Polish - `pl`
+  - Other languages possible
+-->
 
 ### Built With
 - [![Tauri][tauri-shield]][tauri-url]
