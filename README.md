@@ -78,9 +78,9 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 #### v1.0.7 (Next, Stability)
 - [X] Move several states into context to reduce rerenders and improve performance
 - [X] Validations with **Zod** before importing
+  - [ ] Resolve imports related to Schema types
 - [X] Investigate and fix About page runtime error (`trim()` on undefined)
 - [X] Improve Overview page responsiveness on smaller displays
-- [ ] Resolve imports related to Schema types
 - [ ] Decide whether the About page should use tabs or remain a grid
 - [ ] Investigate macOS TextToSpeech false positive
 - [ ] Verify detection name and affected ClamAV versions
