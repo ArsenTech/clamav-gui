@@ -40,7 +40,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
-## [1.0.7 Beta 2] - Unreleased
+## [1.0.7 Beta 2] - 2026-10-12
 
 > [!NOTE]
 > - The macOS TextToSpeech false-positive detection name and affected ClamAV versions are still being verified.
