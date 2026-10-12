@@ -80,6 +80,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - [X] Validations with **Zod** before importing
 - [X] Investigate and fix About page runtime error (`trim()` on undefined)
 - [X] Improve Overview page responsiveness on smaller displays
+- [ ] Resolve imports related to Schema types
 - [ ] Decide whether the About page should use tabs or remain a grid
 - [ ] Investigate macOS TextToSpeech false positive
 - [ ] Verify detection name and affected ClamAV versions
