@@ -1,4 +1,4 @@
-import { SchedulerType } from "@/lib/types";
+import { SchedulerType } from "@/lib/types/schemas";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { getSchedulerSchema } from "@/lib/schemas";

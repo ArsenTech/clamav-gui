@@ -1,6 +1,6 @@
 import { SchedulerTable } from "@/data-table/tables/scheduler";
 import SchedulerForm from "@/components/antivirus/scheduler-form";
-import { SchedulerConfState, SchedulerType } from "@/lib/types";
+import { SchedulerConfState } from "@/lib/types";
 import { useEffect, useTransition } from "react";
 import { ISchedulerData } from "@/lib/types/data";
 import { DAYS_OF_THE_WEEK } from "@/lib/constants";
@@ -18,6 +18,7 @@ import ConfirmationMessage from "@/components/popup/confirm";
 import { getErrorMessage } from "@/lib/helpers";
 import { fetchSchedulerData } from "@/data/scheduler";
 import { useScheduler } from "@/context/antivirus/scheduler";
+import { SchedulerType } from "@/lib/types/schemas";
 
 export default function SchedulerContent(){
      const {settings} = useSettings();

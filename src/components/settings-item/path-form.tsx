@@ -4,7 +4,7 @@ import Popup from "@/components/popup";
 import SettingsItem from ".";
 import { Button } from "../ui/button";
 import { useForm } from "react-hook-form";
-import { PathFormType } from "@/lib/types";
+import { PathFormType } from "@/lib/types/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getPathFormSchema } from "@/lib/schemas";
 import { ButtonGroup } from "../ui/button-group";

@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import Popup from ".";
-import { ClearByDateType } from "@/lib/types";
+import { ClearByDateType } from "@/lib/types/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getClearByDateSchema } from "@/lib/schemas";
 import { useTranslation } from "react-i18next";
