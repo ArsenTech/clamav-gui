@@ -193,6 +193,16 @@
                "no-paths": "No current paths to track",
                "form-title": "Add a path to track",
                "modal-title": "This will remove the folder from monitored paths, which may expose the folder to threats."
+          },
+          "tray-startup": {
+               "title": "Tray and Startup Settings",
+               "desc": "Control tray and startup behavior",
+               "close-behavior": {
+                    "title": "Close button behavior",
+                    "desc": "Choose what happens when pressing the window close button",
+                    "minimize-to-tray": "Minimize to tray",
+                    "exit": "Quit the application"
+               }
           }
      }
 }

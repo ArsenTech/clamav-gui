@@ -22,8 +22,10 @@ static BEHAVIOR: Lazy<Arc<Mutex<BehaviorConfig>>> =
 use crate::{
     antivirus::{quarantine::quarantine_file},
     helpers::{
-        get_settings_as_array,
-        get_settings_as_bool,
+        settings::{
+            get_settings_as_array,
+            get_settings_as_bool
+        },
         matcher::{EXCLUSIONS, ExclusionMatcher},
         path::{get_clamav_path, path_to_regex},
         silent_command,

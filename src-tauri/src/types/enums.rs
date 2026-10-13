@@ -216,3 +216,24 @@ impl SettingKeyBool {
         }
     }
 }
+
+#[derive(Serialize, Deserialize, Type, Debug, Clone, Copy, PartialEq, Eq)]
+#[serde(rename_all = "kebab-case")]
+pub enum CloseButtonBehavior {
+    Exit,
+    MinimizeToTray,
+}
+
+#[derive(Serialize, Deserialize, Type, Debug, PartialEq, Eq, Hash, Copy, Clone)]
+#[serde(rename_all = "camelCase")]
+pub enum SettingKeyString {
+    CloseButtonBehavior,
+}
+
+impl SettingKeyString {
+    pub fn as_str(&self) -> &'static str {
+        match self {
+            SettingKeyString::CloseButtonBehavior => "closeButtonBehavior",
+        }
+    }
+}

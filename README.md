@@ -84,17 +84,17 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - [X] Improve Overview page responsiveness on smaller displays
 - [X] Decide whether the About page should use tabs or remain a grid
 - [X] Investigate macOS TextToSpeech false positive
-- [ ] Verify detection name and affected ClamAV versions
 - [X] Determine whether exclusion should be default or optional
+- [X] Tray & Startup Settings
+  - [X] Close button behavior
+    - [X] Exit application
+    - [X] Minimize to tray
+- [ ] Verify detection name and affected ClamAV versions
 - [ ] Lazy-load some heavy components
 - [ ] Error Handling & Translation Improvements
    - Normalize backend errors
    - Map to frontend translations
    - Better error messages
-- [ ] Tray & Startup Settings
-  - [ ] Close button behavior
-    - [ ] Exit application
-    - [ ] Minimize to tray
 
 > [!NOTE]
 > v1.0.7 is complete when

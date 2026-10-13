@@ -6,6 +6,7 @@ import { THEMES } from "../constants/settings";
 import { LucideIcon } from "lucide-react";
 import { SchedulerType } from "./schemas";
 
+export type CloseButtonBehavior = "exit" | "minimize-to-tray";
 export type DateFormat = "dd/MM/yyyy HH:mm:ss" | "MM/dd/yyyy HH:mm:ss" | "yyyy-MM-dd HH:mm:ss"
 export type Theme = typeof THEMES[number];
 
@@ -58,7 +59,8 @@ export interface IBackendSettings{
      scanProfiles: ScanProfilesType
      exclusions: string[],
      monitoringPaths: string[],
-     includeMacSystemExclusions: boolean
+     includeMacSystemExclusions: boolean,
+     closeButtonBehavior: CloseButtonBehavior
 }
 export interface ISettingsMetadata{
      schemaVersion: 1

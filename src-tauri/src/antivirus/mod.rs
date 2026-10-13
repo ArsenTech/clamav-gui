@@ -11,7 +11,7 @@ use tauri::command;
 
 use crate::{
     helpers::{
-        get_settings_as_array, history::append_realtime_history, log::{initialize_log, log_err, log_info}, new_id, real_time::{start_realtime_scan, stop_realtime_scan}
+        settings::get_settings_as_array, history::append_realtime_history, log::{initialize_log, log_err, log_info}, new_id, real_time::{start_realtime_scan, stop_realtime_scan}
     },
     types::{
         enums::{BehaviorMode, HistoryDetails, HistoryStatus, HistoryType, LogCategory, ScanType, SettingKeyArray},

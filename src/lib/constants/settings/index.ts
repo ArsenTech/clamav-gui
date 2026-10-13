@@ -38,7 +38,8 @@ export const DEFAULT_BACKEND_SETTINGS: IBackendSettings = {
      },
      exclusions: [],
      monitoringPaths: [],
-     includeMacSystemExclusions: false
+     includeMacSystemExclusions: false,
+     closeButtonBehavior: "minimize-to-tray",
 }
 export const FILE_SCAN_WHITELIST: ScanOptionKeys[] = [
      "algorithmicDetection",

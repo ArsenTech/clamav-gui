@@ -4,7 +4,7 @@ import { useSettings } from "@/context/settings";
 import { DEFAULT_BACKEND_SETTINGS, DEFAULT_SETTINGS, FILE_SCAN_WHITELIST, MAX_LONG_LINES_CHOICES, SCAN_OPTION_ICON } from "@/lib/constants/settings";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Braces, FlaskConical, RotateCcw, Scale, ScrollText, ShieldAlert, ShieldCheck, Trash2 } from "lucide-react";
+import { Braces, FlaskConical, MonitorCog, RotateCcw, Scale, ScrollText, ShieldAlert, ShieldCheck, Trash2 } from "lucide-react";
 import SettingsItem from "@/components/settings-item";
 import { BehaviorMode } from "@/lib/types/enums";
 import { useEffect, useMemo, useState, useTransition } from "react";
@@ -17,7 +17,7 @@ import { toast } from "sonner";
 import { store } from "@/lib/store";
 import SettingsOption from "@/components/settings-item/settings-option";
 import { useTranslation } from "react-i18next";
-import { IBackendSettings, ScanOptionKeys } from "@/lib/types/settings";
+import { CloseButtonBehavior, IBackendSettings, ScanOptionKeys } from "@/lib/types/settings";
 import { getErrorMessage, ObjectEntries } from "@/lib/helpers";
 import { ChoiceOption } from "@/components/settings-item/scan-option";
 import { ActionType, DangerZoneConfState } from "@/lib/types";
@@ -26,6 +26,7 @@ import FolderPathFormLoader from "@/loaders/components/path-form";
 import FolderPathForm from "@/components/settings-item/path-form";
 import { useBackendSettings } from "@/hooks/use-settings";
 import ConfirmationMessage from "@/components/popup/confirm";
+import SelectorField from "@/components/fields/selector";
 
 export default function AdvancedSettings({scanProfile}: SettingsProps){
      const {settings, setSettings} = useSettings();
@@ -35,12 +36,17 @@ export default function AdvancedSettings({scanProfile}: SettingsProps){
      const [isFetching, startFetching] = useTransition()
      const {getSettingsByKey,setSettingsbyKey} = useBackendSettings()
      const [paths, setPaths] = useState<IBackendSettings["monitoringPaths"]>(DEFAULT_BACKEND_SETTINGS.monitoringPaths);
+     const [closeBehavior, setCloseBehavior] = useState<IBackendSettings["closeButtonBehavior"]>(DEFAULT_BACKEND_SETTINGS.closeButtonBehavior)
      const {t: messageTxt} = useTranslation("messages")
      useEffect(()=>{
           startFetching(async()=>{
                try {
-                    const stored = await getSettingsByKey("monitoringPaths")
-                    setPaths(val=>!stored ? val : stored)
+                    const [storedPaths, storedCloseBahvior] = await Promise.all([
+                         getSettingsByKey("monitoringPaths"),
+                         getSettingsByKey("closeButtonBehavior")
+                    ])
+                    setPaths(val=>!storedPaths ? val : storedPaths)
+                    setCloseBehavior(val=>!storedCloseBahvior ? val : storedCloseBahvior)
                } catch (err){
                     toast.error(messageTxt("fetch-error.realtime-paths"),{
                          description: getErrorMessage(err)
@@ -151,6 +157,28 @@ export default function AdvancedSettings({scanProfile}: SettingsProps){
                                    </SelectItem>
                               </SelectContent>
                          </Select>
+                    </SettingsOption>
+               </SettingsItem>
+               <SettingsItem
+                    Icon={MonitorCog}
+                    title={t("tray-startup.title")}
+                    description={t("tray-startup.desc")}
+               >
+                    <SettingsOption
+                         title={t("tray-startup.close-behavior.title")}
+                         description={t("tray-startup.close-behavior.desc")}
+                    >
+                         <SelectorField
+                              value={closeBehavior}
+                              onChange={async value => {
+                                   await setSettingsbyKey("closeButtonBehavior",value as CloseButtonBehavior)
+                                   setCloseBehavior(value as CloseButtonBehavior)
+                              }}
+                              items={[
+                                   {label: t("tray-startup.close-behavior.minimize-to-tray"), value: "minimize-to-tray"},
+                                   {label: t("tray-startup.close-behavior.exit"), value: "exit"}
+                              ]}
+                         />
                     </SettingsOption>
                </SettingsItem>
                <SettingsItem

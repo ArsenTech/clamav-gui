@@ -7,6 +7,7 @@ export type Mutable<T> = {
 };
 export type SetStateType<T> = React.Dispatch<React.SetStateAction<T>>
 export type SetDataFunction<T> = (overrides: Partial<T>) => void
+export type SelectType = {label: string, value: string}
 
 export type ActionType = "restore" | "delete"
 export type FsOption = "file" | "folder";

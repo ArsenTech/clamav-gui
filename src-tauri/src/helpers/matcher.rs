@@ -44,7 +44,7 @@ pub const DEFAULT_MACOS_EXCLUDED_DIRS: &[&str] = &[
 ];
 
 pub fn apply_exclusions(app: &tauri::AppHandle, args: &mut Vec<String>) -> Result<(), String> {
-    use crate::helpers::{get_settings_as_array, get_settings_as_bool};
+    use crate::helpers::settings::{get_settings_as_array, get_settings_as_bool};
     use crate::helpers::path::path_to_regex;
 
     #[cfg(target_os = "linux")]

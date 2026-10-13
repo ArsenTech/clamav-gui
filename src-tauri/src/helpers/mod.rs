@@ -10,17 +10,15 @@ pub mod scheduler;
 pub mod stats;
 pub mod sys_tray;
 pub mod i18n;
+pub mod settings;
 
 use std::{
     path::PathBuf,
     process::{Command, Stdio},
 };
-use tauri_plugin_store::StoreExt;
 
 #[cfg(windows)]
 use std::os::windows::process::CommandExt;
-
-use crate::types::enums::{SettingKeyArray,SettingKeyBool};
 
 const CREATE_NO_WINDOW: u32 = 0x08000000;
 
@@ -66,44 +64,4 @@ pub fn resolve_command(command: &str) -> Result<PathBuf, String> {
         }
     }
     Ok(path)
-}
-
-pub fn get_settings_as_array(app: &tauri::AppHandle, setting: SettingKeyArray) -> Result<Vec<String>, String> {
-    let store = app.store("settings.json").map_err(|e| e.to_string())?;
-    let value = match store.get(setting.as_str()) {
-        Some(v) => v,
-        None => return Ok(vec![]),
-    };
-    match value {
-        serde_json::Value::Array(arr) => {
-            Ok(arr.into_iter()
-                .filter_map(|v| v.as_str().map(|s| s.to_string()))
-                .collect::<Vec<_>>()
-                .into())
-        }
-        _ => {
-            eprintln!("Invalid settings format, expected array");
-            Ok(vec![])
-        }
-    }
-}
-
-pub fn get_settings_as_bool(
-    app: &tauri::AppHandle,
-    setting: SettingKeyBool,
-) -> Result<bool, String> {
-    let store = app.store("settings.json").map_err(|e| e.to_string())?;
-
-    let value = match store.get(setting.as_str()) {
-        Some(v) => v,
-        None => return Ok(false),
-    };
-
-    match value {
-        serde_json::Value::Bool(value) => Ok(value),
-        _ => {
-            eprintln!("Invalid settings format, expected bool");
-            Ok(false)
-        }
-    }
 }

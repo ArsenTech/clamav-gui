@@ -38,6 +38,7 @@ const BackendSchema = z.object({
      exclusions: z.array(z.string().min(2).trim()).default([]),
      monitoringPaths: z.array(z.string().min(2).trim()).default([]),
      includeMacSystemExclusions: z.boolean().default(false),
+     closeButtonBehavior: z.enum(["exit", "minimize-to-tray"]).default("minimize-to-tray")
 })
 
 export const SettingsMetadataSchema = z.object({

@@ -17,6 +17,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Additional ClamAV detection logging for debugging and troubleshooting
 - Identifier on the about page
 - Validations with **Zod** before importing settings
+- Close button behavior settings - Resolves [#23](https://github.com/ArsenTech/clamav-gui/issues/23)
+  - Quit the application
+  - Minimize to tray
 ### Changed
 - Moved some UI settings into Appearance settings
   - Sidebar Collapsible state

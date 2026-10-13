@@ -106,6 +106,9 @@ pub fn run() {
         .plugin(tauri_plugin_updater::Builder::new().build())
         .setup(|app| {
             use tauri::{Manager, WindowEvent};
+            use crate::helpers::settings::get_settings_as_string;
+            use crate::types::enums::SettingKeyString;
+            
             let app_handle = app.handle();
             let default = load_translations(&app_handle.clone(),"en");
             {
@@ -113,9 +116,14 @@ pub fn run() {
                 *guard = default;
             }
             if let Some(window) = app.get_webview_window("main") {
+                let app_handle = app.handle().clone();
                 window.clone().on_window_event(move |event| {
                     if let WindowEvent::CloseRequested { api, .. } = event {
-                        if !SHOULD_QUIT.load(Ordering::Relaxed) {
+                        if SHOULD_QUIT.load(Ordering::Relaxed) {
+                            return;
+                        }
+                        let behavior = get_settings_as_string(&app_handle,SettingKeyString::CloseButtonBehavior).ok().flatten().unwrap_or_else(|| "minimize-to-tray".to_string());
+                        if behavior == "minimize-to-tray" {
                             api.prevent_close();
                             let _ = window.hide();
                         }
