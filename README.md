@@ -95,13 +95,13 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
    - Normalize backend errors
    - Map to frontend translations
    - Better error messages
-- [ ] Verify detection name and affected ClamAV versions
-  - Not blocking final v1.0.7 unless confirmed data is available
-
 > [!NOTE]
 > v1.0.7 is complete when
-> - error handling is consistent
-> - other features work as expected
+> - [ ] Error handling is consistent
+>   - common backend errors use stable codes
+>   - frontend maps known codes to translations
+>   - unknown errors still show the raw fallback safely
+> - [X] Other features work as expected
 #### v1.0.8 (Platform Expansion)
 - [ ] ClamAV Path Settings
 - [ ] Scheduler support for Linux and MacOS
@@ -139,29 +139,23 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
    - [ ] Smarter scan awareness (optional `scanType` in status)
    - [ ] Return to active scan after navigation
    - [ ] Automatic History refresh after scan completion
+#### Investigation / non-blocking
+- [ ] Verify detection name and affected ClamAV versions
+  - Not blocking final v1.0.7 unless confirmed data is available
 #### Nice to have
 - [X] Write the documentation in the `docs/` folder.
   - [X] Usage Guide
   - [X] Installation Guide
     - [X] Extend the Installation guide to Mac and Linux Users
   - [X] Troubleshooting
-    - [ ] Continue writing the Troubleshooting Guide once it has new or missing info
   - [X] FAQs
-    - [ ] Continue writing the FAQ section once it has new or missing info
   - [X] Translation Guide
-- [ ] Translate new parts after running `npm run i18n:missing-keys [lang-codes]` and typing
-  - 🇫🇷 French - `fr`
-  - 🇵🇱 Polish - `pl`
-  - Other languages possible
-
-<!--
 - [ ] Continue writing the Troubleshooting Guide once it has new or missing info
 - [ ] Continue writing the FAQ section once it has new or missing info
 - [ ] Translate new parts after running `npm run i18n:missing-keys [lang-codes]` and typing
   - 🇫🇷 French - `fr`
   - 🇵🇱 Polish - `pl`
   - Other languages possible
--->
 
 ### Built With
 - [![Tauri][tauri-shield]][tauri-url]
