@@ -4,6 +4,7 @@ import SchedulerLoader from "@/loaders/scheduler";
 import useWindowTitle from "@/hooks/use-window-title";
 import { useTranslation } from "react-i18next";
 import SchedulerProvider from "@/context/antivirus/scheduler";
+
 const SchedulerContent = lazy(()=>import("@/contents/scheduler"))
 
 export default function SchedulerPage(){

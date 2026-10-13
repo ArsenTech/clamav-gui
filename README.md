@@ -89,12 +89,12 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
   - [X] Close button behavior
     - [X] Exit application
     - [X] Minimize to tray
+- [X] Lazy-load some heavy components
+  - Apply only to clearly heavy/non-critical pages
 - [ ] Error Handling & Translation Improvements
    - Normalize backend errors
    - Map to frontend translations
    - Better error messages
-- [ ] Lazy-load some heavy components
-  - Apply only to clearly heavy/non-critical pages
 - [ ] Verify detection name and affected ClamAV versions
   - Not blocking final v1.0.7 unless confirmed data is available
 

@@ -1,14 +1,14 @@
 import { SPECIAL_THANKS } from "@/lib/constants";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import { openUrl } from "@tauri-apps/plugin-opener";
-import { ScrollArea } from "./ui/scroll-area";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Trans, useTranslation } from "react-i18next";
 
 export default function CreditsSection(){
      const {t} = useTranslation("credits");
      const creditsData = t("credits-data",{returnObjects: true})
      return (
-          <ScrollArea className="max-h-[820px]">
+          <ScrollArea className="max-h-205">
                <div className="prose dark:prose-invert relative">
                     <div className="w-full sticky top-0 left-0 bg-background mt-0">
                          <h2 className="mt-0 text-2xl md:text-3xl font-medium border-b pb-1.5 w-fit border-primary/50">{t("titles")}</h2>

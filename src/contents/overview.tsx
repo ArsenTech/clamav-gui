@@ -1,33 +1,16 @@
-import SafetyIndicator from "@/components/antivirus/indicator";
-import { useNavigate } from "react-router";
 import { QUICK_ACCESS_LINKS } from "@/lib/constants/links";
-import { open } from "@tauri-apps/plugin-dialog";
-import { useEffect, useState } from "react";
-import { normalizePaths } from "@/lib/helpers";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { useSettings } from "@/context/settings";
-import { FsOption } from "@/lib/types";
-import { useTranslation } from "react-i18next";
 import { DefinitionStatus, Indicator } from "@/lib/types/enums";
 import { checkDefinitionStatus } from "@/data/app";
+import { SafetyIndicatorLoader } from "@/loaders/overview";
+import OverviewCard from "@/components/cards/overview";
+
+const SafetyIndicator = lazy(()=>import("@/components/antivirus/indicator"));
 
 export default function OverviewContent(){
-     const navigate = useNavigate();
      const {settings} = useSettings();
-     const {t} = useTranslation("overview")
      const [definitionStatus, setDefinitionStatus] = useState<DefinitionStatus>(DefinitionStatus.Loading)
-     const openCustomScan = async(href: string, type: FsOption) => {
-          const currPath = await open({
-               title: t(`dialog-title.${type}`),
-               multiple: type==="folder",
-               directory: type==="folder",
-          });
-          if(!currPath) return;
-          const paths = normalizePaths(currPath);
-          const params = new URLSearchParams();
-          for(const path of paths)
-               params.append("path",path);
-          navigate(`${href}?${params.toString()}`)
-     }
      const fetchDefinitionStatus = async()=>{
           try{
                const isOutdated = await checkDefinitionStatus()
@@ -41,19 +24,18 @@ export default function OverviewContent(){
      },[])
      return (
           <>
-               <SafetyIndicator
-                    definitionStatus={definitionStatus}
-                    type={settings.realTime ? Indicator.Safe : Indicator.Alert}
-               />
-               <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 w-full p-4 gap-4">
-                    {QUICK_ACCESS_LINKS.map(({type,href,Icon,openDialogType},i)=>(
-                         <div key={`item-${i+1}`} className="w-full p-3 shadow-sm rounded-md bg-card text-card-foreground border grow shrink-0 h-36 flex justify-center items-center gap-4 hover:border-primary hover:cursor-pointer" onClick={()=>openDialogType==="none" ? navigate(href) : openCustomScan(href,openDialogType)}>
-                              <Icon className="size-10 md:size-12 text-primary"/>
-                              <div className="w-[calc(100%-48px)] space-y-0.5">
-                                   <h2 className="text-lg sm:text-xl md:text-base font-medium">{t(`${type}.name`)}</h2>
-                                   <p className="text-sm lg:text-xs">{t(`${type}.desc`)}</p>
-                              </div>
-                         </div>
+               <Suspense fallback={<SafetyIndicatorLoader/>}>
+                    <SafetyIndicator
+                         definitionStatus={definitionStatus}
+                         type={settings.realTime ? Indicator.Safe : Indicator.Alert}
+                    />
+               </Suspense>
+               <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 w-full p-4 gap-4">
+                    {QUICK_ACCESS_LINKS.map((data,i)=>(
+                         <OverviewCard
+                              key={`item-${i+1}`}
+                              data={data}
+                         />
                     ))}
                </div>
           </>

@@ -15,6 +15,7 @@ import { getErrorMessage } from "@/lib/helpers";
 import { fetchQuarantine } from "@/data/quarantine";
 import useWindowTitle from "@/hooks/use-window-title";
 import { useQuarantine } from "@/context/antivirus/quarantine";
+
 const QuarantineTable = lazy(()=>import("./table"))
 
 export default function QuarantineContent(){

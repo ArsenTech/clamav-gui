@@ -4,12 +4,12 @@ import { ScanType } from "@/lib/types/enums";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
-import { cn } from "@/lib/utils";
 import { CheckCircle, FilePlus, FolderPlus, Search } from "lucide-react";
 import { open } from "@tauri-apps/plugin-dialog";
 import { normalizePaths } from "@/lib/helpers";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
+import ScanMenuCard from "@/components/cards/scan-menu";
 
 export default function ScanMenuContent(){
      const navigate = useNavigate();
@@ -54,14 +54,13 @@ export default function ScanMenuContent(){
           <>
                <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">{t("title")}</h1>
                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 flex-col">
-                    {SCAN_TYPES.map(({type,Icon})=>type!==ScanType.None && (
-                         <div key={type} className={cn("p-4 border bg-card text-card-foreground shadow-sm rounded-md w-full flex justify-between items-center hover:border-primary hover:cursor-pointer",currScanType!==type ? "border-border bg-card" : "border-primary bg-primary/5")} onClick={()=>setCurrScanType(type)}>
-                              <Icon className="flex-1 size-12 text-primary"/>
-                              <div className="flex-3">
-                                   <h2 className="text-lg md:text-xl font-medium lg:text-2xl">{t(`scan-type.${type}.name`)}</h2>
-                                   <p>{t(`scan-type.${type}.desc`)}</p>
-                              </div>
-                         </div>
+                    {SCAN_TYPES.map(data=>(
+                         <ScanMenuCard
+                              key={data.type}
+                              data={data}
+                              currScanType={currScanType}
+                              onScanTypeChange={setCurrScanType}
+                         />
                     ))}
                     <ButtonGroup>
                          {(currScanType==="custom" || currScanType==="file") && (

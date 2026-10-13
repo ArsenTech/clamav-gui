@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next"
 import { GET_HISTORY_COLS } from "../columns/history"
 import { useSettings } from "@/context/settings"
 
-export function HistoryTable({data, headerElement}: DataTableProps<IHistoryData<"state">>) {
+export default function HistoryTable({data, headerElement}: DataTableProps<IHistoryData<"state">>) {
   const {settings} = useSettings()
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])

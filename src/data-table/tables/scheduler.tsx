@@ -8,7 +8,7 @@ import { DataTableViewOptions } from "../col-toggle"
 import { useTranslation } from "react-i18next"
 import { SCHEDULER_COLS as columns } from "../columns/scheduler"
 
-export function SchedulerTable({data, headerElement}: DataTableProps<ISchedulerData<"state">>) {
+export default function SchedulerTable({data, headerElement}: DataTableProps<ISchedulerData<"state">>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const table = useReactTable({

@@ -1,7 +1,6 @@
-import { HistoryTable } from "@/data-table/tables/history";
 import { RotateCw } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { useEffect, useMemo, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { Download, Trash2 } from "lucide-react"
 import { ButtonGroup } from "@/components/ui/button-group"
@@ -18,17 +17,15 @@ import LoadingButton from "@/components/loading-button";
 import ConfirmationMessage from "@/components/popup/confirm";
 import { HistoryConfirmationState } from "@/lib/types";
 import { getErrorMessage } from "@/lib/helpers";
-import { fetchHistoryData } from "@/data/history";
 import { getTimeBasedCutoff } from "@/lib/helpers/history";
 import ClearDatePopup from "@/components/popup/clear-date";
 import { DateRange } from "react-day-picker";
 import ClearRangePopup from "@/components/popup/clear-range";
 import { useAppHistory } from "@/context/antivirus/history";
 
-export default function HistoryContent(){
-     const [isRefreshing, startTransition] = useTransition();
+export default function HistoryFilters(){
      const [isClearing, startClearTransition] = useTransition();
-     const {historyState, setHistoryState, updateHistoryState} = useAppHistory()
+     const {historyState, setHistoryState, updateHistoryState, isEmpty, isRefreshing, fetchData} = useAppHistory()
      const [showClearInput, setShowClearInput] = useState<IClearInputState>({
           date: false,
           range: false
@@ -37,12 +34,6 @@ export default function HistoryContent(){
      const {t} = useTranslation("history")
      const {t: messageTxt} = useTranslation("messages")
      const {t: tableTxt} = useTranslation("table")
-     const fetchData = () => {
-          startTransition(async()=>{
-               const newData = await fetchHistoryData(t,messageTxt)
-               updateHistoryState({ data: newData })
-          })
-     }
      const clearHistory = (mode = HistoryClearType.All) => {
           if (isClearing) return;
           startClearTransition(async()=>{
@@ -129,74 +120,62 @@ export default function HistoryContent(){
                clearHistory(action)
           }
      }
-     useEffect(()=>{
-          fetchData()
-     },[])
-     const {data, popupState, showDetails, details} = historyState
-     const isEmpty = useMemo(()=>data.length<=0,[data])
+     const {popupState, showDetails, details} = historyState
      return (
           <>
-          <div className="space-y-4">
-               <h1 className="text-2xl md:text-3xl font-medium border-b pb-2 w-fit">{t("title")}</h1>
-               <HistoryTable
-                    data={data}
-                    headerElement={(
-                         <ButtonGroup>
-                              <Button onClick={fetchData} disabled={isRefreshing || isClearing}>
-                                   <RotateCw className={cn(isRefreshing && "animate-spin")}/>
-                                   {isRefreshing ? t("refresh.loading") : t("refresh.original")}
-                              </Button>
-                              <DropdownMenu>
-                                   <DropdownMenuTrigger asChild>
-                                        <LoadingButton
-                                             isLoading={isClearing}
-                                             loaderText={t("clear.loading")}
-                                             variant="outline"
-                                        >
-                                             <Trash2/>
-                                             {t("clear.title")}
-                                        </LoadingButton>
-                                   </DropdownMenuTrigger>
-                                   <DropdownMenuContent>
-                                        <DropdownMenuItem onClick={()=>updateHistoryState({popupState: "clear-all"})} disabled={isEmpty}>
-                                             {t("clear.all")}
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem disabled={isEmpty} onClick={()=>updateClearInputState({date: true})}>
-                                             {t("clear.by-date")}
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem disabled={isEmpty} onClick={()=>updateClearInputState({range: true})}>
-                                             {t("clear.by-range")}
-                                        </DropdownMenuItem>
-                                        <DropdownMenuSeparator/>
-                                        <DropdownMenuItem onClick={()=>updateHistoryState({popupState: "clear-acknowledged"})} disabled={isEmpty}>
-                                             {t("clear.acknowledged")}
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem onClick={()=>updateHistoryState({popupState: "clear-errors"})} disabled={isEmpty}>
-                                             {t("clear.errors")}
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem onClick={()=>updateHistoryState({popupState: "clear-warnings"})} disabled={isEmpty} >
-                                             {t("clear.warnings")}
-                                        </DropdownMenuItem>
-                                        <DropdownMenuSeparator/>
-                                        <DropdownMenuItem onClick={()=>updateHistoryState({popupState: "clear-last-24h"})} disabled={isEmpty}>
-                                             {t("clear.last-24-hours")}
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem onClick={()=>updateHistoryState({popupState: "clear-last-7d"})} disabled={isEmpty}>
-                                             {t("clear.last-7-days")}
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem onClick={()=>updateHistoryState({popupState: "clear-last-30d"})} disabled={isEmpty} >
-                                             {t("clear.last-30-days")}
-                                        </DropdownMenuItem>
-                                   </DropdownMenuContent>
-                              </DropdownMenu>
-                              <Button variant="outline" onClick={exportDataAs} disabled={isEmpty}>
-                                   <Download/>
-                                   {t("export.title")}
-                              </Button>
-                         </ButtonGroup>
-                    )}
-               />
-          </div>
+          <ButtonGroup>
+               <Button onClick={fetchData} disabled={isRefreshing || isClearing}>
+                    <RotateCw className={cn(isRefreshing && "animate-spin")}/>
+                    {isRefreshing ? t("refresh.loading") : t("refresh.original")}
+               </Button>
+               <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                         <LoadingButton
+                              isLoading={isClearing}
+                              loaderText={t("clear.loading")}
+                              variant="outline"
+                         >
+                              <Trash2/>
+                              {t("clear.title")}
+                         </LoadingButton>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                         <DropdownMenuItem onClick={()=>updateHistoryState({popupState: "clear-all"})} disabled={isEmpty}>
+                              {t("clear.all")}
+                         </DropdownMenuItem>
+                         <DropdownMenuItem disabled={isEmpty} onClick={()=>updateClearInputState({date: true})}>
+                              {t("clear.by-date")}
+                         </DropdownMenuItem>
+                         <DropdownMenuItem disabled={isEmpty} onClick={()=>updateClearInputState({range: true})}>
+                              {t("clear.by-range")}
+                         </DropdownMenuItem>
+                         <DropdownMenuSeparator/>
+                         <DropdownMenuItem onClick={()=>updateHistoryState({popupState: "clear-acknowledged"})} disabled={isEmpty}>
+                              {t("clear.acknowledged")}
+                         </DropdownMenuItem>
+                         <DropdownMenuItem onClick={()=>updateHistoryState({popupState: "clear-errors"})} disabled={isEmpty}>
+                              {t("clear.errors")}
+                         </DropdownMenuItem>
+                         <DropdownMenuItem onClick={()=>updateHistoryState({popupState: "clear-warnings"})} disabled={isEmpty} >
+                              {t("clear.warnings")}
+                         </DropdownMenuItem>
+                         <DropdownMenuSeparator/>
+                         <DropdownMenuItem onClick={()=>updateHistoryState({popupState: "clear-last-24h"})} disabled={isEmpty}>
+                              {t("clear.last-24-hours")}
+                         </DropdownMenuItem>
+                         <DropdownMenuItem onClick={()=>updateHistoryState({popupState: "clear-last-7d"})} disabled={isEmpty}>
+                              {t("clear.last-7-days")}
+                         </DropdownMenuItem>
+                         <DropdownMenuItem onClick={()=>updateHistoryState({popupState: "clear-last-30d"})} disabled={isEmpty} >
+                              {t("clear.last-30-days")}
+                         </DropdownMenuItem>
+                    </DropdownMenuContent>
+               </DropdownMenu>
+               <Button variant="outline" onClick={exportDataAs} disabled={isEmpty}>
+                    <Download/>
+                    {t("export.title")}
+               </Button>
+          </ButtonGroup>
           <ConfirmationMessage
                state={popupState}
                submitAction="clear"

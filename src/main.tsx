@@ -4,7 +4,6 @@ import {router} from "@/routes"
 import { RouterProvider } from "react-router/dom";
 import "./App.css";
 import StartupScanProvider from "./context/antivirus/startup-scan";
-import { ThemeProvider } from "./context/themes";
 import "@/i18n"
 import { RealtimeProvider } from "./context/antivirus/real-time";
 import { SettingsProvider } from "./context/settings";
@@ -16,9 +15,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
                <QuarantineCountProvider>
                     <RealtimeProvider>
                          <StartupScanProvider>
-                              <ThemeProvider>
-                                   <RouterProvider router={router}/>
-                              </ThemeProvider>
+                              <RouterProvider router={router}/>
                          </StartupScanProvider>
                     </RealtimeProvider>
                </QuarantineCountProvider>
