@@ -24,13 +24,13 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Moved some UI settings into Appearance settings
   - Sidebar Collapsible state
   - Reduce Motion
+- Changed Skeleton loader background to a muted color
 ### Improved
 - Memoized shared contexts
   - Quarantine Count
   - Real-Time Scan
   - Themes
 - Memoized functions inside contexts and on definitions updater state to reduce re-rendering
-- Skeleton Loaders - Change the background image to a muted color
 - **About Page**
   - Added Scroll approach on the info also and improved the UI
   - Changed the grid size a little bit and improved responsiveness
