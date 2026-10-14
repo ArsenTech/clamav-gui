@@ -95,6 +95,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
    - Normalize backend errors
    - Map to frontend translations
    - Better error messages
+
 > [!NOTE]
 > v1.0.7 is complete when
 > - [ ] Error handling is consistent
@@ -102,6 +103,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 >   - frontend maps known codes to translations
 >   - unknown errors still show the raw fallback safely
 > - [X] Other features work as expected
+
 #### v1.0.8 (Platform Expansion)
 - [ ] ClamAV Path Settings
 - [ ] Scheduler support for Linux and MacOS
@@ -116,6 +118,11 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
   - [ ] Run initial `freshclam` update
   - [ ] Provide actionable permission/configuration errors
   - [ ] Investigate and possibly fix ClamAV availability detection
+- [ ] Investigate Linux AppImage compatibility on newer Kubuntu/Ubuntu versions
+  - GVFS/GIO symbol issue
+  - EGL_BAD_PARAMETER white screen
+  - Prefer `.deb` on Debian/Ubuntu-based systems when AppImage fails
+
 #### v1.1.x (Planned, Major)
 - [ ] ClamAV Engine Updater
 - [ ] YARA Related Features
@@ -139,9 +146,11 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
    - [ ] Smarter scan awareness (optional `scanType` in status)
    - [ ] Return to active scan after navigation
    - [ ] Automatic History refresh after scan completion
+
 #### Investigation / non-blocking
 - [ ] Verify detection name and affected ClamAV versions
   - Not blocking final v1.0.7 unless confirmed data is available
+
 #### Nice to have
 - [X] Write the documentation in the `docs/` folder.
   - [X] Usage Guide
