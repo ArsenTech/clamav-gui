@@ -122,6 +122,10 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
   - GVFS/GIO symbol issue
   - EGL_BAD_PARAMETER white screen
   - Prefer `.deb` on Debian/Ubuntu-based systems when AppImage fails
+- [ ] Investigate Linux AppImage packaging compliance
+  - [ ] Add/fix missing `.DirIcon`
+  - [ ] Review AppImage desktop/icon metadata
+  - [ ] Retest AppImage catalog submission
 
 #### v1.1.x (Planned, Major)
 - [ ] ClamAV Engine Updater
