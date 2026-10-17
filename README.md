@@ -95,6 +95,7 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
    - Normalize backend errors
    - Map to frontend translations
    - Better error messages
+- [ ] Amber theme
 
 > [!NOTE]
 > v1.0.7 is complete when
