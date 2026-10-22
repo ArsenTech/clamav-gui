@@ -5,7 +5,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
-## [1.0.7] - Unreleased
+## [1.0.7] - 2026-10-22 (October 2026 Update)
 ### Added Languages
   - **🇨🇳 Mandarin Chinese** - Thanks [@123qiu-jie](https://github.com/123qiu-jie)!
 ### Added
