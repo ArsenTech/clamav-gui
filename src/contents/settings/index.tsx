@@ -1,33 +1,24 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Suspense, useMemo, useState } from "react";
+import { lazy, Suspense, useMemo, useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { SETTINGS_TABS } from "@/lib/constants/settings/tabs";
 import { useSearchParams } from "react-router";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, FolderSearch, FileSearch, Download, Upload } from "lucide-react";
+import { Search, FolderSearch, FileSearch } from "lucide-react";
 import { useSettings } from "@/context/settings";
 import { useTranslation } from "react-i18next";
-import { SettingsTab, ScanProfile, BehaviorMode, BadgeVisibility, SidebarCollapsible } from "@/lib/types/enums";
-import { store } from "@/lib/store"
-import { IBackendSettings, ISettingsMetadata, ScanProfileValues } from "@/lib/types/settings";
-import { ButtonGroup } from "@/components/ui/button-group";
-import { Button } from "@/components/ui/button";
-import { open, save } from "@tauri-apps/plugin-dialog";
-import { readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
-import { toast } from "sonner";
-import { useBackendSettings } from "@/hooks/use-settings";
-import { getErrorMessage } from "@/lib/helpers";
+import { SettingsTab, ScanProfile } from "@/lib/types/enums";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { getAppDetails } from "@/data/app";
 import { DEFAULT_SETTINGS } from "@/lib/constants/settings";
 import useWindowTitle from "@/hooks/use-window-title";
-import { SettingsMetadataSchema } from "@/lib/schemas/settings";
+import { Skeleton } from "@/components/ui/skeleton";
+
+const ImportExportSettings = lazy(()=>import("@/components/settings-item/import-export"));
 
 export default function SettingsContent(){
      const [searchParams] = useSearchParams();
      const {settings, setSettings} = useSettings();
-     const {setSettingsbyKey} = useBackendSettings()
      const [scanProfile, setScanProfile] = useState<ScanProfile>(
           settings.currScanProfile || DEFAULT_SETTINGS.currScanProfile
      );
@@ -37,78 +28,6 @@ export default function SettingsContent(){
           localStorage.setItem("settings-tab",tab)
      }
      const {t} = useTranslation("settings");
-     const {t: backendTxt} = useTranslation("backend-errors");
-     const exportSettings = async() => {
-          try{
-               const path = await save({
-                    title: t("export.title"),
-                    filters: [
-                         { name: t("json-settings"), extensions: ["json"] }
-                    ],
-                    defaultPath: "clamav-gui-settings.json"
-               })
-               if(!path) return;
-               const backendEntries = await store.entries<ScanProfileValues|string[]>()
-               const app = await getAppDetails()
-               const data: ISettingsMetadata = {
-                    schemaVersion: 1,
-                    name: app.name,
-                    version: app.version,
-                    identifier: app.identifier,
-                    frontend: settings,
-                    backend: Object.fromEntries(backendEntries) as unknown as IBackendSettings
-               }
-               const jsonData = JSON.stringify(data,null,2);
-               await writeTextFile(path,jsonData);
-               toast.success(t("export.success"))
-          } catch (err) {
-               toast.error(t("export.error"),{
-                    description: getErrorMessage(err, backendTxt)
-               })
-          }
-     }
-     const importSettings = async() => {
-          try {
-               const path = await open({
-                    title: t("import.title"),
-                    filters: [
-                         { name: t("json-settings"), extensions: ["json"] }
-                    ],
-                    defaultPath: "clamav-gui-settings.json",
-                    directory: false,
-               })
-               if(!path) return;
-               const rawData = await readTextFile(path)
-               if(rawData.trim()===""){
-                    toast.error(t("import.empty-content"));
-                    return;
-               }
-               console.log(rawData)
-               const parsed = SettingsMetadataSchema.safeParse(JSON.parse(rawData));
-               if(!parsed.success){
-                    toast.error(t("import.error"),{
-                         description: parsed.error.message
-                    });
-                    return;
-               }
-               const {frontend, backend} = parsed.data
-               setSettings({
-                    ...frontend,
-                    currScanProfile: frontend.currScanProfile as ScanProfile,
-                    behavior: frontend.behavior as BehaviorMode,
-                    badgeVisibility: frontend.badgeVisibility as BadgeVisibility,
-                    sidebarCollapsible: frontend.sidebarCollapsible as SidebarCollapsible
-               })
-               const keys = await store.keys() as (keyof IBackendSettings)[]
-               for(const key of keys)
-                    await setSettingsbyKey(key,backend[key])
-               toast.success(t("import.success"))
-          } catch (err){
-               toast.error(t("import.error"),{
-                    description: getErrorMessage(err, backendTxt)
-               })
-          }
-     }
      const isMobile = useIsMobile();
      const activeTab = useMemo(()=>SETTINGS_TABS.find(t => t.page === tab),[tab]);
      useWindowTitle(!activeTab ? t("window-titles.general") : t(`window-titles.${activeTab.page}`, {
@@ -150,14 +69,9 @@ export default function SettingsContent(){
                               </SelectContent>
                          </Select>
                     </div>
-                    <ButtonGroup>
-                         <Button variant="outline" title={t("export.button-title")} size="icon" onClick={exportSettings}>
-                              <Download/>
-                         </Button>
-                         <Button variant="outline" title={t("import.button-title")} size="icon" onClick={importSettings}>
-                              <Upload/>
-                         </Button>
-                    </ButtonGroup>
+                    <Suspense fallback={<Skeleton className="h-9 w-18"/>}>
+                         <ImportExportSettings/>
+                    </Suspense>
                </div>
           </h1>
           <Tabs onValueChange={tab=>changeTab(tab as SettingsTab)} defaultValue={tab} className="w-full">

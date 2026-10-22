@@ -5,13 +5,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { getClearByRangeSchema } from "@/lib/schemas";
 import { useTranslation } from "react-i18next";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
-import RangePicker from "../range-picker"
-import { useTransition } from "react";
+import { lazy, Suspense, useTransition } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { toast } from "sonner";
 import { getErrorMessage } from "@/lib/helpers";
 import { DateRange } from "react-day-picker";
 import LoadingButton from "../loading-button";
+import { Skeleton } from "../ui/skeleton";
+
+const RangePicker = lazy(()=>import("../range-picker"))
 
 interface Props{
      open: boolean,
@@ -65,15 +67,17 @@ export default function ClearRangePopup({open, onOpen, onSuccess}: Props){
                               render={({field})=>(
                                    <FormItem>
                                         <FormLabel>{t("clear-range.range-label")}</FormLabel>
-                                        <FormControl>
-                                             <RangePicker
-                                                  name="dateRange"
-                                                  onBlur={field.onBlur}
-                                                  value={field.value}
-                                                  disabled={field.disabled}
-                                                  onChange={val=>field.onChange(val)}
-                                             />
-                                        </FormControl>
+                                        <Suspense fallback={<Skeleton className="h-9 w-full"/>}>
+                                             <FormControl>
+                                                  <RangePicker
+                                                       name="dateRange"
+                                                       onBlur={field.onBlur}
+                                                       value={field.value}
+                                                       disabled={field.disabled}
+                                                       onChange={val=>field.onChange(val)}
+                                                  />
+                                             </FormControl>
+                                        </Suspense>
                                         <FormMessage/>
                                    </FormItem>
                               )}

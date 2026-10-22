@@ -21,12 +21,21 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   - Quit the application
   - Minimize to tray
 - Amber theme of the app
+- Optional macOS system exclusions setting for the TextToSpeech false-positive investigation.
+  - Disabled by default.
+  - Only shown on macOS.
+  - Applies to regular and real-time scans.
 ### Changed
 - Moved some UI settings into Appearance settings
   - Sidebar Collapsible state
   - Reduce Motion
 - Changed Skeleton loader background to a muted color
 ### Improved
+- **Error Handling & Translation Improvements**
+  - Normalized backend errors using stable error codes.
+  - Added localized backend error messages.
+  - Added support for dynamic error parameters and pluralization.
+  - Improved fallback handling for unknown errors and missing translations.
 - Memoized shared contexts
   - Quarantine Count
   - Real-Time Scan
@@ -45,6 +54,10 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   - History table and header
   - Safety Indicator
   - About page content
+  - Date and Range pickers
+  - Clear date and clear range
+  - Path form
+  - Import and export settings
 ### Fixed
 - macOS Homebrew ClamAV detection fallback - Fixes [#16](https://github.com/ArsenTech/clamav-gui/issues/16)
   - `/opt/homebrew/bin/clamscan`

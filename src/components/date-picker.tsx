@@ -1,5 +1,4 @@
 "use client"
-
 import * as React from "react"
 import { CalendarIcon } from "lucide-react"
 
@@ -25,7 +24,7 @@ type DatePickerInputProps = Omit<React.ComponentProps<"input">,"value"|"onChange
      value: Date,
      onValueChange: (date: Date) => void,
 }
-export function DatePickerInput({value, onValueChange, ...props}: DatePickerInputProps) {
+export default function DatePickerInput({value, onValueChange, ...props}: DatePickerInputProps) {
      const [open, setOpen] = React.useState(false)
      const [date, setDate] = React.useState<Date | undefined>(new Date("2026-06-01"))
      const [month, setMonth] = React.useState<Date | undefined>(date)

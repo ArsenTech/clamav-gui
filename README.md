@@ -92,17 +92,17 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
 - [X] Lazy-load some heavy components
   - Apply only to clearly heavy/non-critical pages
 - [X] Amber theme
-- [ ] Error Handling & Translation Improvements
+- [X] Error Handling & Translation Improvements
   - [X] Normalize backend errors with stable codes
   - [X] Implement frontend translation handling
   - [X] Support dynamic error parameters
   - [X] Support fallback for unknown errors
-  - [ ] Complete backend error translations
-  - [ ] Verify error messages and translations
+  - [X] Complete backend error translations
+  - [X] Verify error messages and translations
 
 > [!NOTE]
 > v1.0.7 is complete when
-> - [ ] Error handling is consistent
+> - [X] Error handling is consistent
 >   - common backend errors use stable codes
 >   - frontend maps known codes to translations
 >   - unknown errors still show the raw fallback safely

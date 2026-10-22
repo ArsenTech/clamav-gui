@@ -1,6 +1,6 @@
 import { RotateCw } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { useState, useTransition } from "react";
+import { lazy, Suspense, useState, useTransition } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { Download, Trash2 } from "lucide-react"
 import { ButtonGroup } from "@/components/ui/button-group"
@@ -18,10 +18,11 @@ import ConfirmationMessage from "@/components/popup/confirm";
 import { HistoryConfirmationState } from "@/lib/types";
 import { getErrorMessage } from "@/lib/helpers";
 import { getTimeBasedCutoff } from "@/lib/helpers/history";
-import ClearDatePopup from "@/components/popup/clear-date";
 import { DateRange } from "react-day-picker";
-import ClearRangePopup from "@/components/popup/clear-range";
 import { useAppHistory } from "@/context/antivirus/history";
+
+const ClearRangePopup = lazy(()=>import("@/components/popup/clear-range"));
+const ClearDatePopup = lazy(()=>import("@/components/popup/clear-date"));
 
 export default function HistoryFilters(){
      const [isClearing, startClearTransition] = useTransition();
@@ -191,16 +192,18 @@ export default function HistoryFilters(){
           >
                {details}
           </Popup>
-          <ClearDatePopup
-               open={showClearInput.date}
-               onOpen={open=>updateClearInputState({date: open})}
-               onSuccess={updateDate}
-          />
-          <ClearRangePopup
-               open={showClearInput.range}
-               onOpen={open=>updateClearInputState({range: open})}
-               onSuccess={updateRange}
-          />
+          <Suspense fallback={null}>
+               <ClearDatePopup
+                    open={showClearInput.date}
+                    onOpen={open=>updateClearInputState({date: open})}
+                    onSuccess={updateDate}
+               />
+               <ClearRangePopup
+                    open={showClearInput.range}
+                    onOpen={open=>updateClearInputState({range: open})}
+                    onSuccess={updateRange}
+               />
+          </Suspense>
           </>
      )
 }

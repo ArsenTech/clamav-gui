@@ -30,4 +30,7 @@ export default defineConfig(async () => ({
     },
   },
   envPrefix: ['VITE_', 'TAURI_'],
+  build: {
+    chunkSizeWarningLimit: 600
+  }
 }));

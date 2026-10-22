@@ -5,16 +5,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { getClearByDateSchema } from "@/lib/schemas";
 import { useTranslation } from "react-i18next";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
-import { DatePickerInput } from "../date-picker";
-import { ButtonGroup } from "../ui/button-group";
-import { Button } from "../ui/button";
-import { Trash2 } from "lucide-react";
-import { useTransition } from "react";
-import { Spinner } from "../ui/spinner";
+import { lazy, Suspense, useTransition } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { toast } from "sonner";
 import { getErrorMessage } from "@/lib/helpers";
 import LoadingButton from "../loading-button";
+import { Skeleton } from "../ui/skeleton";
+
+const DatePickerInput = lazy(()=>import("../date-picker"));
 
 interface Props{
      open: boolean,
@@ -70,17 +68,14 @@ export default function ClearDatePopup({open, onOpen, onSuccess}: Props){
                               render={({field: {onChange, ...values}})=>(
                                    <FormItem>
                                         <FormLabel>{t("clear-date.date-label")}</FormLabel>
-                                        <ButtonGroup className="w-full">
+                                        <Suspense fallback={<Skeleton className="h-9 w-full"/>}>
                                              <FormControl>
                                                   <DatePickerInput
                                                        {...values}
                                                        onValueChange={val=>onChange(val)}
                                                   />
                                              </FormControl>
-                                             <Button type="submit" variant="destructive" title="Clear" size="icon" disabled={isClearing || !form.formState.isValid}>
-                                                  {isClearing ? <Spinner/> : <Trash2/>}
-                                             </Button>
-                                        </ButtonGroup>
+                                        </Suspense>
                                         <FormMessage/>
                                    </FormItem>
                               )}
