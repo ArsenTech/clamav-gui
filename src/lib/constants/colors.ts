@@ -205,5 +205,74 @@ export const COLORS = {
                "oklch(0.514 0.222 16.935)",
                "oklch(0.455 0.188 13.697)"
           ]
+     },
+     amber: {
+          light: {
+               background: "oklch(99.668% 0.00526 95.189)",
+               foreground: "oklch(0.147 0.004 49.3)",
+               card: "oklch(1 0 0)",
+               cardForeground: "oklch(0.147 0.004 49.3)",
+               popover: "oklch(1 0 0)",
+               popoverForeground: "oklch(0.147 0.004 49.3)",
+               primary: "oklch(0.852 0.199 91.936)",
+               primaryForeground: "oklch(0.421 0.095 57.708)",
+               secondary: "oklch(94.496% 0.02963 94.368)",
+               secondaryForeground: "oklch(0.21 0.006 285.885)",
+               muted: "oklch(94.496% 0.02963 94.368)",
+               mutedForeground: "oklch(0.547 0.021 43.1)",
+               accent: "oklch(94.496% 0.02963 94.368)",
+               accentForeground: "oklch(0.214 0.009 43.1)",
+               destructive: "oklch(0.577 0.245 27.325)",
+               border: "oklch(0.922 0.005 34.3)",
+               input: "oklch(0.922 0.005 34.3)",
+               ring: "oklch(91.388% 0.07242 95.524)",
+               sidebar: {
+                    background: "oklch(0.986 0.002 67.8)",
+                    foreground: "oklch(0.147 0.004 49.3)",
+                    primary: "oklch(0.681 0.162 75.834)",
+                    primaryForeground: "oklch(0.987 0.026 102.212)",
+                    accent: "oklch(94.496% 0.02963 94.368)",
+                    accentForeground: "oklch(0.214 0.009 43.1)",
+                    border: "oklch(0.922 0.005 34.3)",
+                    ring: "oklch(91.388% 0.07242 95.524)"
+               }
+          },
+          dark: {
+               background: "oklch(18.241% 0.03014 96.358)",
+               foreground: "oklch(0.986 0.002 67.8)",
+               card: "oklch(0.214 0.009 43.1)",
+               cardForeground: "oklch(0.986 0.002 67.8)",
+               popover: "oklch(0.214 0.009 43.1)",
+               popoverForeground: "oklch(0.986 0.002 67.8)",
+               primary: "oklch(0.795 0.184 86.047)",
+               primaryForeground: "oklch(0.421 0.095 57.708)",
+               secondary: "oklch(0.274 0.006 286.033)",
+               secondaryForeground: "oklch(0.985 0 0)",
+               muted: "oklch(0.268 0.011 36.5)",
+               mutedForeground: "oklch(0.714 0.014 41.2)",
+               accent: "oklch(0.268 0.011 36.5)",
+               accentForeground: "oklch(0.986 0.002 67.8)",
+               destructive: "oklch(0.704 0.191 22.216)",
+               border: "oklch(1 0 0 / 10%)",
+               input: "oklch(1 0 0 / 15%)",
+               ring: "oklch(0.547 0.021 43.1)",
+               sidebar: {
+                    background: "oklch(0.214 0.009 43.1)",
+                    foreground: "oklch(0.986 0.002 67.8)",
+                    primary: "oklch(0.795 0.184 86.047)",
+                    primaryForeground: "oklch(0.987 0.026 102.212)",
+                    accent: "oklch(0.268 0.011 36.5)",
+                    accentForeground: "oklch(0.986 0.002 67.8)",
+                    border: "oklch(1 0 0 / 10%)",
+                    ring: "oklch(0.547 0.021 43.1)"
+               }
+          },
+          charts: [
+               "oklch(0.879 0.169 91.605)",
+               "oklch(0.769 0.188 70.08)",
+               "oklch(0.666 0.179 58.318)",
+               "oklch(0.555 0.163 48.998)",
+               "oklch(0.473 0.137 46.201)",
+          ]
      }
 } as const

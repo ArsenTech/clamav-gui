@@ -45,7 +45,8 @@
                     "title": "Color",
                     "blue": "Blue",
                     "green": "Green",
-                    "rose": "Rose"
+                    "rose": "Rose",
+                    "amber": "Amber"
                }
           },
           "date-format": {

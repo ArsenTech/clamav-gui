@@ -71,6 +71,11 @@ export const THEME_SETTINGS: IThemeSettings = {
                name: "rose",
                className: "text-rose-600 dark:text-rose-400",
                hoverClass: "hover:border-rose-600"
+          },
+          {
+               name: "amber",
+               className: "text-amber-600 dark:text-amber-400",
+               hoverClass: "hover:border-amber-600"
           }
      ]
 }

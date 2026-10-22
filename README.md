@@ -91,11 +91,11 @@ Built with Tauri, React, and modern desktop and web tools. This software is prov
     - [X] Minimize to tray
 - [X] Lazy-load some heavy components
   - Apply only to clearly heavy/non-critical pages
+- [X] Amber theme
 - [ ] Error Handling & Translation Improvements
    - Normalize backend errors
    - Map to frontend translations
    - Better error messages
-- [ ] Amber theme
 
 > [!NOTE]
 > v1.0.7 is complete when

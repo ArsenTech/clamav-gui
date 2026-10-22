@@ -20,6 +20,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Close button behavior settings - Resolves [#23](https://github.com/ArsenTech/clamav-gui/issues/23)
   - Quit the application
   - Minimize to tray
+- Amber theme of the app
 ### Changed
 - Moved some UI settings into Appearance settings
   - Sidebar Collapsible state
@@ -49,6 +50,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   - `/opt/homebrew/bin/clamscan`
   - `/usr/local/bin/clamscan`
 - The About Runtime Typescript error - Fixes [#25](https://github.com/ArsenTech/clamav-gui/issues/25)
+- Rose Icon not showing on an `Up To Icon` collapsible state
+- Primary color of sidebar link icons
 ### Documentation
 - Finished the usage guide
 - Finished the translation guide
