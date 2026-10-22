@@ -5,6 +5,14 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## [1.0.8] - Unreleased
+### Improved
+- Cleaned up unused Rust definitions and platform-specific code to eliminate compiler warnings.
+
+[1.0.8]: https://github.com/ArsenTech/clamav-gui/releases/tag/v1.0.8
+
+---
+
 ## [1.0.7] - 2026-10-22 (October 2026 Update)
 ### Added Languages
   - **🇨🇳 Mandarin Chinese** - Thanks [@123qiu-jie](https://github.com/123qiu-jie)!

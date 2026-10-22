@@ -35,6 +35,7 @@ pub const HOURS_INVALID: &str = "scheduler.invalid.hours";
 pub const MINUTES_INVALID: &str = "scheduler.invalid.minutes";
 pub const UNSUPPORTED_CUSTOM_SCAN: &str = "scheduler.unsupported.custom-scan";
 pub const UNSUPPORTED_SCAN: &str = "scheduler.unsupported.scan-type";
+#[cfg(not(windows))]
 pub const UNSUPPORTED_PLATFORM: &str = "scheduler.unsupported.platform";
 pub const BULK_QUARANTINE_FAILED: &str = "bulk-actions.quarantine-failed";
 pub const BULK_DELETE_FAILED: &str = "bulk-actions.delete-failed";

@@ -18,23 +18,18 @@ impl SettingKeyArray {
 
 #[derive(Serialize, Deserialize, Type, Debug, PartialEq, Eq, Hash, Copy, Clone)]
 #[serde(rename_all = "camelCase")]
+#[cfg(target_os = "macos")]
 pub enum SettingKeyBool {
     IncludeMacSystemExclusions,
 }
 
+#[cfg(target_os = "macos")]
 impl SettingKeyBool {
     pub fn as_str(&self) -> &'static str {
         match self {
             SettingKeyBool::IncludeMacSystemExclusions => "includeMacSystemExclusions",
         }
     }
-}
-
-#[derive(Serialize, Deserialize, Type, Debug, Clone, Copy, PartialEq, Eq)]
-#[serde(rename_all = "kebab-case")]
-pub enum CloseButtonBehavior {
-    Exit,
-    MinimizeToTray,
 }
 
 #[derive(Serialize, Deserialize, Type, Debug, PartialEq, Eq, Hash, Copy, Clone)]

@@ -6,7 +6,7 @@ use std::{
 use once_cell::sync::Lazy;
 use regex::Regex;
 
-use crate::types::enums::settings::{SettingKeyArray, SettingKeyBool};
+use crate::types::enums::settings::SettingKeyArray;
 
 #[derive(Clone)]
 pub struct ExclusionMatcher {
@@ -44,7 +44,7 @@ pub const DEFAULT_MACOS_EXCLUDED_DIRS: &[&str] = &[
 ];
 
 pub fn apply_exclusions(app: &tauri::AppHandle, args: &mut Vec<String>) -> Result<(), String> {
-    use crate::helpers::settings::{get_settings_as_array, get_settings_as_bool};
+    use crate::helpers::settings::get_settings_as_array;
     use crate::helpers::path::path_to_regex;
 
     #[cfg(target_os = "linux")]
@@ -54,6 +54,8 @@ pub fn apply_exclusions(app: &tauri::AppHandle, args: &mut Vec<String>) -> Resul
 
     #[cfg(target_os = "macos")]
     {
+        use crate::helpers::settings::get_settings_as_bool;
+        use crate::types::enums::settings::SettingKeyBool;
         let include_mac_exclusions =
             get_settings_as_bool(app, SettingKeyBool::IncludeMacSystemExclusions)
                 .unwrap_or(false);

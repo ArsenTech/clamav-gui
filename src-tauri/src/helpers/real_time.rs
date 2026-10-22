@@ -22,10 +22,7 @@ static BEHAVIOR: Lazy<Arc<Mutex<BehaviorConfig>>> =
 use crate::{
     antivirus::{quarantine::quarantine_file},
     helpers::{
-        settings::{
-            get_settings_as_array,
-            get_settings_as_bool
-        },
+        settings::get_settings_as_array,
         matcher::{EXCLUSIONS, ExclusionMatcher},
         path::{get_clamav_path, path_to_regex},
         silent_command,
@@ -33,7 +30,7 @@ use crate::{
     types::{
         enums::{
             antivirus::BehaviorMode,
-            settings::{SettingKeyArray, SettingKeyBool}
+            settings::SettingKeyArray
         },
         structs::BehaviorConfig
     },
@@ -251,21 +248,29 @@ pub fn start_realtime_scan(
     log_id: String,
 ) -> Result<(), String> {
     {
-        let mut exclusions = get_settings_as_array(&app, SettingKeyArray::Exclusions)?;
-
         #[cfg(target_os = "macos")]
-        {
-            use crate::helpers::matcher::DEFAULT_MACOS_EXCLUDED_DIRS;
-            let include_mac_exclusions =
-                get_settings_as_bool(&app, SettingKeyBool::IncludeMacSystemExclusions)
-                    .unwrap_or(false);
+        let exclusions = {
+            use crate::{
+                helpers::{
+                    matcher::DEFAULT_MACOS_EXCLUDED_DIRS,
+                    settings::get_settings_as_bool,
+                },
+                types::enums::settings::SettingKeyBool,
+            };
 
-            if include_mac_exclusions {
+            let mut exclusions = get_settings_as_array(&app, SettingKeyArray::Exclusions)?;
+
+            if get_settings_as_bool(&app, SettingKeyBool::IncludeMacSystemExclusions)? {
                 exclusions.extend(
                     DEFAULT_MACOS_EXCLUDED_DIRS.iter().map(|p| p.to_string())
                 );
             }
-        }
+
+            exclusions
+        };
+
+        #[cfg(not(target_os = "macos"))]
+        let exclusions = get_settings_as_array(&app, SettingKeyArray::Exclusions)?;
 
         let patterns: Vec<String> = exclusions
             .into_iter()

@@ -1,5 +1,8 @@
 use tauri_plugin_store::StoreExt;
-use crate::types::enums::settings::{SettingKeyArray,SettingKeyBool,SettingKeyString};
+use crate::types::enums::settings::{SettingKeyArray,SettingKeyString};
+
+#[cfg(target_os = "macos")]
+use crate::types::enums::settings::SettingKeyBool;
 
 pub fn get_settings_as_array(app: &tauri::AppHandle, setting: SettingKeyArray) -> Result<Vec<String>, String> {
     let store = app.store("settings.json").map_err(|e| e.to_string())?;
@@ -20,7 +23,7 @@ pub fn get_settings_as_array(app: &tauri::AppHandle, setting: SettingKeyArray) -
         }
     }
 }
-
+#[cfg(target_os = "macos")]
 pub fn get_settings_as_bool(
     app: &tauri::AppHandle,
     setting: SettingKeyBool,
