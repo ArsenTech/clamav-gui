@@ -13,6 +13,7 @@ use crate::{
         enums::history::{HistoryDetails, HistoryStatus, HistoryType, LogCategory},
         structs::{history::HistoryItem, QuarantinedItem},
     },
+    system::backend_errors::{self}
 };
 
 #[command]
@@ -24,10 +25,10 @@ pub fn quarantine_file(
     log_id: Option<String>,
 ) -> Result<(), String> {
     if file_path.trim().is_empty() {
-        return Err("File path cannot be empty".into());
+        return Err(backend_errors::FILE_PATH_EMPTY.into());
     }
     if threat_name.trim().is_empty() {
-        return Err("Threat name cannot be empty".into());
+        return Err(backend_errors::THREAT_EMPTY.into());
     }
 
     let log_id = log_id.unwrap_or_else(new_id);
@@ -36,7 +37,7 @@ pub fn quarantine_file(
     let src = PathBuf::from(&file_path);
     if !src.try_exists().unwrap_or(false) {
         log_err(&log_file, "File no longer exists");
-        return Err("File no longer exists".into());
+        return Err(backend_errors::NO_FILE.into());
     }
 
     let quarantine = quarantine_dir(&app);
@@ -44,7 +45,7 @@ pub fn quarantine_file(
     let dest = quarantine.join(format!("{}.quarantine", id));
     if dest.try_exists().unwrap_or(false) {
         log_err(&log_file, "File already quarantined");
-        return Err("File already quarantined".into());
+        return Err(backend_errors::FILE_QUARANTINED.into());
     }
     if let Err(e) = move_file_cross_device(&src, &dest) {
         log_err(&log_file, &e.to_string());
@@ -121,7 +122,7 @@ pub fn restore_quarantine(
     log_id: Option<String>,
 ) -> Result<(), String> {
     if id.trim().is_empty() {
-        return Err("ID cannot be empty".into());
+        return Err(backend_errors::ID_EMPTY.into());
     }
 
     let log_id = log_id.unwrap_or_else(new_id);
@@ -144,12 +145,15 @@ pub fn restore_quarantine(
                 &log_file,
                 &format!("Failed to create parent directory: {}", e),
             );
-            return Err(format!("Failed to create parent directory: {}", e));
+            return Err(serde_json::json!({
+                "code": backend_errors::CREATE_PARENT_DIR_FAILED,
+                "params": { "error": e.to_string() }
+            }).to_string());
         }
     }
     if dest.try_exists().unwrap_or(false) {
         log_err(&log_file, "Restore destination already exists");
-        return Err("Restore destination already exists".into());
+        return Err(backend_errors::RESTORE_EXISTS.into());
     }
     if let Err(e) = move_file_cross_device(&bin_path, &dest) {
         log_err(&log_file, &e.to_string());
@@ -196,7 +200,7 @@ pub fn delete_quarantine(
     log_id: Option<String>,
 ) -> Result<(), String> {
     if id.trim().is_empty() {
-        return Err("ID cannot be empty".into());
+        return Err(backend_errors::ID_EMPTY.into());
     }
 
     let log_id = log_id.unwrap_or_else(new_id);

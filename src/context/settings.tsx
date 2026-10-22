@@ -17,6 +17,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }){
      const {t} = useTranslation("messages",{
           keyPrefix: "fetch-error"
      })
+     const {t: backendTxt} = useTranslation("backend-errors");
      const [settings, setSettings] = useState<ISettings>(()=>{
           const newDefaults: ISettings = {
                ...DEFAULT_SETTINGS,
@@ -36,7 +37,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }){
                return format(date,settings.dateFormat)
           } catch (err) {
                toast.error(t("date"),{
-                    description: getErrorMessage(err)
+                    description: getErrorMessage(err, backendTxt)
                })
                return "Invalid Date"
           }

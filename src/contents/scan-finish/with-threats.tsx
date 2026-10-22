@@ -28,7 +28,8 @@ export default function ScanFinishedTable({isStartup, handlePrimaryAction}: Prop
      const {increaseBy} = useQuarantineCount()
      const {updateFinishScanState, finishScanState, setScanState, scanState} = useScan()
      const [isPending, startTransition] = useTransition()
-     const {t: messageTxt} = useTranslation("messages")
+     const {t: messageTxt} = useTranslation("messages");
+     const {t: backendTxt} = useTranslation("backend-errors");
      const handleDelete = async() => {
           try{
                if(!finishScanState.currThreat) return;
@@ -44,7 +45,7 @@ export default function ScanFinishedTable({isStartup, handlePrimaryAction}: Prop
                toast.success(messageTxt("threat-deleted.success"))
           } catch (err){
                toast.error(messageTxt("threat-deleted.error"),{
-                    description: getErrorMessage(err)
+                    description: getErrorMessage(err,backendTxt)
                });
           } finally {
                updateFinishScanState(INITIAL_FINISH_SCAN_STATE)
@@ -65,7 +66,7 @@ export default function ScanFinishedTable({isStartup, handlePrimaryAction}: Prop
                     toast.success(messageTxt("threat-quarantined.success"));
                } catch (err) {
                     toast.error(messageTxt("threat-quarantined.error"),{
-                         description: getErrorMessage(err)
+                         description: getErrorMessage(err, backendTxt)
                     });
                }
           })
@@ -85,7 +86,7 @@ export default function ScanFinishedTable({isStartup, handlePrimaryAction}: Prop
                     toast.success(messageTxt("threat-bulk-delete.success"));
                } catch (err) {
                     toast.error(messageTxt("threat-bulk-delete.error"),{
-                         description: getErrorMessage(err)
+                         description: getErrorMessage(err, backendTxt)
                     });
                } finally {
                     updateFinishScanState({popupState: ""})

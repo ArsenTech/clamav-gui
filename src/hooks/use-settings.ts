@@ -8,6 +8,7 @@ import { toast } from "sonner";
 
 export function useBackendSettings(){
      const {t: messageTxt} = useTranslation("messages")
+     const {t: backendTxt} = useTranslation("backend-errors");
      const getSettingsBySection = async<
           S extends keyof IBackendSettings,
           K extends keyof IBackendSettings[S]
@@ -38,7 +39,7 @@ export function useBackendSettings(){
                });
           } catch(err){
                toast.error(messageTxt("save-settings-error"),{
-                    description: getErrorMessage(err)
+                    description: getErrorMessage(err,backendTxt)
                });
           }
      }
@@ -52,7 +53,7 @@ export function useBackendSettings(){
                await store.set(key,!value ? current : value);
           } catch(err){
                toast.error(messageTxt("save-settings-error"),{
-                    description: getErrorMessage(err)
+                    description: getErrorMessage(err,backendTxt)
                });
           }
      }

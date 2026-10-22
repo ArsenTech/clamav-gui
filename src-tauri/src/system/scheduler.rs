@@ -11,6 +11,7 @@ use crate::{
         enums::{DayOfTheWeek, antivirus::ScanType, SchedulerInterval},
         structs::scheduler::SchedulerEvent,
     },
+    system::backend_errors::{self}
 };
 
 #[command]
@@ -24,18 +25,18 @@ pub fn schedule_task(
     scan_type: ScanType,
 ) -> Result<(), String> {
     if hours > 23 {
-        return Err("Hours must be between 0 and 23".into());
+        return Err(backend_errors::HOURS_INVALID.into());
     }
     if minutes > 59 {
-        return Err("Minutes must be between 0 and 59".into());
+        return Err(backend_errors::MINUTES_INVALID.into());
     }
     let time = format!("{:02}:{:02}", hours, minutes);
 
     let scan_name = match scan_type {
         ScanType::Main => "Main",
         ScanType::Full => "Full",
-        ScanType::Custom => return Err("Custom scan scheduling not supported yet".into()),
-        _ => return Err("Unsupported scan type".into()),
+        ScanType::Custom => return Err(backend_errors::UNSUPPORTED_CUSTOM_SCAN.into()),
+        _ => return Err(backend_errors::UNSUPPORTED_SCAN.into()),
     };
 
     let task_name = format!("ClamAV GUI - {} - {:?}", scan_name, interval);
@@ -45,8 +46,8 @@ pub fn schedule_task(
     let scan_args = match scan_type {
         ScanType::Main => "--scan=main",
         ScanType::Full => "--scan=full",
-        ScanType::Custom => return Err("Custom scan scheduling not supported yet".into()),
-        _ => return Err("Unsupported scan type".into()),
+        ScanType::Custom => return Err(backend_errors::UNSUPPORTED_CUSTOM_SCAN.into()),
+        _ => return Err(backend_errors::UNSUPPORTED_SCAN.into()),
     };
 
     let task_command = format!(
@@ -70,7 +71,7 @@ pub fn schedule_task(
     }
     #[cfg(not(windows))]
     {
-        Err("Scheduler not supported on this platform yet".into())
+        Err(backend_errors::UNSUPPORTED_PLATFORM.into())
     }
 }
 
@@ -78,7 +79,7 @@ pub fn schedule_task(
 #[specta(result)]
 pub fn remove_scheduled_task(app: tauri::AppHandle, task_name: String) -> Result<(), String> {
     if task_name.trim().is_empty() {
-        return Err("Task name cannot be empty".into());
+        return Err(backend_errors::TASK_NAME_EMPTY.into());
     }
 
     #[cfg(windows)]
@@ -88,7 +89,7 @@ pub fn remove_scheduled_task(app: tauri::AppHandle, task_name: String) -> Result
     }
     #[cfg(not(windows))]
     {
-        Err("Scheduler not supported on this platform yet".into())
+        Err(backend_errors::UNSUPPORTED_PLATFORM.into())
     }
 }
 
@@ -132,7 +133,7 @@ pub fn list_scheduler(app: tauri::AppHandle) -> Result<Vec<SchedulerEvent>, Stri
 #[specta(result)]
 pub fn run_job_now(app: tauri::AppHandle, task_name: String) -> Result<(), String> {
     if task_name.trim().is_empty() {
-        return Err("Task name cannot be empty".into());
+        return Err(backend_errors::TASK_NAME_EMPTY.into());
     }
     #[cfg(windows)]
     {
@@ -141,7 +142,7 @@ pub fn run_job_now(app: tauri::AppHandle, task_name: String) -> Result<(), Strin
     }
     #[cfg(not(windows))]
     {
-        Err("Scheduler not supported on this platform yet".into())
+        Err(backend_errors::UNSUPPORTED_PLATFORM.into())
     }
 }
 
@@ -186,6 +187,6 @@ pub fn clear_scheduled_jobs(app: tauri::AppHandle) -> Result<(), String> {
     }
     #[cfg(not(windows))]
     {
-        Err("Scheduler not supported on this platform yet".into())
+        Err(backend_errors::UNSUPPORTED_PLATFORM.into())
     }
 }

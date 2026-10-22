@@ -1,9 +1,10 @@
 import { getErrorMessage } from "@/lib/helpers";
 import { invoke } from "@tauri-apps/api/core";
+import { TFunction } from "i18next";
 import { cache } from "react";
 import { toast } from "sonner";
 
-export const fetchLogs = cache(async(logId: string | undefined, category: string | null): Promise<string[]> => {
+export const fetchLogs = cache(async(logId: string | undefined, category: string | null,backendTxt: TFunction<"backend-errors">): Promise<string[]> => {
      if(!logId || !category){
           return([`[ERROR] Failed to load the log (Log ID: ${logId})`])
      }
@@ -16,7 +17,7 @@ export const fetchLogs = cache(async(logId: string | undefined, category: string
      } catch (err) {
           const msg = [`[ERROR] Failed to load the log (Log ID: ${logId})`]
           toast.error(msg,{
-               description: getErrorMessage(err)
+               description: getErrorMessage(err,backendTxt)
           })
           return msg
      }

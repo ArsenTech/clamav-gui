@@ -6,7 +6,7 @@ import { TFunction } from "i18next";
 import { getErrorMessage } from "@/lib/helpers";
 import { toast } from "sonner";
 
-export const fetchHistoryData = cache(async(t: TFunction<"history">, errMsg: TFunction<"messages">): Promise<IHistoryData<"state">[]> => {
+export const fetchHistoryData = cache(async(t: TFunction<"history">, errMsg: TFunction<"messages">, backendTxt: TFunction<"backend-errors">): Promise<IHistoryData<"state">[]> => {
      try {
           const fetched = await invoke<IHistoryData<"type">[]>("load_history", {days: 7});
           return fetched.map(val=>({
@@ -16,7 +16,7 @@ export const fetchHistoryData = cache(async(t: TFunction<"history">, errMsg: TFu
           }))
      } catch (err) {
           toast.error(errMsg("fetch-error.history"),{
-               description: getErrorMessage(err)
+               description: getErrorMessage(err,backendTxt)
           })
           return []
      }

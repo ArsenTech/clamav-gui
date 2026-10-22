@@ -5,7 +5,7 @@ import { TFunction } from "i18next";
 import { cache } from "react";
 import { toast } from "sonner";
 
-export const fetchSchedulerData = cache(async(errMsg: TFunction<"messages">) => {
+export const fetchSchedulerData = cache(async(errMsg: TFunction<"messages">,backendTxt: TFunction<"backend-errors">) => {
      try{
           const data = await invoke<ISchedulerData<"type">[]>("list_scheduler");
           const newData: ISchedulerData<"state">[] = data.map(({id,interval,scan_type,time,log_id, last_run})=>{
@@ -14,12 +14,9 @@ export const fetchSchedulerData = cache(async(errMsg: TFunction<"messages">) => 
                nextScan.setHours(Number(hours));
                nextScan.setMinutes(Number(minutes));
                nextScan.setSeconds(0);
-               if (interval === "daily") 
-                    if (nextScan < new Date()) nextScan.setDate(nextScan.getDate() + 1);
-               if (interval === "weekly") 
-                    nextScan.setDate(nextScan.getDate() + 7);
-               if (interval === "monthly") 
-                    nextScan.setMonth(nextScan.getMonth() + 1);
+               if (interval === "daily" && nextScan < new Date()) nextScan.setDate(nextScan.getDate() + 1);
+               if (interval === "weekly") nextScan.setDate(nextScan.getDate() + 7);
+               if (interval === "monthly") nextScan.setMonth(nextScan.getMonth() + 1);
                return ({
                     id,
                     interval,
@@ -32,7 +29,7 @@ export const fetchSchedulerData = cache(async(errMsg: TFunction<"messages">) => 
           return newData
      } catch (err){
           toast.error(errMsg("fetch-error.scheduler"),{
-               description: getErrorMessage(err)
+               description: getErrorMessage(err,backendTxt)
           });
           return []
      }

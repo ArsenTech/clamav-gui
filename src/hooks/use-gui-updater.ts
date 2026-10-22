@@ -17,6 +17,7 @@ export function useGuiUpdater(){
      const {t} = useTranslation("update",{
           keyPrefix: "gui"
      })
+     const {t: backendTxt} = useTranslation("backend-errors")
      const [guiUpdate, setGuiUpdate] = useState<IUpdaterState>(INITIAL_UPDATER_STATE)
      const setUpdaterState = (overrides: Partial<IUpdaterState>) => setGuiUpdate(prev=>({...prev, ...overrides}))
      const checkForUpdates = async () => {
@@ -43,10 +44,10 @@ export function useGuiUpdater(){
                     }
                } catch (err){
                     toast.error(t("failed-check.main"),{
-                         description: getErrorMessage(err)
+                         description: getErrorMessage(err, backendTxt)
                     })
                     await invoke("append_updater_error",{
-                         error: getErrorMessage(err),
+                         error: getErrorMessage(err, backendTxt),
                          errorType: "check-error"
                     })
                     setUpdaterState({
@@ -97,10 +98,10 @@ export function useGuiUpdater(){
                     }
                } catch (err){
                     toast.error(t("failed-update.main"),{
-                         description: getErrorMessage(err)
+                         description: getErrorMessage(err, backendTxt)
                     })
                     await invoke("append_updater_error",{
-                         error: getErrorMessage(err),
+                         error: getErrorMessage(err, backendTxt),
                          errorType: "update-error"
                     })
                     setUpdaterState({

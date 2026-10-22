@@ -36,7 +36,8 @@ export default function SettingsContent(){
           setTab(tab);
           localStorage.setItem("settings-tab",tab)
      }
-     const {t} = useTranslation("settings")
+     const {t} = useTranslation("settings");
+     const {t: backendTxt} = useTranslation("backend-errors");
      const exportSettings = async() => {
           try{
                const path = await save({
@@ -62,7 +63,7 @@ export default function SettingsContent(){
                toast.success(t("export.success"))
           } catch (err) {
                toast.error(t("export.error"),{
-                    description: getErrorMessage(err)
+                    description: getErrorMessage(err, backendTxt)
                })
           }
      }
@@ -104,7 +105,7 @@ export default function SettingsContent(){
                toast.success(t("import.success"))
           } catch (err){
                toast.error(t("import.error"),{
-                    description: getErrorMessage(err)
+                    description: getErrorMessage(err, backendTxt)
                })
           }
      }

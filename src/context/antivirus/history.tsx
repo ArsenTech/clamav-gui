@@ -24,12 +24,12 @@ export default function AppHistoryProvider({children}: AppHistoryProviderProps){
      const [historyState, setHistoryState] = useState<IHistoryPageState>(INITIAL_HISTORY_STATE);
      const updateHistoryState: SetDataFunction<IHistoryPageState> = useCallback(overrides => setHistoryState(prev=>({ ...prev, ...overrides })),[])
      const isEmpty = useMemo(()=>historyState.data.length<=0,[historyState.data]);
-
+     const {t: backendTxt} = useTranslation("backend-errors")
      const {t} = useTranslation("history")
      const {t: messageTxt} = useTranslation("messages")
      const fetchData = useCallback(()=>{
           startTransition(async()=>{
-               const newData = await fetchHistoryData(t,messageTxt)
+               const newData = await fetchHistoryData(t,messageTxt,backendTxt)
                updateHistoryState({ data: newData })
           })
      },[t,messageTxt])

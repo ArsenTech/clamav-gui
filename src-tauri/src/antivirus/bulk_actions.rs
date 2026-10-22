@@ -1,7 +1,14 @@
 use specta::specta;
 use tauri::command;
 
-use crate::{delete_quarantine, helpers::new_id, quarantine_file, remove_file, restore_quarantine};
+use crate::{
+    delete_quarantine,
+    helpers::new_id,
+    quarantine_file,
+    remove_file,
+    restore_quarantine,
+    system::backend_errors::{self}
+};
 
 #[command]
 #[specta(result)]
@@ -10,7 +17,7 @@ pub fn quarantine_all(
     files: Vec<(String, String)>, // (file_path, threat_name)
 ) -> Result<(), String> {
     if files.is_empty() {
-        return Err("No files provided for quarantine".into());
+        return Err(backend_errors::NO_FILES_QUARANTINE.into());
     }
 
     let log_id = new_id();
@@ -24,7 +31,10 @@ pub fn quarantine_all(
         }
     }
     if successes == 0 && failures > 0 {
-        return Err(format!("All {} quarantine operations failed", failures));
+        return Err(serde_json::json!({
+            "code": backend_errors::BULK_QUARANTINE_FAILED,
+            "params": { "count": failures }
+        }).to_string());
     }
 
     Ok(())
@@ -34,7 +44,7 @@ pub fn quarantine_all(
 #[specta(result)]
 pub fn delete_all(app: tauri::AppHandle, files: Vec<String>) -> Result<(), String> {
     if files.is_empty() {
-        return Err("No files provided for deletion".into());
+        return Err(backend_errors::NO_FILES_DELETION.into());
     }
 
     let log_id = new_id();
@@ -48,7 +58,10 @@ pub fn delete_all(app: tauri::AppHandle, files: Vec<String>) -> Result<(), Strin
         }
     }
     if successes == 0 && failures > 0 {
-        return Err(format!("All {} deletion operations failed", failures));
+        return Err(serde_json::json!({
+            "code": backend_errors::BULK_DELETE_FAILED,
+            "params": { "count": failures }
+        }).to_string());
     }
 
     Ok(())
@@ -58,7 +71,7 @@ pub fn delete_all(app: tauri::AppHandle, files: Vec<String>) -> Result<(), Strin
 #[specta(result)]
 pub fn restore_all(app: tauri::AppHandle, ids: Vec<String>) -> Result<(), String> {
     if ids.is_empty() {
-        return Err("No IDs provided for restoration".into());
+        return Err(backend_errors::NO_IDS_RESTORATION.into());
     }
 
     let log_id = new_id();
@@ -72,7 +85,10 @@ pub fn restore_all(app: tauri::AppHandle, ids: Vec<String>) -> Result<(), String
         }
     }
     if successes == 0 && failures > 0 {
-        return Err(format!("All {} restore operations failed", failures));
+        return Err(serde_json::json!({
+            "code": backend_errors::BULK_RESTORE_FAILED,
+            "params": { "count": failures }
+        }).to_string());
     }
 
     Ok(())
@@ -82,7 +98,7 @@ pub fn restore_all(app: tauri::AppHandle, ids: Vec<String>) -> Result<(), String
 #[specta(result)]
 pub fn clear_quarantine(app: tauri::AppHandle, ids: Vec<String>) -> Result<(), String> {
     if ids.is_empty() {
-        return Err("No IDs provided for clearing quarantine".into());
+        return Err(backend_errors::NO_IDS_CLEARQ.into());
     }
 
     let log_id = new_id();
@@ -96,7 +112,10 @@ pub fn clear_quarantine(app: tauri::AppHandle, ids: Vec<String>) -> Result<(), S
         }
     }
     if successes == 0 && failures > 0 {
-        return Err(format!("All {} clear operations failed", failures));
+        return Err(serde_json::json!({
+            "code": backend_errors::BULK_CLEAR_FAILED,
+            "params": { "count": failures }
+        }).to_string());
     }
 
     Ok(())

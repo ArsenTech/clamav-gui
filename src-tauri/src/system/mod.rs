@@ -1,6 +1,7 @@
 pub mod logs;
 pub mod scheduler;
 pub mod sysinfo;
+pub mod backend_errors;
 
 use std::sync::atomic::Ordering;
 
@@ -29,7 +30,7 @@ pub fn remove_file(
     log_id: Option<String>,
 ) -> Result<(), String> {
     if file_path.trim().is_empty() {
-        return Err("File path cannot be empty".into());
+        return Err(backend_errors::FILE_PATH_EMPTY.into());
     }
 
     let log_id = log_id.unwrap_or_else(new_id);

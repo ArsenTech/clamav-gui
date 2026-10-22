@@ -15,7 +15,8 @@ interface ActionsCellProps{
 export default function ActionsCell({item}: ActionsCellProps){
      const {t} = useTranslation("table")
      const {t: messageTxt} = useTranslation("messages")
-     const {updateSchedulerState} = useScheduler()
+     const {updateSchedulerState} = useScheduler();
+     const {t: backendTxt} = useTranslation("backend-errors")
      const revealLog = async()=>{
           if(!item.log_id) return;
           try{
@@ -25,7 +26,7 @@ export default function ActionsCell({item}: ActionsCellProps){
                })
           } catch(err){
                toast.error(messageTxt("log-reveal-error"),{
-                    description: getErrorMessage(err)
+                    description: getErrorMessage(err,backendTxt)
                });
           }
      }
@@ -37,7 +38,7 @@ export default function ActionsCell({item}: ActionsCellProps){
                toast.success(messageTxt("trigger-scan.success"))
           } catch (err){
                toast.error(messageTxt("trigger-scan.error"),{
-                    description: getErrorMessage(err)
+                    description: getErrorMessage(err,backendTxt)
                });
           }
      }

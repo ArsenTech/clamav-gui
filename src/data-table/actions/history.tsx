@@ -16,6 +16,7 @@ export default function ActionsCell({item}: ActionsCellProps){
      const {t} = useTranslation("table")
      const {setHistoryState} = useAppHistory()
      const {t: messageTxt} = useTranslation("messages")
+     const {t: backendTxt} = useTranslation("backend-errors")
      const revealLog = async()=>{
           if(!item.logId || !item.category) return;
           try{
@@ -25,7 +26,7 @@ export default function ActionsCell({item}: ActionsCellProps){
                })
           } catch(err){
                toast.error(messageTxt("log-reveal-error"),{
-                    description: getErrorMessage(err)
+                    description: getErrorMessage(err, backendTxt)
                });
           }
      }

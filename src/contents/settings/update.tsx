@@ -23,6 +23,7 @@ export default function UpdateSettings(){
      const [updateState, setUpdateState] = useState<IDefsUpdaterState>(INITIAL_DEF_UPDATE_STATE);
      const [clamAvVersion, setClamavVersion] = useState<IClamAvVersion|null>(()=>JSON.parse(localStorage.getItem("clamav-version") as string) || null);
      const {t} = useTranslation("update");
+     const {t: backendTxt} = useTranslation("backend-errors");
      const {dateFns} = useLocale();
      const setState = useCallback((overrides: Partial<IDefsUpdaterState>) => setUpdateState(prev=>({ ...prev, ...overrides })),[])
      const handleUpdateDefs = useCallback(async()=>{
@@ -84,7 +85,7 @@ export default function UpdateSettings(){
                          updateVersions(await getClamAvVersion());
                     } catch (err) {
                          toast.error(messageTxt("def-update-error"),{
-                              description: getErrorMessage(err)
+                              description: getErrorMessage(err, backendTxt)
                          })
                     }
                })

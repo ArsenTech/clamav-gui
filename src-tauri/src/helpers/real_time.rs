@@ -37,6 +37,7 @@ use crate::{
         },
         structs::BehaviorConfig
     },
+    system::backend_errors::{self}
 };
 
 fn behavior_config(mode: BehaviorMode) -> BehaviorConfig {
@@ -66,7 +67,7 @@ fn behavior_config(mode: BehaviorMode) -> BehaviorConfig {
 
 fn start_watcher(paths: Vec<String>) -> Result<(), String> {
     if paths.is_empty() {
-        return Err("No paths provided for monitoring".into());
+        return Err(backend_errors::NO_MONTIORING_PATHS.into());
     }
     let queue = SCAN_QUEUE.clone();
     let behavior = BEHAVIOR.clone();
@@ -214,7 +215,7 @@ fn scan_file(path: &Path) -> Result<Option<String>, String> {
         }
     }
     if !path.exists() {
-        return Err("File no longer exists".into());
+        return Err(backend_errors::NO_FILE.into());
     }
     let scanner = get_clamav_path()?;
     let output = silent_command(&scanner)
@@ -276,7 +277,7 @@ pub fn start_realtime_scan(
         *EXCLUSIONS.lock().unwrap() = Some(matcher);
     }
     if paths.is_empty() {
-        return Err("No paths provided for real-time scanning".into());
+        return Err(backend_errors::NO_REALTIME_PATHS.into());
     }
     let mut invalid_paths = Vec::new();
     for path in &paths {
@@ -286,10 +287,10 @@ pub fn start_realtime_scan(
         }
     }
     if !invalid_paths.is_empty() {
-        return Err(format!(
-            "The following paths do not exist: {}",
-            invalid_paths.join(", ")
-        ));
+        return Err(serde_json::json!({
+            "code": backend_errors::INVALID_PATHS,
+            "params": { "paths": invalid_paths.join(", ") }
+        }).to_string());
     }
     {
         let mut behavior = BEHAVIOR.lock().unwrap();

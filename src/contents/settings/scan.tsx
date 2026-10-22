@@ -32,6 +32,7 @@ export default function ScanSettings({scanProfile}: SettingsProps){
      const {t: messageTxt} = useTranslation("messages",{
           keyPrefix: "fetch-error"
      })
+     const {t: backendTxt} = useTranslation("backend-errors");
      useEffect(()=>{
           startTransition(async()=>{
                try {
@@ -43,7 +44,7 @@ export default function ScanSettings({scanProfile}: SettingsProps){
                     setIncludeMacSystemExclusions(storedIncludeMacExclusions ?? DEFAULT_BACKEND_SETTINGS.includeMacSystemExclusions)
                } catch (err){
                     toast.error(messageTxt("exclusions"),{
-                         description: getErrorMessage(err)
+                         description: getErrorMessage(err, backendTxt)
                     });
                }
           })

@@ -19,6 +19,7 @@ use crate::{
             scheduler::{SchedulerEntry, SchedulerEvent}
         },
     },
+    system::backend_errors::{self}
 };
 
 pub fn schedule_scan(
@@ -31,13 +32,13 @@ pub fn schedule_scan(
     scan_type: ScanType,
 ) -> Result<(), String> {
     if task_name.trim().is_empty() {
-        return Err("Task name cannot be empty".into());
+        return Err(backend_errors::TASK_NAME_EMPTY.into());
     }
     if time.trim().is_empty() {
-        return Err("Time cannot be empty".into());
+        return Err(backend_errors::TIME_EMPTY.into());
     }
     if task_command.trim().is_empty() {
-        return Err("Task command cannot be empty".into());
+        return Err(backend_errors::TASK_COMMAND_EMPTY.into());
     }
 
     let log = initialize_log(app, LogCategory::Scheduler)?;
@@ -73,7 +74,7 @@ pub fn schedule_scan(
     let status = cmd.status().map_err(|e| e.to_string())?;
     if !status.success() {
         log_err(&log_file, "Failed to create scheduled task");
-        return Err("Failed to create scheduled task".into());
+        return Err(backend_errors::CREATE_FAILED.into());
     }
 
     let config_dir = app.path().app_config_dir().map_err(|e| e.to_string())?;
@@ -85,7 +86,7 @@ pub fn schedule_scan(
 
     if scheduler_file.schedulers.iter().any(|e| e.id == task_name) {
         log_err(&log_file, "Scheduled job already exists");
-        return Err("Scheduled job already exists".into());
+        return Err(backend_errors::JOB_EXISTS.into());
     }
 
     let last_run = get_last_run_time(&task_name).unwrap_or(None);
@@ -149,7 +150,7 @@ pub fn schedule_scan(
 
 pub fn remove_job(app: &tauri::AppHandle, task_name: String) -> Result<(), String> {
     if task_name.trim().is_empty() {
-        return Err("Task name cannot be empty".into());
+        return Err(backend_errors::TASK_NAME_EMPTY.into());
     }
 
     let log = initialize_log(app, LogCategory::Scheduler)?;
@@ -163,7 +164,7 @@ pub fn remove_job(app: &tauri::AppHandle, task_name: String) -> Result<(), Strin
     let status = cmd.status().map_err(|e| e.to_string())?;
     if !status.success() {
         log_err(&log_file, "Failed to delete scheduled task");
-        return Err("Failed to delete scheduled task".into());
+        return Err(backend_errors::DELETE_FAILED.into());
     }
 
     let config_dir = app.path().app_config_dir().map_err(|e| e.to_string())?;
@@ -180,7 +181,7 @@ pub fn remove_job(app: &tauri::AppHandle, task_name: String) -> Result<(), Strin
 
     if scheduler_file.schedulers.len() == before {
         log_err(&log_file, "Scheduled job not found in scheduler.json");
-        return Err("Scheduled job not found in scheduler.json".into());
+        return Err(backend_errors::NO_JOB.into());
     }
 
     save_scheduler_file(&file_path, &scheduler_file)?;
@@ -219,7 +220,7 @@ pub fn remove_job(app: &tauri::AppHandle, task_name: String) -> Result<(), Strin
 
 pub fn run_job_now(app: &tauri::AppHandle, task_name: String) -> Result<(), String> {
     if task_name.trim().is_empty() {
-        return Err("Task name cannot be empty".into());
+        return Err(backend_errors::TASK_NAME_EMPTY.into());
     }
 
     let log = initialize_log(app, LogCategory::Scheduler)?;
@@ -275,13 +276,13 @@ pub fn run_job_now(app: &tauri::AppHandle, task_name: String) -> Result<(), Stri
             },
             &log_file,
         );
-        Err("Failed to run scheduled task".into())
+        Err(backend_errors::RUN_FAILED.into())
     }
 }
 
 pub fn get_last_run_time(task_name: &str) -> Result<Option<String>, String> {
     if task_name.trim().is_empty() {
-        return Err("Task name cannot be empty".into());
+        return Err(backend_errors::TASK_NAME_EMPTY.into());
     }
 
     let full_name = format!(r"\{}", task_name);
@@ -295,7 +296,10 @@ pub fn get_last_run_time(task_name: &str) -> Result<Option<String>, String> {
 
     if !output.status.success() {
         let err = String::from_utf8_lossy(&output.stderr);
-        return Err(format!("schtasks query failed: {}", err));
+        return Err(serde_json::json!({
+            "code": backend_errors::SCHTASKS_ERROR,
+            "params": { "error": err }
+        }).to_string());
     }
 
     let stdout = String::from_utf8_lossy(&output.stdout);

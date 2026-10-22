@@ -1,7 +1,8 @@
+import * as DateFnsLocale from "date-fns/locale";
+
 export type LangCode = "en" | "hy" | "ru" | "fr" | "pl" | "zh-CN"
 type CountryCode = "us" | "am" | "ru" | "fr" | "pl" | "cn"
 type languageOption = { language: string; code: LangCode, countryCode: CountryCode };
-import * as DateFnsLocale from "date-fns/locale"
 
 export const languageOptions: languageOption[] = [
      { language: "English", code: "en", countryCode: "us"},

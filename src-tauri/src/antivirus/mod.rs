@@ -21,6 +21,7 @@ use crate::{
         },
         structs::history::HistoryItem,
     },
+    system::backend_errors::{self}
 };
 
 #[command]
@@ -31,7 +32,7 @@ pub fn start_real_time_scan(
 ) -> Result<(), String> {
     let paths = get_settings_as_array(&app,SettingKeyArray::MonitoringPaths)?;
     if paths.is_empty() {
-        return Err("No paths provided for monitoring".into());
+        return Err(backend_errors::NO_MONTIORING_PATHS.into());
     }
     let log = initialize_log(&app, LogCategory::Realtime)?;
     let log_id = log.id.clone();
@@ -40,7 +41,10 @@ pub fn start_real_time_scan(
         let p = std::path::PathBuf::from(path);
         if !p.exists() {
             log_err(&log_file, &format!("Path does not exist: {}", path));
-            return Err(format!("Path does not exist: {}", path));
+            return Err(serde_json::json!({
+                "code": backend_errors::NO_PATH,
+                "params": { "path": path }
+            }).to_string());
         }
     }
     if let Err(e) = start_realtime_scan(app.clone(), paths.clone(), behavior, log_id.clone()) {

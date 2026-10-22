@@ -32,7 +32,8 @@ export default function QuarantineContent(){
           });
      }
      useEffect(()=>fetchData(),[])
-     const {t: messageTxt} = useTranslation("messages")
+     const {t: messageTxt} = useTranslation("messages");
+     const {t: backendTxt} = useTranslation("backend-errors");
      const quarantineAction = async(type: ActionType) => {
           const commandName = `${type}_quarantine`
           try{
@@ -46,7 +47,7 @@ export default function QuarantineContent(){
                toast.success(messageTxt(`${type}-quarantine.success`));
           } catch (err){
                toast.error(messageTxt(`${type}-quarantine.error`),{
-                    description: getErrorMessage(err)
+                    description: getErrorMessage(err,backendTxt)
                });
           } finally {
                updateQuarantineState({
@@ -67,7 +68,7 @@ export default function QuarantineContent(){
                toast.success(messageTxt(`bulk-${type}-quarantine.success`));
           } catch (err){
                toast.error(messageTxt(`bulk-${type}-quarantine.error`),{
-                    description: getErrorMessage(err)
+                    description: getErrorMessage(err,backendTxt)
                });
           }
      }

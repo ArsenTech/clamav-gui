@@ -34,7 +34,8 @@ export default function ClearDatePopup({open, onOpen, onSuccess}: Props){
                date: new Date()
           }
      })
-     const {t: confTxt} = useTranslation("confirmation")
+     const {t: confTxt} = useTranslation("confirmation");
+     const {t: backendTxt} = useTranslation("backend-errors");
      const onSubmit = (values: ClearByDateType) => {
           if(isClearing) return;
           startTransition(async() => {
@@ -48,7 +49,7 @@ export default function ClearDatePopup({open, onOpen, onSuccess}: Props){
                     form.reset();
                } catch (err) {
                     toast.error(msgTxt("history-clear-errror"),{
-                         description: getErrorMessage(err)
+                         description: getErrorMessage(err,backendTxt)
                     })
                }
           })

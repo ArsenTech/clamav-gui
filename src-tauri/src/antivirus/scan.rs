@@ -15,6 +15,7 @@ use crate::{
         },
         structs::{history::HistoryItem, StartupScan},
     },
+    system::backend_errors::{self}
 };
 
 #[command]
@@ -165,7 +166,7 @@ pub fn start_custom_scan(
         println!("-----------------")
     }
     if paths.is_empty() {
-        return Err("No scan targets provided".into());
+        return Err(backend_errors::NO_SCAN_TARGETS.into());
     }
     let log_id = new_id();
     let log =
@@ -174,10 +175,16 @@ pub fn start_custom_scan(
     let resolved_paths: Vec<PathBuf> = paths.iter().map(PathBuf::from).collect();
     for path in &resolved_paths {
         if !path.try_exists().unwrap_or(false) {
-            return Err(format!("Path does not exist: {}", path.display()));
+            return Err(serde_json::json!({
+                "code": backend_errors::NO_PATH,
+                "params": { "path": path }
+            }).to_string());
         }
         if !path.is_file() && !path.is_dir() {
-            return Err(format!("Invalid scan target: {}", path.display()));
+            return Err(serde_json::json!({
+                "code": backend_errors::INVALID_SCAN,
+                "params": { "path": path }
+            }).to_string());
         }
     }
 
@@ -267,7 +274,7 @@ pub fn stop_scan() -> Result<(), String> {
         }
         Ok(())
     } else {
-        Err("No scan is currently running".into())
+        Err(backend_errors::NO_CURR_SCAN.into())
     }
 }
 

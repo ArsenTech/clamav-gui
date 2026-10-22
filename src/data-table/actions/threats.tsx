@@ -19,6 +19,7 @@ export default function ActionsCell({threat}: ActionsCellProps){
      const {updateFinishScanState, setScanState} = useScan()
      const {t} = useTranslation("table");
      const {t: messageTxt} = useTranslation("messages")
+     const {t: backendTxt} = useTranslation("backend-errors")
      const handleQuarantine = async() => {
           try{
                const {filePath, displayName} = threat
@@ -35,7 +36,7 @@ export default function ActionsCell({threat}: ActionsCellProps){
                toast.success(messageTxt("quarantine.success"))
           } catch (err){
                toast.error(messageTxt("quarantine.error"),{
-                    description: getErrorMessage(err)
+                    description: getErrorMessage(err, backendTxt)
                });
           }
      }

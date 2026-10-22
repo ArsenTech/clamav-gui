@@ -17,6 +17,8 @@ use std::{
     process::{Command, Stdio},
 };
 
+use crate::system::backend_errors::{self};
+
 #[cfg(windows)]
 use std::os::windows::process::CommandExt;
 
@@ -44,7 +46,10 @@ pub fn resolve_command(command: &str) -> Result<PathBuf, String> {
         .map_err(|e| e.to_string())?;
 
     if !output.status.success() {
-        return Err(format!("{} not found", command));
+        return Err(serde_json::json!({
+            "code": backend_errors::NO_COMMAND,
+            "params": { "command": command }
+        }).to_string());
     }
     let stdout = String::from_utf8_lossy(&output.stdout);
     let raw = stdout
@@ -54,7 +59,10 @@ pub fn resolve_command(command: &str) -> Result<PathBuf, String> {
         .trim();
 
     if raw.is_empty() {
-        return Err(format!("{} not found", command));
+        return Err(serde_json::json!({
+            "code": backend_errors::NO_COMMAND,
+            "params": { "command": command }
+        }).to_string());
     }
     let mut path = PathBuf::from(raw);
     #[cfg(windows)]

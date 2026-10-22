@@ -24,6 +24,7 @@ export function MarkAcknowledgedCell({item}: MarkAcknowledgedCellProps){
      const {t: messageTxt} = useTranslation("messages",{
           keyPrefix: "acknowledge-history"
      })
+     const {t: backendTxt} = useTranslation("backend-errors")
      const markAsAcknowledged = async () => {
           try{
                await invoke("mark_as_acknowledged", {
@@ -40,7 +41,7 @@ export function MarkAcknowledgedCell({item}: MarkAcknowledgedCellProps){
                toast.success(messageTxt("success"))
           } catch (err){
                toast.error(messageTxt("error"),{
-                    description: getErrorMessage(err)
+                    description: getErrorMessage(err, backendTxt)
                });
           }
      }

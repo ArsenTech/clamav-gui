@@ -18,7 +18,8 @@ interface SchedulerTableHeaderProps{
 export default function SchedulerTableHeader({isSubmitting}: SchedulerTableHeaderProps){
      const {settings} = useSettings();
      const {schedulerState, setSchedulerState, refresh, isPending, updateSchedulerState, startTransition} = useScheduler()
-     const {t: messageTxt} = useTranslation("messages")
+     const {t: messageTxt} = useTranslation("messages");
+     const {t: backendTxt} = useTranslation("backend-errors");
      const handleRemoveJob = () => {
           if(!settings.enableSchedulerUI || isPending) return;
           startTransition(async()=>{
@@ -35,7 +36,7 @@ export default function SchedulerTableHeader({isSubmitting}: SchedulerTableHeade
                     toast.success(messageTxt("remove-job.success"))
                } catch (err){
                     toast.error(messageTxt("remove-job.error"),{
-                         description: getErrorMessage(err)
+                         description: getErrorMessage(err, backendTxt)
                     });
                } finally {
                     updateSchedulerState({popupState: ""})
@@ -51,7 +52,7 @@ export default function SchedulerTableHeader({isSubmitting}: SchedulerTableHeade
                     toast.success(messageTxt("clear-jobs.success"))
                } catch (err){
                     toast.error(messageTxt("clear-jobs.error"),{
-                         description: getErrorMessage(err)
+                         description: getErrorMessage(err, backendTxt)
                     });
                } finally {
                     updateSchedulerState({popupState: ""})

@@ -9,16 +9,17 @@ use crate::{
         enums::history::{ClearHistoryMode, HistoryStatus},
         structs::history::HistoryItem,
     },
+    system::backend_errors::{self}
 };
 
 #[command]
 #[specta(result)]
 pub fn load_history(app: tauri::AppHandle, days: u32) -> Result<Vec<HistoryItem>, String> {
     if days == 0 {
-        return Err("Days must be greater than 0".into());
+        return Err(backend_errors::DAYS_GT0.into());
     }
     if days > 365 {
-        return Err("Days cannot exceed 365".into());
+        return Err(backend_errors::DAYS_EXCEED365.into());
     }
 
     let dir = history_dir(&app);
@@ -49,17 +50,17 @@ pub fn load_history(app: tauri::AppHandle, days: u32) -> Result<Vec<HistoryItem>
 #[specta(result)]
 pub fn mark_as_acknowledged(app: tauri::AppHandle, id: String, date: String) -> Result<(), String> {
     if id.trim().is_empty() {
-        return Err("ID cannot be empty".into());
+        return Err(backend_errors::ID_EMPTY.into());
     }
     if date.trim().is_empty() {
-        return Err("Date cannot be empty".into());
+        return Err(backend_errors::DATE_EMPTY.into());
     }
 
     let dir = history_dir(&app);
     let file_path = dir.join(format!("{}.json", date));
     
     if !file_path.try_exists().unwrap_or(false) {
-        return Err("History date file not found".into());
+        return Err(backend_errors::NO_HISTORY_DATE.into());
     }
 
     let content = std::fs::read_to_string(&file_path).map_err(|e| e.to_string())?;
@@ -76,7 +77,7 @@ pub fn mark_as_acknowledged(app: tauri::AppHandle, id: String, date: String) -> 
         }
     }
     if !found {
-        return Err("History item not found".into());
+        return Err(backend_errors::NO_HISTORY_ITEM.into());
     }
     std::fs::write(
         &file_path,

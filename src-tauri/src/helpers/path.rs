@@ -2,7 +2,10 @@
 
 use std::path::PathBuf;
 
-use crate::helpers::resolve_command;
+use crate::{
+    helpers::resolve_command,
+    system::backend_errors::{self}
+};
 
 #[cfg(windows)]
 fn normalize_path(path: &str) -> String {
@@ -63,5 +66,5 @@ pub fn get_clamav_path() -> Result<PathBuf,String>{
             }
         }
     }
-    Err("ClamAV not found. Please install ClamAV and ensure clamscan is available in PATH, or report the bug if something went wrong.".into(),)
+    Err(backend_errors::NO_CLAMAV.into())
 }

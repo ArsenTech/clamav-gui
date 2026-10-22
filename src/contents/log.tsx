@@ -18,9 +18,10 @@ export default function LogContent({returnUrl, categoryParam}: Props){
      const [isLoading, startTransition] = useTransition();
      const [searchParams] = useSearchParams();
      const category = categoryParam ?? searchParams.get("category");
+     const {t: backendTxt} = useTranslation("backend-errors")
      useEffect(()=>{
           startTransition(async()=>{
-               const fetched = await fetchLogs(logId,category);
+               const fetched = await fetchLogs(logId,category,backendTxt);
                setLogs(fetched)
           })
      },[])

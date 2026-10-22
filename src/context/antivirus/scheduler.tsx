@@ -25,10 +25,11 @@ export default function SchedulerProvider({children}: SchedulerProviderProps){
      const [isPending, startTransition] = useTransition();
      const {settings} = useSettings();
      const {t: messageTxt} = useTranslation("messages")
+     const {t: backendTxt} = useTranslation("backend-errors")
      const refresh = useCallback(() => {
           if(!settings.enableSchedulerUI) return;
           startTransition(async()=>{
-               const newData = await fetchSchedulerData(messageTxt);
+               const newData = await fetchSchedulerData(messageTxt,backendTxt);
                updateSchedulerState({data: newData})
           })
      },[settings.enableSchedulerUI,messageTxt])

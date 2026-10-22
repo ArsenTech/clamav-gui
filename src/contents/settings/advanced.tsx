@@ -18,7 +18,7 @@ import { store } from "@/lib/store";
 import SettingsOption from "@/components/settings-item/settings-option";
 import { useTranslation } from "react-i18next";
 import { CloseButtonBehavior, IBackendSettings, ScanOptionKeys } from "@/lib/types/settings";
-import { getErrorMessage, ObjectEntries } from "@/lib/helpers";
+import { ObjectEntries } from "@/lib/helpers";
 import { ChoiceOption } from "@/components/settings-item/scan-option";
 import { ActionType, DangerZoneConfState } from "@/lib/types";
 import { isDescKey } from "@/lib/helpers/scan";
@@ -27,6 +27,7 @@ import FolderPathForm from "@/components/settings-item/path-form";
 import { useBackendSettings } from "@/hooks/use-settings";
 import ConfirmationMessage from "@/components/popup/confirm";
 import SelectorField from "@/components/fields/selector";
+import { getErrorMessage } from "@/lib/helpers";
 
 export default function AdvancedSettings({scanProfile}: SettingsProps){
      const {settings, setSettings} = useSettings();
@@ -37,7 +38,8 @@ export default function AdvancedSettings({scanProfile}: SettingsProps){
      const {getSettingsByKey,setSettingsbyKey} = useBackendSettings()
      const [paths, setPaths] = useState<IBackendSettings["monitoringPaths"]>(DEFAULT_BACKEND_SETTINGS.monitoringPaths);
      const [closeBehavior, setCloseBehavior] = useState<IBackendSettings["closeButtonBehavior"]>(DEFAULT_BACKEND_SETTINGS.closeButtonBehavior)
-     const {t: messageTxt} = useTranslation("messages")
+     const {t: messageTxt} = useTranslation("messages");
+     const {t: backendTxt} = useTranslation("backend-errors");
      useEffect(()=>{
           startFetching(async()=>{
                try {
@@ -49,7 +51,7 @@ export default function AdvancedSettings({scanProfile}: SettingsProps){
                     setCloseBehavior(val=>!storedCloseBahvior ? val : storedCloseBahvior)
                } catch (err){
                     toast.error(messageTxt("fetch-error.realtime-paths"),{
-                         description: getErrorMessage(err)
+                         description: getErrorMessage(err, backendTxt)
                     });
                }
           })
@@ -82,7 +84,7 @@ export default function AdvancedSettings({scanProfile}: SettingsProps){
                     toast.success(messageTxt(`${type}-settings.success`));
                } catch(err){
                     toast.error(messageTxt(`${type}-settings.error`),{
-                         description: getErrorMessage(err)
+                         description: getErrorMessage(err, backendTxt)
                     });
                } finally {
                     setPopupState("")

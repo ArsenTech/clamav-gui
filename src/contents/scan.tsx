@@ -30,7 +30,8 @@ export default function ScanContent(){
      const isDone = scanState.status === "finished" || scanState.status === "error"
      const {getSettingsBySection} = useBackendSettings();
      const hasStartedRef = useRef(false);
-     const {t: messageTxt} = useTranslation("messages")
+     const {t: messageTxt} = useTranslation("messages");
+     const {t: backendTxt} = useTranslation("backend-errors");
      const handleStartScan = async() => {
           updateScanState(({
                duration: 0,
@@ -65,7 +66,7 @@ export default function ScanContent(){
                     return {
                          ...prev,
                          status: "error",
-                         errMsg: getErrorMessage(e),
+                         errMsg: getErrorMessage(e,backendTxt),
                          duration: startTimeRef.current ? Math.floor((Date.now() - startTimeRef.current)/1000) : 0,
                          exitCode: -1
                     }

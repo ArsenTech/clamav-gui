@@ -28,7 +28,8 @@ export default function ClearRangePopup({open, onOpen, onSuccess}: Props){
      const form = useForm<ClearByRangeType>({
           resolver: zodResolver(getClearByRangeSchema(validationTxt)),
      })
-     const {t: confTxt} = useTranslation("confirmation")
+     const {t: confTxt} = useTranslation("confirmation");
+     const {t: backendTxt} = useTranslation("backend-errors");
      const onSubmit = (values: ClearByRangeType) => {
           if(isClearing) return;
           startTransition(async() => {
@@ -43,7 +44,7 @@ export default function ClearRangePopup({open, onOpen, onSuccess}: Props){
                     form.reset();
                } catch (err) {
                     toast.error(msgTxt("history-clear-errror"),{
-                         description: getErrorMessage(err)
+                         description: getErrorMessage(err,backendTxt)
                     })
                }
           })

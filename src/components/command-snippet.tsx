@@ -14,6 +14,7 @@ export default function CommandSnippetBlock({command}: Props){
      const {t: messageTxt} = useTranslation("messages",{
           keyPrefix: "copy-command"
      })
+     const {t: backendTxt} = useTranslation("backend-errors");
      const handleCopy = async () => {
           try{
                await window.navigator.clipboard.writeText(command);
@@ -22,7 +23,7 @@ export default function CommandSnippetBlock({command}: Props){
                setTimeout(()=>setIsCopied(false),2000)
           } catch (err) {
                toast.error(messageTxt("error"),{
-                    description: getErrorMessage(err)
+                    description: getErrorMessage(err,backendTxt),
                });
           }
      }

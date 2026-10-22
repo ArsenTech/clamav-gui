@@ -1,0 +1,84 @@
+{
+     "no-files": {
+          "quarantine": "No files provided for quarantine",
+          "deletion": "No files provided for deletion"
+     },
+     "no-ids": {
+          "restoration": "No IDs provided for restoration",
+          "clear-quarantine": "No IDs provided for clearing quarantine"
+     },
+     "days": {
+          "gt-zero": "Days must be greater than 0",
+          "exceed-365": "Days cannot exceed 365"
+     },
+     "id-empty": "ID cannot be empty",
+     "date-empty": "Date cannot be empty",
+     "history": {
+          "date-not-found": "History date file not found",
+          "item-not-found": "History item not found"
+     },
+     "antivirus": {
+          "no-monitoring-paths": "No paths provided for monitoring",
+          "threat-empty": "Threat name cannot be empty",
+          "restore-dest-exists": "Restore destination already exists",
+          "no-scan-targets": "No scan targets provided",
+          "no-curr-scan": "No scan is currently running",
+          "no-realtime-paths": "No paths provided for real-time scanning",
+          "scan-already-running": "Scan is already running",
+          "scan-failed": "Scan failed",
+          "invalid-scan-target": "Invalid scan target: {{path}}"
+     },
+     "log": {
+          "id-empty": "Log ID cannot be empty",
+          "no-file": "Log file not found"
+     },
+     "file": {
+          "path-empty": "File path cannot be empty",
+          "no-longer-exists": "File no longer exists",
+          "quarantined": "File already quarantined",
+          "path-not-found": "Path does not exist: {{path}}",
+          "parent-dir-create-error": "Failed to create parent directory: {{error}}",
+          "invalid-paths": "The following paths do not exist: {{paths}}"
+     },
+     "clamav": {
+          "not-found": "ClamAV not found. Please install ClamAV and ensure clamscan is available in PATH, or report the bug if something went wrong.",
+          "scan-error": "ClamAV scan error",
+          "cmd-not-found": "{{command}} not found."
+     },
+     "scheduler": {
+          "job": {
+               "exists": "Scheduled job already exists",
+               "not-found": "Scheduled job not found in scheduler.json"
+          },
+          "task": {
+               "name-empty": "Task name cannot be empty",
+               "command-empty": "Task command cannot be empty"
+          },
+          "time-empty": "Time cannot be empty",
+          "error": {
+               "create": "Failed to create scheduled task",
+               "delete": "Failed to delete scheduled task",
+               "run": "Failed to run scheduled task"
+          },
+          "invalid": {
+               "hours": "Hours must be between 0 and 23",
+               "minutes": "Minutes must be between 0 and 59"
+          },
+          "unsupported": {
+               "custom-scan": "Custom scan scheduling not supported yet",
+               "scan-type": "Unsupported scan type",
+               "platform": "Scheduler is not supported on this platform yet"
+          },
+          "schtasks-failed": "schtasks query failed: {{error}}"
+     },
+     "bulk-actions": {
+          "quarantine-failed_one": "The quarantine operation failed.",
+          "quarantine-failed_other": "All {{count}} quarantine operations failed.",
+          "delete-failed_one": "The deletion operation failed.",
+          "delete-failed_other": "All {{count}} deletion operations failed",
+          "restore-failed_one": "The restore operation failed.",
+          "restore-failed_other": "All {{count}} restore operations failed",
+          "clear-failed_one": "The clear operation failed.",
+          "clear-failed_other": "All {{count}} clear operations failed"
+     }
+}

@@ -33,7 +33,8 @@ export default function HistoryFilters(){
      const updateClearInputState = (overrides: Partial<IClearInputState>) => setShowClearInput(prev=>({...prev, ...overrides}))
      const {t} = useTranslation("history")
      const {t: messageTxt} = useTranslation("messages")
-     const {t: tableTxt} = useTranslation("table")
+     const {t: tableTxt} = useTranslation("table");
+     const {t: backendTxt} = useTranslation("backend-errors");
      const clearHistory = (mode = HistoryClearType.All) => {
           if (isClearing) return;
           startClearTransition(async()=>{
@@ -49,7 +50,7 @@ export default function HistoryFilters(){
                     toast.success(t(`clear-messages.${mode}`))
                } catch (err){
                     toast.error(messageTxt("history-clear-errror"),{
-                         description: getErrorMessage(err)
+                         description: getErrorMessage(err,backendTxt)
                     })
                } finally {
                     updateHistoryState({popupState: ""})
@@ -101,7 +102,7 @@ export default function HistoryFilters(){
                }))
           } catch (err) {
                toast.error(messageTxt("export.error"),{
-                    description: getErrorMessage(err)
+                    description: getErrorMessage(err,backendTxt)
                });
           }
      }

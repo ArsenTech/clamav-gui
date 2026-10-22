@@ -21,6 +21,7 @@ use crate::{
         },
         structs::{history::HistoryItem, StartupScan},
     },
+    system::backend_errors::{self}
 };
 
 pub fn estimate_total_files(paths: &[PathBuf]) -> u64 {
@@ -53,7 +54,7 @@ pub fn run_scan(
         if guard.is_some() {
             #[cfg(debug_assertions)]
             println!("Scan Process Already running: {:?}", *guard);
-            return Err("SCAN_ALREADY_RUNNING".into());
+            return Err(backend_errors::SCAN_ALREADY_RUNNING.into());
         }
     }
 
@@ -277,8 +278,8 @@ pub fn run_headless_scan(startup: StartupScan) -> Result<(), String> {
     let status = cmd.status().map_err(|e| e.to_string())?;
     match status.code() {
         Some(0) | Some(1) => Ok(()),
-        Some(2) => Err("ClamAV scan error".into()),
-        _ => Err("Scan failed".into()),
+        Some(2) => Err(backend_errors::CLAMAV_SCAN_ERROR.into()),
+        _ => Err(backend_errors::SCAN_FAILED.into()),
     }
 }
 

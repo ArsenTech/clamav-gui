@@ -19,7 +19,8 @@ export default function SchedulerContent(){
      const {settings} = useSettings();
      const [isSubmitting, startSubmitTransition] = useTransition();
      const {schedulerState, setSchedulerState, refresh} = useScheduler()
-     const {t: messageTxt} = useTranslation("messages")
+     const {t: messageTxt} = useTranslation("messages");
+     const {t: backendTxt} = useTranslation("backend-errors");
      const handleSchedule = (values: SchedulerType) => {
           if(!settings.enableSchedulerUI) return;
           startSubmitTransition(async()=>{
@@ -31,7 +32,7 @@ export default function SchedulerContent(){
                     })
                } catch (err) {
                     toast.error(messageTxt("schedule-scan-error"),{
-                         description: getErrorMessage(err)
+                         description: getErrorMessage(err, backendTxt)
                     });
                }
           })

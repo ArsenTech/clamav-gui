@@ -29,7 +29,8 @@ export default function ScanProcess({handleReset, isStartup}: Props){
      const [isOpen, setIsOpen] = useState(false);
      const {formatDate} = useSettings()
      const dateRef = useRef<Date>(new Date(Date.now()));
-     const {t: messageTxt} = useTranslation("messages")
+     const {t: messageTxt} = useTranslation("messages");
+     const {t: backendTxt} = useTranslation("backend-errors");
      const handleStopScan = async () => {
           if(settings.confirmStopScan) setIsOpen(false);
           handleReset();
@@ -42,7 +43,7 @@ export default function ScanProcess({handleReset, isStartup}: Props){
                }
           } catch (err){
                toast.error(messageTxt("scan-stop-error"),{
-                    description: getErrorMessage(err)
+                    description: getErrorMessage(err,backendTxt)
                });
                navigate("/scan");
           }

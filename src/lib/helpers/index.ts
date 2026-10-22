@@ -1,4 +1,22 @@
 import { HistoryStatus, ThreatStatus } from "../types/data";
+import { TFunction } from "i18next";
+
+export function getErrorMessage(err: unknown,t: TFunction<"backend-errors">): string {
+  const raw = err instanceof Error ? err.message : String(err);
+  try {
+    const data: unknown = JSON.parse(raw);
+    if (data !== null && typeof data === "object" && "code" in data && typeof data.code === "string") {
+      const params = "params" in data && data.params !== null && typeof data.params === "object" && !Array.isArray(data.params) ? data.params : {};
+      return t(data.code, {
+        ...params,
+        defaultValue: data.code,
+      });
+    }
+  } catch {
+    // Static error key or plain message
+  }
+  return t(raw, { defaultValue: raw });
+}
 
 export function pickKeys<T extends object, K extends readonly (keyof T)[]>(
   obj: T,
@@ -50,5 +68,3 @@ export function getRandomEmoji(): "hmm" | "shrug" | "uncertain" {
   const randomIndex = Math.floor(Math.random()*array.length)
   return array[randomIndex]
 }
-
-export const getErrorMessage = (err: unknown) => err instanceof Error ? err.message : String(err)
