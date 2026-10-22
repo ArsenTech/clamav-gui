@@ -2,10 +2,13 @@ use crate::{
     antivirus::history::load_history,
     helpers::quarantine::quarantine_dir,
     types::{
-        enums::{ComputerVirusType, HistoryType, LogCategory, ScanResult, ScanType, ThreatStatus},
+        enums::{
+            antivirus::{ComputerVirusType, ScanResult, ScanType, ThreatStatus},
+            history::{HistoryType, LogCategory}
+        },
         structs::{
-            ActivityStat, HistoryItem, QuarantinedItem, ScanTypeStat, ThreatStatusStat,
-            VirusTypeStat,
+            history::HistoryItem, QuarantinedItem, 
+            stats::{ActivityStat, ScanTypeStat, ThreatStatusStat, VirusTypeStat}
         },
     },
 };

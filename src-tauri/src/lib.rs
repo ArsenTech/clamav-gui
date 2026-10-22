@@ -107,7 +107,7 @@ pub fn run() {
         .setup(|app| {
             use tauri::{Manager, WindowEvent};
             use crate::helpers::settings::get_settings_as_string;
-            use crate::types::enums::SettingKeyString;
+            use crate::types::enums::settings::SettingKeyString;
             
             let app_handle = app.handle();
             let default = load_translations(&app_handle.clone(),"en");

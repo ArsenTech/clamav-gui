@@ -5,7 +5,7 @@ use std::{
 };
 use tauri::Manager;
 
-use crate::{helpers::log::log_err, types::structs::HistoryItem};
+use crate::{helpers::log::log_err, types::structs::history::HistoryItem};
 
 pub fn history_dir(app: &tauri::AppHandle) -> PathBuf {
     let mut dir = app.path().app_data_dir().unwrap();

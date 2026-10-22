@@ -6,8 +6,8 @@ use crate::{
         clear_by_days, clear_by_status, history_dir, parse_date_from_path
     },
     types::{
-        enums::{ClearHistoryMode, HistoryStatus},
-        structs::HistoryItem,
+        enums::history::{ClearHistoryMode, HistoryStatus},
+        structs::history::HistoryItem,
     },
 };
 

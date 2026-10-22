@@ -6,7 +6,7 @@ use std::{
 use once_cell::sync::Lazy;
 use regex::Regex;
 
-use crate::types::enums::{SettingKeyArray, SettingKeyBool};
+use crate::types::enums::settings::{SettingKeyArray, SettingKeyBool};
 
 #[derive(Clone)]
 pub struct ExclusionMatcher {

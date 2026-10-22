@@ -31,7 +31,10 @@ use crate::{
         silent_command,
     },
     types::{
-        enums::{BehaviorMode, SettingKeyArray, SettingKeyBool},
+        enums::{
+            antivirus::BehaviorMode,
+            settings::{SettingKeyArray, SettingKeyBool}
+        },
         structs::BehaviorConfig
     },
 };

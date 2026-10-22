@@ -4,7 +4,7 @@ use crate::{
         aggregate_activity, aggregate_curr_quarantine_virus_types, aggregate_scan_types,
         aggregate_threat_status, read_quarantine_items,
     },
-    types::structs::StatsResponse,
+    types::structs::stats::StatsResponse,
 };
 use specta::specta;
 use tauri::command;

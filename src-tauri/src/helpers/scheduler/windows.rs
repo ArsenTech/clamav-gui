@@ -9,8 +9,15 @@ use crate::{
         silent_command,
     },
     types::{
-        enums::{DayOfTheWeek, HistoryDetails, HistoryStatus, HistoryType, LogCategory, ScanType, SchedulerInterval},
-        structs::{HistoryItem, SchedulerEntry, SchedulerEvent},
+        enums::{
+            DayOfTheWeek, SchedulerInterval,
+            history::{HistoryDetails, HistoryStatus, HistoryType, LogCategory}, 
+            antivirus::ScanType
+        },
+        structs::{
+            history::HistoryItem,
+            scheduler::{SchedulerEntry, SchedulerEvent}
+        },
     },
 };
 

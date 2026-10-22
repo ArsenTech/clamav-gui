@@ -1,7 +1,7 @@
 pub mod windows;
 use std::path::PathBuf;
 
-use crate::types::structs::SchedulerFile;
+use crate::types::structs::scheduler::SchedulerFile;
 
 pub fn load_scheduler_file(path: &PathBuf) -> Result<SchedulerFile, String> {
     if path.exists() {

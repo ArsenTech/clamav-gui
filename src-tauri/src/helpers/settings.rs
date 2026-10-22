@@ -1,5 +1,5 @@
 use tauri_plugin_store::StoreExt;
-use crate::types::enums::{SettingKeyArray,SettingKeyBool,SettingKeyString};
+use crate::types::enums::settings::{SettingKeyArray,SettingKeyBool,SettingKeyString};
 
 pub fn get_settings_as_array(app: &tauri::AppHandle, setting: SettingKeyArray) -> Result<Vec<String>, String> {
     let store = app.store("settings.json").map_err(|e| e.to_string())?;

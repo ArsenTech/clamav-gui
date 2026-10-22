@@ -2,7 +2,7 @@ use specta::specta;
 use tauri::{command, Manager};
 use tauri_plugin_opener::OpenerExt;
 
-use crate::types::enums::LogCategory;
+use crate::types::enums::history::LogCategory;
 
 #[command]
 #[specta(result)]

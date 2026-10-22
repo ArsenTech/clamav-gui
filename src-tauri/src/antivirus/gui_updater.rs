@@ -4,8 +4,11 @@ use tauri::command;
 use crate::{
      helpers::{history::append_history, new_id},
      types::{
-          enums::{AppendUpdaterErrorType, HistoryDetails, HistoryStatus, HistoryType, LogCategory}, 
-          structs::HistoryItem
+          enums::{
+               AppendUpdaterErrorType,
+               history::{HistoryDetails, HistoryStatus, HistoryType, LogCategory}
+          }, 
+          structs::history::HistoryItem
      }
 };
 

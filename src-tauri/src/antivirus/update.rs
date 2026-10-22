@@ -8,8 +8,8 @@ use crate::{
         new_id, resolve_command, silent_command,
     },
     types::{
-        enums::{HistoryDetails, HistoryStatus, HistoryType, LogCategory},
-        structs::HistoryItem,
+        enums::history::{HistoryDetails, HistoryStatus, HistoryType, LogCategory},
+        structs::history::HistoryItem,
     },
 };
 

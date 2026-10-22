@@ -8,7 +8,7 @@ use tauri::Manager;
 
 use crate::{
     helpers::new_id,
-    types::{enums::LogCategory, structs::InitLog},
+    types::{enums::history::LogCategory, structs::history::InitLog},
 };
 
 pub fn log_path(app: &tauri::AppHandle, log_dir: LogCategory, log_id: &str) -> PathBuf {

@@ -10,8 +10,8 @@ use crate::{
         quarantine::{move_file_cross_device, quarantine_dir, quarantine_id},
     },
     types::{
-        enums::{HistoryDetails, HistoryStatus, HistoryType, LogCategory},
-        structs::{HistoryItem, QuarantinedItem},
+        enums::history::{HistoryDetails, HistoryStatus, HistoryType, LogCategory},
+        structs::{history::HistoryItem, QuarantinedItem},
     },
 };
 

@@ -16,8 +16,8 @@ use crate::{
         history::append_history, i18n::{TRANSLATIONS, load_translations}, log::{initialize_log_with_id, log_err, log_info}, new_id, path::get_clamav_path
     },
     types::{
-        enums::{HistoryDetails, HistoryStatus, HistoryType, LogCategory},
-        structs::{AppLanguage, HistoryItem},
+        enums::history::{HistoryDetails, HistoryStatus, HistoryType, LogCategory},
+        structs::{AppLanguage, history::HistoryItem},
     },
 };
 

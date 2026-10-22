@@ -9,8 +9,11 @@ use crate::{
         }, silent_command
     },
     types::{
-        enums::{HistoryDetails, HistoryStatus, HistoryType, LogCategory, ScanType},
-        structs::{HistoryItem, StartupScan},
+        enums::{
+            history::{HistoryDetails, HistoryStatus, HistoryType, LogCategory},
+            antivirus::ScanType
+        },
+        structs::{history::HistoryItem, StartupScan},
     },
 };
 

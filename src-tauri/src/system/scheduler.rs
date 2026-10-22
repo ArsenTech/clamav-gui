@@ -8,8 +8,8 @@ use crate::{
         silent_command,
     },
     types::{
-        enums::{DayOfTheWeek, ScanType, SchedulerInterval},
-        structs::SchedulerEvent,
+        enums::{DayOfTheWeek, antivirus::ScanType, SchedulerInterval},
+        structs::scheduler::SchedulerEvent,
     },
 };
 

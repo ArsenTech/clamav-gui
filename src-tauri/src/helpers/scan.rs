@@ -15,8 +15,11 @@ use crate::{
         history::append_scan_history, log::{log_err, log_info, log_path}, matcher::EXCLUSIONS, new_id, path::get_clamav_path, silent_command
     },
     types::{
-        enums::{HistoryDetails, HistoryStatus, HistoryType, LogCategory, ScanResult, ScanType},
-        structs::{HistoryItem, StartupScan},
+        enums::{
+            history::{HistoryDetails, HistoryStatus, HistoryType, LogCategory},
+            antivirus::{ScanResult, ScanType}
+        },
+        structs::{history::HistoryItem, StartupScan},
     },
 };
 

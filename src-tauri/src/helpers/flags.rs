@@ -1,4 +1,4 @@
-use crate::types::{enums::ScanType, structs::StartupScan};
+use crate::types::{enums::antivirus::ScanType, structs::StartupScan};
 
 pub fn parse_startup_flags() -> StartupScan {
     let mut scan_type = None;
