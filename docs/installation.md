@@ -176,4 +176,4 @@ You'll find shortcuts placed on both the Desktop and Start Menu, so launch the G
 [github-url]: https://github.com/ArsenTech
 [yt-url]:https://www.youtube.com/channel/UCrtH0g6NE8tW5VIEgDySYtg
 [patreon-url]:https://www.patreon.com/ArsenTech
-[website-url]: https://arsentech.github.io
+[website-url]: https://arsentech-yt.vercel.app

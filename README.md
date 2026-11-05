@@ -225,7 +225,7 @@ ClamAV is a trademark of Cisco Systems, Inc. This project is an independent, ope
 [code-of-conduct-url]: https://github.com/ArsenTech/clamav-gui/blob/main/docs/CODE_OF_CONDUCT.md
 [contributing-url]: https://github.com/ArsenTech/clamav-gui/blob/main/docs/CONTRIBUTING.md
 [changelog-url]: https://github.com/ArsenTech/clamav-gui/blob/main/CHANGELOG.md
-[website-url]: https://arsentech.github.io
+[website-url]: https://arsentech-yt.vercel.app
 [docs-url]: https://github.com/ArsenTech/clamav-gui/blob/main/docs/README.md
 [sponsors-list]: https://raw.githubusercontent.com/ArsenTech/clamav-gui/main/public/sponsors/sponsors.svg
 [sponsors-link]: https://github.com/sponsors/ArsenTech

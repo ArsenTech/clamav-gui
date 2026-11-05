@@ -189,6 +189,6 @@ Thanks for making ArsenTech's ClamAV GUI better!
 [yt-url]:https://www.youtube.com/channel/UCrtH0g6NE8tW5VIEgDySYtg
 [patreon-url]:https://www.patreon.com/ArsenTech
 [github-url]: https://github.com/ArsenTech
-[website-url]: https://arsentech.github.io
+[website-url]: https://arsentech-yt.vercel.app
 [link-to-base-lang]: https://github.com/ArsenTech/clamav-gui/tree/main/public/locales/en
 [link-to-systray-base-lang]: https://github.com/ArsenTech/clamav-gui/blob/main/src-tauri/assets/i18n/en.json
