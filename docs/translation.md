@@ -6,39 +6,7 @@
      </picture>
 </p>
 
-<h1 align="center">Translating the 
-                    <SettingsOption
-                         title={t("ui.sidebar.title")}
-                         description={t("ui.sidebar.desc")}
-                    >
-                         <Select
-                              value={settings.sidebarCollapsible}
-                              onValueChange={value=>setSettings({sidebarCollapsible: value as SidebarCollapsible})}
-                         >
-                              <SelectTrigger>
-                                   <SelectValue placeholder={t("ui.sidebar.placeholder")}/>
-                              </SelectTrigger>
-                              <SelectContent>
-                                   <SelectItem value="offcanvas">
-                                        <PanelRightOpen/>
-                                        {t("ui.sidebar.options.off-canvas")}
-                                   </SelectItem>
-                                   <SelectItem value="icon">
-                                        <Star/>
-                                        {t("ui.sidebar.options.icon")}
-                                   </SelectItem>
-                              </SelectContent>
-                         </Select>
-                    </SettingsOption>
-                    <SettingsOption
-                         title={t("ui.reduce-motion.title")}
-                         description={t("ui.reduce-motion.desc")}
-                    >
-                         <Switch
-                              checked={settings.reduceMotion}
-                              onCheckedChange={checked=>setSettings({reduceMotion: checked})}
-                         />
-                    </SettingsOption>ClamAV GUI</h1>
+<h1 align="center">Translating the ClamAV GUI</h1>
 
 ## Translation workflow
 
